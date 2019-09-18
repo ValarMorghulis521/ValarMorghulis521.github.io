@@ -3,7 +3,7 @@
 <head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="utf-8">
   
-  <title>微信点餐系统-数据库设计 | Continued</title>
+  <title>微信点餐系统-数据库设计 | һ·��</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
   <meta name="keywords" content="mysql">
@@ -11,20 +11,20 @@
   
   
   
-  <meta name="description" content="数据库设计表的的构成类目表，商品表，订单主表，订单详情表 日期时间类型设置默认时间，DEFAULT CURRENT_TIMESTAMP时间类型字段自动更新数据，ON UPDATE CURRENT_TIMESTAMP SQL UNIQUE 约束UNIQUE约束唯一标识数据库表中的每条记录。UNIQUE和PRIMARY KEY 约束均为列或列激活提供了唯一性的保证。PRIMARY KEY 拥有自动定义">
+  <meta name="description" content="数据库设计表的的构成类目表，商品表，订单主表，订单详情表 日期时间类型设置默认时间，DEFAULT CURRENT_TIMESTAMP时间类型字段自动更新数据，ON UPDATE CURRENT_TIMESTAMP&amp;lt; !–more–&amp;gt; SQL UNIQUE 约束UNIQUE约束唯一标识数据库表中的每条记录。UNIQUE和PRIMARY KEY 约束均为列或列激活提供了唯一性的保证。PR">
 <meta name="keywords" content="mysql">
 <meta property="og:type" content="article">
 <meta property="og:title" content="微信点餐系统-数据库设计">
 <meta property="og:url" content="http://yoursite.com/2019/09/18/微信点餐系统-数据库设计/index.html">
-<meta property="og:site_name" content="Continued">
-<meta property="og:description" content="数据库设计表的的构成类目表，商品表，订单主表，订单详情表 日期时间类型设置默认时间，DEFAULT CURRENT_TIMESTAMP时间类型字段自动更新数据，ON UPDATE CURRENT_TIMESTAMP SQL UNIQUE 约束UNIQUE约束唯一标识数据库表中的每条记录。UNIQUE和PRIMARY KEY 约束均为列或列激活提供了唯一性的保证。PRIMARY KEY 拥有自动定义">
+<meta property="og:site_name" content="һ·��">
+<meta property="og:description" content="数据库设计表的的构成类目表，商品表，订单主表，订单详情表 日期时间类型设置默认时间，DEFAULT CURRENT_TIMESTAMP时间类型字段自动更新数据，ON UPDATE CURRENT_TIMESTAMP&amp;lt; !–more–&amp;gt; SQL UNIQUE 约束UNIQUE约束唯一标识数据库表中的每条记录。UNIQUE和PRIMARY KEY 约束均为列或列激活提供了唯一性的保证。PR">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-09-18T06:19:23.303Z">
+<meta property="og:updated_time" content="2019-09-18T15:11:46.573Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="微信点餐系统-数据库设计">
-<meta name="twitter:description" content="数据库设计表的的构成类目表，商品表，订单主表，订单详情表 日期时间类型设置默认时间，DEFAULT CURRENT_TIMESTAMP时间类型字段自动更新数据，ON UPDATE CURRENT_TIMESTAMP SQL UNIQUE 约束UNIQUE约束唯一标识数据库表中的每条记录。UNIQUE和PRIMARY KEY 约束均为列或列激活提供了唯一性的保证。PRIMARY KEY 拥有自动定义">
+<meta name="twitter:description" content="数据库设计表的的构成类目表，商品表，订单主表，订单详情表 日期时间类型设置默认时间，DEFAULT CURRENT_TIMESTAMP时间类型字段自动更新数据，ON UPDATE CURRENT_TIMESTAMP&amp;lt; !–more–&amp;gt; SQL UNIQUE 约束UNIQUE约束唯一标识数据库表中的每条记录。UNIQUE和PRIMARY KEY 约束均为列或列激活提供了唯一性的保证。PR">
   
-    <link rel="alternate" href="/atom.xml" title="Continued" type="application/atom+xml">
+    <link rel="alternate" href="/atom.xml" title="һ·��" type="application/atom+xml">
   
   <link rel="icon" href="/css/images/favicon.ico">
   
@@ -90,7 +90,7 @@
 
           <h1 class="site-title">
             
-              <a href="/" title="Continued" rel="home"> Continued </a>
+              <a href="/" title="һ·��" rel="home"> һ·�� </a>
             
           </h1>
           
@@ -105,13 +105,13 @@
                     
                       <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">Home</a> </li>
                     
-                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">Archives</a> </li>
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/�鵵">Archives</a> </li>
                     
-                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">Categories</a> </li>
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/����">Categories</a> </li>
                     
-                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">Tags</a> </li>
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/��ǩ">Tags</a> </li>
                     
-                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">About</a> </li>
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/������">About</a> </li>
                     
               </ul>
             </div>
@@ -160,7 +160,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h4 id="数据库设计"><a href="#数据库设计" class="headerlink" title="数据库设计"></a>数据库设计</h4><h5 id="表的的构成"><a href="#表的的构成" class="headerlink" title="表的的构成"></a>表的的构成</h5><p>类目表，商品表，订单主表，订单详情表</p>
-<h5 id="日期"><a href="#日期" class="headerlink" title="日期"></a>日期</h5><p>时间类型设置默认时间，DEFAULT CURRENT_TIMESTAMP<br>时间类型字段自动更新数据，ON UPDATE CURRENT_TIMESTAMP</p>
+<h5 id="日期"><a href="#日期" class="headerlink" title="日期"></a>日期</h5><p>时间类型设置默认时间，DEFAULT CURRENT_TIMESTAMP<br>时间类型字段自动更新数据，ON UPDATE CURRENT_TIMESTAMP<br>&lt; !–more–&gt;</p>
 <h5 id="SQL-UNIQUE-约束"><a href="#SQL-UNIQUE-约束" class="headerlink" title="SQL UNIQUE 约束"></a>SQL UNIQUE 约束</h5><p>UNIQUE约束唯一标识数据库表中的每条记录。<br>UNIQUE和PRIMARY KEY 约束均为列或列激活提供了唯一性的保证。PRIMARY KEY 拥有自动定义的 UNIQUE约束。<br>请注意，每个表可以有多个UNIQUE约束，但是每个表只能有一个 PRIMARY KEY 约束。</p>
 <h5 id="数据库编码"><a href="#数据库编码" class="headerlink" title="数据库编码"></a>数据库编码</h5><p>使用 UTF-8 unicode(uftf8mb4)可以存表情</p>
 
@@ -250,13 +250,13 @@
   
     <a href="/" class="mobile-nav-link">Home</a>
   
-    <a href="/archives" class="mobile-nav-link">Archives</a>
+    <a href="/�鵵" class="mobile-nav-link">Archives</a>
   
-    <a href="/categories" class="mobile-nav-link">Categories</a>
+    <a href="/����" class="mobile-nav-link">Categories</a>
   
-    <a href="/tags" class="mobile-nav-link">Tags</a>
+    <a href="/��ǩ" class="mobile-nav-link">Tags</a>
   
-    <a href="/about" class="mobile-nav-link">About</a>
+    <a href="/������" class="mobile-nav-link">About</a>
   
 </nav> -->
     <footer id="footer" class="site-footer">
@@ -264,16 +264,13 @@
 
   <div class="clearfix container">
       <div class="site-info">
-	      &copy; 2019 Continued All Rights Reserved.
+	      &copy; 2019 һ·�� All Rights Reserved.
         
             <span id="busuanzi_container_site_uv">
               本站访客数<span id="busuanzi_value_site_uv"></span>人次  
               本站总访问量<span id="busuanzi_value_site_pv"></span>次
             </span>
           
-      </div>
-      <div class="site-credit">
-        Theme by <a href="https://github.com/iTimeTraveler/hexo-theme-hipaper" target="_blank">hipaper</a>
       </div>
   </div>
 </footer>

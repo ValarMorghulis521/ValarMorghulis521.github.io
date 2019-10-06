@@ -3,26 +3,26 @@
 <head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="utf-8">
   
-  <title>TCP的滑动窗口 | Contunued Story</title>
+  <title>HTTP相关 | Contunued Story</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta name="keywords" content="滑动窗口RTTRTO">
+  <meta name="keywords" content="HTTP">
   
   
   
   
-  <meta name="description" content="RTT和RTO RTT:发送一个数据包到接受对应ACK所花费的时间 RTO:重传时间间隔；RTT是根据RTO计算出来的  我们要实现对数据的批量发送，TCP要解决可靠传输和包乱序的问题，所以TCP需要知道网络实际的数据处理带宽或是数据处理速度才不会引起网络拥塞导致丢包 TCP使用滑动窗口做流量控制与乱序重排 保证TCP可靠性 保证TCP的流控特性。（流量控制：window，用于接收方通知发送方自己">
-<meta name="keywords" content="滑动窗口,RTT,RTO">
+  <meta name="description" content="超文本传输协议HTTP主要特点 支持客户/服务器模式 简单快速 灵活 无连接 无状态  请求/响应的步骤 客户端连接到web服务器 发送HTTP请求 服务器接受请求并返回HTTP响应 释放连接TCP连接 客户端浏览器解析HTML内容  在浏览器地址键入URL，按下回车之后经历的流程 DNS解析  浏览器依据URL逐层查询DNS服务器缓存，解析URL中的域名所对应的的IP TCP连接  找到IP地址">
+<meta name="keywords" content="HTTP">
 <meta property="og:type" content="article">
-<meta property="og:title" content="TCP的滑动窗口">
-<meta property="og:url" content="http://yoursite.com/2019/10/06/TCP的滑动窗口/index.html">
+<meta property="og:title" content="HTTP相关">
+<meta property="og:url" content="http://yoursite.com/2019/10/06/HTTP相关/index.html">
 <meta property="og:site_name" content="Contunued Story">
-<meta property="og:description" content="RTT和RTO RTT:发送一个数据包到接受对应ACK所花费的时间 RTO:重传时间间隔；RTT是根据RTO计算出来的  我们要实现对数据的批量发送，TCP要解决可靠传输和包乱序的问题，所以TCP需要知道网络实际的数据处理带宽或是数据处理速度才不会引起网络拥塞导致丢包 TCP使用滑动窗口做流量控制与乱序重排 保证TCP可靠性 保证TCP的流控特性。（流量控制：window，用于接收方通知发送方自己">
+<meta property="og:description" content="超文本传输协议HTTP主要特点 支持客户/服务器模式 简单快速 灵活 无连接 无状态  请求/响应的步骤 客户端连接到web服务器 发送HTTP请求 服务器接受请求并返回HTTP响应 释放连接TCP连接 客户端浏览器解析HTML内容  在浏览器地址键入URL，按下回车之后经历的流程 DNS解析  浏览器依据URL逐层查询DNS服务器缓存，解析URL中的域名所对应的的IP TCP连接  找到IP地址">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-10-06T14:13:09.044Z">
+<meta property="og:updated_time" content="2019-10-06T15:09:30.742Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="TCP的滑动窗口">
-<meta name="twitter:description" content="RTT和RTO RTT:发送一个数据包到接受对应ACK所花费的时间 RTO:重传时间间隔；RTT是根据RTO计算出来的  我们要实现对数据的批量发送，TCP要解决可靠传输和包乱序的问题，所以TCP需要知道网络实际的数据处理带宽或是数据处理速度才不会引起网络拥塞导致丢包 TCP使用滑动窗口做流量控制与乱序重排 保证TCP可靠性 保证TCP的流控特性。（流量控制：window，用于接收方通知发送方自己">
+<meta name="twitter:title" content="HTTP相关">
+<meta name="twitter:description" content="超文本传输协议HTTP主要特点 支持客户/服务器模式 简单快速 灵活 无连接 无状态  请求/响应的步骤 客户端连接到web服务器 发送HTTP请求 服务器接受请求并返回HTTP响应 释放连接TCP连接 客户端浏览器解析HTML内容  在浏览器地址键入URL，按下回车之后经历的流程 DNS解析  浏览器依据URL逐层查询DNS服务器缓存，解析URL中的域名所对应的的IP TCP连接  找到IP地址">
   
     <link rel="alternate" href="/atom.xml" title="Contunued Story" type="application/atom+xml">
   
@@ -127,7 +127,7 @@
             
       <div id="content" class="outer">
         
-          <section id="main" style="float:none;"><article id="post-TCP的滑动窗口" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+          <section id="main" style="float:none;"><article id="post-HTTP相关" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -135,7 +135,7 @@
         
   
     <h1 class="thumb" class="article-title" itemprop="name">
-      TCP的滑动窗口
+      HTTP相关
     </h1>
   
 
@@ -143,7 +143,7 @@
     
     <div class="article-meta">
       
-	<a href="/2019/10/06/TCP的滑动窗口/" class="article-date">
+	<a href="/2019/10/06/HTTP相关/" class="article-date">
 	  <time datetime="2019-10-06T08:59:45.000Z" itemprop="datePublished">October 6, 2019</time>
 	</a>
 
@@ -159,17 +159,50 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h4 id="RTT和RTO"><a href="#RTT和RTO" class="headerlink" title="RTT和RTO"></a>RTT和RTO</h4><ul>
-<li>RTT:发送一个数据包到接受对应ACK所花费的时间</li>
-<li>RTO:重传时间间隔；RTT是根据RTO计算出来的</li>
+        <h4 id="超文本传输协议HTTP主要特点"><a href="#超文本传输协议HTTP主要特点" class="headerlink" title="超文本传输协议HTTP主要特点"></a>超文本传输协议HTTP主要特点</h4><ul>
+<li>支持客户/服务器模式</li>
+<li>简单快速</li>
+<li>灵活</li>
+<li>无连接</li>
+<li>无状态</li>
 </ul>
-<p>我们要实现对数据的批量发送，TCP要解决可靠传输和包乱序的问题，所以TCP需要知道网络实际的数据处理带宽或是数据处理速度才不会引起网络拥塞导致丢包</p>
-<h4 id="TCP使用滑动窗口做流量控制与乱序重排"><a href="#TCP使用滑动窗口做流量控制与乱序重排" class="headerlink" title="TCP使用滑动窗口做流量控制与乱序重排"></a>TCP使用滑动窗口做流量控制与乱序重排</h4><ul>
-<li>保证TCP可靠性</li>
-<li>保证TCP的流控特性。（流量控制：window，用于接收方通知发送方自己还有多少缓冲区可以接受数据，发送方根据接收方的处理能力发送数据，不会导致接受不过来）</li>
+<h4 id="请求-响应的步骤"><a href="#请求-响应的步骤" class="headerlink" title="请求/响应的步骤"></a>请求/响应的步骤</h4><ul>
+<li>客户端连接到web服务器</li>
+<li>发送HTTP请求</li>
+<li>服务器接受请求并返回HTTP响应</li>
+<li>释放连接TCP连接</li>
+<li>客户端浏览器解析HTML内容</li>
 </ul>
-<p>TCP的传输可靠性来源于确认重传机制，TCP的滑动窗口可靠性也是建立在确认重传基础上。</p>
-
+<h4 id="在浏览器地址键入URL，按下回车之后经历的流程"><a href="#在浏览器地址键入URL，按下回车之后经历的流程" class="headerlink" title="在浏览器地址键入URL，按下回车之后经历的流程"></a>在浏览器地址键入URL，按下回车之后经历的流程</h4><ul>
+<li>DNS解析  浏览器依据URL逐层查询DNS服务器缓存，解析URL中的域名所对应的的IP</li>
+<li>TCP连接  找到IP地址后根据IP和对应端口和服务器建立TCP连接，结合三次握手讲解</li>
+<li>浏览器发送HTTP请求</li>
+<li>服务器处理请求并返回HTTP响应报文</li>
+<li>浏览器解析渲染页面</li>
+<li>连接结束 结合四次挥手<a id="more"></a>
+<h4 id="HTTP状态码"><a href="#HTTP状态码" class="headerlink" title="HTTP状态码"></a>HTTP状态码</h4><h5 id="五种可能的取值"><a href="#五种可能的取值" class="headerlink" title="五种可能的取值"></a>五种可能的取值</h5></li>
+<li>1XX : 指示信息 – 表示请求已接收，继续处理</li>
+<li>2XX : 成功–表示请求已被成功接收、理解、接受</li>
+<li>3XX : 重定向 – 要完成请求必须进行更进一步的操作</li>
+<li>4xx : 客户端错误 – 请求有语法错误或请求无法实现</li>
+<li>5XX : 服务器端错误–服务器未能实现合法的请求<h5 id="常见状态码"><a href="#常见状态码" class="headerlink" title="常见状态码"></a>常见状态码</h5></li>
+<li>200 OK : 正常返回信息</li>
+<li>400 Bad Request : 客户端请求有语法错误，不能被服务器所理解</li>
+<li>401 Unauthorized : 请求未经授权，这个状态码必须和WWW-Authenticate 报头域一起使用</li>
+<li>403 Forbidden : 服务器收到请求，但是拒绝提供服务</li>
+<li>404 Not Found : 请求资源不存在,eg,输入错误的URL</li>
+<li>500 Internal Server Error : 服务器发生了不可预期的错误</li>
+<li>503 Server Unavailable : 服务器当前不能处理客户端的请求，一段时间后可能恢复正常<h4 id="GET请求和POST请求的区别"><a href="#GET请求和POST请求的区别" class="headerlink" title="GET请求和POST请求的区别"></a>GET请求和POST请求的区别</h4></li>
+<li>Http报文层面：GET将信息放在URL，POST放在报文体中</li>
+<li>数据库层面：GET符合幂等性和安全性，POST不符合 （幂等性：对数据库多次操作获得结果是一样的。安全性：没有改变数据库中的数据）</li>
+<li>其他层面：GET可以被缓存、被储存，而POST不行</li>
+</ul>
+<h4 id="Cookie和Session的区别"><a href="#Cookie和Session的区别" class="headerlink" title="Cookie和Session的区别"></a>Cookie和Session的区别</h4><h5 id="Cookie简介"><a href="#Cookie简介" class="headerlink" title="Cookie简介"></a>Cookie简介</h5><ul>
+<li>由服务器发给客户端的特殊信息，以文本的形式存放在客户端</li>
+<li>客户端再次请求的时候，会把Cookie回发</li>
+<li>服务器接收到后，会解析Cookie生成与客户端相对应的内容</li>
+</ul>
+<h5 id="Cookie-的设置以及发送过程"><a href="#Cookie-的设置以及发送过程" class="headerlink" title="Cookie 的设置以及发送过程"></a>Cookie 的设置以及发送过程</h5>
       
     </div>
     <footer class="entry-meta entry-footer">
@@ -179,7 +212,7 @@
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RTO/">RTO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RTT/">RTT</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/滑动窗口/">滑动窗口</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HTTP/">HTTP</a></li></ul>
 
       
         
@@ -214,19 +247,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2019/10/06/HTTP相关/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          HTTP相关
-        
-      </div>
-    </a>
   
-  
-    <a href="/2019/10/06/TCP和UDP的区别/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2019/10/06/TCP的滑动窗口/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">TCP和UDP的区别</div>
+      <div class="article-nav-title">TCP的滑动窗口</div>
     </a>
   
 </nav>
@@ -240,7 +264,7 @@
     <div id="toc" class="toc-article">
     <strong class="toc-title">Contents</strong>
     
-      <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#RTT和RTO"><span class="nav-number">1.</span> <span class="nav-text">RTT和RTO</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TCP使用滑动窗口做流量控制与乱序重排"><span class="nav-number">2.</span> <span class="nav-text">TCP使用滑动窗口做流量控制与乱序重排</span></a></li></ol>
+      <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#超文本传输协议HTTP主要特点"><span class="nav-number">1.</span> <span class="nav-text">超文本传输协议HTTP主要特点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#请求-响应的步骤"><span class="nav-number">2.</span> <span class="nav-text">请求/响应的步骤</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在浏览器地址键入URL，按下回车之后经历的流程"><span class="nav-number">3.</span> <span class="nav-text">在浏览器地址键入URL，按下回车之后经历的流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTP状态码"><span class="nav-number">4.</span> <span class="nav-text">HTTP状态码</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#五种可能的取值"><span class="nav-number">4.1.</span> <span class="nav-text">五种可能的取值</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#常见状态码"><span class="nav-number">4.2.</span> <span class="nav-text">常见状态码</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GET请求和POST请求的区别"><span class="nav-number">5.</span> <span class="nav-text">GET请求和POST请求的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Cookie和Session的区别"><span class="nav-number">6.</span> <span class="nav-text">Cookie和Session的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Cookie简介"><span class="nav-number">6.1.</span> <span class="nav-text">Cookie简介</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Cookie-的设置以及发送过程"><span class="nav-number">6.2.</span> <span class="nav-text">Cookie 的设置以及发送过程</span></a></li></ol></li></ol>
     
     </div>
   </aside>

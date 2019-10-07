@@ -19,10 +19,12 @@
 <meta property="og:site_name" content="Contunued Story">
 <meta property="og:description" content="超文本传输协议HTTP主要特点 支持客户/服务器模式 简单快速 灵活 无连接 无状态  请求/响应的步骤 客户端连接到web服务器 发送HTTP请求 服务器接受请求并返回HTTP响应 释放连接TCP连接 客户端浏览器解析HTML内容  在浏览器地址键入URL，按下回车之后经历的流程 DNS解析  浏览器依据URL逐层查询DNS服务器缓存，解析URL中的域名所对应的的IP TCP连接  找到IP地址">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-10-06T15:09:30.742Z">
+<meta property="og:image" content="http://yoursite.com/2019/10/06/HTTP相关/Session%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F.jpg">
+<meta property="og:updated_time" content="2019-10-07T14:09:05.448Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HTTP相关">
 <meta name="twitter:description" content="超文本传输协议HTTP主要特点 支持客户/服务器模式 简单快速 灵活 无连接 无状态  请求/响应的步骤 客户端连接到web服务器 发送HTTP请求 服务器接受请求并返回HTTP响应 释放连接TCP连接 客户端浏览器解析HTML内容  在浏览器地址键入URL，按下回车之后经历的流程 DNS解析  浏览器依据URL逐层查询DNS服务器缓存，解析URL中的域名所对应的的IP TCP连接  找到IP地址">
+<meta name="twitter:image" content="http://yoursite.com/2019/10/06/HTTP相关/Session%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F.jpg">
   
     <link rel="alternate" href="/atom.xml" title="Contunued Story" type="application/atom+xml">
   
@@ -202,7 +204,24 @@
 <li>客户端再次请求的时候，会把Cookie回发</li>
 <li>服务器接收到后，会解析Cookie生成与客户端相对应的内容</li>
 </ul>
-<h5 id="Cookie-的设置以及发送过程"><a href="#Cookie-的设置以及发送过程" class="headerlink" title="Cookie 的设置以及发送过程"></a>Cookie 的设置以及发送过程</h5>
+<h5 id="Cookie-的设置以及发送过程"><a href="#Cookie-的设置以及发送过程" class="headerlink" title="Cookie 的设置以及发送过程"></a>Cookie 的设置以及发送过程</h5><ul>
+<li>客户端发送HTTP Request 到服务端</li>
+<li>服务端发送HTTP Response + Set-Cookie</li>
+<li>客户端发送HTTP Request + Cookie</li>
+<li>服务器发送HTTP Response</li>
+</ul>
+<h5 id="Session-简介"><a href="#Session-简介" class="headerlink" title="Session 简介"></a>Session 简介</h5><ul>
+<li>服务器端的机制，在服务器上保存的信息</li>
+<li>解析客户端请求并操作session id,按需保存状态信息<h5 id="Session的实现方式方式"><a href="#Session的实现方式方式" class="headerlink" title="Session的实现方式方式"></a>Session的实现方式方式</h5></li>
+<li>使用Cookie来实现<br><img src="/2019/10/06/HTTP相关/Session%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F.jpg" alt></li>
+<li>使用URL回写来实现</li>
+</ul>
+<h5 id="Cookie和Session的区别-1"><a href="#Cookie和Session的区别-1" class="headerlink" title="Cookie和Session的区别"></a>Cookie和Session的区别</h5><ul>
+<li>Cookie数据存放在客户的浏览器上，Session数据放在服务器上</li>
+<li>Session相对Cookie更安全</li>
+<li>若考虑减轻服务器负担，应当使用Cookie</li>
+</ul>
+
       
     </div>
     <footer class="entry-meta entry-footer">
@@ -264,7 +283,7 @@
     <div id="toc" class="toc-article">
     <strong class="toc-title">Contents</strong>
     
-      <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#超文本传输协议HTTP主要特点"><span class="nav-number">1.</span> <span class="nav-text">超文本传输协议HTTP主要特点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#请求-响应的步骤"><span class="nav-number">2.</span> <span class="nav-text">请求/响应的步骤</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在浏览器地址键入URL，按下回车之后经历的流程"><span class="nav-number">3.</span> <span class="nav-text">在浏览器地址键入URL，按下回车之后经历的流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTP状态码"><span class="nav-number">4.</span> <span class="nav-text">HTTP状态码</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#五种可能的取值"><span class="nav-number">4.1.</span> <span class="nav-text">五种可能的取值</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#常见状态码"><span class="nav-number">4.2.</span> <span class="nav-text">常见状态码</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GET请求和POST请求的区别"><span class="nav-number">5.</span> <span class="nav-text">GET请求和POST请求的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Cookie和Session的区别"><span class="nav-number">6.</span> <span class="nav-text">Cookie和Session的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Cookie简介"><span class="nav-number">6.1.</span> <span class="nav-text">Cookie简介</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Cookie-的设置以及发送过程"><span class="nav-number">6.2.</span> <span class="nav-text">Cookie 的设置以及发送过程</span></a></li></ol></li></ol>
+      <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#超文本传输协议HTTP主要特点"><span class="nav-number">1.</span> <span class="nav-text">超文本传输协议HTTP主要特点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#请求-响应的步骤"><span class="nav-number">2.</span> <span class="nav-text">请求/响应的步骤</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在浏览器地址键入URL，按下回车之后经历的流程"><span class="nav-number">3.</span> <span class="nav-text">在浏览器地址键入URL，按下回车之后经历的流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTP状态码"><span class="nav-number">4.</span> <span class="nav-text">HTTP状态码</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#五种可能的取值"><span class="nav-number">4.1.</span> <span class="nav-text">五种可能的取值</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#常见状态码"><span class="nav-number">4.2.</span> <span class="nav-text">常见状态码</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GET请求和POST请求的区别"><span class="nav-number">5.</span> <span class="nav-text">GET请求和POST请求的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Cookie和Session的区别"><span class="nav-number">6.</span> <span class="nav-text">Cookie和Session的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Cookie简介"><span class="nav-number">6.1.</span> <span class="nav-text">Cookie简介</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Cookie-的设置以及发送过程"><span class="nav-number">6.2.</span> <span class="nav-text">Cookie 的设置以及发送过程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Session-简介"><span class="nav-number">6.3.</span> <span class="nav-text">Session 简介</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Session的实现方式方式"><span class="nav-number">6.4.</span> <span class="nav-text">Session的实现方式方式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Cookie和Session的区别-1"><span class="nav-number">6.5.</span> <span class="nav-text">Cookie和Session的区别</span></a></li></ol></li></ol>
     
     </div>
   </aside>

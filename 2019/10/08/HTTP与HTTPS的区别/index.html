@@ -3,20 +3,26 @@
 <head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="utf-8">
   
-  <title>分类 | Contunued Story</title>
+  <title>HTTP与HTTPS的区别 | Contunued Story</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
+  <meta name="keywords" content="HTTP">
   
   
   
-  <meta property="og:type" content="website">
-<meta property="og:title" content="分类">
-<meta property="og:url" content="http://yoursite.com/categories/index.html">
+  
+  <meta name="description" content="HTTPS 简介   HTTP HTTPS    HTTP HTTP    SSL OR TLS   TCP TCP   IP IP    HTTPS:以计算机网络通信安全为目的的传输协议  SSL(Security Sockets Layer,安全套接层) 为网络通信提供安全及数据完整性一种安全协议 是操作系统对外API ,SSL3.0 后更名为TLS 采用身份验证和数据加密保证网络通信安全和数">
+<meta name="keywords" content="HTTP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTTP与HTTPS的区别">
+<meta property="og:url" content="http://yoursite.com/2019/10/08/HTTP与HTTPS的区别/index.html">
 <meta property="og:site_name" content="Contunued Story">
+<meta property="og:description" content="HTTPS 简介   HTTP HTTPS    HTTP HTTP    SSL OR TLS   TCP TCP   IP IP    HTTPS:以计算机网络通信安全为目的的传输协议  SSL(Security Sockets Layer,安全套接层) 为网络通信提供安全及数据完整性一种安全协议 是操作系统对外API ,SSL3.0 后更名为TLS 采用身份验证和数据加密保证网络通信安全和数">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-10-08T01:48:17.609Z">
+<meta property="og:updated_time" content="2019-10-08T06:30:20.989Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="分类">
+<meta name="twitter:title" content="HTTP与HTTPS的区别">
+<meta name="twitter:description" content="HTTPS 简介   HTTP HTTPS    HTTP HTTP    SSL OR TLS   TCP TCP   IP IP    HTTPS:以计算机网络通信安全为目的的传输协议  SSL(Security Sockets Layer,安全套接层) 为网络通信提供安全及数据完整性一种安全协议 是操作系统对外API ,SSL3.0 后更名为TLS 采用身份验证和数据加密保证网络通信安全和数">
   
     <link rel="alternate" href="/atom.xml" title="Contunued Story" type="application/atom+xml">
   
@@ -49,7 +55,7 @@
 </html>
 
 
-  <body>
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
 
 
   
@@ -121,7 +127,7 @@
             
       <div id="content" class="outer">
         
-          <section id="main"><article id="page-"  class="article article-type-page" itemscope itemprop="blogPost" >
+          <section id="main" style="float:none;"><article id="post-HTTP与HTTPS的区别" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -129,7 +135,7 @@
         
   
     <h1 class="thumb" class="article-title" itemprop="name">
-      分类
+      HTTP与HTTPS的区别
     </h1>
   
 
@@ -137,8 +143,8 @@
     
     <div class="article-meta">
       
-	<a href="/categories/index.html" class="article-date">
-	  <time datetime="2019-04-22T06:35:02.000Z" itemprop="datePublished">April 22, 2019</time>
+	<a href="/2019/10/08/HTTP与HTTPS的区别/" class="article-date">
+	  <time datetime="2019-10-08T06:08:59.000Z" itemprop="datePublished">October 8, 2019</time>
 	</a>
 
        
@@ -150,225 +156,117 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <h2 id="HTTPS-简介"><a href="#HTTPS-简介" class="headerlink" title="HTTPS 简介"></a>HTTPS 简介</h2><table>
+<thead>
+<tr>
+<th>HTTP</th>
+<th align="left">HTTPS</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>HTTP</td>
+<td align="left">HTTP</td>
+</tr>
+<tr>
+<td></td>
+<td align="left">SSL OR TLS</td>
+</tr>
+<tr>
+<td>TCP</td>
+<td align="left">TCP</td>
+</tr>
+<tr>
+<td>IP</td>
+<td align="left">IP</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>HTTPS:以计算机网络通信安全为目的的传输协议</p>
+</blockquote>
+<h3 id="SSL-Security-Sockets-Layer-安全套接层"><a href="#SSL-Security-Sockets-Layer-安全套接层" class="headerlink" title="SSL(Security Sockets Layer,安全套接层)"></a>SSL(Security Sockets Layer,安全套接层)</h3><ul>
+<li>为网络通信提供安全及数据完整性一种安全协议</li>
+<li>是操作系统对外API ,SSL3.0 后更名为TLS</li>
+<li>采用身份验证和数据加密保证网络通信安全和数据完整性<h2 id="HTTP数据传输流程"><a href="#HTTP数据传输流程" class="headerlink" title="HTTP数据传输流程"></a>HTTP数据传输流程</h2></li>
+<li>浏览器将支持的加密算法发送给服务器</li>
+<li>服务器选择一套浏览器支持的加密算法，以证书形式回发给浏览器</li>
+<li>浏览器验证证书合法性，结合证书公钥加密信息发送给服务器</li>
+<li>服务器使用私钥解密，验证哈希加密响应消息回发浏览器</li>
+<li>浏览器解密响应消息，对消息进行验真，之后进行加密交换数据</li>
+</ul>
+<hr>
+<h2 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h2><ul>
+<li>HTTPS需要到CA申请证书，HTTP不需要</li>
+<li>HTTP超文本传输协议明文传输，HTTPS密文传输，HTTPS基于具有安全性的SSL加密</li>
+<li>连接方式不同，HTTPS默认使用443端口，HTTP使用80端口</li>
+<li>HTTPS=HTTP+加密+认证+完整性保护，较HTTP安全</li>
+</ul>
+
       
     </div>
     <footer class="entry-meta entry-footer">
       
       
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HTTP/">HTTP</a></li></ul>
+
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
       
     </footer>
     <hr class="entry-footer-hr">
   </div>
   
     
+<nav id="article-nav">
+  
+  
+    <a href="/2019/10/06/HTTP相关/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">HTTP相关</div>
+    </a>
+  
+</nav>
+
   
 </article>
 
 <!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTPS-简介"><span class="nav-number">1.</span> <span class="nav-text">HTTPS 简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SSL-Security-Sockets-Layer-安全套接层"><span class="nav-number">1.1.</span> <span class="nav-text">SSL(Security Sockets Layer,安全套接层)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP数据传输流程"><span class="nav-number">2.</span> <span class="nav-text">HTTP数据传输流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#区别"><span class="nav-number">3.</span> <span class="nav-text">区别</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+<!-- Donate -->
+
 </section>
-          <aside id="sidebar">
-  
-    <div style="margin: 20px 0;">
-	<div id="search-form-wrap">
-
-    <form class="search-form">
-        <label style="width: 72%;">
-            <span class="screen-reader-text">Search for:</span>
-            <input type="search" class="search-field" style="height: 36px; width: 100%;" placeholder=" Search…" value="" name="s" title="Search for:">
-        </label>
-        <input type="submit" class="search-form-submit" value="Search">
-    </form>
-    <div class="ins-search">
-    <div class="ins-search-mask"></div>
-    <div class="ins-search-container">
-        <div class="ins-input-wrapper">
-            <input type="text" class="ins-search-input" placeholder="Type something..."/>
-            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
-        </div>
-        <div class="ins-section-wrapper">
-            <div class="ins-section-container"></div>
-        </div>
-    </div>
-</div>
-<script>
-(function (window) {
-    var INSIGHT_CONFIG = {
-        TRANSLATION: {
-            POSTS: 'Posts',
-            PAGES: 'Pages',
-            CATEGORIES: 'Categories',
-            TAGS: 'Tags',
-            UNTITLED: '(Untitled)',
-        },
-        ROOT_URL: '/',
-        CONTENT_URL: '/content.json',
-    };
-    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
-})(window);
-</script>
-<script src="/js/insight.js"></script>
-
-</div>
-</div>
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Connect With Us</h3>
-    <div class="widget widget_athemes_social_icons">
-
-    	<ul class="clearfix widget-social-icons">   
-    	
-   			<li><a href="https://github.com/ValarMorghulis521" title="Github"><i class="fa fa-github" aria-hidden="true"></i></a></li> 
-
-   		
-   			<li><a href="http://weibo.com/chenshifouaili" title="Weibo"><i class="fa fa-weibo" aria-hidden="true"></i></a></li> 
-
-   		
-   		</ul>
-
-
-   		<!--
-   		<ul class="clearfix widget-social-icons">   		
-   		<li class="widget-si-twitter"><a href="http://twitter.com" title="Twitter"><i class="ico-twitter"></i></a></li> 
-		<li class="widget-si-facebook"><a href="http://facebook.com" title="Facebook"><i class="ico-facebook"></i></a></li>
-			<li class="widget-si-gplus"><a href="http://plus.google.com" title="Google+"><i class="ico-gplus"></i></a></li>
-			<li class="widget-si-pinterest"><a href="http://pinterest.com" title="Pinterest"><i class="ico-pinterest"></i></a></li>
-			<li class="widget-si-flickr"><a href="http://flickr.com" title="Flickr"><i class="ico-flickr"></i></a></li>
-			<li class="widget-si-instagram"><a href="http://instagram.com" title="Instagram"><i class="ico-instagram"></i></a></li>
-		</ul> -->
-
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget_athemes_tabs">
-    <ul id="widget-tab" class="clearfix widget-tab-nav">
-      <li class="active"><a>Recent Posts</a></li>
-    </ul>
-    <div class="widget">
-      <ul>
-        
-          <li class="clearfix">
-
-            
-              <div class="widget-entry-summary" style="margin: 0;">
-            
-
-              <h6 style="margin: 0;"><a href="/2019/10/08/HTTP与HTTPS的区别/">HTTP与HTTPS的区别</a></h6>
-              <span>October 8, 2019</span>
-            </div>
-
-          </li>
-        
-          <li class="clearfix">
-
-            
-              <div class="widget-entry-summary" style="margin: 0;">
-            
-
-              <h6 style="margin: 0;"><a href="/2019/10/06/HTTP相关/">HTTP相关</a></h6>
-              <span>October 6, 2019</span>
-            </div>
-
-          </li>
-        
-          <li class="clearfix">
-
-            
-              <div class="widget-entry-summary" style="margin: 0;">
-            
-
-              <h6 style="margin: 0;"><a href="/2019/10/06/TCP的滑动窗口/">TCP的滑动窗口</a></h6>
-              <span>October 6, 2019</span>
-            </div>
-
-          </li>
-        
-          <li class="clearfix">
-
-            
-              <div class="widget-entry-summary" style="margin: 0;">
-            
-
-              <h6 style="margin: 0;"><a href="/2019/10/06/TCP和UDP的区别/">TCP和UDP的区别</a></h6>
-              <span>October 6, 2019</span>
-            </div>
-
-          </li>
-        
-          <li class="clearfix">
-
-            
-              <div class="widget-entry-summary" style="margin: 0;">
-            
-
-              <h6 style="margin: 0;"><a href="/2019/09/20/微信点餐系统-service层设计/">微信点餐系统-service层设计</a></h6>
-              <span>September 20, 2019</span>
-            </div>
-
-          </li>
-        
-          <li class="clearfix">
-
-            
-              <div class="widget-entry-summary" style="margin: 0;">
-            
-
-              <h6 style="margin: 0;"><a href="/2019/09/19/JAVA框架-Spring/">JAVA框架-Spring</a></h6>
-              <span>September 19, 2019</span>
-            </div>
-
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Categories</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/springboot实战/">springboot实战</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">5</span></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AOP/">AOP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/">HTTP</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IOC/">IOC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OSI七层模型/">OSI七层模型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTO/">RTO</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTT/">RTT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP的三次握手/">TCP的三次握手</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UDP/">UDP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/日志框架/">日志框架</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/滑动窗口/">滑动窗口</a><span class="tag-list-count">1</span></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/AOP/" style="font-size: 10px;">AOP</a> <a href="/tags/HTTP/" style="font-size: 20px;">HTTP</a> <a href="/tags/IOC/" style="font-size: 10px;">IOC</a> <a href="/tags/OSI七层模型/" style="font-size: 10px;">OSI七层模型</a> <a href="/tags/RTO/" style="font-size: 10px;">RTO</a> <a href="/tags/RTT/" style="font-size: 10px;">RTT</a> <a href="/tags/TCP的三次握手/" style="font-size: 10px;">TCP的三次握手</a> <a href="/tags/UDP/" style="font-size: 10px;">UDP</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/日志框架/" style="font-size: 10px;">日志框架</a> <a href="/tags/滑动窗口/" style="font-size: 10px;">滑动窗口</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">1</span></li></ul>
-    </div>
-  </div>
-
-
-  
-</aside>
         
       </div>
 

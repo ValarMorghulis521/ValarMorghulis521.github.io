@@ -3,23 +3,28 @@
 <head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="utf-8">
   
-  <title>微信点餐系统-service层设计 | Contunued Story</title>
+  <title>数据库架构 | Contunued Story</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
+  <meta name="keywords" content="数据库架构">
   
   
   
-  <meta name="description" content="常用注解@Entity 表明该类为一个实体类,类名和表明要一致。@Table 当实体类映射的数据表名不同名时使用，与@Entity并列使用 @Table(name=”XXXXX”)。@DynamicUpdate 自动更新updateTime@Data 自动生成getter和setter方法以及构造方法@Transational 在测试方法中使用测试完自动回滚，数据不保存数据库  如何自动生成get">
+  
+  <meta name="description" content="如何去设计一个关系型数据库第一部分为存储部分，相当于文件系统，将数据持久化到存储设备中 第二部分为程序实例，对存储进行逻辑上的管理。 程序实例分为8个模块： 1.存储管理：将数据的逻辑关系转化为物理存储关系。 2.缓存机制：优化执行效率。 3.SQL解析：解析SQL语句。 4.日志管理：记录操作。 5.权限划分：进行多用户管理。 6.容灾机制：灾难恢复。 7.索引管理：优化数据查询效率。 8.锁管">
+<meta name="keywords" content="数据库架构">
 <meta property="og:type" content="article">
-<meta property="og:title" content="微信点餐系统-service层设计">
-<meta property="og:url" content="http://yoursite.com/2019/09/20/微信点餐系统-service层设计/index.html">
+<meta property="og:title" content="数据库架构">
+<meta property="og:url" content="http://yoursite.com/2019/10/08/数据库架构/index.html">
 <meta property="og:site_name" content="Contunued Story">
-<meta property="og:description" content="常用注解@Entity 表明该类为一个实体类,类名和表明要一致。@Table 当实体类映射的数据表名不同名时使用，与@Entity并列使用 @Table(name=”XXXXX”)。@DynamicUpdate 自动更新updateTime@Data 自动生成getter和setter方法以及构造方法@Transational 在测试方法中使用测试完自动回滚，数据不保存数据库  如何自动生成get">
+<meta property="og:description" content="如何去设计一个关系型数据库第一部分为存储部分，相当于文件系统，将数据持久化到存储设备中 第二部分为程序实例，对存储进行逻辑上的管理。 程序实例分为8个模块： 1.存储管理：将数据的逻辑关系转化为物理存储关系。 2.缓存机制：优化执行效率。 3.SQL解析：解析SQL语句。 4.日志管理：记录操作。 5.权限划分：进行多用户管理。 6.容灾机制：灾难恢复。 7.索引管理：优化数据查询效率。 8.锁管">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-09-21T14:31:49.925Z">
+<meta property="og:image" content="http://yoursite.com/2019/10/08/数据库架构/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9E%B6%E6%9E%84.png">
+<meta property="og:updated_time" content="2019-10-10T10:16:52.999Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="微信点餐系统-service层设计">
-<meta name="twitter:description" content="常用注解@Entity 表明该类为一个实体类,类名和表明要一致。@Table 当实体类映射的数据表名不同名时使用，与@Entity并列使用 @Table(name=”XXXXX”)。@DynamicUpdate 自动更新updateTime@Data 自动生成getter和setter方法以及构造方法@Transational 在测试方法中使用测试完自动回滚，数据不保存数据库  如何自动生成get">
+<meta name="twitter:title" content="数据库架构">
+<meta name="twitter:description" content="如何去设计一个关系型数据库第一部分为存储部分，相当于文件系统，将数据持久化到存储设备中 第二部分为程序实例，对存储进行逻辑上的管理。 程序实例分为8个模块： 1.存储管理：将数据的逻辑关系转化为物理存储关系。 2.缓存机制：优化执行效率。 3.SQL解析：解析SQL语句。 4.日志管理：记录操作。 5.权限划分：进行多用户管理。 6.容灾机制：灾难恢复。 7.索引管理：优化数据查询效率。 8.锁管">
+<meta name="twitter:image" content="http://yoursite.com/2019/10/08/数据库架构/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9E%B6%E6%9E%84.png">
   
     <link rel="alternate" href="/atom.xml" title="Contunued Story" type="application/atom+xml">
   
@@ -126,7 +131,7 @@
             
       <div id="content" class="outer">
         
-          <section id="main" style="float:none;"><article id="post-微信点餐系统-service层设计" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+          <section id="main" style="float:none;"><article id="post-数据库架构" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -134,7 +139,7 @@
         
   
     <h1 class="thumb" class="article-title" itemprop="name">
-      微信点餐系统-service层设计
+      数据库架构
     </h1>
   
 
@@ -142,11 +147,14 @@
     
     <div class="article-meta">
       
-	<a href="/2019/09/20/微信点餐系统-service层设计/" class="article-date">
-	  <time datetime="2019-09-20T05:40:03.000Z" itemprop="datePublished">September 20, 2019</time>
+	<a href="/2019/10/08/数据库架构/" class="article-date">
+	  <time datetime="2019-10-08T14:24:35.000Z" itemprop="datePublished">October 8, 2019</time>
 	</a>
 
-       
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/数据库/">数据库</a>
+ 
       
 	<span id="busuanzi_container_page_pv">
 	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
@@ -155,27 +163,46 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h4 id="常用注解"><a href="#常用注解" class="headerlink" title="常用注解"></a>常用注解</h4><p>@Entity 表明该类为一个实体类,类名和表明要一致。<br>@Table 当实体类映射的数据表名不同名时使用，与@Entity并列使用 @Table(name=”XXXXX”)。<br>@DynamicUpdate 自动更新updateTime<br>@Data 自动生成getter和setter方法以及构造方法<br>@Transational 在测试方法中使用测试完自动回滚，数据不保存数据库 </p>
-<h4 id="如何自动生成getter-setter-toString的方法、"><a href="#如何自动生成getter-setter-toString的方法、" class="headerlink" title="如何自动生成getter/setter,toString的方法、"></a>如何自动生成getter/setter,toString的方法、</h4><p>1.引入lombok依赖</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">     &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;</span><br><span class="line">     &lt;artifactId&gt;lombok&lt;/artifactId&gt;</span><br><span class="line">     &lt;version&gt;1.16.10&lt;/version&gt;</span><br><span class="line"> &lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
-
-<p>2.安装lombok插件<br>3.使用注解@Data</p>
-<h4 id="如何根据categoryType-查询返回List-对象"><a href="#如何根据categoryType-查询返回List-对象" class="headerlink" title="如何根据categoryType 查询返回List 对象"></a>如何根据categoryType 查询返回List 对象</h4><p>方法命名规则： </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">List&lt;ProductCategory&gt; findByCategoryTypeIn(List&lt;Integer&gt; list)</span><br><span class="line">List&lt;Integer&gt; list = Arrays.asList(1,2,3,4);</span><br><span class="line">repository.findByCategoryTypeIn(list);</span><br></pre></td></tr></table></figure>
-
-<h4 id="JAVA8特性"><a href="#JAVA8特性" class="headerlink" title="JAVA8特性"></a>JAVA8特性</h4><p>把List<productinfo>里的属性封装进另一个List</productinfo></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Integer&gt; categoryTypeList = productInfoList.strem().map(e -&gt; e.getCategoryType()).collect(Collectors.toList())</span><br></pre></td></tr></table></figure>
-
-<h4 id="VO-ViewObject-返回给前端的对象"><a href="#VO-ViewObject-返回给前端的对象" class="headerlink" title="VO ViewObject 返回给前端的对象"></a>VO ViewObject 返回给前端的对象</h4><p>1.应根据前端需要的字段重新定义一个 VO，不要有多余字段<br>2.VO字段应该和对象的字段名称保持一致，方便Copy属性<br>3.@JsonProperty 注解的使用，</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">//返回给前台的JSON字段 转成自定义的名称</span><br><span class="line">@JsonProperty(&quot;id&quot;)</span><br><span class="line">private String productId</span><br></pre></td></tr></table></figure>
-
-<h4 id="写代码中的注意事项"><a href="#写代码中的注意事项" class="headerlink" title="写代码中的注意事项"></a>写代码中的注意事项</h4><p>1.不要在 for循环里有查询<br>2.不要在代码里直接写数字，应该使用枚举</p>
+        <h4 id="如何去设计一个关系型数据库"><a href="#如何去设计一个关系型数据库" class="headerlink" title="如何去设计一个关系型数据库"></a>如何去设计一个关系型数据库</h4><pre><code>第一部分为存储部分，相当于文件系统，将数据持久化到存储设备中
+第二部分为程序实例，对存储进行逻辑上的管理。
+程序实例分为8个模块：
+1.存储管理：将数据的逻辑关系转化为物理存储关系。
+2.缓存机制：优化执行效率。
+3.SQL解析：解析SQL语句。
+4.日志管理：记录操作。
+5.权限划分：进行多用户管理。
+6.容灾机制：灾难恢复。
+7.索引管理：优化数据查询效率。
+8.锁管理：使数据库支持高并发。</code></pre><p><img src="/2019/10/08/数据库架构/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9E%B6%E6%9E%84.png" alt="数据库架构"></p>
+<h4 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h4><ul>
+<li>为什么要使用索引</li>
+<li>什么样的信息能成为索引</li>
+<li>索引的数据结构</li>
+<li>密集索引和稀疏索引的区别</li>
+</ul>
+<h5 id="为什么要使用索引"><a href="#为什么要使用索引" class="headerlink" title="为什么要使用索引"></a>为什么要使用索引</h5><p>先说不使用索引情况下的全表扫描:</p>
+<p>数据库存储的最小单位是块或者页,是由多行记录组成的。(一个表就是多个块或者多个页)<br>我们把这些块或者页加载进来,然后对每个块或页进行轮训,找到目标返回,<br>类似:要从一本字典的第一页开始查找数据,一页一页的查,如果数据量小还好,数据量大就很慢</p>
+<p>所以我们推出索引的概念:<br>也就是引入字典中目录的概念,我们可以通过字典的拼音,部首,进行一层又一层的有条理的查询<br>而这些被另外定义出来的例如:拼音,部首,就可以叫做索引</p>
+<p>简单讲就是:为了避免全表扫描,大幅提高查询数据的效率</p>
+<h5 id="什么样的信息能成为索引"><a href="#什么样的信息能成为索引" class="headerlink" title="什么样的信息能成为索引"></a>什么样的信息能成为索引</h5><p>主键、唯一键、普通键</p>
+<h5 id="索引的数据结构"><a href="#索引的数据结构" class="headerlink" title="索引的数据结构"></a>索引的数据结构</h5><ul>
+<li>生成索引，建立二叉查找树进行二分查找</li>
+<li>生成索引，建立B-Tree结构进行查找</li>
+<li>生成索引，建立B+-Tree结构进行查找</li>
+<li>生成索引，建立Hash结构进行查找</li>
+</ul>
 
       
     </div>
     <footer class="entry-meta entry-footer">
       
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/数据库/">数据库</a>
+
       
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数据库架构/">数据库架构</a></li></ul>
+
       
         
 	<div id="comment">
@@ -209,19 +236,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2019/10/06/TCP和UDP的区别/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2019/10/10/优化你的索引/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          TCP和UDP的区别
+          优化你的索引
         
       </div>
     </a>
   
   
-    <a href="/2019/09/19/JAVA框架-Spring/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2019/10/08/HTTP与HTTPS的区别/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">JAVA框架-Spring</div>
+      <div class="article-nav-title">HTTP与HTTPS的区别</div>
     </a>
   
 </nav>
@@ -235,7 +262,7 @@
     <div id="toc" class="toc-article">
     <strong class="toc-title">Contents</strong>
     
-      <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#常用注解"><span class="nav-number">1.</span> <span class="nav-text">常用注解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何自动生成getter-setter-toString的方法、"><span class="nav-number">2.</span> <span class="nav-text">如何自动生成getter/setter,toString的方法、</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何根据categoryType-查询返回List-对象"><span class="nav-number">3.</span> <span class="nav-text">如何根据categoryType 查询返回List 对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JAVA8特性"><span class="nav-number">4.</span> <span class="nav-text">JAVA8特性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#VO-ViewObject-返回给前端的对象"><span class="nav-number">5.</span> <span class="nav-text">VO ViewObject 返回给前端的对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#写代码中的注意事项"><span class="nav-number">6.</span> <span class="nav-text">写代码中的注意事项</span></a></li></ol>
+      <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#如何去设计一个关系型数据库"><span class="nav-number">1.</span> <span class="nav-text">如何去设计一个关系型数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常见问题"><span class="nav-number">2.</span> <span class="nav-text">常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#为什么要使用索引"><span class="nav-number">2.1.</span> <span class="nav-text">为什么要使用索引</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#什么样的信息能成为索引"><span class="nav-number">2.2.</span> <span class="nav-text">什么样的信息能成为索引</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#索引的数据结构"><span class="nav-number">2.3.</span> <span class="nav-text">索引的数据结构</span></a></li></ol></li></ol>
     
     </div>
   </aside>

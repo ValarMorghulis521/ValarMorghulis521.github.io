@@ -3,26 +3,28 @@
 <head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="utf-8">
   
-  <title>微信点餐系统-数据库设计 | Contunued Story</title>
+  <title>索引额外问题之如何调优sql | Contunued Story</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta name="keywords" content="mysql">
+  <meta name="keywords" content="sql调优">
   
   
   
   
-  <meta name="description" content="数据库设计表的的构成类目表，商品表，订单主表，订单详情表 日期时间类型设置默认时间，DEFAULT CURRENT_TIMESTAMP时间类型字段自动更新数据，ON UPDATE CURRENT_TIMESTAMP SQL UNIQUE 约束UNIQUE约束唯一标识数据库表中的每条记录。UNIQUE和PRIMARY KEY 约束均为列或列激活提供了唯一性的保证。PRIMARY KEY 拥有自动定义">
-<meta name="keywords" content="mysql">
+  <meta name="description" content="常见问题总结 如何定位并优化慢查询sql 联合索引的最左匹配原则的成因 索引建立的越多越好吗如何定位并优化慢sql大致思路   根据慢日志定位慢sql 12345SHOW VARIABLES LIKE &amp;apos;%quer%&amp;apos;;  查看慢查询是否打开set global slow_query_log =on; 打开慢查询:set global long_query_time=1; 设置">
+<meta name="keywords" content="sql调优">
 <meta property="og:type" content="article">
-<meta property="og:title" content="微信点餐系统-数据库设计">
-<meta property="og:url" content="http://yoursite.com/2019/09/18/微信点餐系统-数据库设计/index.html">
+<meta property="og:title" content="索引额外问题之如何调优sql">
+<meta property="og:url" content="http://yoursite.com/2019/10/11/索引额外问题之如何调优sql/index.html">
 <meta property="og:site_name" content="Contunued Story">
-<meta property="og:description" content="数据库设计表的的构成类目表，商品表，订单主表，订单详情表 日期时间类型设置默认时间，DEFAULT CURRENT_TIMESTAMP时间类型字段自动更新数据，ON UPDATE CURRENT_TIMESTAMP SQL UNIQUE 约束UNIQUE约束唯一标识数据库表中的每条记录。UNIQUE和PRIMARY KEY 约束均为列或列激活提供了唯一性的保证。PRIMARY KEY 拥有自动定义">
+<meta property="og:description" content="常见问题总结 如何定位并优化慢查询sql 联合索引的最左匹配原则的成因 索引建立的越多越好吗如何定位并优化慢sql大致思路   根据慢日志定位慢sql 12345SHOW VARIABLES LIKE &amp;apos;%quer%&amp;apos;;  查看慢查询是否打开set global slow_query_log =on; 打开慢查询:set global long_query_time=1; 设置">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-10-11T04:09:28.811Z">
+<meta property="og:image" content="http://yoursite.com/2019/10/11/索引额外问题之如何调优sql/%E8%81%94%E5%90%88%E7%B4%A2%E5%BC%95%E7%9A%84%E6%9C%80%E5%B7%A6%E5%8C%B9%E9%85%8D%E5%8E%9F%E5%88%99%E7%9A%84%E6%88%90%E5%9B%A0.jpg">
+<meta property="og:updated_time" content="2019-10-11T10:40:54.791Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="微信点餐系统-数据库设计">
-<meta name="twitter:description" content="数据库设计表的的构成类目表，商品表，订单主表，订单详情表 日期时间类型设置默认时间，DEFAULT CURRENT_TIMESTAMP时间类型字段自动更新数据，ON UPDATE CURRENT_TIMESTAMP SQL UNIQUE 约束UNIQUE约束唯一标识数据库表中的每条记录。UNIQUE和PRIMARY KEY 约束均为列或列激活提供了唯一性的保证。PRIMARY KEY 拥有自动定义">
+<meta name="twitter:title" content="索引额外问题之如何调优sql">
+<meta name="twitter:description" content="常见问题总结 如何定位并优化慢查询sql 联合索引的最左匹配原则的成因 索引建立的越多越好吗如何定位并优化慢sql大致思路   根据慢日志定位慢sql 12345SHOW VARIABLES LIKE &amp;apos;%quer%&amp;apos;;  查看慢查询是否打开set global slow_query_log =on; 打开慢查询:set global long_query_time=1; 设置">
+<meta name="twitter:image" content="http://yoursite.com/2019/10/11/索引额外问题之如何调优sql/%E8%81%94%E5%90%88%E7%B4%A2%E5%BC%95%E7%9A%84%E6%9C%80%E5%B7%A6%E5%8C%B9%E9%85%8D%E5%8E%9F%E5%88%99%E7%9A%84%E6%88%90%E5%9B%A0.jpg">
   
     <link rel="alternate" href="/atom.xml" title="Contunued Story" type="application/atom+xml">
   
@@ -129,7 +131,7 @@
             
       <div id="content" class="outer">
         
-          <section id="main" style="float:none;"><article id="post-微信点餐系统-数据库设计" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+          <section id="main" style="float:none;"><article id="post-索引额外问题之如何调优sql" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -137,7 +139,7 @@
         
   
     <h1 class="thumb" class="article-title" itemprop="name">
-      微信点餐系统-数据库设计
+      索引额外问题之如何调优sql
     </h1>
   
 
@@ -145,13 +147,13 @@
     
     <div class="article-meta">
       
-	<a href="/2019/09/18/微信点餐系统-数据库设计/" class="article-date">
-	  <time datetime="2019-09-18T01:36:50.000Z" itemprop="datePublished">September 18, 2019</time>
+	<a href="/2019/10/11/索引额外问题之如何调优sql/" class="article-date">
+	  <time datetime="2019-10-11T06:37:24.000Z" itemprop="datePublished">October 11, 2019</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/springboot实战/">springboot实战</a>
+    <a class="article-category-link" href="/categories/数据库/">数据库</a>
  
       
 	<span id="busuanzi_container_page_pv">
@@ -161,21 +163,49 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h4 id="数据库设计"><a href="#数据库设计" class="headerlink" title="数据库设计"></a>数据库设计</h4><h5 id="表的的构成"><a href="#表的的构成" class="headerlink" title="表的的构成"></a>表的的构成</h5><p>类目表，商品表，订单主表，订单详情表</p>
-<h5 id="日期"><a href="#日期" class="headerlink" title="日期"></a>日期</h5><p>时间类型设置默认时间，DEFAULT CURRENT_TIMESTAMP<br>时间类型字段自动更新数据，ON UPDATE CURRENT_TIMESTAMP</p>
-<h5 id="SQL-UNIQUE-约束"><a href="#SQL-UNIQUE-约束" class="headerlink" title="SQL UNIQUE 约束"></a>SQL UNIQUE 约束</h5><p>UNIQUE约束唯一标识数据库表中的每条记录。<br>UNIQUE和PRIMARY KEY 约束均为列或列激活提供了唯一性的保证。PRIMARY KEY 拥有自动定义的 UNIQUE约束。<br>请注意，每个表可以有多个UNIQUE约束，但是每个表只能有一个 PRIMARY KEY 约束。</p>
-<h5 id="数据库编码"><a href="#数据库编码" class="headerlink" title="数据库编码"></a>数据库编码</h5><p>使用 UTF-8 unicode(uftf8mb4)可以存表情</p>
+        <h4 id="常见问题总结"><a href="#常见问题总结" class="headerlink" title="常见问题总结"></a>常见问题总结</h4><ul>
+<li>如何定位并优化慢查询sql</li>
+<li>联合索引的最左匹配原则的成因</li>
+<li>索引建立的越多越好吗<h4 id="如何定位并优化慢sql大致思路"><a href="#如何定位并优化慢sql大致思路" class="headerlink" title="如何定位并优化慢sql大致思路"></a>如何定位并优化慢sql大致思路</h4></li>
+</ul>
+<ol>
+<li><p>根据慢日志定位慢sql</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">SHOW VARIABLES LIKE &apos;%quer%&apos;;  查看慢查询是否打开</span><br><span class="line">set global slow_query_log =on; 打开慢查询:</span><br><span class="line">set global long_query_time=1; 设置慢查询最大时间超过一秒就记录为慢查询 </span><br><span class="line">SHOW STATUS LIKE &apos;%slow_queries%&apos;; 查看慢sql条数</span><br><span class="line">sudo vim  /usr/local/mysql/data/VM_33_68_centos-slow.log; 查看被记录到慢日志里面的日志</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用explain等工具分析sql</p>
+</li>
+</ol>
+<ul>
+<li>explain字段 </li>
+<li>type ： mysql找到数据行的方式index 和 all 是全表扫描 </li>
+<li>extra：有很多值  Using filesort ，Using temporary 最常的慢的，</li>
+</ul>
+<ol start="3">
+<li><p>修改sql或者尽量让sql走索引</p>
+<p> 具体走那个索引是mysql查询优化器决定， 要强制制定走某个索引 要加上 force index（primary/其他）</p>
+</li>
+</ol>
+<h4 id="联合索引的最左匹配原则"><a href="#联合索引的最左匹配原则" class="headerlink" title="联合索引的最左匹配原则"></a>联合索引的最左匹配原则</h4><ol>
+<li>最左前缀匹配原则，非常重要的原则，mysql会一直向右匹配知道遇到范围查询（&gt; , &lt; , between, like ）就停止匹配，比如a=3and b = 4 and c &gt; 5 and d =6 如果建立（a，b，c，d）顺序的索引，d是用不到索引的，如果建立（a，b，d，c）的索引则可以用到，a、b、d的顺序可以任意调整</li>
+<li>=和in可以乱序，比如a=1 and b=2 and c=3建立（a,b,c）索引可以任意顺序，mysql查询优化器会帮你优化成索引可以识别的形式</li>
+</ol>
+<p><img src="/2019/10/11/索引额外问题之如何调优sql/%E8%81%94%E5%90%88%E7%B4%A2%E5%BC%95%E7%9A%84%E6%9C%80%E5%B7%A6%E5%8C%B9%E9%85%8D%E5%8E%9F%E5%88%99%E7%9A%84%E6%88%90%E5%9B%A0.jpg" alt="联合索引的最左匹配原则的成因"></p>
+<h4 id="索引是建立得越多越好吗"><a href="#索引是建立得越多越好吗" class="headerlink" title="索引是建立得越多越好吗"></a>索引是建立得越多越好吗</h4><ol>
+<li>数据量小的表不需要建立索引，建立索引会增加额外的索引开销</li>
+<li>数据变更需要维护索引，因此更多的索引意味着更多的维护成本</li>
+<li>更多的索引也意味着更多的空间</li>
+</ol>
 
       
     </div>
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/springboot实战/">springboot实战</a>
+    <a class="article-category-link" href="/categories/数据库/">数据库</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql调优/">sql调优</a></li></ul>
 
       
         
@@ -210,19 +240,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2019/09/18/微信点餐系统-日志框架/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2019/10/11/锁模块MyISAM与InooDB关于锁方便的区别/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          微信点餐系统-日志框架
+          锁模块MyISAM与InooDB关于锁方便的区别
         
       </div>
     </a>
   
   
-    <a href="/2019/05/22/TCP的三次握手/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2019/10/11/密集索引和稀疏索引/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">TCP的三次握手</div>
+      <div class="article-nav-title">密集索引和稀疏索引</div>
     </a>
   
 </nav>
@@ -236,7 +266,7 @@
     <div id="toc" class="toc-article">
     <strong class="toc-title">Contents</strong>
     
-      <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库设计"><span class="nav-number">1.</span> <span class="nav-text">数据库设计</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#表的的构成"><span class="nav-number">1.1.</span> <span class="nav-text">表的的构成</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#日期"><span class="nav-number">1.2.</span> <span class="nav-text">日期</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#SQL-UNIQUE-约束"><span class="nav-number">1.3.</span> <span class="nav-text">SQL UNIQUE 约束</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#数据库编码"><span class="nav-number">1.4.</span> <span class="nav-text">数据库编码</span></a></li></ol></li></ol>
+      <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#常见问题总结"><span class="nav-number">1.</span> <span class="nav-text">常见问题总结</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何定位并优化慢sql大致思路"><span class="nav-number">2.</span> <span class="nav-text">如何定位并优化慢sql大致思路</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#联合索引的最左匹配原则"><span class="nav-number">3.</span> <span class="nav-text">联合索引的最左匹配原则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#索引是建立得越多越好吗"><span class="nav-number">4.</span> <span class="nav-text">索引是建立得越多越好吗</span></a></li></ol>
     
     </div>
   </aside>

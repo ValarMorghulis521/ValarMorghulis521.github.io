@@ -6,13 +6,13 @@
   <title>优化你的索引 | Contunued Story</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta name="keywords" content="索引">
+  <meta name="keywords" content="索引索引数据结构">
   
   
   
   
   <meta name="description" content="二叉查找树二叉树,(有明显缺陷的数据结构):  如果添加的数据一直在某一侧的时候,就会变成线性而二叉树,查询复杂度会上升,查找效率会大幅度降低 影响数据检索最根本的原因是IO,即数据库文件的读写，也就是将硬盘的数据读到内存中而我们的二叉树在检索深度每次加1后都需要读取一个节点,执行一次IO,效率很低   B-TreeB-TREEB树的定义：  根节点至少包含两个孩子 树中每个节点最多含有m个孩子（">
-<meta name="keywords" content="索引">
+<meta name="keywords" content="索引,索引数据结构">
 <meta property="og:type" content="article">
 <meta property="og:title" content="优化你的索引">
 <meta property="og:url" content="http://yoursite.com/2019/10/10/优化你的索引/index.html">
@@ -23,7 +23,7 @@
 <meta property="og:image" content="http://yoursite.com/2019/10/10/优化你的索引/BTree.jpg">
 <meta property="og:image" content="http://yoursite.com/2019/10/10/优化你的索引/B+Tree.jpg">
 <meta property="og:image" content="http://yoursite.com/2019/10/10/优化你的索引/Hash%E7%B4%A2%E5%BC%95.jpg">
-<meta property="og:updated_time" content="2019-10-11T02:50:20.976Z">
+<meta property="og:updated_time" content="2019-10-11T06:39:33.192Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="优化你的索引">
 <meta name="twitter:description" content="二叉查找树二叉树,(有明显缺陷的数据结构):  如果添加的数据一直在某一侧的时候,就会变成线性而二叉树,查询复杂度会上升,查找效率会大幅度降低 影响数据检索最根本的原因是IO,即数据库文件的读写，也就是将硬盘的数据读到内存中而我们的二叉树在检索深度每次加1后都需要读取一个节点,执行一次IO,效率很低   B-TreeB-TREEB树的定义：  根节点至少包含两个孩子 树中每个节点最多含有m个孩子（">
@@ -64,10 +64,32 @@
 
 
   
+  
+  <div class="site-header-image">
+    <img id="originBg" width="100%" alt="Hike News" src="">
+  </div>
+
+  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
+    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
+  </div>
+
+  <script>
+        var imgUrls = "css/images/pose01.jpg,https://source.unsplash.com/collection/954550/1920x1080,https://source.unsplash.com/collection/954550/1920x1081".split(",");
+        var random = Math.floor((Math.random() * imgUrls.length ));
+        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+          document.getElementById("originBg").src=imgUrls[random];
+          document.getElementById("blurBg").src=imgUrls[random];
+        } else {
+          document.getElementById("originBg").src='/' + imgUrls[random];
+          document.getElementById("blurBg").src='/' + imgUrls[random];
+        }
+    </script>
+
+
 
 
 <header id="allheader" class="site-header" role="banner" 
-   >
+   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -190,7 +212,7 @@
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/索引/">索引</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/索引/">索引</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/索引数据结构/">索引数据结构</a></li></ul>
 
       
         
@@ -304,6 +326,9 @@
 
 
     <!-- headerblur min height -->
+    
+      var headerblur = document.getElementById("header-blur");
+      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

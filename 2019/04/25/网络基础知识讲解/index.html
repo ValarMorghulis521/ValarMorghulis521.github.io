@@ -22,7 +22,7 @@
 <meta property="og:image" content="http://yoursite.com/2019/04/25/网络基础知识讲解/OSI%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E8%BF%87%E7%A8%8B.png">
 <meta property="og:image" content="http://yoursite.com/2019/04/25/网络基础知识讲解/OSI%E4%B8%8ETCPIP%E7%9A%84%E6%AF%94%E8%BE%83.jpg">
 <meta property="og:image" content="http://yoursite.com/2019/04/25/网络基础知识讲解/TCPIP%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E8%BF%87%E7%A8%8B.jpg">
-<meta property="og:updated_time" content="2019-09-18T15:36:06.348Z">
+<meta property="og:updated_time" content="2019-10-11T04:09:00.540Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="网络基础知识">
 <meta name="twitter:description" content="OSI开放式互联参考模型 物理层： 定义物理设备标准（网线类型、光纤接口类型、各种传输介质的传输速率）,主要作用：传输比特流0101二进制数据 —&amp;gt; 转化为电流强弱 —&amp;gt; 0101 数模转换和模数转换 单位:比特  （网卡） 数据链路层： 定义了如何格式化数据以进行传输，和控制对物理介质的访问。主要作用：提供错误检测和纠正，确保数据传输可靠性。该层将比特数据组成为帧。（交换机） 网络层">
@@ -63,32 +63,10 @@
 
 
   
-  
-  <div class="site-header-image">
-    <img id="originBg" width="100%" alt="Hike News" src="">
-  </div>
-
-  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
-    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
-  </div>
-
-  <script>
-        var imgUrls = "css/images/pose01.jpg,https://source.unsplash.com/collection/954550/1920x1080,https://source.unsplash.com/collection/954550/1920x1081".split(",");
-        var random = Math.floor((Math.random() * imgUrls.length ));
-        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
-          document.getElementById("originBg").src=imgUrls[random];
-          document.getElementById("blurBg").src=imgUrls[random];
-        } else {
-          document.getElementById("originBg").src='/' + imgUrls[random];
-          document.getElementById("blurBg").src='/' + imgUrls[random];
-        }
-    </script>
-
-
 
 
 <header id="allheader" class="site-header" role="banner" 
-   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
+   >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -172,12 +150,12 @@
 <li><strong>传输层：</strong>  解决主机间的数据传输。（传输协议，流量控制，接收方接收数据快慢程度，规定发送速率；还可以分割大的数据包；TCP和UDP协议）</li>
 <li><strong>会话层：</strong> 定义不同机器上的用户之间建立及管理回话，解决应用程序之间的通信，自动收发包和寻址的功能</li>
 <li><strong>表示层：</strong> 解决不同操作系统之间的通信语法问题。信息的语法语义，加密解密，转换翻译</li>
-<li><strong>应用层：</strong> 规定接收方发送方必须使用一个固定长度的消息头，消息头必须使用固定的组成继续消息体的长度，关注TCP/IP协议中的http协议<a id="more"></a>
-<img src="/2019/04/25/网络基础知识讲解/OSI%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E8%BF%87%E7%A8%8B.png" alt="OSI数据传输过程"><blockquote>
+<li><strong>应用层：</strong> 规定接收方发送方必须使用一个固定长度的消息头，消息头必须使用固定的组成继续消息体的长度，关注TCP/IP协议中的http协议</li>
+</ul>
+<p><img src="/2019/04/25/网络基础知识讲解/OSI%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E8%BF%87%E7%A8%8B.png" alt="OSI数据传输过程"></p>
+<blockquote>
 <p>OSI 参考模型并不是一个标准，概念性框架。事实的标准是 TCP/IP 四层架构参考模型</p>
 </blockquote>
-</li>
-</ul>
 <h4 id="OSI的“实现”-TCP-IP协议"><a href="#OSI的“实现”-TCP-IP协议" class="headerlink" title="OSI的“实现” TCP/IP协议"></a>OSI的“实现” TCP/IP协议</h4><p><img src="/2019/04/25/网络基础知识讲解/OSI%E4%B8%8ETCPIP%E7%9A%84%E6%AF%94%E8%BE%83.jpg" alt="OSI与TCPIP的比较"></p>
 <p><img src="/2019/04/25/网络基础知识讲解/TCPIP%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E8%BF%87%E7%A8%8B.jpg" alt="OSI与TCPIP的比较"></p>
 <blockquote>
@@ -302,9 +280,6 @@
 
 
     <!-- headerblur min height -->
-    
-      var headerblur = document.getElementById("header-blur");
-      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

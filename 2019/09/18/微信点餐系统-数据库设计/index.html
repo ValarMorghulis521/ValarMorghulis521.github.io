@@ -11,18 +11,18 @@
   
   
   
-  <meta name="description" content="数据库设计表的的构成类目表，商品表，订单主表，订单详情表 日期时间类型设置默认时间，DEFAULT CURRENT_TIMESTAMP时间类型字段自动更新数据，ON UPDATE CURRENT_TIMESTAMP">
+  <meta name="description" content="数据库设计表的的构成类目表，商品表，订单主表，订单详情表 日期时间类型设置默认时间，DEFAULT CURRENT_TIMESTAMP时间类型字段自动更新数据，ON UPDATE CURRENT_TIMESTAMP SQL UNIQUE 约束UNIQUE约束唯一标识数据库表中的每条记录。UNIQUE和PRIMARY KEY 约束均为列或列激活提供了唯一性的保证。PRIMARY KEY 拥有自动定义">
 <meta name="keywords" content="mysql">
 <meta property="og:type" content="article">
 <meta property="og:title" content="微信点餐系统-数据库设计">
 <meta property="og:url" content="http://yoursite.com/2019/09/18/微信点餐系统-数据库设计/index.html">
 <meta property="og:site_name" content="Contunued Story">
-<meta property="og:description" content="数据库设计表的的构成类目表，商品表，订单主表，订单详情表 日期时间类型设置默认时间，DEFAULT CURRENT_TIMESTAMP时间类型字段自动更新数据，ON UPDATE CURRENT_TIMESTAMP">
+<meta property="og:description" content="数据库设计表的的构成类目表，商品表，订单主表，订单详情表 日期时间类型设置默认时间，DEFAULT CURRENT_TIMESTAMP时间类型字段自动更新数据，ON UPDATE CURRENT_TIMESTAMP SQL UNIQUE 约束UNIQUE约束唯一标识数据库表中的每条记录。UNIQUE和PRIMARY KEY 约束均为列或列激活提供了唯一性的保证。PRIMARY KEY 拥有自动定义">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-09-18T15:23:06.994Z">
+<meta property="og:updated_time" content="2019-10-11T04:09:28.811Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="微信点餐系统-数据库设计">
-<meta name="twitter:description" content="数据库设计表的的构成类目表，商品表，订单主表，订单详情表 日期时间类型设置默认时间，DEFAULT CURRENT_TIMESTAMP时间类型字段自动更新数据，ON UPDATE CURRENT_TIMESTAMP">
+<meta name="twitter:description" content="数据库设计表的的构成类目表，商品表，订单主表，订单详情表 日期时间类型设置默认时间，DEFAULT CURRENT_TIMESTAMP时间类型字段自动更新数据，ON UPDATE CURRENT_TIMESTAMP SQL UNIQUE 约束UNIQUE约束唯一标识数据库表中的每条记录。UNIQUE和PRIMARY KEY 约束均为列或列激活提供了唯一性的保证。PRIMARY KEY 拥有自动定义">
   
     <link rel="alternate" href="/atom.xml" title="Contunued Story" type="application/atom+xml">
   
@@ -59,32 +59,10 @@
 
 
   
-  
-  <div class="site-header-image">
-    <img id="originBg" width="100%" alt="Hike News" src="">
-  </div>
-
-  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
-    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
-  </div>
-
-  <script>
-        var imgUrls = "css/images/pose01.jpg,https://source.unsplash.com/collection/954550/1920x1080,https://source.unsplash.com/collection/954550/1920x1081".split(",");
-        var random = Math.floor((Math.random() * imgUrls.length ));
-        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
-          document.getElementById("originBg").src=imgUrls[random];
-          document.getElementById("blurBg").src=imgUrls[random];
-        } else {
-          document.getElementById("originBg").src='/' + imgUrls[random];
-          document.getElementById("blurBg").src='/' + imgUrls[random];
-        }
-    </script>
-
-
 
 
 <header id="allheader" class="site-header" role="banner" 
-   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
+   >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -163,7 +141,6 @@
       
         <h4 id="数据库设计"><a href="#数据库设计" class="headerlink" title="数据库设计"></a>数据库设计</h4><h5 id="表的的构成"><a href="#表的的构成" class="headerlink" title="表的的构成"></a>表的的构成</h5><p>类目表，商品表，订单主表，订单详情表</p>
 <h5 id="日期"><a href="#日期" class="headerlink" title="日期"></a>日期</h5><p>时间类型设置默认时间，DEFAULT CURRENT_TIMESTAMP<br>时间类型字段自动更新数据，ON UPDATE CURRENT_TIMESTAMP</p>
-<a id="more"></a>
 <h5 id="SQL-UNIQUE-约束"><a href="#SQL-UNIQUE-约束" class="headerlink" title="SQL UNIQUE 约束"></a>SQL UNIQUE 约束</h5><p>UNIQUE约束唯一标识数据库表中的每条记录。<br>UNIQUE和PRIMARY KEY 约束均为列或列激活提供了唯一性的保证。PRIMARY KEY 拥有自动定义的 UNIQUE约束。<br>请注意，每个表可以有多个UNIQUE约束，但是每个表只能有一个 PRIMARY KEY 约束。</p>
 <h5 id="数据库编码"><a href="#数据库编码" class="headerlink" title="数据库编码"></a>数据库编码</h5><p>使用 UTF-8 unicode(uftf8mb4)可以存表情</p>
 
@@ -290,9 +267,6 @@
 
 
     <!-- headerblur min height -->
-    
-      var headerblur = document.getElementById("header-blur");
-      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

@@ -21,7 +21,9 @@
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/2019/10/10/优化你的索引/%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91.jpg">
 <meta property="og:image" content="http://yoursite.com/2019/10/10/优化你的索引/BTree.jpg">
-<meta property="og:updated_time" content="2019-10-10T13:38:15.541Z">
+<meta property="og:image" content="http://yoursite.com/2019/10/10/优化你的索引/B+Tree.jpg">
+<meta property="og:image" content="http://yoursite.com/2019/10/10/优化你的索引/Hash%E7%B4%A2%E5%BC%95.jpg">
+<meta property="og:updated_time" content="2019-10-11T02:50:20.976Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="优化你的索引">
 <meta name="twitter:description" content="二叉查找树二叉树,(有明显缺陷的数据结构):  如果添加的数据一直在某一侧的时候,就会变成线性而二叉树,查询复杂度会上升,查找效率会大幅度降低 影响数据检索最根本的原因是IO,即数据库文件的读写，也就是将硬盘的数据读到内存中而我们的二叉树在检索深度每次加1后都需要读取一个节点,执行一次IO,效率很低   B-TreeB-TREEB树的定义：  根节点至少包含两个孩子 树中每个节点最多含有m个孩子（">
@@ -183,6 +185,23 @@
 </ul>
 </li>
 </ol>
+<h4 id="B-Tree-1"><a href="#B-Tree-1" class="headerlink" title="B+-Tree"></a>B+-Tree</h4><p>B+树定义：</p>
+<ol>
+<li>非叶子节点的子树指针和关键字个数相同</li>
+<li>非叶子节点的子树指针P[i],指向关键字值[K[i],K[i+1])的子树, 大于等于 K[i] 小于 K[i+1]</li>
+<li>非叶子节点仅用来做索引，数据都保存在叶子节点中</li>
+<li>所有叶子节点均有一个链指针指向下一个叶子节点<br><img src="/2019/10/10/优化你的索引/B+Tree.jpg" alt="B+Tree"></li>
+</ol>
+<h5 id="B-Tree更适合用来存储索引"><a href="#B-Tree更适合用来存储索引" class="headerlink" title="B+Tree更适合用来存储索引"></a>B+Tree更适合用来存储索引</h5><ol>
+<li>B+ 树的磁盘读写代价更低（程序运行，往往最耗时的操作就是IO，如果IO的次数越少，那么运行也就越快，代价也就越低，非叶子节点结构没有指向关键字对应表记录的指针，只存放索引，因此节点比B树更小）</li>
+<li>B+ 树的查询效率更加稳定，数据存放在叶节点中，也就意味着每次查询都需要经过从根节点到叶节点的查询路径，时间复杂度味为O(logn)，比较稳定</li>
+<li>B+ 树更有利于对数据库的扫描（因为数据只存放在叶节点中，而且有顺序，所以更好的查询数据范围）</li>
+</ol>
+<h4 id="Hash-索引"><a href="#Hash-索引" class="headerlink" title="Hash 索引"></a>Hash 索引</h4><ol>
+<li>hash 命中key 直接定位数据，理论上高于 b-tree b+tree </li>
+<li>只能用 = 和 in ，不能范围查询，不能排序，不能组合索引(比较hash值是否相等来查询数据,并不能代表hash值的实际大小)</li>
+<li>hash值命中同一个存放位置， 效率不稳定，有可能还不如b+ tree（想想线性二叉树）<br><img src="/2019/10/10/优化你的索引/Hash%E7%B4%A2%E5%BC%95.jpg" alt="Hash索引"><h4 id="bitmap-索引"><a href="#bitmap-索引" class="headerlink" title="bitmap 索引"></a>bitmap 索引</h4>bitmap位图，适用于字段值只是固定的几个，如男、女，颜色；便于高效统计。Oracle支持位图索引，数据结构了类似B+树。锁很严重，可能因为某行修改都会锁。适合并发较少，统计较多的情况</li>
+</ol>
 
       
     </div>
@@ -245,7 +264,7 @@
     <div id="toc" class="toc-article">
     <strong class="toc-title">Contents</strong>
     
-      <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#二叉查找树"><span class="nav-number">1.</span> <span class="nav-text">二叉查找树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#B-Tree"><span class="nav-number">2.</span> <span class="nav-text">B-Tree</span></a></li></ol>
+      <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#二叉查找树"><span class="nav-number">1.</span> <span class="nav-text">二叉查找树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#B-Tree"><span class="nav-number">2.</span> <span class="nav-text">B-Tree</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#B-Tree-1"><span class="nav-number">3.</span> <span class="nav-text">B+-Tree</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#B-Tree更适合用来存储索引"><span class="nav-number">3.1.</span> <span class="nav-text">B+Tree更适合用来存储索引</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Hash-索引"><span class="nav-number">4.</span> <span class="nav-text">Hash 索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#bitmap-索引"><span class="nav-number">5.</span> <span class="nav-text">bitmap 索引</span></a></li></ol>
     
     </div>
   </aside>

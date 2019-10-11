@@ -11,19 +11,19 @@
   
   
   
-  <meta name="description" content="如何去设计一个关系型数据库第一部分为存储部分，相当于文件系统，将数据持久化到存储设备中 第二部分为程序实例，对存储进行逻辑上的管理。 程序实例分为8个模块： 1.存储管理：将数据的逻辑关系转化为物理存储关系。 2.缓存机制：优化执行效率。 3.SQL解析：解析SQL语句。 4.日志管理：记录操作。 5.权限划分：进行多用户管理。 6.容灾机制：灾难恢复。 7.索引管理：优化数据查询效率。 8.锁管">
+  <meta name="description" content="如何去设计一个关系型数据库第一部分为存储部分，相当于文件系统，将数据持久化到存储设备中 第二部分为程序实例，对存储进行逻辑上的管理。 程序实例分为8个模块：  存储管理：将数据的逻辑关系转化为物理存储关系。 缓存机制：优化执行效率。 SQL解析：解析SQL语句。 日志管理：记录操作。 权限划分：进行多用户管理。 容灾机制：灾难恢复。 索引管理：优化数据查询效率。 锁管理：使数据库支持高并发。  常">
 <meta name="keywords" content="数据库架构">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据库架构">
 <meta property="og:url" content="http://yoursite.com/2019/10/08/数据库架构/index.html">
 <meta property="og:site_name" content="Contunued Story">
-<meta property="og:description" content="如何去设计一个关系型数据库第一部分为存储部分，相当于文件系统，将数据持久化到存储设备中 第二部分为程序实例，对存储进行逻辑上的管理。 程序实例分为8个模块： 1.存储管理：将数据的逻辑关系转化为物理存储关系。 2.缓存机制：优化执行效率。 3.SQL解析：解析SQL语句。 4.日志管理：记录操作。 5.权限划分：进行多用户管理。 6.容灾机制：灾难恢复。 7.索引管理：优化数据查询效率。 8.锁管">
+<meta property="og:description" content="如何去设计一个关系型数据库第一部分为存储部分，相当于文件系统，将数据持久化到存储设备中 第二部分为程序实例，对存储进行逻辑上的管理。 程序实例分为8个模块：  存储管理：将数据的逻辑关系转化为物理存储关系。 缓存机制：优化执行效率。 SQL解析：解析SQL语句。 日志管理：记录操作。 权限划分：进行多用户管理。 容灾机制：灾难恢复。 索引管理：优化数据查询效率。 锁管理：使数据库支持高并发。  常">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/2019/10/08/数据库架构/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9E%B6%E6%9E%84.png">
-<meta property="og:updated_time" content="2019-10-10T10:16:52.999Z">
+<meta property="og:updated_time" content="2019-10-11T01:56:05.417Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="数据库架构">
-<meta name="twitter:description" content="如何去设计一个关系型数据库第一部分为存储部分，相当于文件系统，将数据持久化到存储设备中 第二部分为程序实例，对存储进行逻辑上的管理。 程序实例分为8个模块： 1.存储管理：将数据的逻辑关系转化为物理存储关系。 2.缓存机制：优化执行效率。 3.SQL解析：解析SQL语句。 4.日志管理：记录操作。 5.权限划分：进行多用户管理。 6.容灾机制：灾难恢复。 7.索引管理：优化数据查询效率。 8.锁管">
+<meta name="twitter:description" content="如何去设计一个关系型数据库第一部分为存储部分，相当于文件系统，将数据持久化到存储设备中 第二部分为程序实例，对存储进行逻辑上的管理。 程序实例分为8个模块：  存储管理：将数据的逻辑关系转化为物理存储关系。 缓存机制：优化执行效率。 SQL解析：解析SQL语句。 日志管理：记录操作。 权限划分：进行多用户管理。 容灾机制：灾难恢复。 索引管理：优化数据查询效率。 锁管理：使数据库支持高并发。  常">
 <meta name="twitter:image" content="http://yoursite.com/2019/10/08/数据库架构/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9E%B6%E6%9E%84.png">
   
     <link rel="alternate" href="/atom.xml" title="Contunued Story" type="application/atom+xml">
@@ -163,17 +163,19 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h4 id="如何去设计一个关系型数据库"><a href="#如何去设计一个关系型数据库" class="headerlink" title="如何去设计一个关系型数据库"></a>如何去设计一个关系型数据库</h4><pre><code>第一部分为存储部分，相当于文件系统，将数据持久化到存储设备中
-第二部分为程序实例，对存储进行逻辑上的管理。
-程序实例分为8个模块：
-1.存储管理：将数据的逻辑关系转化为物理存储关系。
-2.缓存机制：优化执行效率。
-3.SQL解析：解析SQL语句。
-4.日志管理：记录操作。
-5.权限划分：进行多用户管理。
-6.容灾机制：灾难恢复。
-7.索引管理：优化数据查询效率。
-8.锁管理：使数据库支持高并发。</code></pre><p><img src="/2019/10/08/数据库架构/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9E%B6%E6%9E%84.png" alt="数据库架构"></p>
+        <h4 id="如何去设计一个关系型数据库"><a href="#如何去设计一个关系型数据库" class="headerlink" title="如何去设计一个关系型数据库"></a>如何去设计一个关系型数据库</h4><p>第一部分为存储部分，相当于文件系统，将数据持久化到存储设备中</p>
+<p>第二部分为程序实例，对存储进行逻辑上的管理。</p>
+<p>程序实例分为8个模块：</p>
+<ol>
+<li>存储管理：将数据的逻辑关系转化为物理存储关系。</li>
+<li>缓存机制：优化执行效率。</li>
+<li>SQL解析：解析SQL语句。</li>
+<li>日志管理：记录操作。</li>
+<li>权限划分：进行多用户管理。</li>
+<li>容灾机制：灾难恢复。</li>
+<li>索引管理：优化数据查询效率。</li>
+<li>锁管理：使数据库支持高并发。<br><img src="/2019/10/08/数据库架构/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9E%B6%E6%9E%84.png" alt="数据库架构"></li>
+</ol>
 <h4 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h4><ul>
 <li>为什么要使用索引</li>
 <li>什么样的信息能成为索引</li>

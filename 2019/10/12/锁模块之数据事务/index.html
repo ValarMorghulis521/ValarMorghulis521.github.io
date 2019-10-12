@@ -3,28 +3,26 @@
 <head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="utf-8">
   
-  <title>数据库架构 | Contunued Story</title>
+  <title>锁模块之数据事务 | Contunued Story</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta name="keywords" content="数据库架构">
+  <meta name="keywords" content="锁模块数据库事务ACID">
   
   
   
   
-  <meta name="description" content="如何去设计一个关系型数据库第一部分为存储部分，相当于文件系统，将数据持久化到存储设备中 第二部分为程序实例，对存储进行逻辑上的管理。 程序实例分为8个模块：  存储管理：将数据的逻辑关系转化为物理存储关系。 缓存机制：优化执行效率。 SQL解析：解析SQL语句。 日志管理：记录操作。 权限划分：进行多用户管理。 容灾机制：灾难恢复。 索引管理：优化数据查询效率。 锁管理：使数据库支持高并发。  常">
-<meta name="keywords" content="数据库架构">
+  <meta name="description" content="数据库事务的四大特性ACID 原子性(Athomic) : 事务包含的全部操作要么全部执行，要么全部失败回滚 一致(Consistency) : 事务应确保数据库的状态从一个一致状态到另一个一致状态(eg:转账问题，A和B一共2000，无论来回怎么转总和还是2000) 隔离性(Isolaton) 持久性(Durability)：一个事务的提交代表了它对数据库的修改永久保存在数据库中，当系统发生故障">
+<meta name="keywords" content="锁模块,数据库事务,ACID">
 <meta property="og:type" content="article">
-<meta property="og:title" content="数据库架构">
-<meta property="og:url" content="http://yoursite.com/2019/10/08/数据库架构/index.html">
+<meta property="og:title" content="锁模块之数据事务">
+<meta property="og:url" content="http://yoursite.com/2019/10/12/锁模块之数据事务/index.html">
 <meta property="og:site_name" content="Contunued Story">
-<meta property="og:description" content="如何去设计一个关系型数据库第一部分为存储部分，相当于文件系统，将数据持久化到存储设备中 第二部分为程序实例，对存储进行逻辑上的管理。 程序实例分为8个模块：  存储管理：将数据的逻辑关系转化为物理存储关系。 缓存机制：优化执行效率。 SQL解析：解析SQL语句。 日志管理：记录操作。 权限划分：进行多用户管理。 容灾机制：灾难恢复。 索引管理：优化数据查询效率。 锁管理：使数据库支持高并发。  常">
+<meta property="og:description" content="数据库事务的四大特性ACID 原子性(Athomic) : 事务包含的全部操作要么全部执行，要么全部失败回滚 一致(Consistency) : 事务应确保数据库的状态从一个一致状态到另一个一致状态(eg:转账问题，A和B一共2000，无论来回怎么转总和还是2000) 隔离性(Isolaton) 持久性(Durability)：一个事务的提交代表了它对数据库的修改永久保存在数据库中，当系统发生故障">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://yoursite.com/2019/10/08/数据库架构/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9E%B6%E6%9E%84.png">
-<meta property="og:updated_time" content="2019-10-11T01:56:05.417Z">
+<meta property="og:updated_time" content="2019-10-12T12:26:02.192Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="数据库架构">
-<meta name="twitter:description" content="如何去设计一个关系型数据库第一部分为存储部分，相当于文件系统，将数据持久化到存储设备中 第二部分为程序实例，对存储进行逻辑上的管理。 程序实例分为8个模块：  存储管理：将数据的逻辑关系转化为物理存储关系。 缓存机制：优化执行效率。 SQL解析：解析SQL语句。 日志管理：记录操作。 权限划分：进行多用户管理。 容灾机制：灾难恢复。 索引管理：优化数据查询效率。 锁管理：使数据库支持高并发。  常">
-<meta name="twitter:image" content="http://yoursite.com/2019/10/08/数据库架构/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9E%B6%E6%9E%84.png">
+<meta name="twitter:title" content="锁模块之数据事务">
+<meta name="twitter:description" content="数据库事务的四大特性ACID 原子性(Athomic) : 事务包含的全部操作要么全部执行，要么全部失败回滚 一致(Consistency) : 事务应确保数据库的状态从一个一致状态到另一个一致状态(eg:转账问题，A和B一共2000，无论来回怎么转总和还是2000) 隔离性(Isolaton) 持久性(Durability)：一个事务的提交代表了它对数据库的修改永久保存在数据库中，当系统发生故障">
   
     <link rel="alternate" href="/atom.xml" title="Contunued Story" type="application/atom+xml">
   
@@ -131,7 +129,7 @@
             
       <div id="content" class="outer">
         
-          <section id="main" style="float:none;"><article id="post-数据库架构" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+          <section id="main" style="float:none;"><article id="post-锁模块之数据事务" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -139,7 +137,7 @@
         
   
     <h1 class="thumb" class="article-title" itemprop="name">
-      数据库架构
+      锁模块之数据事务
     </h1>
   
 
@@ -147,8 +145,8 @@
     
     <div class="article-meta">
       
-	<a href="/2019/10/08/数据库架构/" class="article-date">
-	  <time datetime="2019-10-08T14:24:35.000Z" itemprop="datePublished">October 8, 2019</time>
+	<a href="/2019/10/12/锁模块之数据事务/" class="article-date">
+	  <time datetime="2019-10-12T08:25:36.000Z" itemprop="datePublished">October 12, 2019</time>
 	</a>
 
       
@@ -163,36 +161,62 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h4 id="如何去设计一个关系型数据库"><a href="#如何去设计一个关系型数据库" class="headerlink" title="如何去设计一个关系型数据库"></a>如何去设计一个关系型数据库</h4><p>第一部分为存储部分，相当于文件系统，将数据持久化到存储设备中</p>
-<p>第二部分为程序实例，对存储进行逻辑上的管理。</p>
-<p>程序实例分为8个模块：</p>
-<ol>
-<li>存储管理：将数据的逻辑关系转化为物理存储关系。</li>
-<li>缓存机制：优化执行效率。</li>
-<li>SQL解析：解析SQL语句。</li>
-<li>日志管理：记录操作。</li>
-<li>权限划分：进行多用户管理。</li>
-<li>容灾机制：灾难恢复。</li>
-<li>索引管理：优化数据查询效率。</li>
-<li>锁管理：使数据库支持高并发。<br><img src="/2019/10/08/数据库架构/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9E%B6%E6%9E%84.png" alt="数据库架构"></li>
-</ol>
-<h4 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h4><ul>
-<li>为什么要使用索引</li>
-<li>什么样的信息能成为索引</li>
-<li>索引的数据结构</li>
-<li>密集索引和稀疏索引的区别</li>
+        <h4 id="数据库事务的四大特性"><a href="#数据库事务的四大特性" class="headerlink" title="数据库事务的四大特性"></a>数据库事务的四大特性</h4><h5 id="ACID"><a href="#ACID" class="headerlink" title="ACID"></a>ACID</h5><ul>
+<li>原子性(Athomic) : 事务包含的全部操作要么全部执行，要么全部失败回滚</li>
+<li>一致(Consistency) : 事务应确保数据库的状态从一个一致状态到另一个一致状态(eg:转账问题，A和B一共2000，无论来回怎么转总和还是2000)</li>
+<li><strong>隔离性(Isolaton)</strong></li>
+<li>持久性(Durability)：一个事务的提交代表了它对数据库的修改永久保存在数据库中，当系统发生故障时确保已提交事务的更新不能丢失，确保已提交事务的更新能恢复</li>
 </ul>
-<h5 id="为什么要使用索引"><a href="#为什么要使用索引" class="headerlink" title="为什么要使用索引"></a>为什么要使用索引</h5><p>先说不使用索引情况下的全表扫描:</p>
-<p>数据库存储的最小单位是块或者页,是由多行记录组成的。(一个表就是多个块或者多个页)<br>我们把这些块或者页加载进来,然后对每个块或页进行轮训,找到目标返回,<br>类似:要从一本字典的第一页开始查找数据,一页一页的查,如果数据量小还好,数据量大就很慢</p>
-<p>所以我们推出索引的概念:<br>也就是引入字典中目录的概念,我们可以通过字典的拼音,部首,进行一层又一层的有条理的查询<br>而这些被另外定义出来的例如:拼音,部首,就可以叫做索引</p>
-<p>简单讲就是:为了避免全表扫描,大幅提高查询数据的效率</p>
-<h5 id="什么样的信息能成为索引"><a href="#什么样的信息能成为索引" class="headerlink" title="什么样的信息能成为索引"></a>什么样的信息能成为索引</h5><p>主键、唯一键、普通键</p>
-<h5 id="索引的数据结构"><a href="#索引的数据结构" class="headerlink" title="索引的数据结构"></a>索引的数据结构</h5><ul>
-<li>生成索引，建立二叉查找树进行二分查找</li>
-<li>生成索引，建立B-Tree结构进行查找</li>
-<li>生成索引，建立B+-Tree结构进行查找</li>
-<li>生成索引，建立Hash结构进行查找</li>
+<h4 id="事务隔离级别以及各级别下的并发访问问题"><a href="#事务隔离级别以及各级别下的并发访问问题" class="headerlink" title="事务隔离级别以及各级别下的并发访问问题"></a>事务隔离级别以及各级别下的并发访问问题</h4><h5 id="事务隔离级别和各个级别的并发访问问题。"><a href="#事务隔离级别和各个级别的并发访问问题。" class="headerlink" title="事务隔离级别和各个级别的并发访问问题。"></a>事务隔离级别和各个级别的并发访问问题。</h5><p>更新丢失<br>（MySQL所有事务隔离级别在数据库层面上均可避免）<br>事务A对数据进行操作时，事务B也在对同一数据更新操作并完成了提交，然后事务A遇到异常进行回滚导致事务B的更新丢失。</p>
+<p>脏读<br>一个事务读到另一个事务未提交的数据。</p>
+<p>不可重复读<br>事务A在多次读取同一数据的过程中，事务B对数据进行更新并提交，导致事务A多次读取同一数据时结果不一致。</p>
+<p>幻读<br>事务A读取若干行数据，事务B以插入或删除行的方式来修改事务A的结果集。</p>
+<p>其中不可重复读与幻读比较相似，不可重复读侧重对同一数据的修改，幻读侧插入增或删除数据。<br>事务隔离级别越高，对性能的影响也越大。</p>
+<h5 id="事务并发访问引起的问题以及如何避免"><a href="#事务并发访问引起的问题以及如何避免" class="headerlink" title="事务并发访问引起的问题以及如何避免"></a>事务并发访问引起的问题以及如何避免</h5><ul>
+<li>更新丢失——mysql所有事务隔离级别在数据库层面上均可避免</li>
+<li>脏读——READ-COMMITTED事务隔离级别以上避免</li>
+<li>不可重复读——REPEATABLE-READ事务隔离级别以上可避免</li>
+<li>幻读——SERIALIZABLE事务隔离级别避免</li>
 </ul>
+<table>
+<thead>
+<tr>
+<th>事务隔离级别</th>
+<th align="left">更新丢失</th>
+<th align="right">脏读</th>
+<th align="center">不可重复度</th>
+<th align="center">幻读</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>未提交读</td>
+<td align="left">避免</td>
+<td align="right">发生</td>
+<td align="center">发生</td>
+<td align="center">发生</td>
+</tr>
+<tr>
+<td>已提交读</td>
+<td align="left">避免</td>
+<td align="right">避免</td>
+<td align="center">发生</td>
+<td align="center">发生</td>
+</tr>
+<tr>
+<td>可重复读</td>
+<td align="left">避免</td>
+<td align="right">避免</td>
+<td align="center">避免</td>
+<td align="center">发生</td>
+</tr>
+<tr>
+<td>串行化</td>
+<td align="left">避免</td>
+<td align="right">避免</td>
+<td align="center">避免</td>
+<td align="center">避免</td>
+</tr>
+</tbody></table>
 
       
     </div>
@@ -203,7 +227,7 @@
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数据库架构/">数据库架构</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ACID/">ACID</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数据库事务/">数据库事务</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/锁模块/">锁模块</a></li></ul>
 
       
         
@@ -238,19 +262,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2019/10/10/优化你的索引/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          优化你的索引
-        
-      </div>
-    </a>
   
-  
-    <a href="/2019/10/08/HTTP与HTTPS的区别/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2019/10/11/锁模块MyISAM与InooDB关于锁方面的区别/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">HTTP与HTTPS的区别</div>
+      <div class="article-nav-title">锁模块MyISAM与InooDB关于锁方面的区别</div>
     </a>
   
 </nav>
@@ -264,7 +279,7 @@
     <div id="toc" class="toc-article">
     <strong class="toc-title">Contents</strong>
     
-      <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#如何去设计一个关系型数据库"><span class="nav-number">1.</span> <span class="nav-text">如何去设计一个关系型数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常见问题"><span class="nav-number">2.</span> <span class="nav-text">常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#为什么要使用索引"><span class="nav-number">2.1.</span> <span class="nav-text">为什么要使用索引</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#什么样的信息能成为索引"><span class="nav-number">2.2.</span> <span class="nav-text">什么样的信息能成为索引</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#索引的数据结构"><span class="nav-number">2.3.</span> <span class="nav-text">索引的数据结构</span></a></li></ol></li></ol>
+      <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库事务的四大特性"><span class="nav-number">1.</span> <span class="nav-text">数据库事务的四大特性</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#ACID"><span class="nav-number">1.1.</span> <span class="nav-text">ACID</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#事务隔离级别以及各级别下的并发访问问题"><span class="nav-number">2.</span> <span class="nav-text">事务隔离级别以及各级别下的并发访问问题</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#事务隔离级别和各个级别的并发访问问题。"><span class="nav-number">2.1.</span> <span class="nav-text">事务隔离级别和各个级别的并发访问问题。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#事务并发访问引起的问题以及如何避免"><span class="nav-number">2.2.</span> <span class="nav-text">事务并发访问引起的问题以及如何避免</span></a></li></ol></li></ol>
     
     </div>
   </aside>

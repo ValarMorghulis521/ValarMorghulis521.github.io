@@ -3,28 +3,26 @@
 <head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="utf-8">
   
-  <title>数据库架构 | Contunued Story</title>
+  <title>锁模块MyISAM与InooDB关于锁方面的区别 | Contunued Story</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta name="keywords" content="数据库架构">
+  <meta name="keywords" content="锁模块">
   
   
   
   
-  <meta name="description" content="如何去设计一个关系型数据库第一部分为存储部分，相当于文件系统，将数据持久化到存储设备中 第二部分为程序实例，对存储进行逻辑上的管理。 程序实例分为8个模块：  存储管理：将数据的逻辑关系转化为物理存储关系。 缓存机制：优化执行效率。 SQL解析：解析SQL语句。 日志管理：记录操作。 权限划分：进行多用户管理。 容灾机制：灾难恢复。 索引管理：优化数据查询效率。 锁管理：使数据库支持高并发。  常">
-<meta name="keywords" content="数据库架构">
+  <meta name="description" content="常见问题 MyISAM与InnoDB关于锁方面的区别是什么 数据库事务的四大特性 事务隔离级别以及各级别下的并发访问问题 InnoDB可重复度隔离级别下如何变幻读 RC、RB级别下的InnoDB的非阻塞读如何实现MyISAM与InnoDB关于锁方面的区别   MyISAM默认用的是表级锁，不支持行级锁 ，MyISAM不支持事务 InnoDB默认用的是行级锁 ，也支持表级锁,InnoDB在不走索引的">
+<meta name="keywords" content="锁模块">
 <meta property="og:type" content="article">
-<meta property="og:title" content="数据库架构">
-<meta property="og:url" content="http://yoursite.com/2019/10/08/数据库架构/index.html">
+<meta property="og:title" content="锁模块MyISAM与InooDB关于锁方面的区别">
+<meta property="og:url" content="http://yoursite.com/2019/10/11/锁模块MyISAM与InooDB关于锁方面的区别/index.html">
 <meta property="og:site_name" content="Contunued Story">
-<meta property="og:description" content="如何去设计一个关系型数据库第一部分为存储部分，相当于文件系统，将数据持久化到存储设备中 第二部分为程序实例，对存储进行逻辑上的管理。 程序实例分为8个模块：  存储管理：将数据的逻辑关系转化为物理存储关系。 缓存机制：优化执行效率。 SQL解析：解析SQL语句。 日志管理：记录操作。 权限划分：进行多用户管理。 容灾机制：灾难恢复。 索引管理：优化数据查询效率。 锁管理：使数据库支持高并发。  常">
+<meta property="og:description" content="常见问题 MyISAM与InnoDB关于锁方面的区别是什么 数据库事务的四大特性 事务隔离级别以及各级别下的并发访问问题 InnoDB可重复度隔离级别下如何变幻读 RC、RB级别下的InnoDB的非阻塞读如何实现MyISAM与InnoDB关于锁方面的区别   MyISAM默认用的是表级锁，不支持行级锁 ，MyISAM不支持事务 InnoDB默认用的是行级锁 ，也支持表级锁,InnoDB在不走索引的">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://yoursite.com/2019/10/08/数据库架构/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9E%B6%E6%9E%84.png">
-<meta property="og:updated_time" content="2019-10-11T01:56:05.417Z">
+<meta property="og:updated_time" content="2019-10-12T11:10:27.870Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="数据库架构">
-<meta name="twitter:description" content="如何去设计一个关系型数据库第一部分为存储部分，相当于文件系统，将数据持久化到存储设备中 第二部分为程序实例，对存储进行逻辑上的管理。 程序实例分为8个模块：  存储管理：将数据的逻辑关系转化为物理存储关系。 缓存机制：优化执行效率。 SQL解析：解析SQL语句。 日志管理：记录操作。 权限划分：进行多用户管理。 容灾机制：灾难恢复。 索引管理：优化数据查询效率。 锁管理：使数据库支持高并发。  常">
-<meta name="twitter:image" content="http://yoursite.com/2019/10/08/数据库架构/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9E%B6%E6%9E%84.png">
+<meta name="twitter:title" content="锁模块MyISAM与InooDB关于锁方面的区别">
+<meta name="twitter:description" content="常见问题 MyISAM与InnoDB关于锁方面的区别是什么 数据库事务的四大特性 事务隔离级别以及各级别下的并发访问问题 InnoDB可重复度隔离级别下如何变幻读 RC、RB级别下的InnoDB的非阻塞读如何实现MyISAM与InnoDB关于锁方面的区别   MyISAM默认用的是表级锁，不支持行级锁 ，MyISAM不支持事务 InnoDB默认用的是行级锁 ，也支持表级锁,InnoDB在不走索引的">
   
     <link rel="alternate" href="/atom.xml" title="Contunued Story" type="application/atom+xml">
   
@@ -131,7 +129,7 @@
             
       <div id="content" class="outer">
         
-          <section id="main" style="float:none;"><article id="post-数据库架构" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+          <section id="main" style="float:none;"><article id="post-锁模块MyISAM与InooDB关于锁方面的区别" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -139,7 +137,7 @@
         
   
     <h1 class="thumb" class="article-title" itemprop="name">
-      数据库架构
+      锁模块MyISAM与InooDB关于锁方面的区别
     </h1>
   
 
@@ -147,8 +145,8 @@
     
     <div class="article-meta">
       
-	<a href="/2019/10/08/数据库架构/" class="article-date">
-	  <time datetime="2019-10-08T14:24:35.000Z" itemprop="datePublished">October 8, 2019</time>
+	<a href="/2019/10/11/锁模块MyISAM与InooDB关于锁方面的区别/" class="article-date">
+	  <time datetime="2019-10-11T10:42:44.000Z" itemprop="datePublished">October 11, 2019</time>
 	</a>
 
       
@@ -163,36 +161,57 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h4 id="如何去设计一个关系型数据库"><a href="#如何去设计一个关系型数据库" class="headerlink" title="如何去设计一个关系型数据库"></a>如何去设计一个关系型数据库</h4><p>第一部分为存储部分，相当于文件系统，将数据持久化到存储设备中</p>
-<p>第二部分为程序实例，对存储进行逻辑上的管理。</p>
-<p>程序实例分为8个模块：</p>
+        <h4 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h4><ul>
+<li>MyISAM与InnoDB关于锁方面的区别是什么</li>
+<li>数据库事务的四大特性</li>
+<li>事务隔离级别以及各级别下的并发访问问题</li>
+<li>InnoDB可重复度隔离级别下如何变幻读</li>
+<li>RC、RB级别下的InnoDB的非阻塞读如何实现<h4 id="MyISAM与InnoDB关于锁方面的区别"><a href="#MyISAM与InnoDB关于锁方面的区别" class="headerlink" title="MyISAM与InnoDB关于锁方面的区别"></a>MyISAM与InnoDB关于锁方面的区别</h4></li>
+</ul>
 <ol>
-<li>存储管理：将数据的逻辑关系转化为物理存储关系。</li>
-<li>缓存机制：优化执行效率。</li>
-<li>SQL解析：解析SQL语句。</li>
-<li>日志管理：记录操作。</li>
-<li>权限划分：进行多用户管理。</li>
-<li>容灾机制：灾难恢复。</li>
-<li>索引管理：优化数据查询效率。</li>
-<li>锁管理：使数据库支持高并发。<br><img src="/2019/10/08/数据库架构/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9E%B6%E6%9E%84.png" alt="数据库架构"></li>
+<li>MyISAM默认用的是表级锁，不支持行级锁 ，MyISAM不支持事务</li>
+<li>InnoDB默认用的是行级锁 ，也支持表级锁,InnoDB在不走索引的时候用的是表级锁，而sql用到索引的时候用的是行级锁</li>
 </ol>
-<h4 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h4><ul>
-<li>为什么要使用索引</li>
-<li>什么样的信息能成为索引</li>
-<li>索引的数据结构</li>
-<li>密集索引和稀疏索引的区别</li>
+<p>值得注意的是：</p>
+<ul>
+<li>MyISAM默认会给select语句上共享锁(读锁)</li>
+<li>InnoDB默认不会给select语句上共享锁(读锁)</li>
+<li>上了共享锁的可以再上共享锁但是不能上排他锁</li>
+<li>上了排他锁的不可以再上共享锁和排他锁<h5 id="共享锁和排斥锁的兼容性"><a href="#共享锁和排斥锁的兼容性" class="headerlink" title="共享锁和排斥锁的兼容性"></a>共享锁和排斥锁的兼容性</h5><table>
+<thead>
+<tr>
+<th></th>
+<th align="left">X</th>
+<th align="center">S</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>X</td>
+<td align="left">冲突</td>
+<td align="center">冲突</td>
+</tr>
+<tr>
+<td>S</td>
+<td align="left">冲突</td>
+<td align="center">兼容</td>
+</tr>
+</tbody></table>
+</li>
 </ul>
-<h5 id="为什么要使用索引"><a href="#为什么要使用索引" class="headerlink" title="为什么要使用索引"></a>为什么要使用索引</h5><p>先说不使用索引情况下的全表扫描:</p>
-<p>数据库存储的最小单位是块或者页,是由多行记录组成的。(一个表就是多个块或者多个页)<br>我们把这些块或者页加载进来,然后对每个块或页进行轮训,找到目标返回,<br>类似:要从一本字典的第一页开始查找数据,一页一页的查,如果数据量小还好,数据量大就很慢</p>
-<p>所以我们推出索引的概念:<br>也就是引入字典中目录的概念,我们可以通过字典的拼音,部首,进行一层又一层的有条理的查询<br>而这些被另外定义出来的例如:拼音,部首,就可以叫做索引</p>
-<p>简单讲就是:为了避免全表扫描,大幅提高查询数据的效率</p>
-<h5 id="什么样的信息能成为索引"><a href="#什么样的信息能成为索引" class="headerlink" title="什么样的信息能成为索引"></a>什么样的信息能成为索引</h5><p>主键、唯一键、普通键</p>
-<h5 id="索引的数据结构"><a href="#索引的数据结构" class="headerlink" title="索引的数据结构"></a>索引的数据结构</h5><ul>
-<li>生成索引，建立二叉查找树进行二分查找</li>
-<li>生成索引，建立B-Tree结构进行查找</li>
-<li>生成索引，建立B+-Tree结构进行查找</li>
-<li>生成索引，建立Hash结构进行查找</li>
-</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#查看session是否为自动提交</span><br><span class="line">show variables like &apos;autocommit&apos;;</span><br><span class="line">#将session设置为自动提交</span><br><span class="line">set autocommit = 1;</span><br></pre></td></tr></table></figure>
+
+<h5 id="MyISAM适合的场景"><a href="#MyISAM适合的场景" class="headerlink" title="MyISAM适合的场景"></a>MyISAM适合的场景</h5><ol>
+<li>频繁执行全表count语句（有个变量保存了表的行数，可直接读该变量）</li>
+<li>对数据进行增删改的频率不高，查询非常频繁（增删改会涉及到锁表操作）</li>
+<li>没有事务<h5 id="InnoDB适合的场景"><a href="#InnoDB适合的场景" class="headerlink" title="InnoDB适合的场景"></a>InnoDB适合的场景</h5></li>
+<li>数据增删改查相当频繁（增删改知识某些锁被锁，大多数情况下，避免阻塞）</li>
+<li>可靠性要求比较高，要求支持事务<h5 id="数据库锁的分类"><a href="#数据库锁的分类" class="headerlink" title="数据库锁的分类"></a>数据库锁的分类</h5></li>
+<li>按锁的粒度划分，表级锁，行级锁，页级锁</li>
+<li>按锁级别划分，共享锁，排他锁</li>
+<li>按加锁房市划分，自动锁（意向锁），显式锁（手工加锁）</li>
+<li>按操作划分，DML锁，DDL锁</li>
+<li>按使用方式划分，乐观锁，悲观锁</li>
+</ol>
 
       
     </div>
@@ -203,7 +222,7 @@
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数据库架构/">数据库架构</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/锁模块/">锁模块</a></li></ul>
 
       
         
@@ -238,19 +257,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2019/10/10/优化你的索引/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2019/10/12/锁模块之数据事务/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          优化你的索引
+          锁模块之数据事务
         
       </div>
     </a>
   
   
-    <a href="/2019/10/08/HTTP与HTTPS的区别/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2019/10/11/锁模块MyISAM与InooDB关于锁方便的区别/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">HTTP与HTTPS的区别</div>
+      <div class="article-nav-title">锁模块MyISAM与InooDB关于锁方面的区别</div>
     </a>
   
 </nav>
@@ -264,7 +283,7 @@
     <div id="toc" class="toc-article">
     <strong class="toc-title">Contents</strong>
     
-      <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#如何去设计一个关系型数据库"><span class="nav-number">1.</span> <span class="nav-text">如何去设计一个关系型数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常见问题"><span class="nav-number">2.</span> <span class="nav-text">常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#为什么要使用索引"><span class="nav-number">2.1.</span> <span class="nav-text">为什么要使用索引</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#什么样的信息能成为索引"><span class="nav-number">2.2.</span> <span class="nav-text">什么样的信息能成为索引</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#索引的数据结构"><span class="nav-number">2.3.</span> <span class="nav-text">索引的数据结构</span></a></li></ol></li></ol>
+      <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#常见问题"><span class="nav-number">1.</span> <span class="nav-text">常见问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MyISAM与InnoDB关于锁方面的区别"><span class="nav-number">2.</span> <span class="nav-text">MyISAM与InnoDB关于锁方面的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#共享锁和排斥锁的兼容性"><span class="nav-number">2.1.</span> <span class="nav-text">共享锁和排斥锁的兼容性</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#MyISAM适合的场景"><span class="nav-number">2.2.</span> <span class="nav-text">MyISAM适合的场景</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#InnoDB适合的场景"><span class="nav-number">2.3.</span> <span class="nav-text">InnoDB适合的场景</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#数据库锁的分类"><span class="nav-number">2.4.</span> <span class="nav-text">数据库锁的分类</span></a></li></ol></li></ol>
     
     </div>
   </aside>

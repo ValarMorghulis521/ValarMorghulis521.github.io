@@ -149,6 +149,12 @@
     <title><![CDATA[微信点餐系统-service层设计]]></title>
     <url>%2F2019%2F09%2F20%2F%E5%BE%AE%E4%BF%A1%E7%82%B9%E9%A4%90%E7%B3%BB%E7%BB%9F-service%E5%B1%82%E8%AE%BE%E8%AE%A1%2F</url>
     <content type="text"><![CDATA[常用注解@Entity 表明该类为一个实体类,类名和表明要一致。@Table 当实体类映射的数据表名不同名时使用，与@Entity并列使用 @Table(name=”XXXXX”)。@DynamicUpdate 自动更新updateTime@Data 自动生成getter和setter方法以及构造方法@Transational 在测试方法中使用测试完自动回滚，数据不保存数据库 如何自动生成getter/setter,toString的方法、1.引入lombok依赖 12345&lt;dependency&gt; &lt;groupId&gt;org.projectlombok&lt;/groupId&gt; &lt;artifactId&gt;lombok&lt;/artifactId&gt; &lt;version&gt;1.16.10&lt;/version&gt; &lt;/dependency&gt; 2.安装lombok插件3.使用注解@Data 如何根据categoryType 查询返回List 对象方法命名规则： 123List&lt;ProductCategory&gt; findByCategoryTypeIn(List&lt;Integer&gt; list)List&lt;Integer&gt; list = Arrays.asList(1,2,3,4);repository.findByCategoryTypeIn(list); JAVA8特性把List里的属性封装进另一个List 1List&lt;Integer&gt; categoryTypeList = productInfoList.strem().map(e -&gt; e.getCategoryType()).collect(Collectors.toList()) VO ViewObject 返回给前端的对象1.应根据前端需要的字段重新定义一个 VO，不要有多余字段2.VO字段应该和对象的字段名称保持一致，方便Copy属性3.@JsonProperty 注解的使用， 123//返回给前台的JSON字段 转成自定义的名称@JsonProperty(&quot;id&quot;)private String productId 写代码中的注意事项1.不要在 for循环里有查询2.不要在代码里直接写数字，应该使用枚举]]></content>
+      <categories>
+        <category>SpringBoot实战</category>
+      </categories>
+      <tags>
+        <tag>lombok</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[JAVA框架-Spring]]></title>
@@ -167,7 +173,7 @@
     <url>%2F2019%2F09%2F18%2F%E5%BE%AE%E4%BF%A1%E7%82%B9%E9%A4%90%E7%B3%BB%E7%BB%9F-%E6%97%A5%E5%BF%97%E6%A1%86%E6%9E%B6%2F</url>
     <content type="text"><![CDATA[使用的日志框架日志门面：SLF4J日志实现：Logback 使用slf4j 打印日志的两种方式1.手动初始化Log4j的一个实例 12Logger logger = LoggerFactory.getLogger(this.class)logger.info(&quot;info...&quot;); 2.使用注解 @Slf4j ,可以直接使用log添加依赖 123456&lt;dependency&gt; &lt;groupId&gt;org.projectlombok&lt;/groupId&gt; &lt;artifactId&gt;lombok&lt;/artifactId&gt; &lt;version&gt;1.16.10&lt;/version&gt; &lt;scope&gt;provided&lt;/scope&gt;&lt;/dependency&gt; 1log.info(&quot;info...&quot;); 使用占位符可直接打印变量123String name = &quot;root&quot;;String password = &quot;123455&quot;;log.info(&quot;name: &#123;&#125;, password: &#123;&#125;&quot; , name,password) Logback配置1.创建 logback-spring.xml 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152&lt;configuration&gt; &lt;appender name=&quot;consoleLog&quot; class=&quot;ch.qos.logback.core.ConsoleAppender&quot;&gt; &lt;layout class=&quot;ch.qos.logback.classic.PatternLayout&quot;&gt; &lt;pattern&gt; %d - %msg%n &lt;/pattern&gt; &lt;/layout&gt; &lt;/appender&gt; &lt;appender name=&quot;fileInfoLog&quot; class=&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;&gt; &lt;filter class=&quot;ch.qos.logback.classic.filter.LevelFilter&quot;&gt; &lt;level&gt;ERROR&lt;/level&gt; &lt;onMatch&gt;DENY&lt;/onMatch&gt; &lt;onMismatch&gt;ACCEPT&lt;/onMismatch&gt; &lt;/filter&gt; &lt;encoder&gt; &lt;pattern&gt; %msg%n &lt;/pattern&gt; &lt;/encoder&gt; &lt;!--滚动策略,每天一个日志--&gt; &lt;rollingPolicy class=&quot;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&quot;&gt; &lt;!--路径--&gt; &lt;fileNamePattern&gt; F:\log\tomcat\info.%d.log &lt;/fileNamePattern&gt; &lt;/rollingPolicy&gt; &lt;/appender&gt; &lt;appender name=&quot;fileErrorLog&quot; class=&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;&gt; &lt;filter class=&quot;ch.qos.logback.classic.filter.ThresholdFilter&quot;&gt; &lt;level&gt;ERROR&lt;/level&gt; &lt;/filter&gt; &lt;encoder&gt; &lt;pattern&gt; %msg%n &lt;/pattern&gt; &lt;/encoder&gt; &lt;!--滚动策略--&gt; &lt;rollingPolicy class=&quot;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&quot;&gt; &lt;!--路径--&gt; &lt;fileNamePattern&gt; F:\log\tomcat\error.%d.log &lt;/fileNamePattern&gt; &lt;/rollingPolicy&gt; &lt;/appender&gt; &lt;root level=&quot;info&quot;&gt; &lt;appender-ref ref=&quot;consoleLog&quot;/&gt; &lt;appender-ref ref=&quot;fileInfoLog&quot;/&gt; &lt;appender-ref ref=&quot;fileErrorLog&quot;/&gt; &lt;/root&gt;&lt;/configuration&gt;]]></content>
       <categories>
-        <category>springboot实战</category>
+        <category>SpringBoot实战</category>
       </categories>
       <tags>
         <tag>日志框架</tag>
@@ -178,7 +184,7 @@
     <url>%2F2019%2F09%2F18%2F%E5%BE%AE%E4%BF%A1%E7%82%B9%E9%A4%90%E7%B3%BB%E7%BB%9F-%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%2F</url>
     <content type="text"><![CDATA[数据库设计表的的构成类目表，商品表，订单主表，订单详情表 日期时间类型设置默认时间，DEFAULT CURRENT_TIMESTAMP时间类型字段自动更新数据，ON UPDATE CURRENT_TIMESTAMP SQL UNIQUE 约束UNIQUE约束唯一标识数据库表中的每条记录。UNIQUE和PRIMARY KEY 约束均为列或列激活提供了唯一性的保证。PRIMARY KEY 拥有自动定义的 UNIQUE约束。请注意，每个表可以有多个UNIQUE约束，但是每个表只能有一个 PRIMARY KEY 约束。 数据库编码使用 UTF-8 unicode(uftf8mb4)可以存表情]]></content>
       <categories>
-        <category>springboot实战</category>
+        <category>SpringBoot实战</category>
       </categories>
       <tags>
         <tag>mysql</tag>

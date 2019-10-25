@@ -6,17 +6,20 @@
   <title>Redis简介 | Contunued Story</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
+  <meta name="keywords" content="多路I/O复用模型">
+  
   
   
   
   <meta name="description" content="缓存中间件——Memcache和Redis的区别Mecache：代码层次类似Hash 支持简单数据类型 不支持数据持久化存储 不支持主从 不支持分片Redis 数据类型丰富 支持数据磁盘持久化存储 支持主从 支持分片  为什么Redis能这么快100000+QPS(QPS既query per second 每秒内查询次数) 完全基于内存，绝大部分请求是纯粹的内存操作，执行效率高 数据结构简单，对数">
+<meta name="keywords" content="多路I&#x2F;O复用模型">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Redis简介">
 <meta property="og:url" content="http://yoursite.com/2019/10/16/Redis简介/index.html">
 <meta property="og:site_name" content="Contunued Story">
 <meta property="og:description" content="缓存中间件——Memcache和Redis的区别Mecache：代码层次类似Hash 支持简单数据类型 不支持数据持久化存储 不支持主从 不支持分片Redis 数据类型丰富 支持数据磁盘持久化存储 支持主从 支持分片  为什么Redis能这么快100000+QPS(QPS既query per second 每秒内查询次数) 完全基于内存，绝大部分请求是纯粹的内存操作，执行效率高 数据结构简单，对数">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-10-16T13:54:04.715Z">
+<meta property="og:updated_time" content="2019-10-18T05:54:55.909Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis简介">
 <meta name="twitter:description" content="缓存中间件——Memcache和Redis的区别Mecache：代码层次类似Hash 支持简单数据类型 不支持数据持久化存储 不支持主从 不支持分片Redis 数据类型丰富 支持数据磁盘持久化存储 支持主从 支持分片  为什么Redis能这么快100000+QPS(QPS既query per second 每秒内查询次数) 完全基于内存，绝大部分请求是纯粹的内存操作，执行效率高 数据结构简单，对数">
@@ -174,6 +177,7 @@
 <li>采用单线程，单线程也能处理高并发请求，想多核也可启动多实例</li>
 <li>使用多路I/O 复用模型，非阻塞IO</li>
 </ul>
+<p>redis 是跑在单线程中的，所有的操作又是按照线性顺序执行的，但是由于读写操作等待用户输入或者输出都是阻塞的，所以io操作在一般情况下往往不能直接返回，这会导致某一文件的io阻塞，进而导致整个进程无法对其他客户端提供服务而io多路复用就是为了解决这个问题的</p>
 <h4 id="多路I-O复用模型"><a href="#多路I-O复用模型" class="headerlink" title="多路I/O复用模型"></a>多路I/O复用模型</h4><h5 id="FD：File-Descriptor-文件描述符"><a href="#FD：File-Descriptor-文件描述符" class="headerlink" title="FD：File Descriptor,文件描述符"></a>FD：File Descriptor,文件描述符</h5><p>一个打开的文件通过唯一的描述符进行引用，该描述符是打开文件的元数据到文件本身的映射</p>
 <h5 id="Redis采用的I-O多路复用函数：epoll-kqueue-evport-select"><a href="#Redis采用的I-O多路复用函数：epoll-kqueue-evport-select" class="headerlink" title="Redis采用的I/O多路复用函数：epoll/kqueue/evport/select?"></a>Redis采用的I/O多路复用函数：epoll/kqueue/evport/select?</h5><ul>
 <li>因地制宜</li>
@@ -181,6 +185,29 @@
 <li>以时间复杂度为O(n)的select作为保底 </li>
 <li>基于react设计模式监听I/O事件</li>
 </ul>
+<hr>
+<h4 id="Redis常用的数据类型"><a href="#Redis常用的数据类型" class="headerlink" title="Redis常用的数据类型"></a>Redis常用的数据类型</h4><ul>
+<li>String:最基本的数据类型，二进制安全</li>
+<li>Hash:String 元素组成的字典，适合用于存储对象</li>
+<li>List:列表，按照String元素插入顺序排序</li>
+<li>Set:String元素组成的无序集合，通过哈希表实现，不允许重复</li>
+<li>Sorted-Set:通过分数来为集合中的成员进行从小到大的排序</li>
+<li>用于计数的HyperLogLog ,用于支持存储地理信息位置的Geo</li>
+</ul>
+<h4 id="从海量数据查询某一固定的前缀key"><a href="#从海量数据查询某一固定的前缀key" class="headerlink" title="从海量数据查询某一固定的前缀key"></a>从海量数据查询某一固定的前缀key</h4><h5 id="使用keys对线上的业务的影响"><a href="#使用keys对线上的业务的影响" class="headerlink" title="使用keys对线上的业务的影响"></a>使用keys对线上的业务的影响</h5><p><strong>KEYS pattern：查找所有符合给定模式pattern的key</strong>  </p>
+<ul>
+<li>KEYS指令一次性返回所有匹配的key</li>
+<li>键的数量过大会使服务器卡顿  </li>
+</ul>
+<p><strong>KEYS CURSOR [MATCH pattern][COUNT count]</strong></p>
+<ul>
+<li>基于游标的迭代器，需要基于上一次的游标延续之前的迭代过程</li>
+<li>以0作为游标开始一次新的迭代，知道命令返回游标0完成一次游历</li>
+<li>不保证每次执行都返回某个给定数量的元素，支持模糊查询</li>
+<li>一次返回的数量不可控，只能是大概率符合count参数</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//开始迭代返回以k1开始的key,希望一次返回10个</span><br><span class="line">scan 0 match k1* count 10</span><br></pre></td></tr></table></figure>
+
 
       
     </div>
@@ -190,6 +217,9 @@
     <a class="article-category-link" href="/categories/Redis/">Redis</a>
 
       
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/多路I-O复用模型/">多路I/O复用模型</a></li></ul>
+
       
         
 	<div id="comment">
@@ -223,6 +253,15 @@
     
 <nav id="article-nav">
   
+    <a href="/2019/10/18/如何实现分布式锁/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          如何通过Redis实现分布式锁
+        
+      </div>
+    </a>
+  
   
     <a href="/2019/10/16/数据库关键语法/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
@@ -240,7 +279,7 @@
     <div id="toc" class="toc-article">
     <strong class="toc-title">Contents</strong>
     
-      <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#缓存中间件——Memcache和Redis的区别"><span class="nav-number">1.</span> <span class="nav-text">缓存中间件——Memcache和Redis的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Mecache：代码层次类似Hash"><span class="nav-number">1.1.</span> <span class="nav-text">Mecache：代码层次类似Hash</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Redis"><span class="nav-number">1.2.</span> <span class="nav-text">Redis</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么Redis能这么快"><span class="nav-number">2.</span> <span class="nav-text">为什么Redis能这么快</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#100000-QPS-QPS既query-per-second-每秒内查询次数"><span class="nav-number">2.1.</span> <span class="nav-text">100000+QPS(QPS既query per second 每秒内查询次数)</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多路I-O复用模型"><span class="nav-number">3.</span> <span class="nav-text">多路I/O复用模型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#FD：File-Descriptor-文件描述符"><span class="nav-number">3.1.</span> <span class="nav-text">FD：File Descriptor,文件描述符</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Redis采用的I-O多路复用函数：epoll-kqueue-evport-select"><span class="nav-number">3.2.</span> <span class="nav-text">Redis采用的I/O多路复用函数：epoll/kqueue/evport/select?</span></a></li></ol></li></ol>
+      <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#缓存中间件——Memcache和Redis的区别"><span class="nav-number">1.</span> <span class="nav-text">缓存中间件——Memcache和Redis的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Mecache：代码层次类似Hash"><span class="nav-number">1.1.</span> <span class="nav-text">Mecache：代码层次类似Hash</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Redis"><span class="nav-number">1.2.</span> <span class="nav-text">Redis</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么Redis能这么快"><span class="nav-number">2.</span> <span class="nav-text">为什么Redis能这么快</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#100000-QPS-QPS既query-per-second-每秒内查询次数"><span class="nav-number">2.1.</span> <span class="nav-text">100000+QPS(QPS既query per second 每秒内查询次数)</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多路I-O复用模型"><span class="nav-number">3.</span> <span class="nav-text">多路I/O复用模型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#FD：File-Descriptor-文件描述符"><span class="nav-number">3.1.</span> <span class="nav-text">FD：File Descriptor,文件描述符</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Redis采用的I-O多路复用函数：epoll-kqueue-evport-select"><span class="nav-number">3.2.</span> <span class="nav-text">Redis采用的I/O多路复用函数：epoll/kqueue/evport/select?</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis常用的数据类型"><span class="nav-number">4.</span> <span class="nav-text">Redis常用的数据类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#从海量数据查询某一固定的前缀key"><span class="nav-number">5.</span> <span class="nav-text">从海量数据查询某一固定的前缀key</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#使用keys对线上的业务的影响"><span class="nav-number">5.1.</span> <span class="nav-text">使用keys对线上的业务的影响</span></a></li></ol></li></ol>
     
     </div>
   </aside>

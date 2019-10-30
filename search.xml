@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[Java内存模型]]></title>
+    <url>%2F2019%2F10%2F30%2FJava%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%2F</url>
+    <content type="text"><![CDATA[内存简介计算机所有程序都是内存中运行的。在程序执行过程中，需要不断的将内存的逻辑地址和物理地址相互映射，找到相关的指令以及数据去执行。作为操作系统进程，java运行时受限于操作系统架构提供的可寻址空间。操作系统架构的可寻址空间由系统位数决定。 32位处理器：2^32的可寻址范围 64位处理器：2^64的可寻址范围地址空间的划分内核空间用户空间 JVM内存模型-JDK8 线程私有：程序计数器、虚拟机栈、本地方法栈 线程共享：MetaSpace、Java堆 程序计数器（Program Counter Register） 程序计数器（逻辑的），是当前线程所执行的字节码的行号指示器。 由于Java 虚拟机的多线程是通过线程轮流切换并分配处理器执行时间的方式来实现的，在任何一个确定的时刻，一个处理器只会执行一条线程中的指令。因此，为了线程切换后能恢复到正确的执行位置，每条线程都需要有一个独立的程序计数器，各条线程独立存储，这种内存区域为“线程私有”的内存。 如果线程正在执行的是一个Java 方法，这个计数器记录的是正在执行的虚拟机字节码指令的地址；如果正在执行的是Natvie 方法，这个计数器值则为空（Undefined）。 因为只计数，所以不用担心内存泄露的问题 Java虚拟机栈（Stack） 局部变量表：包含方法执行过程中的所有变量操作数栈：入栈、出栈、复制、交换、产生消费变量 递归引发java.lang.StackOverflowError异常 虚拟机栈过多引发java.lang.OutOfMemoryError异常当虚拟机栈可以自动扩展但是无法申请到新的内存空间时就会抛出java.lang.OutOfMemoryError异常 本地方法栈 与虚拟机栈相似，主要用于标注了native方法 元空间（MetaSpace）元空间（MetaSpace）与永久代（PermGen）的区别 在8以后使用元空间（使用本地内存）替代永久代（使用jvm内存）在7以后原先位于方法区的字符串常量池被移到堆中元空间和永久代都是用来存储class的相关信息包括class对象的method和field等元空间和永久代均是方法区的实现，方法区只是jvm的规范 MetaSpace相比PermGen的优势 字符串常量池存在永久代中，容易出现性能问题和内存溢出 类和方法的信息大小难以确定，给永久代的大小指定带来困难 永久代会为GC带来不必要的复杂性 方便HotSpot与其它JVM如Jrockit的集成 Java堆（Heap） 对象实例的分配区域 GC管理的主要区域]]></content>
+      <categories>
+        <category>内存模型</category>
+      </categories>
+      <tags>
+        <tag>线程独占</tag>
+        <tag>线程共享</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[谈谈ClassLoader]]></title>
     <url>%2F2019%2F10%2F26%2F%E8%B0%88%E8%B0%88ClassLoader%2F</url>
     <content type="text"><![CDATA[类从编译到执行的过程 编译器将Robot.java源文件编译为Robot.class字节码文件 ClassLoader将字节码转化为jvm中的Class对象 JVM利用Class对象实例化为Robot对象 谈谈ClassLoaderClassLoader 的种类 BootStrapClassLoader:C++编写，加载核心库 java.* ExtClassLoader:Java编写，加载扩展库javaa.* AppClassLoader:Java编写，加载程序所在目录 自定义ClassLoader:Java编写，定制化加载 ClassLoader的作用在Java中有些非常重要的作用，ClassLoader主要工作在Class装载的加载阶段，主要作用是从系统外部获得Class二进制数据流。它是Java的核心组件，所有的Class都是由ClassLoader进行加载的，ClassLoader负责通过将Class文件里的二进制数据流装载进系统，然后交给Java虚拟机进行连接，初始化工作 ClassLoader双亲委派机制 自底而上检查类是否已经加载Custom ClassLoader–App ClassLoader–Extension ClassLoader–BootStrap ClassLoader 自上而下尝试加载类BootStrap:加载 jre\lib\rt.jar 或者 Xbootclasspath选项指定的jar包Extension:加载 jre\lib\ext*.jar 或者 Djava.ext.dirs指定目录下的jar包App: 加载ClassPath 或者 Djava.class.path所指定的目录下的类和jar包 为什么使用双亲委派机制 避免多份同样字节码的加载 类的装载过程 加载：通过ClassLoader加载class文件字节码生成Class对象 链接： 校验：检查加载的class的正确性和安全性 准备：为类变量分配存储空间并设置类变量初始值 解析：JVM将常量池内的符号引用转换为直接引用 初始化：执行类变量赋值和静态代码块loadClass和forName的区别Class.forName是类加载到初始化的步骤Classloader.loadClass是刚执行完加载class Class.forName已完成初始化，那为什么还要用LoadClass呢？LoadClass在springIOC中资源加载器获取要读入的资源的时候，即读取一些bean的配置文件的时候，如果是以classPath方式来加载的话 就需要使用Classload.loadClass来加载，之所以这样做是和springIOC的lazy-loading（懒加载）有关，springIOC为了加快初始化速度因此大量使用延迟加载技术而使用ClassLoad不需要执行类中的初始化代码（static）步骤和连接步骤，这样子做可以加快加载速度 ，把类的初始化工作留到实际使用到这个类的时候才去做.]]></content>

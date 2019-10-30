@@ -3,26 +3,26 @@
 <head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="utf-8">
   
-  <title>如何通过Redis实现分布式锁 | Contunued Story</title>
+  <title>锁模块MyISAM与InooDB关于锁方面的区别 | Contunued Story</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta name="keywords" content="分布式锁">
+  <meta name="keywords" content="锁模块">
   
   
   
   
-  <meta name="description" content="什么是分布式锁分布式锁是控制分布式系统或不同系统之间共同访问共享资源的一种锁的实现 分布式锁需要解决的问题 互斥性：任意时刻只能有一个客户端获取到锁 安全性：锁只能被持有该锁的客户端删除 死锁：获取锁的客户端因为某些原因宕机而未能释放锁，其他客户端再也无法获取到该锁而导致的死锁 容错：当部分Redis节点宕机了之后客户端仍然能够获取锁和释放锁SENTNX key value:如果key不存在，则创">
-<meta name="keywords" content="分布式锁">
+  <meta name="description" content="常见问题 MyISAM与InnoDB关于锁方面的区别是什么 数据库事务的四大特性 事务隔离级别以及各级别下的并发访问问题 InnoDB可重复度隔离级别下如何变幻读 RC、RB级别下的InnoDB的非阻塞读如何实现MyISAM与InnoDB关于锁方面的区别   MyISAM默认用的是表级锁，不支持行级锁 ，MyISAM不支持事务 InnoDB默认用的是行级锁 ，也支持表级锁，InnoDB在不走索引的">
+<meta name="keywords" content="锁模块">
 <meta property="og:type" content="article">
-<meta property="og:title" content="如何通过Redis实现分布式锁">
-<meta property="og:url" content="http://yoursite.com/2019/10/18/如何实现分布式锁/index.html">
+<meta property="og:title" content="锁模块MyISAM与InooDB关于锁方面的区别">
+<meta property="og:url" content="http://yoursite.com/2019/10/11/锁模块MyISAM与InooDB关于锁方面的区别/index.html">
 <meta property="og:site_name" content="Contunued Story">
-<meta property="og:description" content="什么是分布式锁分布式锁是控制分布式系统或不同系统之间共同访问共享资源的一种锁的实现 分布式锁需要解决的问题 互斥性：任意时刻只能有一个客户端获取到锁 安全性：锁只能被持有该锁的客户端删除 死锁：获取锁的客户端因为某些原因宕机而未能释放锁，其他客户端再也无法获取到该锁而导致的死锁 容错：当部分Redis节点宕机了之后客户端仍然能够获取锁和释放锁SENTNX key value:如果key不存在，则创">
+<meta property="og:description" content="常见问题 MyISAM与InnoDB关于锁方面的区别是什么 数据库事务的四大特性 事务隔离级别以及各级别下的并发访问问题 InnoDB可重复度隔离级别下如何变幻读 RC、RB级别下的InnoDB的非阻塞读如何实现MyISAM与InnoDB关于锁方面的区别   MyISAM默认用的是表级锁，不支持行级锁 ，MyISAM不支持事务 InnoDB默认用的是行级锁 ，也支持表级锁，InnoDB在不走索引的">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-10-18T06:52:06.874Z">
+<meta property="og:updated_time" content="2019-10-30T05:59:27.418Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="如何通过Redis实现分布式锁">
-<meta name="twitter:description" content="什么是分布式锁分布式锁是控制分布式系统或不同系统之间共同访问共享资源的一种锁的实现 分布式锁需要解决的问题 互斥性：任意时刻只能有一个客户端获取到锁 安全性：锁只能被持有该锁的客户端删除 死锁：获取锁的客户端因为某些原因宕机而未能释放锁，其他客户端再也无法获取到该锁而导致的死锁 容错：当部分Redis节点宕机了之后客户端仍然能够获取锁和释放锁SENTNX key value:如果key不存在，则创">
+<meta name="twitter:title" content="锁模块MyISAM与InooDB关于锁方面的区别">
+<meta name="twitter:description" content="常见问题 MyISAM与InnoDB关于锁方面的区别是什么 数据库事务的四大特性 事务隔离级别以及各级别下的并发访问问题 InnoDB可重复度隔离级别下如何变幻读 RC、RB级别下的InnoDB的非阻塞读如何实现MyISAM与InnoDB关于锁方面的区别   MyISAM默认用的是表级锁，不支持行级锁 ，MyISAM不支持事务 InnoDB默认用的是行级锁 ，也支持表级锁，InnoDB在不走索引的">
   
     <link rel="alternate" href="/atom.xml" title="Contunued Story" type="application/atom+xml">
   
@@ -107,7 +107,7 @@
             
       <div id="content" class="outer">
         
-          <section id="main" style="float:none;"><article id="post-如何实现分布式锁" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+          <section id="main" style="float:none;"><article id="post-锁模块MyISAM与InooDB关于锁方面的区别" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -115,7 +115,7 @@
         
   
     <h1 class="thumb" class="article-title" itemprop="name">
-      如何通过Redis实现分布式锁
+      锁模块MyISAM与InooDB关于锁方面的区别
     </h1>
   
 
@@ -123,13 +123,13 @@
     
     <div class="article-meta">
       
-	<a href="/2019/10/18/如何实现分布式锁/" class="article-date">
-	  <time datetime="2019-10-18T05:47:11.000Z" itemprop="datePublished">October 18, 2019</time>
+	<a href="/2019/10/11/锁模块MyISAM与InooDB关于锁方面的区别/" class="article-date">
+	  <time datetime="2019-10-11T10:42:44.000Z" itemprop="datePublished">October 11, 2019</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/Redis/">Redis</a>
+    <a class="article-category-link" href="/categories/数据库/">数据库</a>
  
       
 	<span id="busuanzi_container_page_pv">
@@ -139,40 +139,72 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h4 id="什么是分布式锁"><a href="#什么是分布式锁" class="headerlink" title="什么是分布式锁"></a>什么是分布式锁</h4><p><strong>分布式锁是控制分布式系统或不同系统之间共同访问共享资源的一种锁的实现</strong></p>
-<h4 id="分布式锁需要解决的问题"><a href="#分布式锁需要解决的问题" class="headerlink" title="分布式锁需要解决的问题"></a>分布式锁需要解决的问题</h4><ul>
-<li>互斥性：任意时刻只能有一个客户端获取到锁</li>
-<li>安全性：锁只能被持有该锁的客户端删除</li>
-<li>死锁：获取锁的客户端因为某些原因宕机而未能释放锁，其他客户端再也无法获取到该锁而导致的死锁</li>
-<li>容错：当部分Redis节点宕机了之后客户端仍然能够获取锁和释放锁<h4 id="SENTNX-key-value-如果key不存在，则创建并赋值"><a href="#SENTNX-key-value-如果key不存在，则创建并赋值" class="headerlink" title="SENTNX key value:如果key不存在，则创建并赋值"></a>SENTNX key value:如果key不存在，则创建并赋值</h4></li>
-<li>时间复杂度 O(1)</li>
-<li>返回值：设置成功，返回1；设置失败，返回0</li>
+        <h4 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h4><ul>
+<li>MyISAM与InnoDB关于锁方面的区别是什么</li>
+<li>数据库事务的四大特性</li>
+<li>事务隔离级别以及各级别下的并发访问问题</li>
+<li>InnoDB可重复度隔离级别下如何变幻读</li>
+<li>RC、RB级别下的InnoDB的非阻塞读如何实现<h4 id="MyISAM与InnoDB关于锁方面的区别"><a href="#MyISAM与InnoDB关于锁方面的区别" class="headerlink" title="MyISAM与InnoDB关于锁方面的区别"></a>MyISAM与InnoDB关于锁方面的区别</h4></li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">get locknx</span><br><span class="line">(nil)</span><br><span class="line">setnx locknx test</span><br><span class="line">(integer)1</span><br></pre></td></tr></table></figure>
+<ol>
+<li>MyISAM默认用的是表级锁，不支持行级锁 ，MyISAM不支持事务</li>
+<li>InnoDB默认用的是行级锁 ，也支持表级锁，InnoDB在不走索引的时候用的是表级锁，而sql用到索引的时候用的是行级锁</li>
+</ol>
+<p>值得注意的是：</p>
+<ul>
+<li>MyISAM默认会给select语句上共享锁(读锁)</li>
+<li>InnoDB默认不会给select语句上共享锁(读锁)</li>
+<li>上了共享锁的可以再上共享锁但是不能上排他锁</li>
+<li>上了排他锁的不可以再上共享锁和排他锁<h5 id="共享锁和排斥锁的兼容性"><a href="#共享锁和排斥锁的兼容性" class="headerlink" title="共享锁和排斥锁的兼容性"></a>共享锁和排斥锁的兼容性</h5><table>
+<thead>
+<tr>
+<th></th>
+<th align="left">X</th>
+<th align="center">S</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>X</td>
+<td align="left">冲突</td>
+<td align="center">冲突</td>
+</tr>
+<tr>
+<td>S</td>
+<td align="left">冲突</td>
+<td align="center">兼容</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#查看session是否为自动提交</span><br><span class="line">show variables like &apos;autocommit&apos;;</span><br><span class="line">#将session设置为自动提交</span><br><span class="line">set autocommit = 1;</span><br></pre></td></tr></table></figure>
 
-<p>setnx 操作是原子性的，初期被用来实现分布式锁；在执行某段代码逻辑的时候先尝试使用setnx对某个key设值，如果设置成功则证明此时没有别的线程在执行该段代码（占用该独占资源），这个时候线程就可以顺利的执行该段代码逻辑，如果设置失败则证明有别的程序或线程占用该资源。当前线程需要等待直至setnx成功</p>
-<h5 id="如何解决SETNX长期有效的问题"><a href="#如何解决SETNX长期有效的问题" class="headerlink" title="如何解决SETNX长期有效的问题"></a>如何解决SETNX长期有效的问题</h5><p><strong>EXPIRE key seconds</strong><br> 设置key的生存时间，当key过期时（生存时间为0），会被自动删除<br> 缺点：原子性得不到满足</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//设置过期时间2秒钟</span><br><span class="line">expire locknx 2</span><br></pre></td></tr></table></figure>
-
-<p>伪代码示例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">RedisService redisService = SpringUtils.getBean(RedisService.class)</span><br><span class="line">long status = redisService.setnx(key,&quot;1&quot;)</span><br><span class="line"></span><br><span class="line">if(status == 1)&#123;</span><br><span class="line">    redisService.expire(key,expire);</span><br><span class="line">    //执行独占资源逻辑</span><br><span class="line">    doOcuppiedWord()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>潜在问题，在setnx后线程挂掉，key将会被一直占用</p>
-<h4 id="SET-key-value-EX-seconds-PX-milliseconds-NX-XX"><a href="#SET-key-value-EX-seconds-PX-milliseconds-NX-XX" class="headerlink" title="SET key value [EX seconds][PX milliseconds][NX|XX]"></a>SET key value [EX seconds][PX milliseconds][NX|XX]</h4><p>ex:设置键的过期时间为单位妙<br>px:设置键的过期时间为单位毫秒<br>NX:只在键不存在时，才对键进行设置操作<br>XX:只在键已经存在时，才对键进行设置操作<br>设置成功返回ok,否则返回nil</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set locktarget 12345 ex 10 nx</span><br></pre></td></tr></table></figure>
-
-<h4 id="大量的key同时过期的注意事项"><a href="#大量的key同时过期的注意事项" class="headerlink" title="大量的key同时过期的注意事项"></a>大量的key同时过期的注意事项</h4><p><strong>集中过期，由于清除大量的key很耗时，会出现短暂的卡顿现象</strong><br>解决方案：在设置key的过期时间的时候，给每个key加上随机值</p>
+<h5 id="MyISAM适合的场景"><a href="#MyISAM适合的场景" class="headerlink" title="MyISAM适合的场景"></a>MyISAM适合的场景</h5><ol>
+<li>频繁执行全表count语句（有个变量保存了表的行数，可直接读该变量）</li>
+<li>对数据进行增删改的频率不高，查询非常频繁（增删改会涉及到锁表操作）</li>
+<li>没有事务</li>
+</ol>
+<h5 id="InnoDB适合的场景"><a href="#InnoDB适合的场景" class="headerlink" title="InnoDB适合的场景"></a>InnoDB适合的场景</h5><ol>
+<li>数据增删改查相当频繁（增删改知识某些锁被锁，大多数情况下，避免阻塞）</li>
+<li>可靠性要求比较高，要求支持事务</li>
+</ol>
+<h5 id="数据库锁的分类"><a href="#数据库锁的分类" class="headerlink" title="数据库锁的分类"></a>数据库锁的分类</h5><ol>
+<li>按锁的粒度划分，表级锁，行级锁，页级锁</li>
+<li>按锁级别划分，共享锁，排他锁</li>
+<li>按加锁房市划分，自动锁（意向锁），显式锁（手工加锁）</li>
+<li>按操作划分，DML锁，DDL锁</li>
+<li>按使用方式划分，乐观锁，悲观锁</li>
+</ol>
 
       
     </div>
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/Redis/">Redis</a>
+    <a class="article-category-link" href="/categories/数据库/">数据库</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/分布式锁/">分布式锁</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/锁模块/">锁模块</a></li></ul>
 
       
         
@@ -207,19 +239,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2019/10/20/如何实现异步队列/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2019/10/12/锁模块之数据事务/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          如何实现异步队列
+          锁模块之数据事务
         
       </div>
     </a>
   
   
-    <a href="/2019/10/16/Redis简介/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2019/10/11/索引额外问题之如何调优sql/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Redis简介</div>
+      <div class="article-nav-title">索引额外问题之如何调优sql</div>
     </a>
   
 </nav>
@@ -233,7 +265,7 @@
     <div id="toc" class="toc-article">
     <strong class="toc-title">Contents</strong>
     
-      <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是分布式锁"><span class="nav-number">1.</span> <span class="nav-text">什么是分布式锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分布式锁需要解决的问题"><span class="nav-number">2.</span> <span class="nav-text">分布式锁需要解决的问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SENTNX-key-value-如果key不存在，则创建并赋值"><span class="nav-number">3.</span> <span class="nav-text">SENTNX key value:如果key不存在，则创建并赋值</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#如何解决SETNX长期有效的问题"><span class="nav-number">3.1.</span> <span class="nav-text">如何解决SETNX长期有效的问题</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SET-key-value-EX-seconds-PX-milliseconds-NX-XX"><span class="nav-number">4.</span> <span class="nav-text">SET key value [EX seconds][PX milliseconds][NX|XX]</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#大量的key同时过期的注意事项"><span class="nav-number">5.</span> <span class="nav-text">大量的key同时过期的注意事项</span></a></li></ol>
+      <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#常见问题"><span class="nav-number">1.</span> <span class="nav-text">常见问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MyISAM与InnoDB关于锁方面的区别"><span class="nav-number">2.</span> <span class="nav-text">MyISAM与InnoDB关于锁方面的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#共享锁和排斥锁的兼容性"><span class="nav-number">2.1.</span> <span class="nav-text">共享锁和排斥锁的兼容性</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#MyISAM适合的场景"><span class="nav-number">2.2.</span> <span class="nav-text">MyISAM适合的场景</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#InnoDB适合的场景"><span class="nav-number">2.3.</span> <span class="nav-text">InnoDB适合的场景</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#数据库锁的分类"><span class="nav-number">2.4.</span> <span class="nav-text">数据库锁的分类</span></a></li></ol></li></ol>
     
     </div>
   </aside>

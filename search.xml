@@ -145,6 +145,17 @@
       </tags>
   </entry>
   <entry>
+    <title><![CDATA[锁模块MyISAM与InooDB关于锁方面的区别]]></title>
+    <url>%2F2019%2F10%2F11%2F%E9%94%81%E6%A8%A1%E5%9D%97MyISAM%E4%B8%8EInooDB%E5%85%B3%E4%BA%8E%E9%94%81%E6%96%B9%E9%9D%A2%E7%9A%84%E5%8C%BA%E5%88%AB%2F</url>
+    <content type="text"><![CDATA[常见问题 MyISAM与InnoDB关于锁方面的区别是什么 数据库事务的四大特性 事务隔离级别以及各级别下的并发访问问题 InnoDB可重复度隔离级别下如何变幻读 RC、RB级别下的InnoDB的非阻塞读如何实现MyISAM与InnoDB关于锁方面的区别 MyISAM默认用的是表级锁，不支持行级锁 ，MyISAM不支持事务 InnoDB默认用的是行级锁 ，也支持表级锁，InnoDB在不走索引的时候用的是表级锁，而sql用到索引的时候用的是行级锁 值得注意的是： MyISAM默认会给select语句上共享锁(读锁) InnoDB默认不会给select语句上共享锁(读锁) 上了共享锁的可以再上共享锁但是不能上排他锁 上了排他锁的不可以再上共享锁和排他锁共享锁和排斥锁的兼容性 X S X 冲突 冲突 S 冲突 兼容 1234#查看session是否为自动提交show variables like &apos;autocommit&apos;;#将session设置为自动提交set autocommit = 1; MyISAM适合的场景 频繁执行全表count语句（有个变量保存了表的行数，可直接读该变量） 对数据进行增删改的频率不高，查询非常频繁（增删改会涉及到锁表操作） 没有事务 InnoDB适合的场景 数据增删改查相当频繁（增删改知识某些锁被锁，大多数情况下，避免阻塞） 可靠性要求比较高，要求支持事务 数据库锁的分类 按锁的粒度划分，表级锁，行级锁，页级锁 按锁级别划分，共享锁，排他锁 按加锁房市划分，自动锁（意向锁），显式锁（手工加锁） 按操作划分，DML锁，DDL锁 按使用方式划分，乐观锁，悲观锁]]></content>
+      <categories>
+        <category>数据库</category>
+      </categories>
+      <tags>
+        <tag>锁模块</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[索引额外问题之如何调优sql]]></title>
     <url>%2F2019%2F10%2F11%2F%E7%B4%A2%E5%BC%95%E9%A2%9D%E5%A4%96%E9%97%AE%E9%A2%98%E4%B9%8B%E5%A6%82%E4%BD%95%E8%B0%83%E4%BC%98sql%2F</url>
     <content type="text"><![CDATA[常见问题总结 如何定位并优化慢查询sql 联合索引的最左匹配原则的成因 索引建立的越多越好吗如何定位并优化慢sql大致思路 根据慢日志定位慢sql 12345SHOW VARIABLES LIKE &apos;%quer%&apos;; 查看慢查询是否打开set global slow_query_log =on; 打开慢查询:set global long_query_time=1; 设置慢查询最大时间超过一秒就记录为慢查询 SHOW STATUS LIKE &apos;%slow_queries%&apos;; 查看慢sql条数sudo vim /usr/local/mysql/data/VM_33_68_centos-slow.log; 查看被记录到慢日志里面的日志 使用explain等工具分析sql explain字段 type ： mysql找到数据行的方式index 和 all 是全表扫描 extra：有很多值 Using filesort ，Using temporary 最常的慢的， 修改sql或者尽量让sql走索引 具体走那个索引是mysql查询优化器决定， 要强制制定走某个索引 要加上 force index（primary/其他） 联合索引的最左匹配原则 最左前缀匹配原则，非常重要的原则，mysql会一直向右匹配知道遇到范围查询（&gt; , &lt; , between, like ）就停止匹配，比如a=3and b = 4 and c &gt; 5 and d =6 如果建立（a，b，c，d）顺序的索引，d是用不到索引的，如果建立（a，b，d，c）的索引则可以用到，a、b、d的顺序可以任意调整 =和in可以乱序，比如a=1 and b=2 and c=3建立（a,b,c）索引可以任意顺序，mysql查询优化器会帮你优化成索引可以识别的形式 索引是建立得越多越好吗 数据量小的表不需要建立索引，建立索引会增加额外的索引开销 数据变更需要维护索引，因此更多的索引意味着更多的维护成本 更多的索引也意味着更多的空间]]></content>
@@ -202,17 +213,6 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[HTTP相关]]></title>
-    <url>%2F2019%2F10%2F06%2FHTTP%E7%9B%B8%E5%85%B3%2F</url>
-    <content type="text"><![CDATA[超文本传输协议HTTP主要特点 支持客户/服务器模式 简单快速 灵活 无连接 无状态 请求/响应的步骤 客户端连接到web服务器 发送HTTP请求 服务器接受请求并返回HTTP响应 释放连接TCP连接 客户端浏览器解析HTML内容 在浏览器地址键入URL，按下回车之后经历的流程 DNS解析 浏览器依据URL逐层查询DNS服务器缓存，解析URL中的域名所对应的的IP TCP连接 找到IP地址后根据IP和对应端口和服务器建立TCP连接，结合三次握手讲解 浏览器发送HTTP请求 服务器处理请求并返回HTTP响应报文 浏览器解析渲染页面 连接结束 结合四次挥手HTTP状态码五种可能的取值 1XX : 指示信息 – 表示请求已接收，继续处理 2XX : 成功–表示请求已被成功接收、理解、接受 3XX : 重定向 – 要完成请求必须进行更进一步的操作 4xx : 客户端错误 – 请求有语法错误或请求无法实现 5XX : 服务器端错误–服务器未能实现合法的请求常见状态码 200 OK : 正常返回信息 400 Bad Request : 客户端请求有语法错误，不能被服务器所理解 401 Unauthorized : 请求未经授权，这个状态码必须和WWW-Authenticate 报头域一起使用 403 Forbidden : 服务器收到请求，但是拒绝提供服务 404 Not Found : 请求资源不存在,eg,输入错误的URL 500 Internal Server Error : 服务器发生了不可预期的错误 503 Server Unavailable : 服务器当前不能处理客户端的请求，一段时间后可能恢复正常GET请求和POST请求的区别 Http报文层面：GET将信息放在URL，POST放在报文体中 数据库层面：GET符合幂等性和安全性，POST不符合 （幂等性：对数据库多次操作获得结果是一样的。安全性：没有改变数据库中的数据） 其他层面：GET可以被缓存、被储存，而POST不行 Cookie和Session的区别Cookie简介 由服务器发给客户端的特殊信息，以文本的形式存放在客户端 客户端再次请求的时候，会把Cookie回发 服务器接收到后，会解析Cookie生成与客户端相对应的内容 Cookie 的设置以及发送过程 客户端发送HTTP Request 到服务端 服务端发送HTTP Response + Set-Cookie 客户端发送HTTP Request + Cookie 服务器发送HTTP Response Session 简介 服务器端的机制，在服务器上保存的信息 解析客户端请求并操作session id,按需保存状态信息 Session的实现方式方式 使用Cookie来实现 服务器给每个session分配一个JSESSIONID,并通过Cookie发送给客户端，当客户端发起新的请求的时候，将在Cookie头中携带这个JSESSIONID，这样服务器能够找到客户端对应的session 使用URL回写来实现 URL回写指服务器在发送给浏览器页面的所有链接中都携带JSSESSIONID的参数，点击任何一个链接都会把JSESSIONID带回服务器。 Tomcat对session的实现一开始同时实现的，使用Cookie和URL回写机制，如果发现客户端支持cookie,就继续使用cookie停止使用URL回写，如果发现Cookie被禁用，就一直使用URL回写 Cookie和Session的区别 Cookie数据存放在客户的浏览器上，Session数据放在服务器上 Session相对Cookie更安全 若考虑减轻服务器负担，应当使用Cookie]]></content>
-      <categories>
-        <category>计算机网络</category>
-      </categories>
-      <tags>
-        <tag>HTTP</tag>
-      </tags>
-  </entry>
-  <entry>
     <title><![CDATA[TCP的滑动窗口]]></title>
     <url>%2F2019%2F10%2F06%2FTCP%E7%9A%84%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%2F</url>
     <content type="text"><![CDATA[RTT和RTO RTT:发送一个数据包到接受对应ACK所花费的时间 RTO:重传时间间隔；RTT是根据RTO计算出来的 我们要实现对数据的批量发送，TCP要解决可靠传输和包乱序的问题，所以TCP需要知道网络实际的数据处理带宽或是数据处理速度才不会引起网络拥塞导致丢包 TCP使用滑动窗口做流量控制与乱序重排 保证TCP可靠性 保证TCP的流控特性。（流量控制：window，用于接收方通知发送方自己还有多少缓冲区可以接受数据，发送方根据接收方的处理能力发送数据，不会导致接受不过来） TCP的传输可靠性来源于确认重传机制，TCP的滑动窗口可靠性也是建立在确认重传基础上。]]></content>
@@ -223,6 +223,17 @@
         <tag>滑动窗口</tag>
         <tag>RTT</tag>
         <tag>RTO</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[HTTP相关]]></title>
+    <url>%2F2019%2F10%2F06%2FHTTP%E7%9B%B8%E5%85%B3%2F</url>
+    <content type="text"><![CDATA[超文本传输协议HTTP主要特点 支持客户/服务器模式 简单快速 灵活 无连接 无状态 请求/响应的步骤 客户端连接到web服务器 发送HTTP请求 服务器接受请求并返回HTTP响应 释放连接TCP连接 客户端浏览器解析HTML内容 在浏览器地址键入URL，按下回车之后经历的流程 DNS解析 浏览器依据URL逐层查询DNS服务器缓存，解析URL中的域名所对应的的IP TCP连接 找到IP地址后根据IP和对应端口和服务器建立TCP连接，结合三次握手讲解 浏览器发送HTTP请求 服务器处理请求并返回HTTP响应报文 浏览器解析渲染页面 连接结束 结合四次挥手HTTP状态码五种可能的取值 1XX : 指示信息 – 表示请求已接收，继续处理 2XX : 成功–表示请求已被成功接收、理解、接受 3XX : 重定向 – 要完成请求必须进行更进一步的操作 4xx : 客户端错误 – 请求有语法错误或请求无法实现 5XX : 服务器端错误–服务器未能实现合法的请求常见状态码 200 OK : 正常返回信息 400 Bad Request : 客户端请求有语法错误，不能被服务器所理解 401 Unauthorized : 请求未经授权，这个状态码必须和WWW-Authenticate 报头域一起使用 403 Forbidden : 服务器收到请求，但是拒绝提供服务 404 Not Found : 请求资源不存在,eg,输入错误的URL 500 Internal Server Error : 服务器发生了不可预期的错误 503 Server Unavailable : 服务器当前不能处理客户端的请求，一段时间后可能恢复正常GET请求和POST请求的区别 Http报文层面：GET将信息放在URL，POST放在报文体中 数据库层面：GET符合幂等性和安全性，POST不符合 （幂等性：对数据库多次操作获得结果是一样的。安全性：没有改变数据库中的数据） 其他层面：GET可以被缓存、被储存，而POST不行 Cookie和Session的区别Cookie简介 由服务器发给客户端的特殊信息，以文本的形式存放在客户端 客户端再次请求的时候，会把Cookie回发 服务器接收到后，会解析Cookie生成与客户端相对应的内容 Cookie 的设置以及发送过程 客户端发送HTTP Request 到服务端 服务端发送HTTP Response + Set-Cookie 客户端发送HTTP Request + Cookie 服务器发送HTTP Response Session 简介 服务器端的机制，在服务器上保存的信息 解析客户端请求并操作session id,按需保存状态信息 Session的实现方式方式 使用Cookie来实现 服务器给每个session分配一个JSESSIONID,并通过Cookie发送给客户端，当客户端发起新的请求的时候，将在Cookie头中携带这个JSESSIONID，这样服务器能够找到客户端对应的session 使用URL回写来实现 URL回写指服务器在发送给浏览器页面的所有链接中都携带JSSESSIONID的参数，点击任何一个链接都会把JSESSIONID带回服务器。 Tomcat对session的实现一开始同时实现的，使用Cookie和URL回写机制，如果发现客户端支持cookie,就继续使用cookie停止使用URL回写，如果发现Cookie被禁用，就一直使用URL回写 Cookie和Session的区别 Cookie数据存放在客户的浏览器上，Session数据放在服务器上 Session相对Cookie更安全 若考虑减轻服务器负担，应当使用Cookie]]></content>
+      <categories>
+        <category>计算机网络</category>
+      </categories>
+      <tags>
+        <tag>HTTP</tag>
       </tags>
   </entry>
   <entry>

@@ -3,28 +3,28 @@
 <head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="utf-8">
   
-  <title>JVM如何加载class文件 | Contunued Story</title>
+  <title>谈谈ClassLoader | Contunued Story</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta name="keywords" content="JVM内存结构模型反射">
+  <meta name="keywords" content="ClassLoader类的装载">
   
   
   
   
-  <meta name="description" content="Java虚拟机Java虚拟机：抽象化的计算机，通过在实际的计算机上个仿真模拟计算机功能来实现的，有自己完善的硬件架构：处理器，堆栈，寄存器等，还具有相应的指令系统，jvm 屏蔽了与具体操作系统平台相关的信息，使得java程序只需要生成在java虚拟机上运行的字节码，就可以在不同平台上不加修改的运行。其中最重要的两点：JVM内存结构模型，GC   jvm是内存中的虚拟机，jvm的存储就是内存，所有写">
-<meta name="keywords" content="JVM内存结构模型,反射">
+  <meta name="description" content="类从编译到执行的过程 编译器将Robot.java源文件编译为Robot.class字节码文件 ClassLoader将字节码转化为jvm中的Class对象 JVM利用Class对象实例化为Robot对象  谈谈ClassLoaderClassLoader 的种类 BootStrapClassLoader:C++编写，加载核心库 java.* ExtClassLoader:Java编写，加载扩展库">
+<meta name="keywords" content="ClassLoader,类的装载">
 <meta property="og:type" content="article">
-<meta property="og:title" content="JVM如何加载class文件">
-<meta property="og:url" content="http://yoursite.com/2019/10/26/JVM如何加载class文件/index.html">
+<meta property="og:title" content="谈谈ClassLoader">
+<meta property="og:url" content="http://yoursite.com/2019/10/26/谈谈ClassLoader/index.html">
 <meta property="og:site_name" content="Contunued Story">
-<meta property="og:description" content="Java虚拟机Java虚拟机：抽象化的计算机，通过在实际的计算机上个仿真模拟计算机功能来实现的，有自己完善的硬件架构：处理器，堆栈，寄存器等，还具有相应的指令系统，jvm 屏蔽了与具体操作系统平台相关的信息，使得java程序只需要生成在java虚拟机上运行的字节码，就可以在不同平台上不加修改的运行。其中最重要的两点：JVM内存结构模型，GC   jvm是内存中的虚拟机，jvm的存储就是内存，所有写">
+<meta property="og:description" content="类从编译到执行的过程 编译器将Robot.java源文件编译为Robot.class字节码文件 ClassLoader将字节码转化为jvm中的Class对象 JVM利用Class对象实例化为Robot对象  谈谈ClassLoaderClassLoader 的种类 BootStrapClassLoader:C++编写，加载核心库 java.* ExtClassLoader:Java编写，加载扩展库">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://yoursite.com/2019/10/26/JVM如何加载class文件/Java%E8%99%9A%E6%8B%9F%E6%9C%BA.jpg">
-<meta property="og:updated_time" content="2019-10-26T03:29:53.900Z">
+<meta property="og:image" content="http://yoursite.com/2019/10/26/谈谈ClassLoader/%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%9C%BA%E5%88%B6.jpg">
+<meta property="og:updated_time" content="2019-10-30T05:58:23.913Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="JVM如何加载class文件">
-<meta name="twitter:description" content="Java虚拟机Java虚拟机：抽象化的计算机，通过在实际的计算机上个仿真模拟计算机功能来实现的，有自己完善的硬件架构：处理器，堆栈，寄存器等，还具有相应的指令系统，jvm 屏蔽了与具体操作系统平台相关的信息，使得java程序只需要生成在java虚拟机上运行的字节码，就可以在不同平台上不加修改的运行。其中最重要的两点：JVM内存结构模型，GC   jvm是内存中的虚拟机，jvm的存储就是内存，所有写">
-<meta name="twitter:image" content="http://yoursite.com/2019/10/26/JVM如何加载class文件/Java%E8%99%9A%E6%8B%9F%E6%9C%BA.jpg">
+<meta name="twitter:title" content="谈谈ClassLoader">
+<meta name="twitter:description" content="类从编译到执行的过程 编译器将Robot.java源文件编译为Robot.class字节码文件 ClassLoader将字节码转化为jvm中的Class对象 JVM利用Class对象实例化为Robot对象  谈谈ClassLoaderClassLoader 的种类 BootStrapClassLoader:C++编写，加载核心库 java.* ExtClassLoader:Java编写，加载扩展库">
+<meta name="twitter:image" content="http://yoursite.com/2019/10/26/谈谈ClassLoader/%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%9C%BA%E5%88%B6.jpg">
   
     <link rel="alternate" href="/atom.xml" title="Contunued Story" type="application/atom+xml">
   
@@ -131,7 +131,7 @@
             
       <div id="content" class="outer">
         
-          <section id="main" style="float:none;"><article id="post-JVM如何加载class文件" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+          <section id="main" style="float:none;"><article id="post-谈谈ClassLoader" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -139,7 +139,7 @@
         
   
     <h1 class="thumb" class="article-title" itemprop="name">
-      JVM如何加载class文件
+      谈谈ClassLoader
     </h1>
   
 
@@ -147,8 +147,8 @@
     
     <div class="article-meta">
       
-	<a href="/2019/10/26/JVM如何加载class文件/" class="article-date">
-	  <time datetime="2019-10-26T01:53:49.000Z" itemprop="datePublished">October 26, 2019</time>
+	<a href="/2019/10/26/谈谈ClassLoader/" class="article-date">
+	  <time datetime="2019-10-26T03:40:31.000Z" itemprop="datePublished">October 26, 2019</time>
 	</a>
 
       
@@ -163,27 +163,35 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h4 id="Java虚拟机"><a href="#Java虚拟机" class="headerlink" title="Java虚拟机"></a>Java虚拟机</h4><p>Java虚拟机：抽象化的计算机，通过在实际的计算机上个仿真模拟计算机功能来实现的，有自己完善的硬件架构：处理器，堆栈，寄存器等，还具有相应的指令系统，jvm 屏蔽了与具体操作系统平台相关的信息，使得java程序只需要生成在java虚拟机上运行的字节码，就可以在不同平台上不加修改的运行。其中最重要的两点：JVM内存结构模型，GC  </p>
-<p><em>jvm是内存中的虚拟机，jvm的存储就是内存，所有写的 类，常量，变量，方法都在内存中这决定着程序的健壮和高效</em></p>
-<p><img src="/2019/10/26/JVM如何加载class文件/Java%E8%99%9A%E6%8B%9F%E6%9C%BA.jpg" alt></p>
-<ol>
-<li>Class Loader ： 依据特定格式，加载class文件到内存  </li>
-<li>Runtime Data Area ：JVM内存空间结构模型</li>
-<li>Native Interface: 融合不同开发语言的原生库为Java所用</li>
-<li>Execution Engine ：对命令进行解析</li>
+        <h4 id="类从编译到执行的过程"><a href="#类从编译到执行的过程" class="headerlink" title="类从编译到执行的过程"></a>类从编译到执行的过程</h4><ol>
+<li>编译器将Robot.java源文件编译为Robot.class字节码文件</li>
+<li>ClassLoader将字节码转化为jvm中的Class<robot>对象</robot></li>
+<li>JVM利用Class<robot>对象实例化为Robot对象</robot></li>
 </ol>
-<p>JVM结构：  Class Loader, Runtime Data Area, Execution Engine, Native Interface</p>
-<hr>
-<h4 id="Java反射机制"><a href="#Java反射机制" class="headerlink" title="Java反射机制"></a>Java反射机制</h4><p>JAVA 反射机制是在运行状态中，对于任意一个类，都能够知道这个类的所有属性和方法；对于任意一个对象，都能够调用它的任意方法和属性；这种动态获取信息以及动态调用对象方法的功能称为java语言的反射机制。  </p>
-<h5 id="写一个反射的例子"><a href="#写一个反射的例子" class="headerlink" title="写一个反射的例子"></a>写一个反射的例子</h5><p>Robot.java</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">package com.interview.javabasic.reflect</span><br><span class="line"></span><br><span class="line">public class Robot&#123;</span><br><span class="line">    private String name;</span><br><span class="line">    public void sayHi(String helloSentence)&#123;</span><br><span class="line">        System.out.println(helloSentence + &quot;&quot; + name)</span><br><span class="line">    &#125;</span><br><span class="line">    private String throwHello(String tag)&#123;</span><br><span class="line">        return &quot;Hello&quot; + tag;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>ReflectSample.java</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args)&#123;</span><br><span class="line">    //先获取Robot类，需要全路径</span><br><span class="line">    Class rc = Class.forNam(&quot;com.interview.javabasic.reflect.Robot&quot;)</span><br><span class="line">    //创建实例,需要强转，newInstance返回的是泛型</span><br><span class="line">    Robot r = (Robot)rc.newInstance();</span><br><span class="line">    System.out.println(&quot;Class name is &quot; + rc.getName());</span><br><span class="line">    //通过反射获取私有方法,throwHello接收一个String类型的参数</span><br><span class="line">    Method getHello = rc.getDeclaredMethod( name: &quot;throwHello&quot;,String.class)；</span><br><span class="line">    getHello.setAccessible(true);</span><br><span class="line">    //需要传入对象实例，和方法参数</span><br><span class="line">    Object str = getHello.invoke(r,&quot;Bob&quot;);</span><br><span class="line">    System.out.println(&quot;getHello result is &quot; + str);</span><br><span class="line">    //第二种获取方法获取方法</span><br><span class="line">    Method sayHi = rc.getMethod( name: &quot;sayHi&quot;,String.class)；</span><br><span class="line">    sayHi.invoke(r,&quot;Welcome&quot;);</span><br><span class="line">    //获取私有类型的Filed</span><br><span class="line">    Filed name = rc.getDeclaredField(name: &quot;name&quot;);</span><br><span class="line">    name.setAccessible(true);</span><br><span class="line">    name.set(r,&quot;Alice&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>Metohd:</strong><br>newInstance()方法返回的是泛型。<br>getDeclaredMethod可以获得该类所有的方法，除去继承和实现了接口的方法。<br>如果是私有的方法，必须使用setAccessible(true)方法。<br>getMethod可以获得该类所有的公有方法，还有所继承的以及实现了接口的方法。  </p>
-<p><strong>Field:</strong><br>getDeclaredField获取属性<br>如果是私有属性也要设置setAccessible(true)  </p>
-<hr>
+<h4 id="谈谈ClassLoader"><a href="#谈谈ClassLoader" class="headerlink" title="谈谈ClassLoader"></a>谈谈ClassLoader</h4><h5 id="ClassLoader-的种类"><a href="#ClassLoader-的种类" class="headerlink" title="ClassLoader 的种类"></a>ClassLoader 的种类</h5><ul>
+<li>BootStrapClassLoader:C++编写，加载核心库 java.*</li>
+<li>ExtClassLoader:Java编写，加载扩展库javaa.*</li>
+<li>AppClassLoader:Java编写，加载程序所在目录</li>
+<li>自定义ClassLoader:Java编写，定制化加载</li>
+</ul>
+<h5 id="ClassLoader的作用"><a href="#ClassLoader的作用" class="headerlink" title="ClassLoader的作用"></a>ClassLoader的作用</h5><p>在Java中有些非常重要的作用，ClassLoader主要工作在Class装载的加载阶段，主要作用是从系统外部获得Class二进制数据流。它是Java的核心组件，所有的Class都是由ClassLoader进行加载的，ClassLoader负责通过将Class文件里的二进制数据流装载进系统，然后交给Java虚拟机进行连接，初始化工作</p>
+<h5 id="ClassLoader双亲委派机制"><a href="#ClassLoader双亲委派机制" class="headerlink" title="ClassLoader双亲委派机制"></a>ClassLoader双亲委派机制</h5><ol>
+<li>自底而上检查类是否已经加载<br>Custom ClassLoader–App ClassLoader–Extension   ClassLoader–BootStrap ClassLoader  </li>
+<li>自上而下尝试加载类<br>BootStrap:加载 jre\lib\rt.jar 或者 Xbootclasspath选项指定的jar包<br>Extension:加载 jre\lib\ext*.jar 或者 Djava.ext.dirs指定目录下的jar包<br>App: 加载ClassPath 或者 Djava.class.path所指定的目录下的类和jar包</li>
+</ol>
+<p><img src="/2019/10/26/谈谈ClassLoader/%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%9C%BA%E5%88%B6.jpg" alt></p>
+<h5 id="为什么使用双亲委派机制"><a href="#为什么使用双亲委派机制" class="headerlink" title="为什么使用双亲委派机制"></a>为什么使用双亲委派机制</h5><p> 避免多份同样字节码的加载</p>
+<h4 id="类的装载过程"><a href="#类的装载过程" class="headerlink" title="类的装载过程"></a>类的装载过程</h4><ol>
+<li>加载：通过ClassLoader加载class文件字节码生成Class对象</li>
+<li>链接：<ul>
+<li>校验：检查加载的class的正确性和安全性</li>
+<li>准备：为类变量分配存储空间并设置类变量初始值</li>
+<li>解析：JVM将常量池内的符号引用转换为直接引用</li>
+</ul>
+</li>
+<li>初始化：执行类变量赋值和静态代码块<h4 id="loadClass和forName的区别"><a href="#loadClass和forName的区别" class="headerlink" title="loadClass和forName的区别"></a>loadClass和forName的区别</h4>Class.forName是类加载到初始化的步骤<br>Classloader.loadClass是刚执行完加载class</li>
+</ol>
+<h5 id="Class-forName已完成初始化，那为什么还要用LoadClass呢？"><a href="#Class-forName已完成初始化，那为什么还要用LoadClass呢？" class="headerlink" title="Class.forName已完成初始化，那为什么还要用LoadClass呢？"></a>Class.forName已完成初始化，那为什么还要用LoadClass呢？</h5><p>LoadClass在springIOC中资源加载器获取要读入的资源的时候，即读取一些bean的配置文件的时候，如果是以classPath方式来加载的话 就需要使用Classload.loadClass来加载，之所以这样做是和springIOC的lazy-loading（懒加载）有关，springIOC为了加快初始化速度因此大量使用延迟加载技术而使用ClassLoad不需要执行类中的初始化代码（static）步骤和连接步骤，这样子做可以加快加载速度 ，把类的初始化工作留到实际使用到这个类的时候才去做.</p>
 
       
     </div>
@@ -194,7 +202,7 @@
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM内存结构模型/">JVM内存结构模型</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/反射/">反射</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ClassLoader/">ClassLoader</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/类的装载/">类的装载</a></li></ul>
 
       
         
@@ -229,19 +237,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2019/10/26/谈谈ClassLoader/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          谈谈ClassLoader
-        
-      </div>
-    </a>
   
-  
-    <a href="/2019/10/25/谈谈我对Java的理解/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2019/10/26/JVM如何加载class文件/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">谈谈我对Java的理解</div>
+      <div class="article-nav-title">JVM如何加载class文件</div>
     </a>
   
 </nav>
@@ -255,7 +254,7 @@
     <div id="toc" class="toc-article">
     <strong class="toc-title">Contents</strong>
     
-      <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Java虚拟机"><span class="nav-number">1.</span> <span class="nav-text">Java虚拟机</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Java反射机制"><span class="nav-number">2.</span> <span class="nav-text">Java反射机制</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#写一个反射的例子"><span class="nav-number">2.1.</span> <span class="nav-text">写一个反射的例子</span></a></li></ol></li></ol>
+      <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#类从编译到执行的过程"><span class="nav-number">1.</span> <span class="nav-text">类从编译到执行的过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#谈谈ClassLoader"><span class="nav-number">2.</span> <span class="nav-text">谈谈ClassLoader</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#ClassLoader-的种类"><span class="nav-number">2.1.</span> <span class="nav-text">ClassLoader 的种类</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ClassLoader的作用"><span class="nav-number">2.2.</span> <span class="nav-text">ClassLoader的作用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ClassLoader双亲委派机制"><span class="nav-number">2.3.</span> <span class="nav-text">ClassLoader双亲委派机制</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#为什么使用双亲委派机制"><span class="nav-number">2.4.</span> <span class="nav-text">为什么使用双亲委派机制</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类的装载过程"><span class="nav-number">3.</span> <span class="nav-text">类的装载过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#loadClass和forName的区别"><span class="nav-number">4.</span> <span class="nav-text">loadClass和forName的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Class-forName已完成初始化，那为什么还要用LoadClass呢？"><span class="nav-number">4.1.</span> <span class="nav-text">Class.forName已完成初始化，那为什么还要用LoadClass呢？</span></a></li></ol></li></ol>
     
     </div>
   </aside>

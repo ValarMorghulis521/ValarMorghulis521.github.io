@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[谈谈ClassLoader]]></title>
+    <url>%2F2019%2F10%2F26%2F%E8%B0%88%E8%B0%88ClassLoader%2F</url>
+    <content type="text"><![CDATA[类从编译到执行的过程 编译器将Robot.java源文件编译为Robot.class字节码文件 ClassLoader将字节码转化为jvm中的Class对象 JVM利用Class对象实例化为Robot对象 谈谈ClassLoaderClassLoader 的种类 BootStrapClassLoader:C++编写，加载核心库 java.* ExtClassLoader:Java编写，加载扩展库javaa.* AppClassLoader:Java编写，加载程序所在目录 自定义ClassLoader:Java编写，定制化加载 ClassLoader的作用在Java中有些非常重要的作用，ClassLoader主要工作在Class装载的加载阶段，主要作用是从系统外部获得Class二进制数据流。它是Java的核心组件，所有的Class都是由ClassLoader进行加载的，ClassLoader负责通过将Class文件里的二进制数据流装载进系统，然后交给Java虚拟机进行连接，初始化工作 ClassLoader双亲委派机制 自底而上检查类是否已经加载Custom ClassLoader–App ClassLoader–Extension ClassLoader–BootStrap ClassLoader 自上而下尝试加载类BootStrap:加载 jre\lib\rt.jar 或者 Xbootclasspath选项指定的jar包Extension:加载 jre\lib\ext*.jar 或者 Djava.ext.dirs指定目录下的jar包App: 加载ClassPath 或者 Djava.class.path所指定的目录下的类和jar包 为什么使用双亲委派机制 避免多份同样字节码的加载 类的装载过程 加载：通过ClassLoader加载class文件字节码生成Class对象 链接： 校验：检查加载的class的正确性和安全性 准备：为类变量分配存储空间并设置类变量初始值 解析：JVM将常量池内的符号引用转换为直接引用 初始化：执行类变量赋值和静态代码块loadClass和forName的区别Class.forName是类加载到初始化的步骤Classloader.loadClass是刚执行完加载class Class.forName已完成初始化，那为什么还要用LoadClass呢？LoadClass在springIOC中资源加载器获取要读入的资源的时候，即读取一些bean的配置文件的时候，如果是以classPath方式来加载的话 就需要使用Classload.loadClass来加载，之所以这样做是和springIOC的lazy-loading（懒加载）有关，springIOC为了加快初始化速度因此大量使用延迟加载技术而使用ClassLoad不需要执行类中的初始化代码（static）步骤和连接步骤，这样子做可以加快加载速度 ，把类的初始化工作留到实际使用到这个类的时候才去做.]]></content>
+      <categories>
+        <category>JVM</category>
+      </categories>
+      <tags>
+        <tag>ClassLoader</tag>
+        <tag>类的装载</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[JVM如何加载class文件]]></title>
     <url>%2F2019%2F10%2F26%2FJVM%E5%A6%82%E4%BD%95%E5%8A%A0%E8%BD%BDclass%E6%96%87%E4%BB%B6%2F</url>
     <content type="text"><![CDATA[Java虚拟机Java虚拟机：抽象化的计算机，通过在实际的计算机上个仿真模拟计算机功能来实现的，有自己完善的硬件架构：处理器，堆栈，寄存器等，还具有相应的指令系统，jvm 屏蔽了与具体操作系统平台相关的信息，使得java程序只需要生成在java虚拟机上运行的字节码，就可以在不同平台上不加修改的运行。其中最重要的两点：JVM内存结构模型，GC jvm是内存中的虚拟机，jvm的存储就是内存，所有写的 类，常量，变量，方法都在内存中这决定着程序的健壮和高效 Class Loader ： 依据特定格式，加载class文件到内存 Runtime Data Area ：JVM内存空间结构模型 Native Interface: 融合不同开发语言的原生库为Java所用 Execution Engine ：对命令进行解析 JVM结构： Class Loader, Runtime Data Area, Execution Engine, Native Interface Java反射机制JAVA 反射机制是在运行状态中，对于任意一个类，都能够知道这个类的所有属性和方法；对于任意一个对象，都能够调用它的任意方法和属性；这种动态获取信息以及动态调用对象方法的功能称为java语言的反射机制。 写一个反射的例子Robot.java 1234567891011package com.interview.javabasic.reflectpublic class Robot&#123; private String name; public void sayHi(String helloSentence)&#123; System.out.println(helloSentence + &quot;&quot; + name) &#125; private String throwHello(String tag)&#123; return &quot;Hello&quot; + tag; &#125;&#125; ReflectSample.java 1234567891011121314151617181920public static void main(String[] args)&#123; //先获取Robot类，需要全路径 Class rc = Class.forNam(&quot;com.interview.javabasic.reflect.Robot&quot;) //创建实例,需要强转，newInstance返回的是泛型 Robot r = (Robot)rc.newInstance(); System.out.println(&quot;Class name is &quot; + rc.getName()); //通过反射获取私有方法,throwHello接收一个String类型的参数 Method getHello = rc.getDeclaredMethod( name: &quot;throwHello&quot;,String.class)； getHello.setAccessible(true); //需要传入对象实例，和方法参数 Object str = getHello.invoke(r,&quot;Bob&quot;); System.out.println(&quot;getHello result is &quot; + str); //第二种获取方法获取方法 Method sayHi = rc.getMethod( name: &quot;sayHi&quot;,String.class)； sayHi.invoke(r,&quot;Welcome&quot;); //获取私有类型的Filed Filed name = rc.getDeclaredField(name: &quot;name&quot;); name.setAccessible(true); name.set(r,&quot;Alice&quot;)&#125; Metohd:newInstance()方法返回的是泛型。getDeclaredMethod可以获得该类所有的方法，除去继承和实现了接口的方法。如果是私有的方法，必须使用setAccessible(true)方法。getMethod可以获得该类所有的公有方法，还有所继承的以及实现了接口的方法。 Field:getDeclaredField获取属性如果是私有属性也要设置setAccessible(true)]]></content>

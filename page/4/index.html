@@ -3,7 +3,7 @@
 <head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="utf-8">
   
-  <title>Tag: 日志框架 | Contunued Story</title>
+  <title>Page 4 | Contunued Story</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
   
@@ -12,7 +12,7 @@
   <meta name="description" content="Like a bird in the sky">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Contunued Story">
-<meta property="og:url" content="http://yoursite.com/tags/日志框架/index.html">
+<meta property="og:url" content="http://yoursite.com/page/4/index.html">
 <meta property="og:site_name" content="Contunued Story">
 <meta property="og:description" content="Like a bird in the sky">
 <meta property="og:locale" content="en">
@@ -127,40 +127,80 @@
         
           <section id="main">
   
-  
-  
+    <article id="post-网络基础知识讲解"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <h1><a href="/archives/2019" class="archive-year">2019</a></h1>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-
-      <a href="/2019/09/18/微信点餐系统-日志框架/" class="archive-article-date">
-		  <time datetime="2019-09-18T06:22:17.000Z" itemprop="datePublished">Sep 18, 2019</time>
-	  </a>
-      
+      <header class="article-header">
+        
   
     <h1 class="thumb" itemprop="name">
-      <a class="archive-article-title" href="/2019/09/18/微信点餐系统-日志框架/">微信点餐系统-日志框架</a>
+      <a class="article-title" href="/2019/04/25/网络基础知识讲解/">网络基础知识</a>
     </h1>
   
 
-    </header>
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/04/25/网络基础知识讲解/" class="article-date">
+	  <time datetime="2019-04-25T10:40:12.000Z" itemprop="datePublished">April 25, 2019</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/计算机网络/">计算机网络</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="OSI开放式互联参考模型"><a href="#OSI开放式互联参考模型" class="headerlink" title="OSI开放式互联参考模型"></a>OSI开放式互联参考模型</h4><ul>
+<li><strong>物理层：</strong> 定义物理设备标准（网线类型、光纤接口类型、各种传输介质的传输速率）,主要作用：传输比特流0101二进制数据 —&gt; 转化为电流强弱 —&gt; 0101 数模转换和模数转换 单位:比特  （网卡）</li>
+<li><strong>数据链路层：</strong> 定义了如何格式化数据以进行传输，和控制对物理介质的访问。主要作用：提供错误检测和纠正，确保数据传输可靠性。该层将比特数据组成为帧。（交换机）</li>
+<li><strong>网络层：</strong> 将网络地址翻译成对应的物理地址，决定数据从发送方路由到接收方，单位是数据包。有IP协议）路由器 </li>
+<li><strong>传输层：</strong>  解决主机间的数据传输。（传输协议，流量控制，接收方接收数据快慢程度，规定发送速率；还可以分割大的数据包；TCP和UDP协议）</li>
+<li><strong>会话层：</strong> 定义不同机器上的用户之间建立及管理回话，解决应用程序之间的通信，自动收发包和寻址的功能</li>
+<li><strong>表示层：</strong> 解决不同操作系统之间的通信语法问题。信息的语法语义，加密解密，转换翻译</li>
+<li><strong>应用层：</strong> 规定接收方发送方必须使用一个固定长度的消息头，消息头必须使用固定的组成继续消息体的长度，关注TCP/IP协议中的http协议</li>
+</ul>
+<p><img src="/2019/04/25/网络基础知识讲解/OSI%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E8%BF%87%E7%A8%8B.png" alt="OSI数据传输过程"></p>
+<blockquote>
+<p>OSI 参考模型并不是一个标准，概念性框架。事实的标准是 TCP/IP 四层架构参考模型</p>
+</blockquote>
+<h4 id="OSI的“实现”-TCP-IP协议"><a href="#OSI的“实现”-TCP-IP协议" class="headerlink" title="OSI的“实现” TCP/IP协议"></a>OSI的“实现” TCP/IP协议</h4><p><img src="/2019/04/25/网络基础知识讲解/OSI%E4%B8%8ETCPIP%E7%9A%84%E6%AF%94%E8%BE%83.jpg" alt="OSI与TCPIP的比较"></p>
+<p><img src="/2019/04/25/网络基础知识讲解/TCPIP%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E8%BF%87%E7%A8%8B.jpg" alt="OSI与TCPIP的比较"></p>
+<blockquote>
+<p>TCP/IP四层模型（从下到上）：<br>链路层：获取以太网首部<br>网络层：获取IP首部<br>传输层：获取TCP首部<br>应用层：HTTP数据</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/计算机网络/">计算机网络</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OSI七层模型/">OSI七层模型</a></li></ul>
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
   </div>
+  
 </article>
-  
-  
-    </div></section>
+
+<!-- Table of Contents -->
+
   
 
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/3/">Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span>
+  </nav>
 
 </section>
           <aside id="sidebar">

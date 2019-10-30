@@ -3,26 +3,23 @@
 <head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="utf-8">
   
-  <title>TCP的滑动窗口 | Contunued Story</title>
+  <title>Java的内存模型常见问题 | Contunued Story</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta name="keywords" content="滑动窗口RTTRTO">
   
   
   
-  
-  <meta name="description" content="RTT和RTO RTT:发送一个数据包到接受对应ACK所花费的时间 RTO:重传时间间隔；RTT是根据RTO计算出来的  我们要实现对数据的批量发送，TCP要解决可靠传输和包乱序的问题，所以TCP需要知道网络实际的数据处理带宽或是数据处理速度才不会引起网络拥塞导致丢包 TCP使用滑动窗口做流量控制与乱序重排 保证TCP可靠性 保证TCP的流控特性。（流量控制：window，用于接收方通知发送方自己">
-<meta name="keywords" content="滑动窗口,RTT,RTO">
+  <meta name="description" content="JVM三大性能调优参数-Xms -Xmx -Xss的含义 -Xss：一般情况下，256K足够。此配置将会影响此进程中并发线程数的大小 -Xms：初始java堆的大小，即该进程刚创建出来的时候java堆的大小。 -Xmx：一旦对象容量超过-Xms大小，则将java堆大小扩容至改参数。为防止heap扩容导致内存抖动，影响程序运行稳定性，一般设置成与Xms一样大小">
 <meta property="og:type" content="article">
-<meta property="og:title" content="TCP的滑动窗口">
-<meta property="og:url" content="http://yoursite.com/2019/10/06/TCP的滑动窗口/index.html">
+<meta property="og:title" content="Java的内存模型常见问题">
+<meta property="og:url" content="http://yoursite.com/2019/10/30/Java的内存模型常见问题/index.html">
 <meta property="og:site_name" content="Contunued Story">
-<meta property="og:description" content="RTT和RTO RTT:发送一个数据包到接受对应ACK所花费的时间 RTO:重传时间间隔；RTT是根据RTO计算出来的  我们要实现对数据的批量发送，TCP要解决可靠传输和包乱序的问题，所以TCP需要知道网络实际的数据处理带宽或是数据处理速度才不会引起网络拥塞导致丢包 TCP使用滑动窗口做流量控制与乱序重排 保证TCP可靠性 保证TCP的流控特性。（流量控制：window，用于接收方通知发送方自己">
+<meta property="og:description" content="JVM三大性能调优参数-Xms -Xmx -Xss的含义 -Xss：一般情况下，256K足够。此配置将会影响此进程中并发线程数的大小 -Xms：初始java堆的大小，即该进程刚创建出来的时候java堆的大小。 -Xmx：一旦对象容量超过-Xms大小，则将java堆大小扩容至改参数。为防止heap扩容导致内存抖动，影响程序运行稳定性，一般设置成与Xms一样大小">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-10-06T14:13:09.044Z">
+<meta property="og:updated_time" content="2019-10-30T15:05:49.981Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="TCP的滑动窗口">
-<meta name="twitter:description" content="RTT和RTO RTT:发送一个数据包到接受对应ACK所花费的时间 RTO:重传时间间隔；RTT是根据RTO计算出来的  我们要实现对数据的批量发送，TCP要解决可靠传输和包乱序的问题，所以TCP需要知道网络实际的数据处理带宽或是数据处理速度才不会引起网络拥塞导致丢包 TCP使用滑动窗口做流量控制与乱序重排 保证TCP可靠性 保证TCP的流控特性。（流量控制：window，用于接收方通知发送方自己">
+<meta name="twitter:title" content="Java的内存模型常见问题">
+<meta name="twitter:description" content="JVM三大性能调优参数-Xms -Xmx -Xss的含义 -Xss：一般情况下，256K足够。此配置将会影响此进程中并发线程数的大小 -Xms：初始java堆的大小，即该进程刚创建出来的时候java堆的大小。 -Xmx：一旦对象容量超过-Xms大小，则将java堆大小扩容至改参数。为防止heap扩容导致内存抖动，影响程序运行稳定性，一般设置成与Xms一样大小">
   
     <link rel="alternate" href="/atom.xml" title="Contunued Story" type="application/atom+xml">
   
@@ -129,7 +126,7 @@
             
       <div id="content" class="outer">
         
-          <section id="main" style="float:none;"><article id="post-TCP的滑动窗口" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+          <section id="main" style="float:none;"><article id="post-Java的内存模型常见问题" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -137,7 +134,7 @@
         
   
     <h1 class="thumb" class="article-title" itemprop="name">
-      TCP的滑动窗口
+      Java的内存模型常见问题
     </h1>
   
 
@@ -145,13 +142,13 @@
     
     <div class="article-meta">
       
-	<a href="/2019/10/06/TCP的滑动窗口/" class="article-date">
-	  <time datetime="2019-10-06T08:59:45.000Z" itemprop="datePublished">October 6, 2019</time>
+	<a href="/2019/10/30/Java的内存模型常见问题/" class="article-date">
+	  <time datetime="2019-10-30T14:57:48.000Z" itemprop="datePublished">October 30, 2019</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/计算机网络/">计算机网络</a>
+    <a class="article-category-link" href="/categories/JVM/">JVM</a>
  
       
 	<span id="busuanzi_container_page_pv">
@@ -161,28 +158,20 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h4 id="RTT和RTO"><a href="#RTT和RTO" class="headerlink" title="RTT和RTO"></a>RTT和RTO</h4><ul>
-<li>RTT:发送一个数据包到接受对应ACK所花费的时间</li>
-<li>RTO:重传时间间隔；RTT是根据RTO计算出来的</li>
-</ul>
-<p>我们要实现对数据的批量发送，TCP要解决可靠传输和包乱序的问题，所以TCP需要知道网络实际的数据处理带宽或是数据处理速度才不会引起网络拥塞导致丢包</p>
-<h4 id="TCP使用滑动窗口做流量控制与乱序重排"><a href="#TCP使用滑动窗口做流量控制与乱序重排" class="headerlink" title="TCP使用滑动窗口做流量控制与乱序重排"></a>TCP使用滑动窗口做流量控制与乱序重排</h4><ul>
-<li>保证TCP可靠性</li>
-<li>保证TCP的流控特性。（流量控制：window，用于接收方通知发送方自己还有多少缓冲区可以接受数据，发送方根据接收方的处理能力发送数据，不会导致接受不过来）</li>
-</ul>
-<p>TCP的传输可靠性来源于确认重传机制，TCP的滑动窗口可靠性也是建立在确认重传基础上。</p>
+        <h4 id="JVM三大性能调优参数-Xms-Xmx-Xss的含义"><a href="#JVM三大性能调优参数-Xms-Xmx-Xss的含义" class="headerlink" title="JVM三大性能调优参数-Xms -Xmx -Xss的含义"></a>JVM三大性能调优参数-Xms -Xmx -Xss的含义</h4><ol>
+<li>-Xss：一般情况下，256K足够。此配置将会影响此进程中并发线程数的大小</li>
+<li>-Xms：初始java堆的大小，即该进程刚创建出来的时候java堆的大小。</li>
+<li>-Xmx：一旦对象容量超过-Xms大小，则将java堆大小扩容至改参数。为防止heap扩容导致内存抖动，影响程序运行稳定性，一般设置成与Xms一样大小</li>
+</ol>
 
       
     </div>
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/计算机网络/">计算机网络</a>
+    <a class="article-category-link" href="/categories/JVM/">JVM</a>
 
       
-  <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RTO/">RTO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RTT/">RTT</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/滑动窗口/">滑动窗口</a></li></ul>
-
       
         
 	<div id="comment">
@@ -216,19 +205,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2019/10/06/HTTP相关/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          HTTP相关
-        
-      </div>
-    </a>
   
-  
-    <a href="/2019/10/06/TCP和UDP的区别/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2019/10/30/Java内存模型/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">TCP和UDP的区别</div>
+      <div class="article-nav-title">Java内存模型</div>
     </a>
   
 </nav>
@@ -242,7 +222,7 @@
     <div id="toc" class="toc-article">
     <strong class="toc-title">Contents</strong>
     
-      <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#RTT和RTO"><span class="nav-number">1.</span> <span class="nav-text">RTT和RTO</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TCP使用滑动窗口做流量控制与乱序重排"><span class="nav-number">2.</span> <span class="nav-text">TCP使用滑动窗口做流量控制与乱序重排</span></a></li></ol>
+      <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#JVM三大性能调优参数-Xms-Xmx-Xss的含义"><span class="nav-number">1.</span> <span class="nav-text">JVM三大性能调优参数-Xms -Xmx -Xss的含义</span></a></li></ol>
     
     </div>
   </aside>

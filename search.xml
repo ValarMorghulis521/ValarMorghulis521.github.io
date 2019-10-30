@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[JVM如何加载class文件]]></title>
+    <url>%2F2019%2F10%2F26%2FJVM%E5%A6%82%E4%BD%95%E5%8A%A0%E8%BD%BDclass%E6%96%87%E4%BB%B6%2F</url>
+    <content type="text"><![CDATA[Java虚拟机Java虚拟机：抽象化的计算机，通过在实际的计算机上个仿真模拟计算机功能来实现的，有自己完善的硬件架构：处理器，堆栈，寄存器等，还具有相应的指令系统，jvm 屏蔽了与具体操作系统平台相关的信息，使得java程序只需要生成在java虚拟机上运行的字节码，就可以在不同平台上不加修改的运行。其中最重要的两点：JVM内存结构模型，GC jvm是内存中的虚拟机，jvm的存储就是内存，所有写的 类，常量，变量，方法都在内存中这决定着程序的健壮和高效 Class Loader ： 依据特定格式，加载class文件到内存 Runtime Data Area ：JVM内存空间结构模型 Native Interface: 融合不同开发语言的原生库为Java所用 Execution Engine ：对命令进行解析 JVM结构： Class Loader, Runtime Data Area, Execution Engine, Native Interface Java反射机制JAVA 反射机制是在运行状态中，对于任意一个类，都能够知道这个类的所有属性和方法；对于任意一个对象，都能够调用它的任意方法和属性；这种动态获取信息以及动态调用对象方法的功能称为java语言的反射机制。 写一个反射的例子Robot.java 1234567891011package com.interview.javabasic.reflectpublic class Robot&#123; private String name; public void sayHi(String helloSentence)&#123; System.out.println(helloSentence + &quot;&quot; + name) &#125; private String throwHello(String tag)&#123; return &quot;Hello&quot; + tag; &#125;&#125; ReflectSample.java 1234567891011121314151617181920public static void main(String[] args)&#123; //先获取Robot类，需要全路径 Class rc = Class.forNam(&quot;com.interview.javabasic.reflect.Robot&quot;) //创建实例,需要强转，newInstance返回的是泛型 Robot r = (Robot)rc.newInstance(); System.out.println(&quot;Class name is &quot; + rc.getName()); //通过反射获取私有方法,throwHello接收一个String类型的参数 Method getHello = rc.getDeclaredMethod( name: &quot;throwHello&quot;,String.class)； getHello.setAccessible(true); //需要传入对象实例，和方法参数 Object str = getHello.invoke(r,&quot;Bob&quot;); System.out.println(&quot;getHello result is &quot; + str); //第二种获取方法获取方法 Method sayHi = rc.getMethod( name: &quot;sayHi&quot;,String.class)； sayHi.invoke(r,&quot;Welcome&quot;); //获取私有类型的Filed Filed name = rc.getDeclaredField(name: &quot;name&quot;); name.setAccessible(true); name.set(r,&quot;Alice&quot;)&#125; Metohd:newInstance()方法返回的是泛型。getDeclaredMethod可以获得该类所有的方法，除去继承和实现了接口的方法。如果是私有的方法，必须使用setAccessible(true)方法。getMethod可以获得该类所有的公有方法，还有所继承的以及实现了接口的方法。 Field:getDeclaredField获取属性如果是私有属性也要设置setAccessible(true)]]></content>
+      <categories>
+        <category>JVM</category>
+      </categories>
+      <tags>
+        <tag>JVM内存结构模型</tag>
+        <tag>反射</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[谈谈我对Java的理解]]></title>
+    <url>%2F2019%2F10%2F25%2F%E8%B0%88%E8%B0%88%E6%88%91%E5%AF%B9Java%E7%9A%84%E7%90%86%E8%A7%A3%2F</url>
+    <content type="text"><![CDATA[谈谈我对Java的理解从以下几个点进行扩展 平台无关性：一次编译到处运行GC垃圾回收：不用手动释放内存语言特性：泛型、lamda、反射面向对象：封装、继承、多态类库：自带的集合和并发库异常处理 Compile Once,Run Anywhere如何实现（如何实现平台无关的）？编译时：javac运行时:java.java文件首先经过javac编译生成字节码。将字节码保存在.class文件中。.class文件是跨平台的基础。再由不同平台的JVM进行解析，java语言在不同的平台上运行时不需要进行重新编译，java虚拟机在执行字节码的时候，把字节码转换成具体平台上的机器指令。 为什么jvm不直接将字节码解析成机器码才去执行 每次执行都需要各种检查（语法，句法，语义的检查，每次执行的时候，这些语义分析结果不会被保留下来。因此引入字节码，在每次执行程序是不需要各种校验和补全的） 兼容性，可以将别的语言（groovy,scala）解析成字节码]]></content>
+      <categories>
+        <category>JVM</category>
+      </categories>
+      <tags>
+        <tag>Java特性</tag>
+        <tag>平台无关性</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[Linux体系结构]]></title>
     <url>%2F2019%2F10%2F21%2FLinux%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%2F</url>
     <content type="text"><![CDATA[Linux 体系结构 体系结构主要分为用户态（用户上层活动）和内核态 内核：本质是一段管理计算机硬件设备的程序 系统调用：内核的访问接口，是一种不能再简化的操作 公用函数库：系统调用的组合拳 Shell：命令解释器，可编程 远程登录终端利用ssh登录远程服务器 安装ssh： 1yum install ssh 启动ssh： 1service sshd start 登录远程服务器： 123ssh -p 50022 my@127.0.0.1输入密码：my@127.0.0.1: -p 后面是端口 my 是服务器用户名 127.0.0.1 是服务器 ip 回车输入密码即可登录 如何查找特定的文件find1语法：find path 【options】 params 作用：在指定目录下查找文件 常用的方式~表示当前用户的目录 1234 find ~ -name &quot;target1.java&quot; :查找精确文件 find ~ -name &quot;target*&quot; :查找精确文件 find ~ -iname &quot;target*&quot; :不区分文件名大小写去查找文件 man find : 更多关于find指令的使用说明 检索文件内容1语法：grep 【options】 pattern file 全称：Global Regular Expression Print作用：在指定目录下查找文件 12例如：查找包含内容&quot;moo&quot; 以target开头的文件grep &quot;moo&quot; target* 管道操作符|可将指令连接起来，前一个指令的输出作为后一个指令的输入 12例如：查找当前用户下以target开头的文件find ~ | grep &quot;target*&quot; 常用的方式123456781.在内容（文件）里面查找包含某字段的文件，并展示出对应行内容grep &apos;partial\[true\]&apos; bac-plat-al-data.info.log 2.-o 筛选出符合正则表达式的内容grep -o &apos;engine\[[0-9a-z]*\]&apos; 3.-v 过滤掉包含相关字符串的内容grep -v &apos;grep&apos; 对文件内容做统计场景：我想筛选出 partial为true的引擎，并统计日志里出现的次数。当我们发现某个检索引擎的partial为true超过一定次数后，说明该引擎需要从集群中摘掉进行修复； awk1语法：awk [options] &apos;cmd&apos; file 一次读取一行文本，按输入分隔符进行切片，切成多个组成部分 将切片直接保存在内建的变量中，$1,$2,..($0表示行的全部) 支持对单个切片的判断，支持循环判断，默认分隔符为空格 常用的方式12345678打印出第一列和第四列的内容：awk &apos;&#123;print $1,$4&#125;&apos; 文件名筛选出列指定字符的行：awk &apos;$1==&quot;tcp&quot; &amp;&amp; $2==1&#123;print $0&#125;&apos; 文件名打印出表头：awk &apos;($1==&quot;tcp&quot; &amp;&amp; $2==1) || NR==1 &#123;print $0&#125;&apos; 文件名以指定分隔符分割内容：awk -F &quot;,&quot; &apos;&#123;print $2&#125;&apos; 文件名 12Linux 命令 awk 统计：awk &apos;&#123;enginearr[$1]++&#125;END&#123;for (i in enginearr) print i &quot;\t&quot; enginearr[i]&#125;&apos; enginearr ：自定义的数组，如果第一列$1出现重复就自增1END ：扫描统计结束{for(i in enginearr)}：循环自定义的数组，定义变量 iprint i : 打印 i“\t” 拼接回车符enginearr[i] : 指定自定义数组 批量替换文本内容sed1语法：sed [option] &apos;sed command&apos; filenae 全名stream editor,流编辑器适合用于对文本的行内容进行处理 常用的方式12345678910111213141.将文件中以Str开头的字符串替换成 String：sed -i &apos;s/^Str/String/&apos; replace.txt2.将末尾的点号转为分号：sed -i &apos;s/\.$/\;/&apos; replace.txt3.将所有的&quot;Jack&quot;替换成&quot;me&quot;sed -i &apos;s/Jack/me/g&apos; replace.txt4.删除空行命令sed -i &apos;/^ *$/d&apos; replace.txt5.删除包含特定字符的行：sed -i &apos;/Integer/d&apos; replace.txt 特别指出： 指令中加入 -i 表示修改保存到文件中 替换语法后加入 /g 表示将文件中所有符合条件的内容全部替换，否则只替换一行中第一次匹配到的字符 总结：经常用到的Shell命令 find grep 管道操作符| awk sed]]></content>

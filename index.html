@@ -127,6 +127,135 @@
         
           <section id="main">
   
+    <article id="post-JVM如何加载class文件"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/10/26/JVM如何加载class文件/">JVM如何加载class文件</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/10/26/JVM如何加载class文件/" class="article-date">
+	  <time datetime="2019-10-26T01:53:49.000Z" itemprop="datePublished">October 26, 2019</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/JVM/">JVM</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="Java虚拟机"><a href="#Java虚拟机" class="headerlink" title="Java虚拟机"></a>Java虚拟机</h4><p>Java虚拟机：抽象化的计算机，通过在实际的计算机上个仿真模拟计算机功能来实现的，有自己完善的硬件架构：处理器，堆栈，寄存器等，还具有相应的指令系统，jvm 屏蔽了与具体操作系统平台相关的信息，使得java程序只需要生成在java虚拟机上运行的字节码，就可以在不同平台上不加修改的运行。其中最重要的两点：JVM内存结构模型，GC  </p>
+<p><em>jvm是内存中的虚拟机，jvm的存储就是内存，所有写的 类，常量，变量，方法都在内存中这决定着程序的健壮和高效</em></p>
+<p><img src="/2019/10/26/JVM如何加载class文件/Java%E8%99%9A%E6%8B%9F%E6%9C%BA.jpg" alt></p>
+<ol>
+<li>Class Loader ： 依据特定格式，加载class文件到内存  </li>
+<li>Runtime Data Area ：JVM内存空间结构模型</li>
+<li>Native Interface: 融合不同开发语言的原生库为Java所用</li>
+<li>Execution Engine ：对命令进行解析</li>
+</ol>
+<p>JVM结构：  Class Loader, Runtime Data Area, Execution Engine, Native Interface</p>
+<hr>
+<h4 id="Java反射机制"><a href="#Java反射机制" class="headerlink" title="Java反射机制"></a>Java反射机制</h4><p>JAVA 反射机制是在运行状态中，对于任意一个类，都能够知道这个类的所有属性和方法；对于任意一个对象，都能够调用它的任意方法和属性；这种动态获取信息以及动态调用对象方法的功能称为java语言的反射机制。  </p>
+<h5 id="写一个反射的例子"><a href="#写一个反射的例子" class="headerlink" title="写一个反射的例子"></a>写一个反射的例子</h5><p>Robot.java</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">package com.interview.javabasic.reflect</span><br><span class="line"></span><br><span class="line">public class Robot&#123;</span><br><span class="line">    private String name;</span><br><span class="line">    public void sayHi(String helloSentence)&#123;</span><br><span class="line">        System.out.println(helloSentence + &quot;&quot; + name)</span><br><span class="line">    &#125;</span><br><span class="line">    private String throwHello(String tag)&#123;</span><br><span class="line">        return &quot;Hello&quot; + tag;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>ReflectSample.java</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args)&#123;</span><br><span class="line">    //先获取Robot类，需要全路径</span><br><span class="line">    Class rc = Class.forNam(&quot;com.interview.javabasic.reflect.Robot&quot;)</span><br><span class="line">    //创建实例,需要强转，newInstance返回的是泛型</span><br><span class="line">    Robot r = (Robot)rc.newInstance();</span><br><span class="line">    System.out.println(&quot;Class name is &quot; + rc.getName());</span><br><span class="line">    //通过反射获取私有方法,throwHello接收一个String类型的参数</span><br><span class="line">    Method getHello = rc.getDeclaredMethod( name: &quot;throwHello&quot;,String.class)；</span><br><span class="line">    getHello.setAccessible(true);</span><br><span class="line">    //需要传入对象实例，和方法参数</span><br><span class="line">    Object str = getHello.invoke(r,&quot;Bob&quot;);</span><br><span class="line">    System.out.println(&quot;getHello result is &quot; + str);</span><br><span class="line">    //第二种获取方法获取方法</span><br><span class="line">    Method sayHi = rc.getMethod( name: &quot;sayHi&quot;,String.class)；</span><br><span class="line">    sayHi.invoke(r,&quot;Welcome&quot;);</span><br><span class="line">    //获取私有类型的Filed</span><br><span class="line">    Filed name = rc.getDeclaredField(name: &quot;name&quot;);</span><br><span class="line">    name.setAccessible(true);</span><br><span class="line">    name.set(r,&quot;Alice&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Metohd:</strong><br>newInstance()方法返回的是泛型。<br>getDeclaredMethod可以获得该类所有的方法，除去继承和实现了接口的方法。<br>如果是私有的方法，必须使用setAccessible(true)方法。<br>getMethod可以获得该类所有的公有方法，还有所继承的以及实现了接口的方法。  </p>
+<p><strong>Field:</strong><br>getDeclaredField获取属性<br>如果是私有属性也要设置setAccessible(true)  </p>
+<hr>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/JVM/">JVM</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM内存结构模型/">JVM内存结构模型</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/反射/">反射</a></li></ul>
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-谈谈我对Java的理解"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/10/25/谈谈我对Java的理解/">谈谈我对Java的理解</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/10/25/谈谈我对Java的理解/" class="article-date">
+	  <time datetime="2019-10-25T08:23:12.000Z" itemprop="datePublished">October 25, 2019</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/JVM/">JVM</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="谈谈我对Java的理解"><a href="#谈谈我对Java的理解" class="headerlink" title="谈谈我对Java的理解"></a>谈谈我对Java的理解</h4><p>从以下几个点进行扩展  </p>
+<p>平台无关性：一次编译到处运行<br>GC垃圾回收：不用手动释放内存<br>语言特性：泛型、lamda、反射<br>面向对象：封装、继承、多态<br>类库：自带的集合和并发库<br>异常处理  </p>
+<h4 id="Compile-Once-Run-Anywhere如何实现（如何实现平台无关的）？"><a href="#Compile-Once-Run-Anywhere如何实现（如何实现平台无关的）？" class="headerlink" title="Compile Once,Run Anywhere如何实现（如何实现平台无关的）？"></a>Compile Once,Run Anywhere如何实现（如何实现平台无关的）？</h4><p>编译时：javac<br>运行时:java<br>.java文件首先经过javac编译生成字节码。将字节码保存在.class文件中。.class文件是跨平台的基础。再由不同平台的JVM进行解析，java语言在不同的平台上运行时不需要进行重新编译，java虚拟机在执行字节码的时候，把字节码转换成具体平台上的机器指令。</p>
+<p><img src="/2019/10/25/谈谈我对Java的理解/%E4%B8%80%E6%AC%A1%E7%BC%96%E8%AF%91%E5%88%B0%E5%A4%84%E8%BF%90%E8%A1%8C.png" alt></p>
+<h4 id="为什么jvm不直接将字节码解析成机器码才去执行"><a href="#为什么jvm不直接将字节码解析成机器码才去执行" class="headerlink" title="为什么jvm不直接将字节码解析成机器码才去执行"></a>为什么jvm不直接将字节码解析成机器码才去执行</h4><ol>
+<li>每次执行都需要各种检查（语法，句法，语义的检查，每次执行的时候，这些语义分析结果不会被保留下来。因此引入字节码，在每次执行程序是不需要各种校验和补全的）</li>
+<li>兼容性，可以将别的语言（groovy,scala）解析成字节码</li>
+</ol>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/JVM/">JVM</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java特性/">Java特性</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/平台无关性/">平台无关性</a></li></ul>
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-Linux体系结构"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
@@ -662,134 +791,6 @@
 <!-- Table of Contents -->
 
   
-    <article id="post-InnoDB可重复读隔离级别下如何避免幻读"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/10/16/InnoDB可重复读隔离级别下如何避免幻读/">InnoDB可重复读隔离级别下如何避免幻读</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/10/16/InnoDB可重复读隔离级别下如何避免幻读/" class="article-date">
-	  <time datetime="2019-10-16T07:15:06.000Z" itemprop="datePublished">October 16, 2019</time>
-	</a>
-
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/数据库/">数据库</a>
- 
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="InnoDB可重复读隔离级别下如何避免幻读"><a href="#InnoDB可重复读隔离级别下如何避免幻读" class="headerlink" title="InnoDB可重复读隔离级别下如何避免幻读"></a>InnoDB可重复读隔离级别下如何避免幻读</h4><p>表象：快照读（非堵塞读） –伪MVCC<br>内在：next-key锁（行锁+gap锁）</p>
-<h5 id="next-key锁（行锁-gap锁）"><a href="#next-key锁（行锁-gap锁）" class="headerlink" title="next-key锁（行锁+gap锁）"></a>next-key锁（行锁+gap锁）</h5><ol>
-<li>行锁</li>
-<li>Gap锁</li>
-</ol>
-<h5 id="Gap锁"><a href="#Gap锁" class="headerlink" title="Gap锁"></a>Gap锁</h5><p>Gap的定义：<br>索引字段排序结果的左开右闭区间，例如：<br>1，3，5，7  的Gap为（-∞,1] (1,3] (2,7] (7,+∞]<br>Gap锁的触发条件：<br>使用主键/唯一索引的当前读:</p>
-<ol>
-<li>where条件精确每一行，只触发行锁</li>
-<li>命中部分行，不命中任何一行，触发Gap锁 </li>
-</ol>
-<p>使用非唯一索引的当前读:</p>
-<ol>
-<li>触发Gap锁</li>
-</ol>
-<p>不使用索引：</p>
-<ol>
-<li>触发Gap锁，并且锁定所有的Gap，相当于锁表</li>
-</ol>
-
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/数据库/">数据库</a>
-
-      
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-锁模块之当前读和快照读"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/10/16/锁模块之当前读和快照读/">锁模块之当前读和快照读</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/10/16/锁模块之当前读和快照读/" class="article-date">
-	  <time datetime="2019-10-16T06:37:29.000Z" itemprop="datePublished">October 16, 2019</time>
-	</a>
-
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/数据库/">数据库</a>
- 
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="当前读和快照读"><a href="#当前读和快照读" class="headerlink" title="当前读和快照读"></a>当前读和快照读</h4><ol>
-<li><p>当前读：就是加了锁的增删改查语句。<br>读取的是记录的最新版本。读取的时候保证其他事务不能对数据进行修改。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select ... lock in share mode ,select ... for update  </span><br><span class="line">update,delete,insert</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>快照读：不加锁的非阻塞读 ，select</p>
-</li>
-</ol>
-<h4 id="RC、RR级别下的InnoDB的非堵塞读（快照读）如何实现"><a href="#RC、RR级别下的InnoDB的非堵塞读（快照读）如何实现" class="headerlink" title="RC、RR级别下的InnoDB的非堵塞读（快照读）如何实现"></a>RC、RR级别下的InnoDB的非堵塞读（快照读）如何实现</h4><ol>
-<li>数据行里的DB_TRX_ID、DB_ROLL_PTR、DB_ROW_ID字段<br>  DB_TRX_ID：事务ID，标识对本行数据最近一次的更新(增删改)<br>  DB_ROLL_PTR：回滚指针， 指向回滚日志undo log的一条记录，一次更新对应一条undo log记录<br>  DB_ROW_ID：新行插入，产生一个自增ID</li>
-<li>undo日志<br>undo log：回滚日志，存储各个老版本的数据，由undo链串起来 <pre><code>含insert undo log和 update undo log</code></pre></li>
-<li>read view：决定当前数据看到的是哪个版本。<br>用来做可见性判断,即我们做快照读select的时候，会针对我们查询的数据，创建出一个read view来决定当前事务能看到那个版本的数据，可能当前最新，也可能是undo log 中某个版本的数据。它遵循一个可见性算法，主要是将要修该的数据的DB_TRX_ID取出来与系统其他活跃事务id作对比，如果大于或等于就通过DB_ROLL_PTR指针取出undo log 上一层的的DB_TRX_ID直到小于这些活跃事务为止。这样保证了我们获取的数据版本是当前可见的最稳定版本。</li>
-</ol>
-<p><img src="/2019/10/16/锁模块之当前读和快照读/%E4%BA%8B%E5%8A%A1%E5%AF%B9%E8%A1%8C%E6%95%B0%E6%8D%AE%E7%9A%84%E6%9B%B4%E6%96%B0%E8%BF%87%E7%A8%8B.jpg" alt="事务对行数据的更新过程"></p>
-
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/数据库/">数据库</a>
-
-      
-  <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/当前读/">当前读</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/快照读/">快照读</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/锁模块/">锁模块</a></li></ul>
-
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
 
 
   <nav id="page-nav">
@@ -888,6 +889,30 @@
               <div class="widget-entry-summary" style="margin: 0;">
             
 
+              <h6 style="margin: 0;"><a href="/2019/10/26/JVM如何加载class文件/">JVM如何加载class文件</a></h6>
+              <span>October 26, 2019</span>
+            </div>
+
+          </li>
+        
+          <li class="clearfix">
+
+            
+              <div class="widget-entry-summary" style="margin: 0;">
+            
+
+              <h6 style="margin: 0;"><a href="/2019/10/25/谈谈我对Java的理解/">谈谈我对Java的理解</a></h6>
+              <span>October 25, 2019</span>
+            </div>
+
+          </li>
+        
+          <li class="clearfix">
+
+            
+              <div class="widget-entry-summary" style="margin: 0;">
+            
+
               <h6 style="margin: 0;"><a href="/2019/10/21/Linux体系结构/">Linux体系结构</a></h6>
               <span>October 21, 2019</span>
             </div>
@@ -930,30 +955,6 @@
 
           </li>
         
-          <li class="clearfix">
-
-            
-              <div class="widget-entry-summary" style="margin: 0;">
-            
-
-              <h6 style="margin: 0;"><a href="/2019/10/20/如何实现异步队列/">如何实现异步队列</a></h6>
-              <span>October 20, 2019</span>
-            </div>
-
-          </li>
-        
-          <li class="clearfix">
-
-            
-              <div class="widget-entry-summary" style="margin: 0;">
-            
-
-              <h6 style="margin: 0;"><a href="/2019/10/18/如何实现分布式锁/">如何通过Redis实现分布式锁</a></h6>
-              <span>October 18, 2019</span>
-            </div>
-
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -963,7 +964,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Redis/">Redis</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SpringBoot实战/">SpringBoot实战</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">5</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Redis/">Redis</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SpringBoot实战/">SpringBoot实战</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">5</span></li></ul>
     </div>
   </div>
 
@@ -973,7 +974,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ACID/">ACID</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AOF/">AOF</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AOP/">AOP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/">HTTP</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IOC/">IOC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/InnoDB/">InnoDB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyISAM/">MyISAM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OSI七层模型/">OSI七层模型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RDB/">RDB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTO/">RTO</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTT/">RTT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP的三次握手/">TCP的三次握手</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UDP/">UDP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lombok/">lombok</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql调优/">sql调优</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式锁/">分布式锁</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多路I-O复用模型/">多路I/O复用模型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密集索引/">密集索引</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异步队列/">异步队列</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/当前读/">当前读</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/快照读/">快照读</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库事务/">数据库事务</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库架构/">数据库架构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/日志框架/">日志框架</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/滑动窗口/">滑动窗口</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/稀疏索引/">稀疏索引</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/索引/">索引</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/索引数据结构/">索引数据结构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/语法/">语法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/锁模块/">锁模块</a><span class="tag-list-count">2</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ACID/">ACID</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AOF/">AOF</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AOP/">AOP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/">HTTP</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IOC/">IOC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/InnoDB/">InnoDB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM内存结构模型/">JVM内存结构模型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java特性/">Java特性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyISAM/">MyISAM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OSI七层模型/">OSI七层模型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RDB/">RDB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTO/">RTO</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTT/">RTT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP的三次握手/">TCP的三次握手</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UDP/">UDP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lombok/">lombok</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql调优/">sql调优</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式锁/">分布式锁</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/反射/">反射</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多路I-O复用模型/">多路I/O复用模型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密集索引/">密集索引</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/平台无关性/">平台无关性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异步队列/">异步队列</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/当前读/">当前读</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/快照读/">快照读</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库事务/">数据库事务</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库架构/">数据库架构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/日志框架/">日志框架</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/滑动窗口/">滑动窗口</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/稀疏索引/">稀疏索引</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/索引/">索引</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/索引数据结构/">索引数据结构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/语法/">语法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/锁模块/">锁模块</a><span class="tag-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -983,7 +984,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/ACID/" style="font-size: 10px;">ACID</a> <a href="/tags/AOF/" style="font-size: 10px;">AOF</a> <a href="/tags/AOP/" style="font-size: 10px;">AOP</a> <a href="/tags/HTTP/" style="font-size: 20px;">HTTP</a> <a href="/tags/IOC/" style="font-size: 10px;">IOC</a> <a href="/tags/InnoDB/" style="font-size: 10px;">InnoDB</a> <a href="/tags/MyISAM/" style="font-size: 10px;">MyISAM</a> <a href="/tags/OSI七层模型/" style="font-size: 10px;">OSI七层模型</a> <a href="/tags/RDB/" style="font-size: 10px;">RDB</a> <a href="/tags/RTO/" style="font-size: 10px;">RTO</a> <a href="/tags/RTT/" style="font-size: 10px;">RTT</a> <a href="/tags/TCP的三次握手/" style="font-size: 10px;">TCP的三次握手</a> <a href="/tags/UDP/" style="font-size: 10px;">UDP</a> <a href="/tags/lombok/" style="font-size: 10px;">lombok</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/sql调优/" style="font-size: 10px;">sql调优</a> <a href="/tags/分布式锁/" style="font-size: 10px;">分布式锁</a> <a href="/tags/多路I-O复用模型/" style="font-size: 10px;">多路I/O复用模型</a> <a href="/tags/密集索引/" style="font-size: 10px;">密集索引</a> <a href="/tags/异步队列/" style="font-size: 10px;">异步队列</a> <a href="/tags/当前读/" style="font-size: 10px;">当前读</a> <a href="/tags/快照读/" style="font-size: 10px;">快照读</a> <a href="/tags/数据库事务/" style="font-size: 10px;">数据库事务</a> <a href="/tags/数据库架构/" style="font-size: 10px;">数据库架构</a> <a href="/tags/日志框架/" style="font-size: 10px;">日志框架</a> <a href="/tags/滑动窗口/" style="font-size: 10px;">滑动窗口</a> <a href="/tags/稀疏索引/" style="font-size: 10px;">稀疏索引</a> <a href="/tags/索引/" style="font-size: 20px;">索引</a> <a href="/tags/索引数据结构/" style="font-size: 10px;">索引数据结构</a> <a href="/tags/语法/" style="font-size: 10px;">语法</a> <a href="/tags/锁模块/" style="font-size: 20px;">锁模块</a>
+      <a href="/tags/ACID/" style="font-size: 10px;">ACID</a> <a href="/tags/AOF/" style="font-size: 10px;">AOF</a> <a href="/tags/AOP/" style="font-size: 10px;">AOP</a> <a href="/tags/HTTP/" style="font-size: 20px;">HTTP</a> <a href="/tags/IOC/" style="font-size: 10px;">IOC</a> <a href="/tags/InnoDB/" style="font-size: 10px;">InnoDB</a> <a href="/tags/JVM内存结构模型/" style="font-size: 10px;">JVM内存结构模型</a> <a href="/tags/Java特性/" style="font-size: 10px;">Java特性</a> <a href="/tags/MyISAM/" style="font-size: 10px;">MyISAM</a> <a href="/tags/OSI七层模型/" style="font-size: 10px;">OSI七层模型</a> <a href="/tags/RDB/" style="font-size: 10px;">RDB</a> <a href="/tags/RTO/" style="font-size: 10px;">RTO</a> <a href="/tags/RTT/" style="font-size: 10px;">RTT</a> <a href="/tags/TCP的三次握手/" style="font-size: 10px;">TCP的三次握手</a> <a href="/tags/UDP/" style="font-size: 10px;">UDP</a> <a href="/tags/lombok/" style="font-size: 10px;">lombok</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/sql调优/" style="font-size: 10px;">sql调优</a> <a href="/tags/分布式锁/" style="font-size: 10px;">分布式锁</a> <a href="/tags/反射/" style="font-size: 10px;">反射</a> <a href="/tags/多路I-O复用模型/" style="font-size: 10px;">多路I/O复用模型</a> <a href="/tags/密集索引/" style="font-size: 10px;">密集索引</a> <a href="/tags/平台无关性/" style="font-size: 10px;">平台无关性</a> <a href="/tags/异步队列/" style="font-size: 10px;">异步队列</a> <a href="/tags/当前读/" style="font-size: 10px;">当前读</a> <a href="/tags/快照读/" style="font-size: 10px;">快照读</a> <a href="/tags/数据库事务/" style="font-size: 10px;">数据库事务</a> <a href="/tags/数据库架构/" style="font-size: 10px;">数据库架构</a> <a href="/tags/日志框架/" style="font-size: 10px;">日志框架</a> <a href="/tags/滑动窗口/" style="font-size: 10px;">滑动窗口</a> <a href="/tags/稀疏索引/" style="font-size: 10px;">稀疏索引</a> <a href="/tags/索引/" style="font-size: 20px;">索引</a> <a href="/tags/索引数据结构/" style="font-size: 10px;">索引数据结构</a> <a href="/tags/语法/" style="font-size: 10px;">语法</a> <a href="/tags/锁模块/" style="font-size: 20px;">锁模块</a>
     </div>
   </div>
 
@@ -993,7 +994,7 @@
     <h3 class="widget-title">Archives</h3>
 
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">1</span></li></ul>
     </div>
 
     <div>

@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>JVM如何加载class文件 | Contunued Story</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="JVM内存结构模型反射">
+  
+  
+  
+  
+  <meta name="description" content="Java虚拟机Java虚拟机：抽象化的计算机，通过在实际的计算机上个仿真模拟计算机功能来实现的，有自己完善的硬件架构：处理器，堆栈，寄存器等，还具有相应的指令系统，jvm 屏蔽了与具体操作系统平台相关的信息，使得java程序只需要生成在java虚拟机上运行的字节码，就可以在不同平台上不加修改的运行。其中最重要的两点：JVM内存结构模型，GC   jvm是内存中的虚拟机，jvm的存储就是内存，所有写">
+<meta name="keywords" content="JVM内存结构模型,反射">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JVM如何加载class文件">
+<meta property="og:url" content="http://yoursite.com/2019/10/26/JVM如何加载class文件/index.html">
+<meta property="og:site_name" content="Contunued Story">
+<meta property="og:description" content="Java虚拟机Java虚拟机：抽象化的计算机，通过在实际的计算机上个仿真模拟计算机功能来实现的，有自己完善的硬件架构：处理器，堆栈，寄存器等，还具有相应的指令系统，jvm 屏蔽了与具体操作系统平台相关的信息，使得java程序只需要生成在java虚拟机上运行的字节码，就可以在不同平台上不加修改的运行。其中最重要的两点：JVM内存结构模型，GC   jvm是内存中的虚拟机，jvm的存储就是内存，所有写">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://yoursite.com/2019/10/26/JVM如何加载class文件/Java%E8%99%9A%E6%8B%9F%E6%9C%BA.jpg">
+<meta property="og:updated_time" content="2019-10-26T03:29:53.900Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JVM如何加载class文件">
+<meta name="twitter:description" content="Java虚拟机Java虚拟机：抽象化的计算机，通过在实际的计算机上个仿真模拟计算机功能来实现的，有自己完善的硬件架构：处理器，堆栈，寄存器等，还具有相应的指令系统，jvm 屏蔽了与具体操作系统平台相关的信息，使得java程序只需要生成在java虚拟机上运行的字节码，就可以在不同平台上不加修改的运行。其中最重要的两点：JVM内存结构模型，GC   jvm是内存中的虚拟机，jvm的存储就是内存，所有写">
+<meta name="twitter:image" content="http://yoursite.com/2019/10/26/JVM如何加载class文件/Java%E8%99%9A%E6%8B%9F%E6%9C%BA.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Contunued Story" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+  <link rel="stylesheet" href="/css/fashion.css">
+  <link rel="stylesheet" href="/css/glyphs.css">
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  
+  <div class="site-header-image">
+    <img id="originBg" width="100%" alt="Hike News" src="">
+  </div>
+
+  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
+    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
+  </div>
+
+  <script>
+        var imgUrls = "css/images/pose01.jpg,https://source.unsplash.com/collection/954550/1920x1080,https://source.unsplash.com/collection/954550/1920x1081".split(",");
+        var random = Math.floor((Math.random() * imgUrls.length ));
+        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+          document.getElementById("originBg").src=imgUrls[random];
+          document.getElementById("blurBg").src=imgUrls[random];
+        } else {
+          document.getElementById("originBg").src='/' + imgUrls[random];
+          document.getElementById("blurBg").src='/' + imgUrls[random];
+        }
+    </script>
+
+
+
+
+<header id="allheader" class="site-header" role="banner" 
+   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="Contunued Story" rel="home"> Contunued Story </a>
+            
+          </h1>
+          
+          
+            <div class="site-description">Like a bird in the sky</div>
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">Home</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">Archives</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">Categories</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">Tags</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">About</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-JVM如何加载class文件" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      JVM如何加载class文件
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/10/26/JVM如何加载class文件/" class="article-date">
+	  <time datetime="2019-10-26T01:53:49.000Z" itemprop="datePublished">October 26, 2019</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/JVM/">JVM</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="Java虚拟机"><a href="#Java虚拟机" class="headerlink" title="Java虚拟机"></a>Java虚拟机</h4><p>Java虚拟机：抽象化的计算机，通过在实际的计算机上个仿真模拟计算机功能来实现的，有自己完善的硬件架构：处理器，堆栈，寄存器等，还具有相应的指令系统，jvm 屏蔽了与具体操作系统平台相关的信息，使得java程序只需要生成在java虚拟机上运行的字节码，就可以在不同平台上不加修改的运行。其中最重要的两点：JVM内存结构模型，GC  </p>
+<p><em>jvm是内存中的虚拟机，jvm的存储就是内存，所有写的 类，常量，变量，方法都在内存中这决定着程序的健壮和高效</em></p>
+<p><img src="/2019/10/26/JVM如何加载class文件/Java%E8%99%9A%E6%8B%9F%E6%9C%BA.jpg" alt></p>
+<ol>
+<li>Class Loader ： 依据特定格式，加载class文件到内存  </li>
+<li>Runtime Data Area ：JVM内存空间结构模型</li>
+<li>Native Interface: 融合不同开发语言的原生库为Java所用</li>
+<li>Execution Engine ：对命令进行解析</li>
+</ol>
+<p>JVM结构：  Class Loader, Runtime Data Area, Execution Engine, Native Interface</p>
+<hr>
+<h4 id="Java反射机制"><a href="#Java反射机制" class="headerlink" title="Java反射机制"></a>Java反射机制</h4><p>JAVA 反射机制是在运行状态中，对于任意一个类，都能够知道这个类的所有属性和方法；对于任意一个对象，都能够调用它的任意方法和属性；这种动态获取信息以及动态调用对象方法的功能称为java语言的反射机制。  </p>
+<h5 id="写一个反射的例子"><a href="#写一个反射的例子" class="headerlink" title="写一个反射的例子"></a>写一个反射的例子</h5><p>Robot.java</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">package com.interview.javabasic.reflect</span><br><span class="line"></span><br><span class="line">public class Robot&#123;</span><br><span class="line">    private String name;</span><br><span class="line">    public void sayHi(String helloSentence)&#123;</span><br><span class="line">        System.out.println(helloSentence + &quot;&quot; + name)</span><br><span class="line">    &#125;</span><br><span class="line">    private String throwHello(String tag)&#123;</span><br><span class="line">        return &quot;Hello&quot; + tag;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>ReflectSample.java</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args)&#123;</span><br><span class="line">    //先获取Robot类，需要全路径</span><br><span class="line">    Class rc = Class.forNam(&quot;com.interview.javabasic.reflect.Robot&quot;)</span><br><span class="line">    //创建实例,需要强转，newInstance返回的是泛型</span><br><span class="line">    Robot r = (Robot)rc.newInstance();</span><br><span class="line">    System.out.println(&quot;Class name is &quot; + rc.getName());</span><br><span class="line">    //通过反射获取私有方法,throwHello接收一个String类型的参数</span><br><span class="line">    Method getHello = rc.getDeclaredMethod( name: &quot;throwHello&quot;,String.class)；</span><br><span class="line">    getHello.setAccessible(true);</span><br><span class="line">    //需要传入对象实例，和方法参数</span><br><span class="line">    Object str = getHello.invoke(r,&quot;Bob&quot;);</span><br><span class="line">    System.out.println(&quot;getHello result is &quot; + str);</span><br><span class="line">    //第二种获取方法获取方法</span><br><span class="line">    Method sayHi = rc.getMethod( name: &quot;sayHi&quot;,String.class)；</span><br><span class="line">    sayHi.invoke(r,&quot;Welcome&quot;);</span><br><span class="line">    //获取私有类型的Filed</span><br><span class="line">    Filed name = rc.getDeclaredField(name: &quot;name&quot;);</span><br><span class="line">    name.setAccessible(true);</span><br><span class="line">    name.set(r,&quot;Alice&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Metohd:</strong><br>newInstance()方法返回的是泛型。<br>getDeclaredMethod可以获得该类所有的方法，除去继承和实现了接口的方法。<br>如果是私有的方法，必须使用setAccessible(true)方法。<br>getMethod可以获得该类所有的公有方法，还有所继承的以及实现了接口的方法。  </p>
+<p><strong>Field:</strong><br>getDeclaredField获取属性<br>如果是私有属性也要设置setAccessible(true)  </p>
+<hr>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/JVM/">JVM</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM内存结构模型/">JVM内存结构模型</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/反射/">反射</a></li></ul>
+
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2019/10/25/谈谈我对Java的理解/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">谈谈我对Java的理解</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Java虚拟机"><span class="nav-number">1.</span> <span class="nav-text">Java虚拟机</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Java反射机制"><span class="nav-number">2.</span> <span class="nav-text">Java反射机制</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#写一个反射的例子"><span class="nav-number">2.1.</span> <span class="nav-text">写一个反射的例子</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+<!-- Donate -->
+
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2019 Contunued Story All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+      var headerblur = document.getElementById("header-blur");
+      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/miku.model.json"},"display":{"position":"right","width":200,"height":400},"mobile":{"show":true,"scale":0.5},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

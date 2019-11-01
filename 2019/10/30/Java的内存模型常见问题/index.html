@@ -9,17 +9,17 @@
   
   
   
-  <meta name="description" content="JVM三大性能调优参数-Xms -Xmx -Xss的含义 -Xss：一般情况下，256K足够。此配置将会影响此进程中并发线程数的大小 -Xms：初始java堆的大小，即该进程刚创建出来的时候java堆的大小。 -Xmx：一旦对象容量超过-Xms大小，则将java堆大小扩容至改参数。为防止heap扩容导致内存抖动，影响程序运行稳定性，一般设置成与Xms一样大小">
+  <meta name="description" content="JVM三大性能调优参数-Xms -Xmx -Xss的含义 -Xss：规定的每个虚拟机栈（堆栈）的大小。一般情况下，256K足够。此配置将会影响此进程中并发线程数的大小 -Xms：初始java堆的大小，即该进程刚创建出来的时候java堆的大小。 -Xmx：一旦对象容量超过-Xms大小，则将java堆大小扩容至改参数。为防止heap扩容导致内存抖动，影响程序运行稳定性，一般设置成与Xms一样大小  J">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java的内存模型常见问题">
 <meta property="og:url" content="http://yoursite.com/2019/10/30/Java的内存模型常见问题/index.html">
 <meta property="og:site_name" content="Contunued Story">
-<meta property="og:description" content="JVM三大性能调优参数-Xms -Xmx -Xss的含义 -Xss：一般情况下，256K足够。此配置将会影响此进程中并发线程数的大小 -Xms：初始java堆的大小，即该进程刚创建出来的时候java堆的大小。 -Xmx：一旦对象容量超过-Xms大小，则将java堆大小扩容至改参数。为防止heap扩容导致内存抖动，影响程序运行稳定性，一般设置成与Xms一样大小">
+<meta property="og:description" content="JVM三大性能调优参数-Xms -Xmx -Xss的含义 -Xss：规定的每个虚拟机栈（堆栈）的大小。一般情况下，256K足够。此配置将会影响此进程中并发线程数的大小 -Xms：初始java堆的大小，即该进程刚创建出来的时候java堆的大小。 -Xmx：一旦对象容量超过-Xms大小，则将java堆大小扩容至改参数。为防止heap扩容导致内存抖动，影响程序运行稳定性，一般设置成与Xms一样大小  J">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-10-30T15:05:49.981Z">
+<meta property="og:updated_time" content="2019-11-01T13:23:17.022Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java的内存模型常见问题">
-<meta name="twitter:description" content="JVM三大性能调优参数-Xms -Xmx -Xss的含义 -Xss：一般情况下，256K足够。此配置将会影响此进程中并发线程数的大小 -Xms：初始java堆的大小，即该进程刚创建出来的时候java堆的大小。 -Xmx：一旦对象容量超过-Xms大小，则将java堆大小扩容至改参数。为防止heap扩容导致内存抖动，影响程序运行稳定性，一般设置成与Xms一样大小">
+<meta name="twitter:description" content="JVM三大性能调优参数-Xms -Xmx -Xss的含义 -Xss：规定的每个虚拟机栈（堆栈）的大小。一般情况下，256K足够。此配置将会影响此进程中并发线程数的大小 -Xms：初始java堆的大小，即该进程刚创建出来的时候java堆的大小。 -Xmx：一旦对象容量超过-Xms大小，则将java堆大小扩容至改参数。为防止heap扩容导致内存抖动，影响程序运行稳定性，一般设置成与Xms一样大小  J">
   
     <link rel="alternate" href="/atom.xml" title="Contunued Story" type="application/atom+xml">
   
@@ -159,10 +159,12 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h4 id="JVM三大性能调优参数-Xms-Xmx-Xss的含义"><a href="#JVM三大性能调优参数-Xms-Xmx-Xss的含义" class="headerlink" title="JVM三大性能调优参数-Xms -Xmx -Xss的含义"></a>JVM三大性能调优参数-Xms -Xmx -Xss的含义</h4><ol>
-<li>-Xss：一般情况下，256K足够。此配置将会影响此进程中并发线程数的大小</li>
+<li>-Xss：规定的每个虚拟机栈（堆栈）的大小。一般情况下，256K足够。此配置将会影响此进程中并发线程数的大小</li>
 <li>-Xms：初始java堆的大小，即该进程刚创建出来的时候java堆的大小。</li>
 <li>-Xmx：一旦对象容量超过-Xms大小，则将java堆大小扩容至改参数。为防止heap扩容导致内存抖动，影响程序运行稳定性，一般设置成与Xms一样大小</li>
 </ol>
+<h4 id="Java内存模型中堆和栈的区别"><a href="#Java内存模型中堆和栈的区别" class="headerlink" title="Java内存模型中堆和栈的区别"></a>Java内存模型中堆和栈的区别</h4><h5 id="内存分配策略"><a href="#内存分配策略" class="headerlink" title="内存分配策略"></a>内存分配策略</h5><p>静态存储：编译时确定每个数据目标在运行时的存储空间需求<br>栈式存储：数据区需求在编译时未知，运行时模块入口前确定<br>堆时存储：编译时或运行时模块入口都无法确定，动态分配</p>
+<h4 id="Java内存模型中堆和栈的区别-1"><a href="#Java内存模型中堆和栈的区别-1" class="headerlink" title="Java内存模型中堆和栈的区别"></a>Java内存模型中堆和栈的区别</h4><p>联系：引用对象、数组时，栈里定义变量保存堆中目标的首地址<br>管理方式：栈自动释放，堆需要GC<br>空间大小：栈比堆小<br>碎片相关：栈产生的碎片远小于堆<br>分配方式：栈支持静态和动态分配，而堆仅支持动态分配<br>效率：栈的效率比堆高</p>
 
       
     </div>
@@ -222,7 +224,7 @@
     <div id="toc" class="toc-article">
     <strong class="toc-title">Contents</strong>
     
-      <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#JVM三大性能调优参数-Xms-Xmx-Xss的含义"><span class="nav-number">1.</span> <span class="nav-text">JVM三大性能调优参数-Xms -Xmx -Xss的含义</span></a></li></ol>
+      <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#JVM三大性能调优参数-Xms-Xmx-Xss的含义"><span class="nav-number">1.</span> <span class="nav-text">JVM三大性能调优参数-Xms -Xmx -Xss的含义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Java内存模型中堆和栈的区别"><span class="nav-number">2.</span> <span class="nav-text">Java内存模型中堆和栈的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#内存分配策略"><span class="nav-number">2.1.</span> <span class="nav-text">内存分配策略</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Java内存模型中堆和栈的区别-1"><span class="nav-number">3.</span> <span class="nav-text">Java内存模型中堆和栈的区别</span></a></li></ol>
     
     </div>
   </aside>

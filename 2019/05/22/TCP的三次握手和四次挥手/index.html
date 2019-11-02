@@ -3,26 +3,30 @@
 <head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="utf-8">
   
-  <title>TCP的三次握手 | Contunued Story</title>
+  <title>TCP的三次握手和四次挥手 | Contunued Story</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta name="keywords" content="TCP的三次握手">
+  <meta name="keywords" content="TCP的三次握手TCP的四次挥手">
   
   
   
   
-  <meta name="description" content="TCP的三次握手">
-<meta name="keywords" content="TCP的三次握手">
+  <meta name="description" content="TCP的三次握手TCP报文头source port （源端口）destination（目标端口）Sequence Number（同步序号）Acknowledgement Number（确认序号）Offset（偏移量）Reserved（保留域）TCP Flags（标志位）Window（滑动窗口）CheckSum（检验和）Urgent Pointer（紧急指针）TCP Options（定义一些可选参数">
+<meta name="keywords" content="TCP的三次握手,TCP的四次挥手">
 <meta property="og:type" content="article">
-<meta property="og:title" content="TCP的三次握手">
+<meta property="og:title" content="TCP的三次握手和四次挥手">
 <meta property="og:url" content="http://yoursite.com/2019/05/22/TCP的三次握手和四次挥手/index.html">
 <meta property="og:site_name" content="Contunued Story">
-<meta property="og:description" content="TCP的三次握手">
+<meta property="og:description" content="TCP的三次握手TCP报文头source port （源端口）destination（目标端口）Sequence Number（同步序号）Acknowledgement Number（确认序号）Offset（偏移量）Reserved（保留域）TCP Flags（标志位）Window（滑动窗口）CheckSum（检验和）Urgent Pointer（紧急指针）TCP Options（定义一些可选参数">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-10-06T14:43:24.273Z">
+<meta property="og:image" content="http://yoursite.com/2019/05/22/TCP的三次握手和四次挥手/TCP%E6%8A%A5%E6%96%87%E5%A4%B4.jpg">
+<meta property="og:image" content="http://yoursite.com/2019/05/22/TCP的三次握手和四次挥手/TCP%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B.jpg">
+<meta property="og:image" content="http://yoursite.com/2019/05/22/TCP的三次握手和四次挥手/TCP%E7%9A%84%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B.jpg">
+<meta property="og:updated_time" content="2019-11-02T04:04:22.740Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="TCP的三次握手">
-<meta name="twitter:description" content="TCP的三次握手">
+<meta name="twitter:title" content="TCP的三次握手和四次挥手">
+<meta name="twitter:description" content="TCP的三次握手TCP报文头source port （源端口）destination（目标端口）Sequence Number（同步序号）Acknowledgement Number（确认序号）Offset（偏移量）Reserved（保留域）TCP Flags（标志位）Window（滑动窗口）CheckSum（检验和）Urgent Pointer（紧急指针）TCP Options（定义一些可选参数">
+<meta name="twitter:image" content="http://yoursite.com/2019/05/22/TCP的三次握手和四次挥手/TCP%E6%8A%A5%E6%96%87%E5%A4%B4.jpg">
   
     <link rel="alternate" href="/atom.xml" title="Contunued Story" type="application/atom+xml">
   
@@ -137,7 +141,7 @@
         
   
     <h1 class="thumb" class="article-title" itemprop="name">
-      TCP的三次握手
+      TCP的三次握手和四次挥手
     </h1>
   
 
@@ -161,7 +165,44 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h4 id="TCP的三次握手"><a href="#TCP的三次握手" class="headerlink" title="TCP的三次握手"></a>TCP的三次握手</h4>
+        <h4 id="TCP的三次握手"><a href="#TCP的三次握手" class="headerlink" title="TCP的三次握手"></a>TCP的三次握手</h4><h5 id="TCP报文头"><a href="#TCP报文头" class="headerlink" title="TCP报文头"></a>TCP报文头</h5><p>source port （源端口）<br>destination（目标端口）<br>Sequence Number（同步序号）<br>Acknowledgement Number（确认序号）<br>Offset（偏移量）<br>Reserved（保留域）<br>TCP Flags（标志位）<br>Window（滑动窗口）<br>CheckSum（检验和）<br>Urgent Pointer（紧急指针）<br>TCP Options（定义一些可选参数）</p>
+<p>TCP报文头包含源端口及目的端口，IP地址可以唯一标识主机，TCP协议加端口可以唯一标识主机中的一个进程。可以使用IP+协议+端口来唯一标识网络中的一个进程。在一些场景下也把这种模式称为“套接字”即Socket。   </p>
+<p><img src="/2019/05/22/TCP的三次握手和四次挥手/TCP%E6%8A%A5%E6%96%87%E5%A4%B4.jpg" alt></p>
+<h5 id="TCP-Flags"><a href="#TCP-Flags" class="headerlink" title="TCP Flags"></a>TCP Flags</h5><p>URG: 紧急指针是否有效<br>ACK: 表示确认标志，携带 ack 标志的报文也称为确认报文<br>PSH: 提示接收端收到报文之后应该立即将数据推送给应用程  序，而不是放在缓冲区排队<br>RET: 表示要求对方重新简历连接。<br>SYN: 同步序列号，用于建立连接过程<br>FIN: 传输结束标志，告知对方自己即将关闭连接。  </p>
+<h5 id="TCP三次握手流程（“握手是为了建立连接”）"><a href="#TCP三次握手流程（“握手是为了建立连接”）" class="headerlink" title="TCP三次握手流程（“握手是为了建立连接”）"></a>TCP三次握手流程（“握手是为了建立连接”）</h5><p><img src="/2019/05/22/TCP的三次握手和四次挥手/TCP%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B.jpg" alt="TCP三次握手"></p>
+<p>在TPC/IP协议中，TCP协议提供可靠的连接服务，采用三次握手建立一个连接  </p>
+<p>第一次握手： 建立连接时，客户端发送SYN包（seq=x）到服务器，并进入SYN_SENT状态，等待服务器确认 </p>
+<p>第二次握手：服务器收到SYN包，必须确认客户的SYN(ack=x+1),<br>同时自己也发送一个SYN包（sql=y）,即SYN+ACK包，此时服务器进入SYN_RECV状态  </p>
+<p>第三次握手：客户端收到服务器的SYN+ACK包，向服务器发送确认包ACK(ack=y+1) ,此包发送完毕，客户端和服务器进入ESTABLISHED状态，完成三次握手<br><strong>各个状态的意义如下：</strong></p>
+<ul>
+<li>LISTEN - 侦听来自远方TCP端口的连接请求； </li>
+<li>SYN-SENT -在发送连接请求后等待匹配的连接请求； </li>
+<li>SYN-RECEIVED - 在收到和发送一个连接请求后等待对连接请求的确认； </li>
+<li>ESTABLISHED- 代表一个打开的连接，数据可以传送给用户； <h5 id="为什么需要三次握手才能建立连接"><a href="#为什么需要三次握手才能建立连接" class="headerlink" title="为什么需要三次握手才能建立连接"></a>为什么需要三次握手才能建立连接</h5>为了初始化Sequence Number的初始值</li>
+</ul>
+<h5 id="首次握手隐患——SYN超时"><a href="#首次握手隐患——SYN超时" class="headerlink" title="首次握手隐患——SYN超时"></a>首次握手隐患——SYN超时</h5><ul>
+<li>Server收到Client的SYN，回复SYN-ACK的时候未收到ACK确认</li>
+<li>Server不断重试直至超时，Linux默认5次，总共需要63秒断开连接。<h5 id="针对SYN-Flood的防护措施"><a href="#针对SYN-Flood的防护措施" class="headerlink" title="针对SYN Flood的防护措施"></a>针对SYN Flood的防护措施</h5>客户端给服务器发送一个SYN报文，下线，服务器需要默认等63秒才会断开。通过这个方法可以耗尽服务器的SYN连接队列。</li>
+<li>SYN队列满后，通过tcp_syncookies参数回发SYN Cookie</li>
+<li>若为正常连接则Client会回发SYN Cookie，直接建立连接<h5 id="建立连接后，Client出现故障怎么办"><a href="#建立连接后，Client出现故障怎么办" class="headerlink" title="建立连接后，Client出现故障怎么办"></a>建立连接后，Client出现故障怎么办</h5>保活机制：<br>建立TCP连接后，TCP有保活机制，以应对其中一端出现故障。若连接处于非活动状态，则开启保活功能的一方将向另一方发送保活探测报文，达到keepalive time时间间隔仍未收到响应则重试，若尝试次数达到保活探测数仍未收到对方的响应，则连接断开。</li>
+</ul>
+<h4 id="TCP的四次挥手"><a href="#TCP的四次挥手" class="headerlink" title="TCP的四次挥手"></a>TCP的四次挥手</h4><h5 id="TCP四次挥手流程（挥手是为了终止连接）"><a href="#TCP四次挥手流程（挥手是为了终止连接）" class="headerlink" title="TCP四次挥手流程（挥手是为了终止连接）"></a>TCP四次挥手流程（挥手是为了终止连接）</h5><p>第一次挥手： Client发送一个FIN,用来关闭Client到Server的数据传送，Client进入FIN_WAIT_1状态；  </p>
+<p>第二次挥手： Server收到FIN后，发送ACK给Client,确认序号为收到序号+1（与SYN相同，一个FIN占用一个序号），Server进入CLOSE_WAIT状态；  </p>
+<p>第三次握手： Serveer发送一个FIN,用来关闭Server到Client的数据传送，Server进入LAST_ACK状态；</p>
+<p>第四次挥手： Clien收到FIN后，Client进入TIME_WAIT状态，急着发送一个ACK给Server,确认序号为收到的序号+1，Server进入CLOSED状态，完成四次挥手；</p>
+<p><img src="/2019/05/22/TCP的三次握手和四次挥手/TCP%E7%9A%84%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B.jpg" alt="TCP的四次挥手"></p>
+<p>TCP连接必须经过时间2MSL后才真正释放掉？</p>
+<ul>
+<li>保证有足够时间让对方收到ACK包</li>
+<li>避免新旧连接混淆</li>
+</ul>
+<h5 id="为什么四次挥手才能断开连接"><a href="#为什么四次挥手才能断开连接" class="headerlink" title="为什么四次挥手才能断开连接"></a>为什么四次挥手才能断开连接</h5><p>因为TCP是全双工的，发送方和接收方都需要FIN报文和ACK报文</p>
+<h5 id="服务器出现大量CLOSE-WAIT状态的原因"><a href="#服务器出现大量CLOSE-WAIT状态的原因" class="headerlink" title="服务器出现大量CLOSE_WAIT状态的原因"></a>服务器出现大量CLOSE_WAIT状态的原因</h5><p>对方关闭socket连接，我方忙于读或写，没有及时关闭</p>
+<ul>
+<li>检查代码，特别是释放资源的代码</li>
+<li>检查配置，特别是处理请求的线程配置</li>
+</ul>
+<h5 id="netstat查看机器网络状态的指令"><a href="#netstat查看机器网络状态的指令" class="headerlink" title="netstat查看机器网络状态的指令"></a>netstat查看机器网络状态的指令</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">查看服务器处于各个状态下的连接数  </span><br><span class="line">netstat -n | awk &apos;/^tcp/&#123;++S[$NF]&#125;END(FOR(a in S) print a,S[a])&apos;</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer class="entry-meta entry-footer">
@@ -171,7 +212,7 @@
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TCP的三次握手/">TCP的三次握手</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TCP的三次握手/">TCP的三次握手</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TCP的四次挥手/">TCP的四次挥手</a></li></ul>
 
       
         
@@ -232,7 +273,7 @@
     <div id="toc" class="toc-article">
     <strong class="toc-title">Contents</strong>
     
-      <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#TCP的三次握手"><span class="nav-number">1.</span> <span class="nav-text">TCP的三次握手</span></a></li></ol>
+      <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#TCP的三次握手"><span class="nav-number">1.</span> <span class="nav-text">TCP的三次握手</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#TCP报文头"><span class="nav-number">1.1.</span> <span class="nav-text">TCP报文头</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#TCP-Flags"><span class="nav-number">1.2.</span> <span class="nav-text">TCP Flags</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#TCP三次握手流程（“握手是为了建立连接”）"><span class="nav-number">1.3.</span> <span class="nav-text">TCP三次握手流程（“握手是为了建立连接”）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#为什么需要三次握手才能建立连接"><span class="nav-number">1.4.</span> <span class="nav-text">为什么需要三次握手才能建立连接</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#首次握手隐患——SYN超时"><span class="nav-number">1.5.</span> <span class="nav-text">首次握手隐患——SYN超时</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#针对SYN-Flood的防护措施"><span class="nav-number">1.6.</span> <span class="nav-text">针对SYN Flood的防护措施</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#建立连接后，Client出现故障怎么办"><span class="nav-number">1.7.</span> <span class="nav-text">建立连接后，Client出现故障怎么办</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TCP的四次挥手"><span class="nav-number">2.</span> <span class="nav-text">TCP的四次挥手</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#TCP四次挥手流程（挥手是为了终止连接）"><span class="nav-number">2.1.</span> <span class="nav-text">TCP四次挥手流程（挥手是为了终止连接）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#为什么四次挥手才能断开连接"><span class="nav-number">2.2.</span> <span class="nav-text">为什么四次挥手才能断开连接</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#服务器出现大量CLOSE-WAIT状态的原因"><span class="nav-number">2.3.</span> <span class="nav-text">服务器出现大量CLOSE_WAIT状态的原因</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#netstat查看机器网络状态的指令"><span class="nav-number">2.4.</span> <span class="nav-text">netstat查看机器网络状态的指令</span></a></li></ol></li></ol>
     
     </div>
   </aside>

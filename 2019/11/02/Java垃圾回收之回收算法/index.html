@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>Java垃圾回收之回收算法 | Contunued Story</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="回收算法">
+  
+  
+  
+  
+  <meta name="description" content="标记-清除算法（Mark and Sweep） 标记：从跟集合进行扫描，对存活的对象进行标记 清除：对堆内存从头到尾进行线性遍历，回收不可达对象内存   缺点：由于标记清除不需要进行对象的移动，并且仅对不存活的对象进行处理。会产生大量不连续的内存碎片。 复制算法（Coping） 分为对象面和空闲面 对象在对象面上创建 对象面上的内存不足时，存活的对象被从对象面复制到空闲面 将对象面所有对象内存清除">
+<meta name="keywords" content="回收算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java垃圾回收之回收算法">
+<meta property="og:url" content="http://yoursite.com/2019/11/02/Java垃圾回收之回收算法/index.html">
+<meta property="og:site_name" content="Contunued Story">
+<meta property="og:description" content="标记-清除算法（Mark and Sweep） 标记：从跟集合进行扫描，对存活的对象进行标记 清除：对堆内存从头到尾进行线性遍历，回收不可达对象内存   缺点：由于标记清除不需要进行对象的移动，并且仅对不存活的对象进行处理。会产生大量不连续的内存碎片。 复制算法（Coping） 分为对象面和空闲面 对象在对象面上创建 对象面上的内存不足时，存活的对象被从对象面复制到空闲面 将对象面所有对象内存清除">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://yoursite.com/2019/11/02/Java垃圾回收之回收算法/%E6%A0%87%E8%AE%B0-%E6%B8%85%E9%99%A4%E7%AE%97%E6%B3%95.jpg">
+<meta property="og:image" content="http://yoursite.com/2019/11/02/Java垃圾回收之回收算法/%E5%B9%B4%E8%BD%BB%E4%BB%A3%E5%92%8C%E8%80%81%E5%B9%B4%E4%BB%A3%E7%9A%84%E5%88%86%E5%8C%BA.jpg">
+<meta property="og:image" content="http://yoursite.com/2019/11/02/Java垃圾回收之回收算法/%E5%B9%B4%E8%BD%BB%E4%BB%A3%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E8%BF%87%E7%A8%8B.jpg">
+<meta property="og:updated_time" content="2019-11-02T15:10:44.798Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java垃圾回收之回收算法">
+<meta name="twitter:description" content="标记-清除算法（Mark and Sweep） 标记：从跟集合进行扫描，对存活的对象进行标记 清除：对堆内存从头到尾进行线性遍历，回收不可达对象内存   缺点：由于标记清除不需要进行对象的移动，并且仅对不存活的对象进行处理。会产生大量不连续的内存碎片。 复制算法（Coping） 分为对象面和空闲面 对象在对象面上创建 对象面上的内存不足时，存活的对象被从对象面复制到空闲面 将对象面所有对象内存清除">
+<meta name="twitter:image" content="http://yoursite.com/2019/11/02/Java垃圾回收之回收算法/%E6%A0%87%E8%AE%B0-%E6%B8%85%E9%99%A4%E7%AE%97%E6%B3%95.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Contunued Story" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+  <link rel="stylesheet" href="/css/fashion.css">
+  <link rel="stylesheet" href="/css/glyphs.css">
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  
+  <div class="site-header-image">
+    <img id="originBg" width="100%" alt="Hike News" src="">
+  </div>
+
+  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
+    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
+  </div>
+
+  <script>
+        var imgUrls = "css/images/pose01.jpg,https://source.unsplash.com/collection/954550/1920x1080,https://source.unsplash.com/collection/954550/1920x1081".split(",");
+        var random = Math.floor((Math.random() * imgUrls.length ));
+        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+          document.getElementById("originBg").src=imgUrls[random];
+          document.getElementById("blurBg").src=imgUrls[random];
+        } else {
+          document.getElementById("originBg").src='/' + imgUrls[random];
+          document.getElementById("blurBg").src='/' + imgUrls[random];
+        }
+    </script>
+
+
+
+
+<header id="allheader" class="site-header" role="banner" 
+   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="Contunued Story" rel="home"> Contunued Story </a>
+            
+          </h1>
+          
+          
+            <div class="site-description">Like a bird in the sky</div>
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">Home</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">Archives</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">Categories</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">Tags</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">About</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Java垃圾回收之回收算法" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Java垃圾回收之回收算法
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/11/02/Java垃圾回收之回收算法/" class="article-date">
+	  <time datetime="2019-11-02T07:57:27.000Z" itemprop="datePublished">November 2, 2019</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/GC相关/">GC相关</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="标记-清除算法（Mark-and-Sweep）"><a href="#标记-清除算法（Mark-and-Sweep）" class="headerlink" title="标记-清除算法（Mark and Sweep）"></a>标记-清除算法（Mark and Sweep）</h4><ul>
+<li>标记：从跟集合进行扫描，对存活的对象进行标记</li>
+<li>清除：对堆内存从头到尾进行线性遍历，回收不可达对象内存</li>
+</ul>
+<p><img src="/2019/11/02/Java垃圾回收之回收算法/%E6%A0%87%E8%AE%B0-%E6%B8%85%E9%99%A4%E7%AE%97%E6%B3%95.jpg" alt="标记-清除算法.jpg"></p>
+<p>缺点：由于标记清除不需要进行对象的移动，并且仅对不存活的对象进行处理。会产生大量不连续的内存碎片。</p>
+<h4 id="复制算法（Coping）"><a href="#复制算法（Coping）" class="headerlink" title="复制算法（Coping）"></a>复制算法（Coping）</h4><ol>
+<li>分为对象面和空闲面</li>
+<li>对象在对象面上创建</li>
+<li>对象面上的内存不足时，存活的对象被从对象面复制到空闲面</li>
+<li>将对象面所有对象内存清除</li>
+</ol>
+<p><strong>优点</strong></p>
+<ul>
+<li>解决碎片化问题</li>
+<li>顺序分配内存，简单高效</li>
+<li>适用于对象存活率低的场景（年轻代）</li>
+</ul>
+<h4 id="标记-整理算法（Compacting）"><a href="#标记-整理算法（Compacting）" class="headerlink" title="标记-整理算法（Compacting）"></a>标记-整理算法（Compacting）</h4><ul>
+<li>标记：从根集合进行扫描，对存货的对象进行标记</li>
+<li>清除：移动所有存活的对象，切按照内存地址次序依次排列，然后将末端内存地址以后的内存全部回收</li>
+</ul>
+<p><strong>优点</strong></p>
+<ul>
+<li>避免内存的不连续行</li>
+<li>不用设置两块内存互换</li>
+<li>适用于对象存活率高的场景（老年代）</li>
+</ul>
+<h4 id="分代收集算法（Generational-Collector）"><a href="#分代收集算法（Generational-Collector）" class="headerlink" title="分代收集算法（Generational Collector）"></a>分代收集算法（Generational Collector）</h4><ul>
+<li>垃圾回收算法的组合拳</li>
+<li>按照对象生命周期的不同划分区域以采取不同的垃圾回收算法</li>
+<li>目的：提高JVM的回收效率</li>
+</ul>
+<h4 id="GC的分类"><a href="#GC的分类" class="headerlink" title="GC的分类"></a>GC的分类</h4><ul>
+<li>Minor GC:发生在年轻中的垃圾收集动作，采用复制算法；年轻代是所有Java对象出生的地方</li>
+<li>Full GC:与老年代相关</li>
+</ul>
+<p><img src="/2019/11/02/Java垃圾回收之回收算法/%E5%B9%B4%E8%BD%BB%E4%BB%A3%E5%92%8C%E8%80%81%E5%B9%B4%E4%BB%A3%E7%9A%84%E5%88%86%E5%8C%BA.jpg" alt></p>
+<h5 id="年轻代：尽可能快速地收集掉那些生命周期短的对象"><a href="#年轻代：尽可能快速地收集掉那些生命周期短的对象" class="headerlink" title="年轻代：尽可能快速地收集掉那些生命周期短的对象"></a>年轻代：尽可能快速地收集掉那些生命周期短的对象</h5><ul>
+<li>Eden区（刚创建的对象）</li>
+<li>两个Survivor区（幸存者区）<br>新生代占用1/3堆空间，其中Eden 8/10, from1/10 ,to 1/10<br>老年代 2/3堆空间</li>
+</ul>
+<p>年轻代垃圾回收的过程：</p>
+<p><img src="/2019/11/02/Java垃圾回收之回收算法/%E5%B9%B4%E8%BD%BB%E4%BB%A3%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E8%BF%87%E7%A8%8B.jpg" alt></p>
+<ol>
+<li>对象创建在Eden区，当Eden区满了之后会触发一次Minor GC，把标记为存活的对象复制到Survivor0中，清理所有使用过的Eden区域，存活对象年龄+1；</li>
+<li>当Eden区再次被填满，触发回Minor GC，会把Eden区和survivor0区中标记为存活的对象都复制到survivor1中，Eden和Survivio区域将会被清空，周而复始</li>
+<li>当对象达到一定年龄（默认15岁），会成为老年代；对于一些较大的对象，年轻代无法装下，会直接进入老年代</li>
+</ol>
+<p><strong>对象如何晋升到老年代？</strong> </p>
+<ol>
+<li>经历一定Minor次数依然存活的对象</li>
+<li>Survivor区中存放不下的对象</li>
+<li>新生成的大对象（-XX:+PretenuerSizeThreshold）</li>
+</ol>
+<p><strong>常用的调优参数</strong> </p>
+<ul>
+<li>XX:SurvivorRatio:Eden和Survivor的比值，默认8：1</li>
+<li>XX:NewRatio:老年代和年轻代大小的比例</li>
+<li>MaxTenuringThreshold:对象从年轻代晋升到老年代经过GC次数的最大阈值</li>
+</ul>
+<h5 id="老年代-存放生命周期较长的对象"><a href="#老年代-存放生命周期较长的对象" class="headerlink" title="老年代:存放生命周期较长的对象"></a>老年代:存放生命周期较长的对象</h5><ul>
+<li>标记-清理算法</li>
+<li>标记：整理算法 </li>
+</ul>
+<p>当触发老年代的垃圾回收的时候，会伴随着新生代堆内存的回收，即对整个堆的垃圾回收。</p>
+<ol>
+<li>Full GC和Major GC</li>
+<li>Full GC比Minor GC慢，但执行效率低</li>
+</ol>
+<p><strong>触发Full GC的条件</strong></p>
+<ol>
+<li>老年代空间不足</li>
+<li>永久代空间不足（JDK7以前的版本）</li>
+<li>CMS GC时出现promotion failed,concurrent mode failure</li>
+<li>Minor GC晋升到老年代的平均大小大于老年代的剩余空间</li>
+<li>调用System.gc()</li>
+<li>使用RMI来进行RPC或管的JDK应用，每小时执行1次Full GC</li>
+</ol>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/GC相关/">GC相关</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/回收算法/">回收算法</a></li></ul>
+
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/11/02/Java垃圾回收之垃圾回收器/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Java垃圾回收之垃圾回收器
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/11/02/Java垃圾回收之标记算法/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Java垃圾回收之标记算法</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#标记-清除算法（Mark-and-Sweep）"><span class="nav-number">1.</span> <span class="nav-text">标记-清除算法（Mark and Sweep）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#复制算法（Coping）"><span class="nav-number">2.</span> <span class="nav-text">复制算法（Coping）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#标记-整理算法（Compacting）"><span class="nav-number">3.</span> <span class="nav-text">标记-整理算法（Compacting）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分代收集算法（Generational-Collector）"><span class="nav-number">4.</span> <span class="nav-text">分代收集算法（Generational Collector）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GC的分类"><span class="nav-number">5.</span> <span class="nav-text">GC的分类</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#年轻代：尽可能快速地收集掉那些生命周期短的对象"><span class="nav-number">5.1.</span> <span class="nav-text">年轻代：尽可能快速地收集掉那些生命周期短的对象</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#老年代-存放生命周期较长的对象"><span class="nav-number">5.2.</span> <span class="nav-text">老年代:存放生命周期较长的对象</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+<!-- Donate -->
+
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2019 Contunued Story All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+      var headerblur = document.getElementById("header-blur");
+      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/miku.model.json"},"display":{"position":"right","width":200,"height":400},"mobile":{"show":true,"scale":0.5},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

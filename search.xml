@@ -1,9 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[Java垃圾回收之垃圾回收器]]></title>
+    <url>%2F2019%2F11%2F02%2FJava%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E4%B9%8B%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8%2F</url>
+    <content type="text"></content>
+      <categories>
+        <category>GC相关</category>
+      </categories>
+      <tags>
+        <tag>新生代垃圾收集器</tag>
+        <tag>老年代垃圾收集器</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Java垃圾回收之回收算法]]></title>
+    <url>%2F2019%2F11%2F02%2FJava%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E4%B9%8B%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95%2F</url>
+    <content type="text"><![CDATA[标记-清除算法（Mark and Sweep） 标记：从跟集合进行扫描，对存活的对象进行标记 清除：对堆内存从头到尾进行线性遍历，回收不可达对象内存 缺点：由于标记清除不需要进行对象的移动，并且仅对不存活的对象进行处理。会产生大量不连续的内存碎片。 复制算法（Coping） 分为对象面和空闲面 对象在对象面上创建 对象面上的内存不足时，存活的对象被从对象面复制到空闲面 将对象面所有对象内存清除 优点 解决碎片化问题 顺序分配内存，简单高效 适用于对象存活率低的场景（年轻代） 标记-整理算法（Compacting） 标记：从根集合进行扫描，对存货的对象进行标记 清除：移动所有存活的对象，切按照内存地址次序依次排列，然后将末端内存地址以后的内存全部回收 优点 避免内存的不连续行 不用设置两块内存互换 适用于对象存活率高的场景（老年代） 分代收集算法（Generational Collector） 垃圾回收算法的组合拳 按照对象生命周期的不同划分区域以采取不同的垃圾回收算法 目的：提高JVM的回收效率 GC的分类 Minor GC:发生在年轻中的垃圾收集动作，采用复制算法；年轻代是所有Java对象出生的地方 Full GC:与老年代相关 年轻代：尽可能快速地收集掉那些生命周期短的对象 Eden区（刚创建的对象） 两个Survivor区（幸存者区）新生代占用1/3堆空间，其中Eden 8/10, from1/10 ,to 1/10老年代 2/3堆空间 年轻代垃圾回收的过程： 对象创建在Eden区，当Eden区满了之后会触发一次Minor GC，把标记为存活的对象复制到Survivor0中，清理所有使用过的Eden区域，存活对象年龄+1； 当Eden区再次被填满，触发回Minor GC，会把Eden区和survivor0区中标记为存活的对象都复制到survivor1中，Eden和Survivio区域将会被清空，周而复始 当对象达到一定年龄（默认15岁），会成为老年代；对于一些较大的对象，年轻代无法装下，会直接进入老年代 对象如何晋升到老年代？ 经历一定Minor次数依然存活的对象 Survivor区中存放不下的对象 新生成的大对象（-XX:+PretenuerSizeThreshold） 常用的调优参数 XX:SurvivorRatio:Eden和Survivor的比值，默认8：1 XX:NewRatio:老年代和年轻代大小的比例 MaxTenuringThreshold:对象从年轻代晋升到老年代经过GC次数的最大阈值 老年代:存放生命周期较长的对象 标记-清理算法 标记：整理算法 当触发老年代的垃圾回收的时候，会伴随着新生代堆内存的回收，即对整个堆的垃圾回收。 Full GC和Major GC Full GC比Minor GC慢，但执行效率低 触发Full GC的条件 老年代空间不足 永久代空间不足（JDK7以前的版本） CMS GC时出现promotion failed,concurrent mode failure Minor GC晋升到老年代的平均大小大于老年代的剩余空间 调用System.gc() 使用RMI来进行RPC或管的JDK应用，每小时执行1次Full GC]]></content>
+      <categories>
+        <category>GC相关</category>
+      </categories>
+      <tags>
+        <tag>回收算法</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Java垃圾回收之标记算法]]></title>
+    <url>%2F2019%2F11%2F02%2FJava%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E4%B9%8B%E6%A0%87%E8%AE%B0%E7%AE%97%E6%B3%95%2F</url>
+    <content type="text"><![CDATA[对象被判定为垃圾的标准 没有被其他对象引用 如何判断一个对象不被引用？ 引用计数算法 可达性分析算法 引用计数算法：判断对象的引用数量 通过判断对象的引用数量来决定对象是否可以被回收 每个对象实例都有一个引用计数器，被引用则+1，完成引用则-1 任何引用计数为0的对象实例可以被当做垃圾收集 优点：执行效率高，程序执行受影响较小缺点：无法检测出循环引用的情况，导致内存泄漏 可达性分析算法通过判断对象的引用链是否可达来决定对象是否可以被回收 比如方法区中的类静态属性引用的对象，是可以作为GC Root的， 123public class House &#123; public static Area area = new Area(new Street());&#125; 而Area里面有一个复合对象Street 123456public class Area &#123; private Street street; public Area(Street street)&#123; this.street = street; &#125;;&#125; 那么area 这个静态变量实例就是GC Roots，而Street就类似于Object1 2这些，所以通过Area能找到Street那么它就是可达的。 可作为GC Root的对象 虚拟机栈中引用的对象（栈帧中的本地变量表） 方法区中的常量引用的对象 方法区中的类静态属性引用的对象 本地方法栈中JNI(Natie方法)的引用对象 活跃线程的引用对象]]></content>
+      <categories>
+        <category>GC相关</category>
+      </categories>
+      <tags>
+        <tag>标记算法</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[Java的内存模型常见问题]]></title>
     <url>%2F2019%2F10%2F30%2FJava%E7%9A%84%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%2F</url>
-    <content type="text"><![CDATA[JVM三大性能调优参数-Xms -Xmx -Xss的含义 -Xss：规定的每个虚拟机栈（堆栈）的大小。一般情况下，256K足够。此配置将会影响此进程中并发线程数的大小 -Xms：初始java堆的大小，即该进程刚创建出来的时候java堆的大小。 -Xmx：一旦对象容量超过-Xms大小，则将java堆大小扩容至改参数。为防止heap扩容导致内存抖动，影响程序运行稳定性，一般设置成与Xms一样大小 Java内存模型中堆和栈的区别内存分配策略静态存储：编译时确定每个数据目标在运行时的存储空间需求栈式存储：数据区需求在编译时未知，运行时模块入口前确定堆时存储：编译时或运行时模块入口都无法确定，动态分配 Java内存模型中堆和栈的区别联系：引用对象、数组时，栈里定义变量保存堆中目标的首地址管理方式：栈自动释放，堆需要GC空间大小：栈比堆小碎片相关：栈产生的碎片远小于堆分配方式：栈支持静态和动态分配，而堆仅支持动态分配效率：栈的效率比堆高]]></content>
+    <content type="text"><![CDATA[JVM三大性能调优参数-Xms -Xmx -Xss的含义 -Xss：规定的每个虚拟机栈（堆栈）的大小。一般情况下，256K足够。此配置将会影响此进程中并发线程数的大小 -Xms：初始java堆的大小，即该进程刚创建出来的时候java堆的大小。 -Xmx：一旦对象容量超过-Xms大小，则将java堆大小扩容至改参数。为防止heap扩容导致内存抖动，影响程序运行稳定性，一般设置成与Xms一样大小 Java内存模型中堆和栈的区别内存分配策略静态存储：编译时确定每个数据目标在运行时的存储空间需求栈式存储：数据区需求在编译时未知，运行时模块入口前确定堆时存储：编译时或运行时模块入口都无法确定，动态分配 Java内存模型中堆和栈的区别联系：引用对象、数组时，栈里定义变量保存堆中目标的首地址管理方式：栈自动释放，堆需要GC空间大小：栈比堆小碎片相关：栈产生的碎片远小于堆分配方式：栈支持静态和动态分配，而堆仅支持动态分配效率：栈的效率比堆高 元空间、堆、线程独占部分间的联系-内存角度 不同JDK版本之间的intern()方法的区别——JDK6 VS JDK6+12Stirng s = new String (&quot;a&quot;);s.intern(); JDK6: 当调用intern 方法时，如果字符串常量池先前已创建出该字符串对象，则返回池中的该字符串的引用。否则，将此字符串对象添加到字符串常量池中，并且返回该字符串对象的引用JDK6+: 当调用intern 方法时，如果字符串常量池先前已创建出该字符串对象，则返回池中的该字符串的引用。否则，如果该字符串对象已经存在于java堆中，则将堆中对此对象的引用添加到字符串常量池中，并且返回该引用；如果堆中不存在，则在池中创建该字符串并返回其引用]]></content>
       <categories>
         <category>JVM</category>
       </categories>
@@ -281,7 +315,7 @@
   <entry>
     <title><![CDATA[JAVA框架-Spring]]></title>
     <url>%2F2019%2F09%2F19%2FJAVA%E6%A1%86%E6%9E%B6-Spring%2F</url>
-    <content type="text"><![CDATA[IOC原理IOC（Inversion of Control）：控制反转Spring Core最核心部分IOC是一种思想，实现手段：依赖注入（Dependency Injection） 依赖注入把底层类作为参数传递给上层类，实现上层对下层的“控制” 依赖注入的方式 Setter Interface Constructor Annotation 依赖倒置原则、IOC、DI、IOC容器的关系 依赖倒置原则是一种思想，高层模块不应该依赖底层模块；有了依赖倒置原则才有了IOC的思路；实现IOC的思路又需要依赖注入的支撑；Spring的框架基于IOC提出了容器的概念，对于IOC来说最重要的就是容器了，容器管理着bean的生命周期，控制着bean的依赖注入。 IOC容器的优势当使用的时候，IOC容器在内部已经完成对象，调用者只需要调用即可！如图蓝色部分全部是由IOC容器完成！ IOC的应用]]></content>
+    <content type="text"><![CDATA[IOC原理IOC（Inversion of Control）：控制反转Spring Core最核心部分IOC是一种思想，实现手段：依赖注入（Dependency Injection） 依赖注入把底层类作为参数传递给上层类，实现上层对下层的“控制” 依赖注入的方式 Setter Interface Constructor Annotation 依赖倒置原则、IOC、DI、IOC容器的关系 依赖倒置原则是一种思想，高层模块不应该依赖底层模块；有了依赖倒置原则才有了IOC的思路；实现IOC的思路又需要依赖注入的支撑；Spring的框架基于IOC提出了容器的概念，对于IOC来说最重要的就是容器了，容器管理着bean的生命周期，控制着bean的依赖注入。 IOC容器的优势当使用的时候，IOC容器在内部已经完成对象，调用者只需要调用即可！如图蓝色部分全部是由IOC容器完成！ IOC的应用实际应用 读取应用程序提供的Bean配置信息，并在Spring容器中生成一份Bean注册表。 根据生成的Bean注册表通过反射机制实例化Bean，并装配好Bean之间的依赖关系。 将生成的Bean实例对象放入Spring容器中。 Spring IOC支持的功能： 依赖注入 依赖检查 自动装配 支持集合 指定初始化方法和销毁方法 支持回调方法 Spring IOC容器的核心接口 BeanFactory ApplicationContext BeanFactory：Spring框架最核心的接口 提供IOC的配置机制 包含Bean的各种定义，便于实例化Bean 建立Bean之间的依赖关系 Bean生命周期的控制 ApplicationContext的功能（继承多个接口） BeanFactory:能够管理、装配Bean ResourcePatternResolver:能够加载资源文件 MessageSource:能够实现国际化功能 ApplicationEventPublisher:能够注册监听器，实现监听机制 Spring里面几个核心的接口和类 BeanDefinition主要是用来描述Bean的定义 BeanDefinitionRegistry提供向容器注册BeanDefinition对象的方法 refresh 方法 为IOC容器以及Bean的生命周期管理提供条件 刷新Spring上下文信息，定义Spring上下文加载流程 getBean 方法getBean方法的代码逻辑 转换beanName 从缓存中加载实例 实例化Bean 检测parentBeanFactory 初始化依赖的Bean 创建Bean Spring Bean的实例 singleton:Spring的默认作用域，容器里拥有唯一的Bean实例 prototype:针对每个getBean请求，容器都会创建一个Bean实例 request:为每个Httpp请求创建一个Bean实例 session：会为每个session创建一个Bean实例 globlaSession:会为每个全局Http Session创建一个Bean实例，该作用域仅对Portlet有效 创建过程 销毁过程 若实现了DisposableBean接口，则会调用destroy方法 若配置了destry-method属性，则会调用其配置的销毁方法 Spring AOP关注点分离：不同的问题交给不同的部分去解决 面向切面变成AOP正是此种技术的体现 通用代码的实现，对应的就是所谓的切面（Aspect） 业务功能代码和切面代码分开后，架构将变得高内聚低耦合 确保功能的完整性：切面最终需要被合并到业务中（Weave） AOP的三种织入方式 编译时织入：需要特殊的Java编译器，AspectJ 类加载时织入：需要特殊的Java编译器，如AspectJ和AspectWerkz 运行时织入：Spring采用的方式，通过动态代理的方式，实现简单 AOP主要名词概念 Aspect:通用功能代码的实现，切面 Target:被织入Aspect的对象 Join Point：可以作为切入点的机会，所有的方法都可以作为切入点 Pointcut:Aspect实际被应用在的Join Point，支持正则 Advice:类里的方法以及这个方法如何织入到目标方法的方式 Weaving:Aop的实现过程 Advice的种类 前置通知（Before） 后置通知（AfterReturning） 异常通知（AfterThrowing） 最终通知（After） 环绕通知（Around） AOP的实现：JdkProxy和Cglib 由AopProxyFactory根据AdvisedSupport对象配置来决定 默认策略如果目标是接口，则用JDKProxy来实现，否则用后者 JDKProxy的核心：InvocationHandler接口和Proxy类 Cglib:以集成的方式动态生成目标类的代理 JDKProxy:通过Java的内部反射机制实现 Cglib:借助ASM实现 反射机制在生成类的过程中比较高效 ASM在生成类之后的执行过程中比较高效 代理模式：接口+真实实现类+代理类例子： 123public interface Payment&#123; void pay();&#125; 12345678public RealPayment implements Payment&#123; @Override public void pay()&#123; System.out.println(&quot;作为用户我只关心支付&quot;) &#125;&#125; 12345678910111213141516public AliPay implements Payment&#123; private Payment payment; public AliPay(Payment payment) public void beforePay()&#123; System.out.println(&quot;从招行取款&quot;) &#125; @Override public void pay()&#123; beforePay()； payment.pay(); afterPay(); &#125; public void afterPay()&#123; System.out.println(&quot;支付给慕课网&quot;) &#125;&#125; 12Payment proxy = new AliPay(new RealPayment);proxy.pay(); Spring里的代理模式的实现 真实实现类的逻辑包含在了getBean方法里 getBean方法返回的实际上是Proxy实例 Proxy实例是Spring采用JDK Proxy或CGLIB动态生成的 Spring事务的相关问题 ACID 隔离级别 事务传播]]></content>
       <categories>
         <category>Spring</category>
       </categories>
@@ -325,14 +359,15 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[TCP的三次握手]]></title>
+    <title><![CDATA[TCP的三次握手和四次挥手]]></title>
     <url>%2F2019%2F05%2F22%2FTCP%E7%9A%84%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E5%92%8C%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B%2F</url>
-    <content type="text"><![CDATA[TCP的三次握手]]></content>
+    <content type="text"><![CDATA[TCP的三次握手TCP报文头source port （源端口）destination（目标端口）Sequence Number（同步序号）Acknowledgement Number（确认序号）Offset（偏移量）Reserved（保留域）TCP Flags（标志位）Window（滑动窗口）CheckSum（检验和）Urgent Pointer（紧急指针）TCP Options（定义一些可选参数） TCP报文头包含源端口及目的端口，IP地址可以唯一标识主机，TCP协议加端口可以唯一标识主机中的一个进程。可以使用IP+协议+端口来唯一标识网络中的一个进程。在一些场景下也把这种模式称为“套接字”即Socket。 TCP FlagsURG: 紧急指针是否有效ACK: 表示确认标志，携带 ack 标志的报文也称为确认报文PSH: 提示接收端收到报文之后应该立即将数据推送给应用程 序，而不是放在缓冲区排队RET: 表示要求对方重新简历连接。SYN: 同步序列号，用于建立连接过程FIN: 传输结束标志，告知对方自己即将关闭连接。 TCP三次握手流程（“握手是为了建立连接”） 在TPC/IP协议中，TCP协议提供可靠的连接服务，采用三次握手建立一个连接 第一次握手： 建立连接时，客户端发送SYN包（seq=x）到服务器，并进入SYN_SENT状态，等待服务器确认 第二次握手：服务器收到SYN包，必须确认客户的SYN(ack=x+1),同时自己也发送一个SYN包（sql=y）,即SYN+ACK包，此时服务器进入SYN_RECV状态 第三次握手：客户端收到服务器的SYN+ACK包，向服务器发送确认包ACK(ack=y+1) ,此包发送完毕，客户端和服务器进入ESTABLISHED状态，完成三次握手各个状态的意义如下： LISTEN - 侦听来自远方TCP端口的连接请求； SYN-SENT -在发送连接请求后等待匹配的连接请求； SYN-RECEIVED - 在收到和发送一个连接请求后等待对连接请求的确认； ESTABLISHED- 代表一个打开的连接，数据可以传送给用户； 为什么需要三次握手才能建立连接为了初始化Sequence Number的初始值 首次握手隐患——SYN超时 Server收到Client的SYN，回复SYN-ACK的时候未收到ACK确认 Server不断重试直至超时，Linux默认5次，总共需要63秒断开连接。针对SYN Flood的防护措施客户端给服务器发送一个SYN报文，下线，服务器需要默认等63秒才会断开。通过这个方法可以耗尽服务器的SYN连接队列。 SYN队列满后，通过tcp_syncookies参数回发SYN Cookie 若为正常连接则Client会回发SYN Cookie，直接建立连接建立连接后，Client出现故障怎么办保活机制：建立TCP连接后，TCP有保活机制，以应对其中一端出现故障。若连接处于非活动状态，则开启保活功能的一方将向另一方发送保活探测报文，达到keepalive time时间间隔仍未收到响应则重试，若尝试次数达到保活探测数仍未收到对方的响应，则连接断开。 TCP的四次挥手TCP四次挥手流程（挥手是为了终止连接）第一次挥手： Client发送一个FIN,用来关闭Client到Server的数据传送，Client进入FIN_WAIT_1状态； 第二次挥手： Server收到FIN后，发送ACK给Client,确认序号为收到序号+1（与SYN相同，一个FIN占用一个序号），Server进入CLOSE_WAIT状态； 第三次握手： Serveer发送一个FIN,用来关闭Server到Client的数据传送，Server进入LAST_ACK状态； 第四次挥手： Clien收到FIN后，Client进入TIME_WAIT状态，急着发送一个ACK给Server,确认序号为收到的序号+1，Server进入CLOSED状态，完成四次挥手； TCP连接必须经过时间2MSL后才真正释放掉？ 保证有足够时间让对方收到ACK包 避免新旧连接混淆 为什么四次挥手才能断开连接因为TCP是全双工的，发送方和接收方都需要FIN报文和ACK报文 服务器出现大量CLOSE_WAIT状态的原因对方关闭socket连接，我方忙于读或写，没有及时关闭 检查代码，特别是释放资源的代码 检查配置，特别是处理请求的线程配置 netstat查看机器网络状态的指令12查看服务器处于各个状态下的连接数 netstat -n | awk &apos;/^tcp/&#123;++S[$NF]&#125;END(FOR(a in S) print a,S[a])&apos;]]></content>
       <categories>
         <category>计算机网络</category>
       </categories>
       <tags>
         <tag>TCP的三次握手</tag>
+        <tag>TCP的四次挥手</tag>
       </tags>
   </entry>
   <entry>

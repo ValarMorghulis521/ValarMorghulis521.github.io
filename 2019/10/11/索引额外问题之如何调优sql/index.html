@@ -20,7 +20,7 @@
 <meta property="og:description" content="常见问题总结 如何定位并优化慢查询sql 联合索引的最左匹配原则的成因 索引建立的越多越好吗如何定位并优化慢sql大致思路   根据慢日志定位慢sql 12345SHOW VARIABLES LIKE &amp;apos;%quer%&amp;apos;;  查看慢查询是否打开set global slow_query_log =on; 打开慢查询:set global long_query_time=1; 设置">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/2019/10/11/索引额外问题之如何调优sql/%E8%81%94%E5%90%88%E7%B4%A2%E5%BC%95%E7%9A%84%E6%9C%80%E5%B7%A6%E5%8C%B9%E9%85%8D%E5%8E%9F%E5%88%99%E7%9A%84%E6%88%90%E5%9B%A0.jpg">
-<meta property="og:updated_time" content="2019-10-11T10:40:54.791Z">
+<meta property="og:updated_time" content="2019-11-03T07:53:15.459Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="索引额外问题之如何调优sql">
 <meta name="twitter:description" content="常见问题总结 如何定位并优化慢查询sql 联合索引的最左匹配原则的成因 索引建立的越多越好吗如何定位并优化慢sql大致思路   根据慢日志定位慢sql 12345SHOW VARIABLES LIKE &amp;apos;%quer%&amp;apos;;  查看慢查询是否打开set global slow_query_log =on; 打开慢查询:set global long_query_time=1; 设置">
@@ -186,7 +186,7 @@
 </li>
 </ol>
 <h4 id="联合索引的最左匹配原则"><a href="#联合索引的最左匹配原则" class="headerlink" title="联合索引的最左匹配原则"></a>联合索引的最左匹配原则</h4><ol>
-<li>最左前缀匹配原则，非常重要的原则，mysql会一直向右匹配知道遇到范围查询（&gt; , &lt; , between, like ）就停止匹配，比如a=3and b = 4 and c &gt; 5 and d =6 如果建立（a，b，c，d）顺序的索引，d是用不到索引的，如果建立（a，b，d，c）的索引则可以用到，a、b、d的顺序可以任意调整</li>
+<li>最左前缀匹配原则，非常重要的原则，mysql会一直向右匹配直到遇到范围查询（&gt; , &lt; , between, like ）就停止匹配，比如a=3 and b = 4 and c &gt; 5 and d =6 如果建立（a，b，c，d）顺序的索引，d是用不到索引的，如果建立（a，b，d，c）的索引则可以用到，a、b、d的顺序可以任意调整</li>
 <li>=和in可以乱序，比如a=1 and b=2 and c=3建立（a,b,c）索引可以任意顺序，mysql查询优化器会帮你优化成索引可以识别的形式</li>
 </ol>
 <p><img src="/2019/10/11/索引额外问题之如何调优sql/%E8%81%94%E5%90%88%E7%B4%A2%E5%BC%95%E7%9A%84%E6%9C%80%E5%B7%A6%E5%8C%B9%E9%85%8D%E5%8E%9F%E5%88%99%E7%9A%84%E6%88%90%E5%9B%A0.jpg" alt="联合索引的最左匹配原则的成因"></p>

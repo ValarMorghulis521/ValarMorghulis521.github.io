@@ -188,7 +188,7 @@
   <entry>
     <title><![CDATA[锁模块之数据事务]]></title>
     <url>%2F2019%2F10%2F12%2F%E9%94%81%E6%A8%A1%E5%9D%97%E4%B9%8B%E6%95%B0%E6%8D%AE%E4%BA%8B%E5%8A%A1%2F</url>
-    <content type="text"><![CDATA[数据库事务的四大特性ACID 原子性(Athomic) : 事务包含的全部操作要么全部执行，要么全部失败回滚 一致(Consistency) : 事务应确保数据库的状态从一个一致状态到另一个一致状态(eg:转账问题，A和B一共2000，无论来回怎么转总和还是2000) 隔离性(Isolaton) 持久性(Durability)：一个事务的提交代表了它对数据库的修改永久保存在数据库中，当系统发生故障时确保已提交事务的更新不能丢失，确保已提交事务的更新能恢复 事务隔离级别以及各级别下的并发访问问题事务隔离级别和各个级别的并发访问问题。更新丢失（MySQL所有事务隔离级别在数据库层面上均可避免）事务A对数据进行操作时，事务B也在对同一数据更新操作并完成了提交，然后事务A遇到异常进行回滚导致事务B的更新丢失。 脏读一个事务读到另一个事务未提交的数据。 不可重复读事务A在多次读取同一数据的过程中，事务B对数据进行更新并提交，导致事务A多次读取同一数据时结果不一致。 幻读事务A读取若干行数据，事务B以插入或删除行的方式来修改事务A的结果集。 其中不可重复读与幻读比较相似，不可重复读侧重对同一数据的修改，幻读侧插入增或删除数据。事务隔离级别越高，对性能的影响也越大。 事务并发访问引起的问题以及如何避免 更新丢失——mysql所有事务隔离级别在数据库层面上均可避免 脏读——READ-COMMITTED事务隔离级别以上避免 不可重复读——REPEATABLE-READ事务隔离级别以上可避免 幻读——SERIALIZABLE事务隔离级别避免 事务隔离级别 更新丢失 脏读 不可重复度 幻读 未提交读 避免 发生 发生 发生 已提交读 避免 避免 发生 发生 可重复读 避免 避免 避免 发生 串行化 避免 避免 避免 避免 InnoDB可重复度隔离级别下如何避免幻读]]></content>
+    <content type="text"><![CDATA[数据库事务的四大特性ACID 原子性(Athomic) : 事务包含的全部操作要么全部执行，要么全部失败回滚 一致性(Consistency) : 事务应确保数据库的状态从一个一致状态到另一个一致状态(eg:转账问题，A和B一共2000，无论来回怎么转总和还是2000) 隔离性(Isolaton)：一个事务的执行不应该影响其它事务的执行 持久性(Durability)：一个事务的提交代表了它对数据库的修改永久保存在数据库中，当系统发生故障时确保已提交事务的更新不能丢失，确保已提交事务的更新能恢复 事务隔离级别以及各级别下的并发访问问题更新丢失（MySQL所有事务隔离级别在数据库层面上均可避免）事务A对数据进行操作时，事务B也在对同一数据更新操作并完成了提交，然后事务A遇到异常进行回滚导致事务B的更新丢失。 脏读一个事务读到另一个事务未提交的数据。 不可重复读事务A在多次读取同一数据的过程中，事务B对数据进行更新并提交，导致事务A多次读取同一数据时结果不一致。 幻读事务A读取若干行数据，事务B以插入或删除行的方式来修改事务A的结果集。 其中不可重复读与幻读比较相似，不可重复读侧重对同一数据的修改，幻读侧重插入增加或删除数据。事务隔离级别越高，对性能的影响也越大。 事务并发访问引起的问题以及如何避免 更新丢失——mysql所有事务隔离级别在数据库层面上均可避免 脏读——READ-COMMITTED事务隔离级别以上避免 不可重复读——REPEATABLE-READ事务隔离级别以上可避免 幻读——SERIALIZABLE事务隔离级别避免 事务隔离级别 更新丢失 脏读 不可重复度 幻读 未提交读 避免 发生 发生 发生 已提交读 避免 避免 发生 发生 可重复读 避免 避免 避免 发生 串行化 避免 避免 避免 避免]]></content>
       <categories>
         <category>数据库</category>
       </categories>
@@ -201,7 +201,7 @@
   <entry>
     <title><![CDATA[锁模块MyISAM与InooDB关于锁方面的区别]]></title>
     <url>%2F2019%2F10%2F11%2F%E9%94%81%E6%A8%A1%E5%9D%97MyISAM%E4%B8%8EInooDB%E5%85%B3%E4%BA%8E%E9%94%81%E6%96%B9%E9%9D%A2%E7%9A%84%E5%8C%BA%E5%88%AB%2F</url>
-    <content type="text"><![CDATA[常见问题 MyISAM与InnoDB关于锁方面的区别是什么 数据库事务的四大特性 事务隔离级别以及各级别下的并发访问问题 InnoDB可重复度隔离级别下如何变幻读 RC、RB级别下的InnoDB的非阻塞读如何实现MyISAM与InnoDB关于锁方面的区别 MyISAM默认用的是表级锁，不支持行级锁 ，MyISAM不支持事务 InnoDB默认用的是行级锁 ，也支持表级锁，InnoDB在不走索引的时候用的是表级锁，而sql用到索引的时候用的是行级锁 值得注意的是： MyISAM默认会给select语句上共享锁(读锁) InnoDB默认不会给select语句上共享锁(读锁) 上了共享锁的可以再上共享锁但是不能上排他锁 上了排他锁的不可以再上共享锁和排他锁共享锁和排斥锁的兼容性 X S X 冲突 冲突 S 冲突 兼容 1234#查看session是否为自动提交show variables like &apos;autocommit&apos;;#将session设置为自动提交set autocommit = 1; MyISAM适合的场景 频繁执行全表count语句（有个变量保存了表的行数，可直接读该变量） 对数据进行增删改的频率不高，查询非常频繁（增删改会涉及到锁表操作） 没有事务 InnoDB适合的场景 数据增删改查相当频繁（增删改知识某些锁被锁，大多数情况下，避免阻塞） 可靠性要求比较高，要求支持事务 数据库锁的分类 按锁的粒度划分，表级锁，行级锁，页级锁 按锁级别划分，共享锁，排他锁 按加锁房市划分，自动锁（意向锁），显式锁（手工加锁） 按操作划分，DML锁，DDL锁 按使用方式划分，乐观锁，悲观锁]]></content>
+    <content type="text"><![CDATA[常见问题 MyISAM与InnoDB关于锁方面的区别是什么 数据库事务的四大特性 事务隔离级别以及各级别下的并发访问问题 InnoDB可重复度隔离级别下如何变幻读 RC、RB级别下的InnoDB的非阻塞读如何实现MyISAM与InnoDB关于锁方面的区别 MyISAM默认用的是表级锁，不支持行级锁 ，MyISAM不支持事务 InnoDB默认用的是行级锁 ，也支持表级锁，InnoDB在不走索引的时候用的是表级锁，而sql用到索引的时候用的是行级锁 值得注意的是： MyISAM默认会给select语句上共享锁(读锁) InnoDB默认不会给select语句上共享锁(读锁) 上了共享锁的可以再上共享锁但是不能上排他锁 上了排他锁的不可以再上共享锁和排他锁共享锁和排斥锁的兼容性 X S X 冲突 冲突 S 冲突 兼容 1234#查看session是否为自动提交show variables like &apos;autocommit&apos;;#将session设置为自动提交set autocommit = 1; MyISAM适合的场景 频繁执行全表count语句（有个变量保存了表的行数，可直接读该变量） 对数据进行增删改的频率不高，查询非常频繁（增删改会涉及到锁表操作） 没有事务 InnoDB适合的场景 数据增删改查相当频繁（增删改的时候只是某些行被锁，大多数情况下，避免阻塞） 可靠性要求比较高，要求支持事务 数据库锁的分类 按锁的粒度划分，表级锁，行级锁，页级锁 按锁级别划分，共享锁，排他锁 按加锁方式划分，自动锁（意向锁），显式锁（手工加锁） 按操作划分，DML锁，DDL锁 按使用方式划分，乐观锁，悲观锁]]></content>
       <categories>
         <category>数据库</category>
       </categories>
@@ -212,7 +212,7 @@
   <entry>
     <title><![CDATA[索引额外问题之如何调优sql]]></title>
     <url>%2F2019%2F10%2F11%2F%E7%B4%A2%E5%BC%95%E9%A2%9D%E5%A4%96%E9%97%AE%E9%A2%98%E4%B9%8B%E5%A6%82%E4%BD%95%E8%B0%83%E4%BC%98sql%2F</url>
-    <content type="text"><![CDATA[常见问题总结 如何定位并优化慢查询sql 联合索引的最左匹配原则的成因 索引建立的越多越好吗如何定位并优化慢sql大致思路 根据慢日志定位慢sql 12345SHOW VARIABLES LIKE &apos;%quer%&apos;; 查看慢查询是否打开set global slow_query_log =on; 打开慢查询:set global long_query_time=1; 设置慢查询最大时间超过一秒就记录为慢查询 SHOW STATUS LIKE &apos;%slow_queries%&apos;; 查看慢sql条数sudo vim /usr/local/mysql/data/VM_33_68_centos-slow.log; 查看被记录到慢日志里面的日志 使用explain等工具分析sql explain字段 type ： mysql找到数据行的方式index 和 all 是全表扫描 extra：有很多值 Using filesort ，Using temporary 最常的慢的， 修改sql或者尽量让sql走索引 具体走那个索引是mysql查询优化器决定， 要强制制定走某个索引 要加上 force index（primary/其他） 联合索引的最左匹配原则 最左前缀匹配原则，非常重要的原则，mysql会一直向右匹配知道遇到范围查询（&gt; , &lt; , between, like ）就停止匹配，比如a=3and b = 4 and c &gt; 5 and d =6 如果建立（a，b，c，d）顺序的索引，d是用不到索引的，如果建立（a，b，d，c）的索引则可以用到，a、b、d的顺序可以任意调整 =和in可以乱序，比如a=1 and b=2 and c=3建立（a,b,c）索引可以任意顺序，mysql查询优化器会帮你优化成索引可以识别的形式 索引是建立得越多越好吗 数据量小的表不需要建立索引，建立索引会增加额外的索引开销 数据变更需要维护索引，因此更多的索引意味着更多的维护成本 更多的索引也意味着更多的空间]]></content>
+    <content type="text"><![CDATA[常见问题总结 如何定位并优化慢查询sql 联合索引的最左匹配原则的成因 索引建立的越多越好吗如何定位并优化慢sql大致思路 根据慢日志定位慢sql 12345SHOW VARIABLES LIKE &apos;%quer%&apos;; 查看慢查询是否打开set global slow_query_log =on; 打开慢查询:set global long_query_time=1; 设置慢查询最大时间超过一秒就记录为慢查询 SHOW STATUS LIKE &apos;%slow_queries%&apos;; 查看慢sql条数sudo vim /usr/local/mysql/data/VM_33_68_centos-slow.log; 查看被记录到慢日志里面的日志 使用explain等工具分析sql explain字段 type ： mysql找到数据行的方式index 和 all 是全表扫描 extra：有很多值 Using filesort ，Using temporary 最常的慢的， 修改sql或者尽量让sql走索引 具体走那个索引是mysql查询优化器决定， 要强制制定走某个索引 要加上 force index（primary/其他） 联合索引的最左匹配原则 最左前缀匹配原则，非常重要的原则，mysql会一直向右匹配直到遇到范围查询（&gt; , &lt; , between, like ）就停止匹配，比如a=3 and b = 4 and c &gt; 5 and d =6 如果建立（a，b，c，d）顺序的索引，d是用不到索引的，如果建立（a，b，d，c）的索引则可以用到，a、b、d的顺序可以任意调整 =和in可以乱序，比如a=1 and b=2 and c=3建立（a,b,c）索引可以任意顺序，mysql查询优化器会帮你优化成索引可以识别的形式 索引是建立得越多越好吗 数据量小的表不需要建立索引，建立索引会增加额外的索引开销 数据变更需要维护索引，因此更多的索引意味着更多的维护成本 更多的索引也意味着更多的空间]]></content>
       <categories>
         <category>数据库</category>
       </categories>
@@ -223,7 +223,7 @@
   <entry>
     <title><![CDATA[密集索引和稀疏索引]]></title>
     <url>%2F2019%2F10%2F11%2F%E5%AF%86%E9%9B%86%E7%B4%A2%E5%BC%95%E5%92%8C%E7%A8%80%E7%96%8F%E7%B4%A2%E5%BC%95%2F</url>
-    <content type="text"><![CDATA[密集索引和稀疏索引的区别 密集索引文件中的每个搜索码值都对应一个索引值 稀疏索引文件只为索引码的某些值建立索引项 InnoDB 和 MyISAM InnoDB 采用密集索引+稀疏索引,主键索引可以直接找到叶子节点中的数据,辅助键索引需要先找到主键再通过主键B+树找到数据 ,即InnoDB数据和索引是存放在一个文件里的 MysISam 全部采用稀疏索引,根据主键和辅助键的索引都只能找到一个地址信息,要再根据这个地址信息去另外一个文件中寻找数据,即MysISam的索引和数据是分开存放的 表结构都存储在*.frm中MyISAM索引和数据是分开存储的.MYI存储索引.MYD存储数据InnoDB索引和数据是存在一起的.ibd]]></content>
+    <content type="text"><![CDATA[密集索引和稀疏索引的区别 密集索引文件中的每个搜索码值都对应一个索引值 稀疏索引文件只为索引码的某些值建立索引项 InnoDB 和 MyISAM InnoDB 采用密集索引+稀疏索引,主键索引可以直接找到叶子节点中的数据,辅助键索引需要先找到主键再通过主键B+树找到数据 ,即InnoDB数据和索引是存放在一个文件里的 MyISam 全部采用稀疏索引,根据主键和辅助键的索引都只能找到一个地址信息,要再根据这个地址信息去另外一个文件中寻找数据,即MyISam的索引和数据是分开存放的 表结构都存储在*.frm中MyISAM索引和数据是分开存储的.MYI存储索引.MYD存储数据InnoDB索引和数据是存在一起的.ibd]]></content>
       <categories>
         <category>数据库</category>
       </categories>

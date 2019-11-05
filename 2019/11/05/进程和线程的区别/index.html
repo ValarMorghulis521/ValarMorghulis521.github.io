@@ -3,28 +3,23 @@
 <head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="utf-8">
   
-  <title>谈谈ClassLoader | Contunued Story</title>
+  <title>进程和线程的区别 | Contunued Story</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta name="keywords" content="ClassLoader类的装载">
   
   
   
-  
-  <meta name="description" content="类从编译到执行的过程 编译器将Robot.java源文件编译为Robot.class字节码文件 ClassLoader将字节码转化为jvm中的Class对象 JVM利用Class对象实例化为Robot对象  谈谈ClassLoaderClassLoader 的种类 BootStrapClassLoader:C++编写，加载核心库 java.* ExtClassLoader:Java编写，加载扩展库">
-<meta name="keywords" content="ClassLoader,类的装载">
+  <meta name="description" content="进程和线程的区别进程和线程的由来 穿行">
 <meta property="og:type" content="article">
-<meta property="og:title" content="谈谈ClassLoader">
-<meta property="og:url" content="http://yoursite.com/2019/10/26/谈谈ClassLoader/index.html">
+<meta property="og:title" content="进程和线程的区别">
+<meta property="og:url" content="http://yoursite.com/2019/11/05/进程和线程的区别/index.html">
 <meta property="og:site_name" content="Contunued Story">
-<meta property="og:description" content="类从编译到执行的过程 编译器将Robot.java源文件编译为Robot.class字节码文件 ClassLoader将字节码转化为jvm中的Class对象 JVM利用Class对象实例化为Robot对象  谈谈ClassLoaderClassLoader 的种类 BootStrapClassLoader:C++编写，加载核心库 java.* ExtClassLoader:Java编写，加载扩展库">
+<meta property="og:description" content="进程和线程的区别进程和线程的由来 穿行">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://yoursite.com/2019/10/26/谈谈ClassLoader/%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%9C%BA%E5%88%B6.jpg">
-<meta property="og:updated_time" content="2019-10-30T05:58:23.913Z">
+<meta property="og:updated_time" content="2019-11-05T04:40:37.304Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="谈谈ClassLoader">
-<meta name="twitter:description" content="类从编译到执行的过程 编译器将Robot.java源文件编译为Robot.class字节码文件 ClassLoader将字节码转化为jvm中的Class对象 JVM利用Class对象实例化为Robot对象  谈谈ClassLoaderClassLoader 的种类 BootStrapClassLoader:C++编写，加载核心库 java.* ExtClassLoader:Java编写，加载扩展库">
-<meta name="twitter:image" content="http://yoursite.com/2019/10/26/谈谈ClassLoader/%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%9C%BA%E5%88%B6.jpg">
+<meta name="twitter:title" content="进程和线程的区别">
+<meta name="twitter:description" content="进程和线程的区别进程和线程的由来 穿行">
   
     <link rel="alternate" href="/atom.xml" title="Contunued Story" type="application/atom+xml">
   
@@ -109,7 +104,7 @@
             
       <div id="content" class="outer">
         
-          <section id="main" style="float:none;"><article id="post-谈谈ClassLoader" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+          <section id="main" style="float:none;"><article id="post-进程和线程的区别" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -117,7 +112,7 @@
         
   
     <h1 class="thumb" class="article-title" itemprop="name">
-      谈谈ClassLoader
+      进程和线程的区别
     </h1>
   
 
@@ -125,14 +120,11 @@
     
     <div class="article-meta">
       
-	<a href="/2019/10/26/谈谈ClassLoader/" class="article-date">
-	  <time datetime="2019-10-26T03:40:31.000Z" itemprop="datePublished">October 26, 2019</time>
+	<a href="/2019/11/05/进程和线程的区别/" class="article-date">
+	  <time datetime="2019-11-05T03:19:48.000Z" itemprop="datePublished">November 5, 2019</time>
 	</a>
 
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/JVM/">JVM</a>
- 
+       
       
 	<span id="busuanzi_container_page_pv">
 	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
@@ -141,47 +133,15 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h4 id="类从编译到执行的过程"><a href="#类从编译到执行的过程" class="headerlink" title="类从编译到执行的过程"></a>类从编译到执行的过程</h4><ol>
-<li>编译器将Robot.java源文件编译为Robot.class字节码文件</li>
-<li>ClassLoader将字节码转化为jvm中的Class<robot>对象</robot></li>
-<li>JVM利用Class<robot>对象实例化为Robot对象</robot></li>
+        <h2 id="进程和线程的区别"><a href="#进程和线程的区别" class="headerlink" title="进程和线程的区别"></a>进程和线程的区别</h2><h3 id="进程和线程的由来"><a href="#进程和线程的由来" class="headerlink" title="进程和线程的由来"></a>进程和线程的由来</h3><ol>
+<li>穿行 </li>
 </ol>
-<h4 id="谈谈ClassLoader"><a href="#谈谈ClassLoader" class="headerlink" title="谈谈ClassLoader"></a>谈谈ClassLoader</h4><h5 id="ClassLoader-的种类"><a href="#ClassLoader-的种类" class="headerlink" title="ClassLoader 的种类"></a>ClassLoader 的种类</h5><ul>
-<li>BootStrapClassLoader:C++编写，加载核心库 java.*</li>
-<li>ExtClassLoader:Java编写，加载扩展库javaa.*</li>
-<li>AppClassLoader:Java编写，加载程序所在目录</li>
-<li>自定义ClassLoader:Java编写，定制化加载</li>
-</ul>
-<h5 id="ClassLoader的作用"><a href="#ClassLoader的作用" class="headerlink" title="ClassLoader的作用"></a>ClassLoader的作用</h5><p>在Java中有些非常重要的作用，ClassLoader主要工作在Class装载的加载阶段，主要作用是从系统外部获得Class二进制数据流。它是Java的核心组件，所有的Class都是由ClassLoader进行加载的，ClassLoader负责通过将Class文件里的二进制数据流装载进系统，然后交给Java虚拟机进行连接，初始化工作</p>
-<h5 id="ClassLoader双亲委派机制"><a href="#ClassLoader双亲委派机制" class="headerlink" title="ClassLoader双亲委派机制"></a>ClassLoader双亲委派机制</h5><ol>
-<li>自底而上检查类是否已经加载<br>Custom ClassLoader–App ClassLoader–Extension   ClassLoader–BootStrap ClassLoader  </li>
-<li>自上而下尝试加载类<br>BootStrap:加载 jre\lib\rt.jar 或者 Xbootclasspath选项指定的jar包<br>Extension:加载 jre\lib\ext*.jar 或者 Djava.ext.dirs指定目录下的jar包<br>App: 加载ClassPath 或者 Djava.class.path所指定的目录下的类和jar包</li>
-</ol>
-<p><img src="/2019/10/26/谈谈ClassLoader/%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%9C%BA%E5%88%B6.jpg" alt></p>
-<h5 id="为什么使用双亲委派机制"><a href="#为什么使用双亲委派机制" class="headerlink" title="为什么使用双亲委派机制"></a>为什么使用双亲委派机制</h5><p> 避免多份同样字节码的加载</p>
-<h4 id="类的装载过程"><a href="#类的装载过程" class="headerlink" title="类的装载过程"></a>类的装载过程</h4><ol>
-<li>加载：通过ClassLoader加载class文件字节码生成Class对象</li>
-<li>链接：<ul>
-<li>校验：检查加载的class的正确性和安全性</li>
-<li>准备：为类变量分配存储空间并设置类变量初始值</li>
-<li>解析：JVM将常量池内的符号引用转换为直接引用</li>
-</ul>
-</li>
-<li>初始化：执行类变量赋值和静态代码块<h4 id="loadClass和forName的区别"><a href="#loadClass和forName的区别" class="headerlink" title="loadClass和forName的区别"></a>loadClass和forName的区别</h4>Class.forName是类加载到初始化的步骤<br>Classloader.loadClass是刚执行完加载class</li>
-</ol>
-<h5 id="Class-forName已完成初始化，那为什么还要用LoadClass呢？"><a href="#Class-forName已完成初始化，那为什么还要用LoadClass呢？" class="headerlink" title="Class.forName已完成初始化，那为什么还要用LoadClass呢？"></a>Class.forName已完成初始化，那为什么还要用LoadClass呢？</h5><p>LoadClass在springIOC中资源加载器获取要读入的资源的时候，即读取一些bean的配置文件的时候，如果是以classPath方式来加载的话 就需要使用Classload.loadClass来加载，之所以这样做是和springIOC的lazy-loading（懒加载）有关，springIOC为了加快初始化速度因此大量使用延迟加载技术而使用ClassLoad不需要执行类中的初始化代码（static）步骤和连接步骤，这样子做可以加快加载速度 ，把类的初始化工作留到实际使用到这个类的时候才去做.</p>
 
       
     </div>
     <footer class="entry-meta entry-footer">
       
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/JVM/">JVM</a>
-
       
-  <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ClassLoader/">ClassLoader</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/类的装载/">类的装载</a></li></ul>
-
       
         
 	<div id="comment">
@@ -215,19 +175,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2019/10/30/Java内存模型/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          Java内存模型
-        
-      </div>
-    </a>
   
-  
-    <a href="/2019/10/26/JVM如何加载class文件/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2019/11/02/Java垃圾回收之垃圾回收器/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">JVM如何加载class文件</div>
+      <div class="article-nav-title">Java垃圾回收之垃圾回收器</div>
     </a>
   
 </nav>
@@ -241,7 +192,7 @@
     <div id="toc" class="toc-article">
     <strong class="toc-title">Contents</strong>
     
-      <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#类从编译到执行的过程"><span class="nav-number">1.</span> <span class="nav-text">类从编译到执行的过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#谈谈ClassLoader"><span class="nav-number">2.</span> <span class="nav-text">谈谈ClassLoader</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#ClassLoader-的种类"><span class="nav-number">2.1.</span> <span class="nav-text">ClassLoader 的种类</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ClassLoader的作用"><span class="nav-number">2.2.</span> <span class="nav-text">ClassLoader的作用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ClassLoader双亲委派机制"><span class="nav-number">2.3.</span> <span class="nav-text">ClassLoader双亲委派机制</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#为什么使用双亲委派机制"><span class="nav-number">2.4.</span> <span class="nav-text">为什么使用双亲委派机制</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类的装载过程"><span class="nav-number">3.</span> <span class="nav-text">类的装载过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#loadClass和forName的区别"><span class="nav-number">4.</span> <span class="nav-text">loadClass和forName的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Class-forName已完成初始化，那为什么还要用LoadClass呢？"><span class="nav-number">4.1.</span> <span class="nav-text">Class.forName已完成初始化，那为什么还要用LoadClass呢？</span></a></li></ol></li></ol>
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#进程和线程的区别"><span class="nav-number">1.</span> <span class="nav-text">进程和线程的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#进程和线程的由来"><span class="nav-number">1.1.</span> <span class="nav-text">进程和线程的由来</span></a></li></ol></li></ol>
     
     </div>
   </aside>

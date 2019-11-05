@@ -56,32 +56,10 @@
 
 
   
-  
-  <div class="site-header-image">
-    <img id="originBg" width="100%" alt="Hike News" src="">
-  </div>
-
-  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
-    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
-  </div>
-
-  <script>
-        var imgUrls = "css/images/pose01.jpg,https://source.unsplash.com/collection/954550/1920x1080,https://source.unsplash.com/collection/954550/1920x1081".split(",");
-        var random = Math.floor((Math.random() * imgUrls.length ));
-        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
-          document.getElementById("originBg").src=imgUrls[random];
-          document.getElementById("blurBg").src=imgUrls[random];
-        } else {
-          document.getElementById("originBg").src='/' + imgUrls[random];
-          document.getElementById("blurBg").src='/' + imgUrls[random];
-        }
-    </script>
-
-
 
 
 <header id="allheader" class="site-header" role="banner" 
-   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
+   >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -143,10 +121,6 @@
             
                 <a href="#HTTP" title="HTTP" rel="2">HTTP</a>
             
-                <a href="#IOC" title="IOC" rel="1">IOC</a>
-            
-                <a href="#AOP" title="AOP" rel="1">AOP</a>
-            
                 <a href="#JVM内存结构模型" title="JVM内存结构模型" rel="1">JVM内存结构模型</a>
             
                 <a href="#反射" title="反射" rel="1">反射</a>
@@ -155,11 +129,15 @@
             
                 <a href="#线程共享" title="线程共享" rel="1">线程共享</a>
             
-                <a href="#回收算法" title="回收算法" rel="1">回收算法</a>
-            
                 <a href="#新生代垃圾收集器" title="新生代垃圾收集器" rel="1">新生代垃圾收集器</a>
             
                 <a href="#老年代垃圾收集器" title="老年代垃圾收集器" rel="1">老年代垃圾收集器</a>
+            
+                <a href="#回收算法" title="回收算法" rel="1">回收算法</a>
+            
+                <a href="#IOC" title="IOC" rel="1">IOC</a>
+            
+                <a href="#AOP" title="AOP" rel="1">AOP</a>
             
                 <a href="#标记算法" title="标记算法" rel="1">标记算法</a>
             
@@ -171,15 +149,15 @@
             
                 <a href="#UDP" title="UDP" rel="1">UDP</a>
             
+                <a href="#TCP的三次握手" title="TCP的三次握手" rel="1">TCP的三次握手</a>
+            
+                <a href="#TCP的四次挥手" title="TCP的四次挥手" rel="1">TCP的四次挥手</a>
+            
                 <a href="#滑动窗口" title="滑动窗口" rel="1">滑动窗口</a>
             
                 <a href="#RTT" title="RTT" rel="1">RTT</a>
             
                 <a href="#RTO" title="RTO" rel="1">RTO</a>
-            
-                <a href="#TCP的三次握手" title="TCP的三次握手" rel="1">TCP的三次握手</a>
-            
-                <a href="#TCP的四次挥手" title="TCP的四次挥手" rel="1">TCP的四次挥手</a>
             
                 <a href="#索引" title="索引" rel="2">索引</a>
             
@@ -203,13 +181,13 @@
             
                 <a href="#日志框架" title="日志框架" rel="1">日志框架</a>
             
-                <a href="#数据库架构" title="数据库架构" rel="1">数据库架构</a>
-            
                 <a href="#语法" title="语法" rel="1">语法</a>
             
-                <a href="#OSI七层模型" title="OSI七层模型" rel="1">OSI七层模型</a>
+                <a href="#数据库架构" title="数据库架构" rel="1">数据库架构</a>
             
                 <a href="#sql调优" title="sql调优" rel="1">sql调优</a>
+            
+                <a href="#OSI七层模型" title="OSI七层模型" rel="1">OSI七层模型</a>
             
                 <a href="#ClassLoader" title="ClassLoader" rel="1">ClassLoader</a>
             
@@ -221,13 +199,13 @@
             
                 <a href="#锁模块" title="锁模块" rel="3">锁模块</a>
             
-                <a href="#数据库事务" title="数据库事务" rel="1">数据库事务</a>
-            
-                <a href="#ACID" title="ACID" rel="1">ACID</a>
-            
                 <a href="#当前读" title="当前读" rel="1">当前读</a>
             
                 <a href="#快照读" title="快照读" rel="1">快照读</a>
+            
+                <a href="#数据库事务" title="数据库事务" rel="1">数据库事务</a>
+            
+                <a href="#ACID" title="ACID" rel="1">ACID</a>
             
         </div> 
         -->
@@ -301,13 +279,13 @@
   <div class="archive-article-inner">
     <header class="archive-article-header">
 
-      <a href="/2019/09/19/JAVA框架-Spring/" class="archive-article-date">
+      <a href="/2019/09/19/Java框架-Spring/" class="archive-article-date">
 		  <time datetime="2019-09-19T03:40:36.000Z" itemprop="datePublished">Sep 19, 2019</time>
 	  </a>
       
   
     <h1 class="thumb" itemprop="name">
-      <a class="archive-article-title" href="/2019/09/19/JAVA框架-Spring/">JAVA框架-Spring</a>
+      <a class="archive-article-title" href="/2019/09/19/Java框架-Spring/">Java框架-Spring</a>
     </h1>
   
 
@@ -404,13 +382,13 @@
   <div class="archive-article-inner">
     <header class="archive-article-header">
 
-      <a href="/2019/09/19/JAVA框架-Spring/" class="archive-article-date">
+      <a href="/2019/09/19/Java框架-Spring/" class="archive-article-date">
 		  <time datetime="2019-09-19T03:40:36.000Z" itemprop="datePublished">Sep 19, 2019</time>
 	  </a>
       
   
     <h1 class="thumb" itemprop="name">
-      <a class="archive-article-title" href="/2019/09/19/JAVA框架-Spring/">JAVA框架-Spring</a>
+      <a class="archive-article-title" href="/2019/09/19/Java框架-Spring/">Java框架-Spring</a>
     </h1>
   
 
@@ -1637,6 +1615,18 @@
               <div class="widget-entry-summary" style="margin: 0;">
             
 
+              <h6 style="margin: 0;"><a href="/2019/11/05/进程和线程的区别/">进程和线程的区别</a></h6>
+              <span>November 5, 2019</span>
+            </div>
+
+          </li>
+        
+          <li class="clearfix">
+
+            
+              <div class="widget-entry-summary" style="margin: 0;">
+            
+
               <h6 style="margin: 0;"><a href="/2019/11/02/Java垃圾回收之垃圾回收器/">Java垃圾回收之垃圾回收器</a></h6>
               <span>November 2, 2019</span>
             </div>
@@ -1691,18 +1681,6 @@
 
           </li>
         
-          <li class="clearfix">
-
-            
-              <div class="widget-entry-summary" style="margin: 0;">
-            
-
-              <h6 style="margin: 0;"><a href="/2019/10/26/谈谈ClassLoader/">谈谈ClassLoader</a></h6>
-              <span>October 26, 2019</span>
-            </div>
-
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -1742,7 +1720,7 @@
     <h3 class="widget-title">Archives</h3>
 
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">25</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">25</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">1</span></li></ul>
     </div>
 
     <div>
@@ -1799,9 +1777,6 @@
 
 
     <!-- headerblur min height -->
-    
-      var headerblur = document.getElementById("header-blur");
-      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

@@ -55,32 +55,10 @@
 
 
   
-  
-  <div class="site-header-image">
-    <img id="originBg" width="100%" alt="Hike News" src="">
-  </div>
-
-  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
-    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
-  </div>
-
-  <script>
-        var imgUrls = "css/images/pose01.jpg,https://source.unsplash.com/collection/954550/1920x1080,https://source.unsplash.com/collection/954550/1920x1081".split(",");
-        var random = Math.floor((Math.random() * imgUrls.length ));
-        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
-          document.getElementById("originBg").src=imgUrls[random];
-          document.getElementById("blurBg").src=imgUrls[random];
-        } else {
-          document.getElementById("originBg").src='/' + imgUrls[random];
-          document.getElementById("blurBg").src='/' + imgUrls[random];
-        }
-    </script>
-
-
 
 
 <header id="allheader" class="site-header" role="banner" 
-   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
+   >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -126,6 +104,195 @@
       <div id="content" class="outer">
         
           <section id="main">
+  
+    <article id="post-Java框架-Spring"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/09/19/Java框架-Spring/">Java框架-Spring</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/09/19/Java框架-Spring/" class="article-date">
+	  <time datetime="2019-09-19T03:40:36.000Z" itemprop="datePublished">September 19, 2019</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/Spring/">Spring</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="IOC原理"><a href="#IOC原理" class="headerlink" title="IOC原理"></a>IOC原理</h4><h5 id="IOC（Inversion-of-Control）：控制反转"><a href="#IOC（Inversion-of-Control）：控制反转" class="headerlink" title="IOC（Inversion of Control）：控制反转"></a>IOC（Inversion of Control）：控制反转</h5><p>Spring Core最核心部分<br>IOC是一种思想，实现手段：依赖注入（Dependency Injection）</p>
+<h5 id="依赖注入"><a href="#依赖注入" class="headerlink" title="依赖注入"></a>依赖注入</h5><p>把底层类作为参数传递给上层类，实现上层对下层的“控制”</p>
+<p><img src="/2019/09/19/Java框架-Spring/%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5.jpg" alt></p>
+<h5 id="依赖注入的方式"><a href="#依赖注入的方式" class="headerlink" title="依赖注入的方式"></a>依赖注入的方式</h5><ul>
+<li>Setter</li>
+<li>Interface</li>
+<li>Constructor</li>
+<li>Annotation</li>
+</ul>
+<h5 id="依赖倒置原则、IOC、DI、IOC容器的关系"><a href="#依赖倒置原则、IOC、DI、IOC容器的关系" class="headerlink" title="依赖倒置原则、IOC、DI、IOC容器的关系"></a>依赖倒置原则、IOC、DI、IOC容器的关系</h5><p><img src="/2019/09/19/Java框架-Spring/%E4%BE%9D%E8%B5%96%E5%80%92%E7%BD%AE%E5%8E%9F%E5%88%99%E3%80%81IOC%E3%80%81DI%E3%80%81IOC%E5%AE%B9%E5%99%A8%E7%9A%84%E5%85%B3%E7%B3%BB.jpg" alt></p>
+<p>依赖倒置原则是一种思想，高层模块不应该依赖底层模块；<br>有了依赖倒置原则才有了IOC的思路；<br>实现IOC的思路又需要依赖注入的支撑；<br>Spring的框架基于IOC提出了容器的概念，对于IOC来说最重要的就是容器了，容器管理着bean的生命周期，控制着bean的依赖注入。</p>
+<h5 id="IOC容器的优势"><a href="#IOC容器的优势" class="headerlink" title="IOC容器的优势"></a>IOC容器的优势</h5><p>当使用的时候，IOC容器在内部已经完成对象，调用者只需要调用即可！<br>如图蓝色部分全部是由IOC容器完成！<br><img src="/2019/09/19/Java框架-Spring/ioc%E5%AE%B9%E5%99%A8%E7%9A%84%E4%BC%98%E5%8A%BF.jpg" alt></p>
+<h4 id="IOC的应用"><a href="#IOC的应用" class="headerlink" title="IOC的应用"></a>IOC的应用</h4><h5 id="实际应用"><a href="#实际应用" class="headerlink" title="实际应用"></a>实际应用</h5><ol>
+<li>读取应用程序提供的Bean配置信息，并在Spring容器中生成一份Bean注册表。</li>
+<li>根据生成的Bean注册表通过反射机制实例化Bean，并装配好Bean之间的依赖关系。</li>
+<li>将生成的Bean实例对象放入Spring容器中。<br><img src="/2019/09/19/Java框架-Spring/IOC%E7%9A%84%E5%AE%9E%E9%99%85%E5%BA%94%E7%94%A8.jpg" alt></li>
+</ol>
+<h5 id="Spring-IOC支持的功能："><a href="#Spring-IOC支持的功能：" class="headerlink" title="Spring IOC支持的功能："></a>Spring IOC支持的功能：</h5><ol>
+<li>依赖注入</li>
+<li>依赖检查</li>
+<li>自动装配</li>
+<li>支持集合</li>
+<li>指定初始化方法和销毁方法</li>
+<li>支持回调方法</li>
+</ol>
+<h5 id="Spring-IOC容器的核心接口"><a href="#Spring-IOC容器的核心接口" class="headerlink" title="Spring IOC容器的核心接口"></a>Spring IOC容器的核心接口</h5><ol>
+<li>BeanFactory</li>
+<li>ApplicationContext</li>
+</ol>
+<p><strong>BeanFactory：Spring框架最核心的接口</strong>  </p>
+<ul>
+<li>提供IOC的配置机制</li>
+<li>包含Bean的各种定义，便于实例化Bean</li>
+<li>建立Bean之间的依赖关系</li>
+<li>Bean生命周期的控制</li>
+</ul>
+<p><strong>ApplicationContext的功能（继承多个接口）</strong>  </p>
+<ul>
+<li>BeanFactory:能够管理、装配Bean</li>
+<li>ResourcePatternResolver:能够加载资源文件</li>
+<li>MessageSource:能够实现国际化功能</li>
+<li>ApplicationEventPublisher:能够注册监听器，实现监听机制</li>
+</ul>
+<h5 id="Spring里面几个核心的接口和类"><a href="#Spring里面几个核心的接口和类" class="headerlink" title="Spring里面几个核心的接口和类"></a>Spring里面几个核心的接口和类</h5><ul>
+<li>BeanDefinition<br>主要是用来描述Bean的定义</li>
+<li>BeanDefinitionRegistry<br>提供向容器注册BeanDefinition对象的方法</li>
+</ul>
+<h5 id="refresh-方法"><a href="#refresh-方法" class="headerlink" title="refresh 方法"></a>refresh 方法</h5><ol>
+<li>为IOC容器以及Bean的生命周期管理提供条件</li>
+<li>刷新Spring上下文信息，定义Spring上下文加载流程</li>
+</ol>
+<h5 id="getBean-方法"><a href="#getBean-方法" class="headerlink" title="getBean 方法"></a>getBean 方法</h5><p><strong>getBean方法的代码逻辑</strong></p>
+<ul>
+<li>转换beanName</li>
+<li>从缓存中加载实例</li>
+<li>实例化Bean</li>
+<li>检测parentBeanFactory</li>
+<li>初始化依赖的Bean</li>
+<li>创建Bean</li>
+</ul>
+<p><strong>Spring Bean的实例</strong></p>
+<ul>
+<li>singleton:Spring的默认作用域，容器里拥有唯一的Bean实例</li>
+<li>prototype:针对每个getBean请求，容器都会创建一个Bean实例</li>
+<li>request:为每个Httpp请求创建一个Bean实例</li>
+<li>session：会为每个session创建一个Bean实例</li>
+<li>globlaSession:会为每个全局Http Session创建一个Bean实例，该作用域仅对Portlet有效</li>
+</ul>
+<p><strong>创建过程</strong></p>
+<p><img src="/2019/09/19/Java框架-Spring/%E5%88%9B%E5%BB%BABean%E7%9A%84%E8%BF%87%E7%A8%8B.jpg" alt></p>
+<p><strong>销毁过程</strong></p>
+<ul>
+<li>若实现了DisposableBean接口，则会调用destroy方法</li>
+<li>若配置了destry-method属性，则会调用其配置的销毁方法</li>
+</ul>
+<h4 id="Spring-AOP"><a href="#Spring-AOP" class="headerlink" title="Spring AOP"></a>Spring AOP</h4><h5 id="关注点分离：不同的问题交给不同的部分去解决"><a href="#关注点分离：不同的问题交给不同的部分去解决" class="headerlink" title="关注点分离：不同的问题交给不同的部分去解决"></a>关注点分离：不同的问题交给不同的部分去解决</h5><ul>
+<li>面向切面变成AOP正是此种技术的体现</li>
+<li>通用代码的实现，对应的就是所谓的切面（Aspect）</li>
+<li>业务功能代码和切面代码分开后，架构将变得高内聚低耦合</li>
+<li>确保功能的完整性：切面最终需要被合并到业务中（Weave）</li>
+</ul>
+<h5 id="AOP的三种织入方式"><a href="#AOP的三种织入方式" class="headerlink" title="AOP的三种织入方式"></a>AOP的三种织入方式</h5><ul>
+<li>编译时织入：需要特殊的Java编译器，AspectJ</li>
+<li>类加载时织入：需要特殊的Java编译器，如AspectJ和AspectWerkz</li>
+<li>运行时织入：Spring采用的方式，通过动态代理的方式，实现简单</li>
+</ul>
+<h5 id="AOP主要名词概念"><a href="#AOP主要名词概念" class="headerlink" title="AOP主要名词概念"></a>AOP主要名词概念</h5><ul>
+<li>Aspect:通用功能代码的实现，切面</li>
+<li>Target:被织入Aspect的对象</li>
+<li>Join Point：可以作为切入点的机会，所有的方法都可以作为切入点</li>
+<li>Pointcut:Aspect实际被应用在的Join Point，支持正则</li>
+<li>Advice:类里的方法以及这个方法如何织入到目标方法的方式</li>
+<li>Weaving:Aop的实现过程</li>
+</ul>
+<p><strong>Advice的种类</strong></p>
+<ul>
+<li>前置通知（Before）</li>
+<li>后置通知（AfterReturning）</li>
+<li>异常通知（AfterThrowing）</li>
+<li>最终通知（After）</li>
+<li>环绕通知（Around）</li>
+</ul>
+<h5 id="AOP的实现：JdkProxy和Cglib"><a href="#AOP的实现：JdkProxy和Cglib" class="headerlink" title="AOP的实现：JdkProxy和Cglib"></a>AOP的实现：JdkProxy和Cglib</h5><ul>
+<li><p>由AopProxyFactory根据AdvisedSupport对象配置来决定</p>
+</li>
+<li><p>默认策略如果目标是接口，则用JDKProxy来实现，否则用后者</p>
+</li>
+<li><p>JDKProxy的核心：InvocationHandler接口和Proxy类</p>
+</li>
+<li><p>Cglib:以集成的方式动态生成目标类的代理</p>
+</li>
+<li><p>JDKProxy:通过Java的内部反射机制实现</p>
+</li>
+<li><p>Cglib:借助ASM实现</p>
+</li>
+<li><p>反射机制在生成类的过程中比较高效</p>
+</li>
+<li><p>ASM在生成类之后的执行过程中比较高效</p>
+</li>
+</ul>
+<h5 id="代理模式：接口-真实实现类-代理类"><a href="#代理模式：接口-真实实现类-代理类" class="headerlink" title="代理模式：接口+真实实现类+代理类"></a>代理模式：接口+真实实现类+代理类</h5><p>例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public interface Payment&#123;</span><br><span class="line">    void pay();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public RealPayment implements Payment&#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void pay()&#123;</span><br><span class="line"></span><br><span class="line">        System.out.println(&quot;作为用户我只关心支付&quot;)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public AliPay implements Payment&#123;</span><br><span class="line">    private Payment payment;</span><br><span class="line">    public AliPay(Payment payment)</span><br><span class="line">    public void beforePay()&#123;</span><br><span class="line">        System.out.println(&quot;从招行取款&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">    @Override</span><br><span class="line">    public void pay()&#123;</span><br><span class="line">        beforePay()；</span><br><span class="line">        payment.pay();</span><br><span class="line">        afterPay();</span><br><span class="line">    &#125;</span><br><span class="line">    public void afterPay()&#123;</span><br><span class="line">        System.out.println(&quot;支付给慕课网&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Payment proxy = new AliPay(new RealPayment);</span><br><span class="line">proxy.pay();</span><br></pre></td></tr></table></figure>
+
+<h5 id="Spring里的代理模式的实现"><a href="#Spring里的代理模式的实现" class="headerlink" title="Spring里的代理模式的实现"></a>Spring里的代理模式的实现</h5><ul>
+<li>真实实现类的逻辑包含在了getBean方法里</li>
+<li>getBean方法返回的实际上是Proxy实例</li>
+<li>Proxy实例是Spring采用JDK Proxy或CGLIB动态生成的</li>
+</ul>
+<h4 id="Spring事务的相关问题"><a href="#Spring事务的相关问题" class="headerlink" title="Spring事务的相关问题"></a>Spring事务的相关问题</h4><ul>
+<li>ACID</li>
+<li>隔离级别</li>
+<li>事务传播</li>
+</ul>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/Spring/">Spring</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AOP/">AOP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IOC/">IOC</a></li></ul>
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
   
     <article id="post-微信点餐系统-日志框架"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
@@ -498,6 +665,18 @@
               <div class="widget-entry-summary" style="margin: 0;">
             
 
+              <h6 style="margin: 0;"><a href="/2019/11/05/进程和线程的区别/">进程和线程的区别</a></h6>
+              <span>November 5, 2019</span>
+            </div>
+
+          </li>
+        
+          <li class="clearfix">
+
+            
+              <div class="widget-entry-summary" style="margin: 0;">
+            
+
               <h6 style="margin: 0;"><a href="/2019/11/02/Java垃圾回收之垃圾回收器/">Java垃圾回收之垃圾回收器</a></h6>
               <span>November 2, 2019</span>
             </div>
@@ -552,18 +731,6 @@
 
           </li>
         
-          <li class="clearfix">
-
-            
-              <div class="widget-entry-summary" style="margin: 0;">
-            
-
-              <h6 style="margin: 0;"><a href="/2019/10/26/谈谈ClassLoader/">谈谈ClassLoader</a></h6>
-              <span>October 26, 2019</span>
-            </div>
-
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -603,7 +770,7 @@
     <h3 class="widget-title">Archives</h3>
 
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">25</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">25</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">1</span></li></ul>
     </div>
 
     <div>
@@ -660,9 +827,6 @@
 
 
     <!-- headerblur min height -->
-    
-      var headerblur = document.getElementById("header-blur");
-      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

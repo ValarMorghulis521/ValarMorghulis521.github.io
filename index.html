@@ -55,32 +55,10 @@
 
 
   
-  
-  <div class="site-header-image">
-    <img id="originBg" width="100%" alt="Hike News" src="">
-  </div>
-
-  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
-    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
-  </div>
-
-  <script>
-        var imgUrls = "css/images/pose01.jpg,https://source.unsplash.com/collection/954550/1920x1080,https://source.unsplash.com/collection/954550/1920x1081".split(",");
-        var random = Math.floor((Math.random() * imgUrls.length ));
-        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
-          document.getElementById("originBg").src=imgUrls[random];
-          document.getElementById("blurBg").src=imgUrls[random];
-        } else {
-          document.getElementById("originBg").src='/' + imgUrls[random];
-          document.getElementById("blurBg").src='/' + imgUrls[random];
-        }
-    </script>
-
-
 
 
 <header id="allheader" class="site-header" role="banner" 
-   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
+   >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -127,6 +105,50 @@
         
           <section id="main">
   
+    <article id="post-进程和线程的区别"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/11/05/进程和线程的区别/">进程和线程的区别</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/11/05/进程和线程的区别/" class="article-date">
+	  <time datetime="2019-11-05T03:19:48.000Z" itemprop="datePublished">November 5, 2019</time>
+	</a>
+
+       
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="进程和线程的区别"><a href="#进程和线程的区别" class="headerlink" title="进程和线程的区别"></a>进程和线程的区别</h2><h3 id="进程和线程的由来"><a href="#进程和线程的由来" class="headerlink" title="进程和线程的由来"></a>进程和线程的由来</h3><ol>
+<li>穿行 </li>
+</ol>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+      
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-Java垃圾回收之垃圾回收器"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
@@ -155,7 +177,102 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <h4 id="前置概念"><a href="#前置概念" class="headerlink" title="前置概念"></a>前置概念</h4><h5 id="Stop-the-World"><a href="#Stop-the-World" class="headerlink" title="Stop-the-World"></a>Stop-the-World</h5><ul>
+<li>JVM由于要执行GC而停止了应用程序的执行</li>
+<li>任何一种GC算法中都会发生</li>
+<li>多数GC优化通过减少Stop-the-world发生的时间来提高程序性能</li>
+</ul>
+<h5 id="Safepoint"><a href="#Safepoint" class="headerlink" title="Safepoint"></a>Safepoint</h5><ul>
+<li>分析过程中对象引用关系不会发生变化的点</li>
+<li>产生Safepoint的地方：方法调用；循环跳转；异常跳转</li>
+<li>安全点数量得适中</li>
+</ul>
+<h5 id="JVM的运行模式"><a href="#JVM的运行模式" class="headerlink" title="JVM的运行模式"></a>JVM的运行模式</h5><ul>
+<li>Server:启动较慢,采用的重量级虚拟机，对程序采用了更多的优化；启动稳定后运行速度比Client快</li>
+<li>Client:启动较快</li>
+</ul>
+<h4 id="垃圾搜集器之间的联系"><a href="#垃圾搜集器之间的联系" class="headerlink" title="垃圾搜集器之间的联系"></a>垃圾搜集器之间的联系</h4><p><img src="/2019/11/02/Java垃圾回收之垃圾回收器/%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E4%B9%8B%E9%97%B4%E7%9A%84%E8%81%94%E7%B3%BB.jpg" alt></p>
+<h5 id="Serial收集器（-XX-UseSerialGC-复制算法）"><a href="#Serial收集器（-XX-UseSerialGC-复制算法）" class="headerlink" title="Serial收集器（-XX:UseSerialGC,复制算法）"></a>Serial收集器（-XX:UseSerialGC,复制算法）</h5><ul>
+<li>单线程收集，进行垃圾收集时必须暂停所有工作线程</li>
+<li>简单高效，Client模式下默认的年轻代收集器</li>
+</ul>
+<h5 id="ParNew收集器（-XX-UseParNewGC-复制算法）"><a href="#ParNew收集器（-XX-UseParNewGC-复制算法）" class="headerlink" title="ParNew收集器（-XX:+UseParNewGC,复制算法）"></a>ParNew收集器（-XX:+UseParNewGC,复制算法）</h5><ul>
+<li>多线程收集，进行垃圾收集时必须暂停所有工作线程</li>
+<li>单核执行效率不如Serial,在多核下执行才有优势</li>
+</ul>
+<h5 id="Parallel-Scavenge收集器（-XX-UseParallelGC-复制算法）"><a href="#Parallel-Scavenge收集器（-XX-UseParallelGC-复制算法）" class="headerlink" title="Parallel Scavenge收集器（-XX:+UseParallelGC,复制算法）"></a>Parallel Scavenge收集器（-XX:+UseParallelGC,复制算法）</h5><ul>
+<li>比起管住用户线程停顿时间，更关注系统的吞吐量</li>
+<li>在多核模式下执行才有优势，Server模式下默认的年轻代收集器</li>
+</ul>
+<h5 id="Serial-Old收集器（-XX-UseSerialOldGC-标记-整理算法）"><a href="#Serial-Old收集器（-XX-UseSerialOldGC-标记-整理算法）" class="headerlink" title="Serial Old收集器（-XX:UseSerialOldGC,标记-整理算法）"></a>Serial Old收集器（-XX:UseSerialOldGC,标记-整理算法）</h5><ul>
+<li>单线程收集，进行垃圾收集时必须暂停所有工作线程</li>
+<li>简单高效，Client模式下默认的老年代收集器</li>
+</ul>
+<h5 id="Parllel-Old收集器（-XX-UseParallelOldGC-标记-整理算法）"><a href="#Parllel-Old收集器（-XX-UseParallelOldGC-标记-整理算法）" class="headerlink" title="Parllel Old收集器（-XX:+UseParallelOldGC,标记-整理算法）"></a>Parllel Old收集器（-XX:+UseParallelOldGC,标记-整理算法）</h5><ul>
+<li>多线程收集，进行垃圾收集时必须暂停所有工作线程</li>
+<li>单核执行效率不如Serial,在多核下执行才有优势</li>
+</ul>
+<h5 id="CMS收集器（-XX-UseConcMarkSweepGC-标记-清除算法）"><a href="#CMS收集器（-XX-UseConcMarkSweepGC-标记-清除算法）" class="headerlink" title="CMS收集器（-XX:+UseConcMarkSweepGC,标记-清除算法）"></a>CMS收集器（-XX:+UseConcMarkSweepGC,标记-清除算法）</h5><ol>
+<li>初始标记：stop-the-world</li>
+<li>并发标记：并发追溯标记，程序不会停顿</li>
+<li>并发预清理：查找执行并发编辑阶段从年轻代晋升到老年代的对象</li>
+<li>重新标记：暂停虚拟机，扫描CMS堆中剩余对象</li>
+<li>并发清理：清理垃圾对象，程序不会停顿</li>
+<li>并发重置：重置CMS收集器的数据结构</li>
+</ol>
+<h5 id="G1收集器（-XX-UseG1GC-复制-标记-整理算法）"><a href="#G1收集器（-XX-UseG1GC-复制-标记-整理算法）" class="headerlink" title="G1收集器（-XX:+UseG1GC,复制+标记-整理算法）"></a>G1收集器（-XX:+UseG1GC,复制+标记-整理算法）</h5><p>Garbage Firlst收集器的特点：  </p>
+<ol>
+<li>并发和并行，使用多个cup缩短stop-the-world的时间，与用户线程并发执行</li>
+<li>分代收集，独立管理整个堆</li>
+<li>空间整合，解决内存碎片</li>
+<li>可预测的停顿</li>
+</ol>
+<p>Garbage First收集器：  </p>
+<ul>
+<li>将整个堆内存划分为多个大小相等的Region</li>
+<li>年轻代和老年代不再物理隔离</li>
+</ul>
+<h4 id="问题整理："><a href="#问题整理：" class="headerlink" title="问题整理："></a>问题整理：</h4><h5 id="Object的finalize-方法的作用是否与C-的解析函数作用相同"><a href="#Object的finalize-方法的作用是否与C-的解析函数作用相同" class="headerlink" title="Object的finalize()方法的作用是否与C++的解析函数作用相同"></a>Object的finalize()方法的作用是否与C++的解析函数作用相同</h5><ul>
+<li>与C++的析构函数不同，析构函数调用确定，而它的是不确定的</li>
+<li>将未被引用的对象放置于F-Queue队列</li>
+<li>方法执行随时可能被终止</li>
+<li>给予对象最后一次重生机会<h5 id="Java中的强引用，软引用，弱引用，虚引用有什么用"><a href="#Java中的强引用，软引用，弱引用，虚引用有什么用" class="headerlink" title="Java中的强引用，软引用，弱引用，虚引用有什么用"></a>Java中的强引用，软引用，弱引用，虚引用有什么用</h5></li>
+</ul>
+<p><strong>强引用（Strong Reference）</strong></p>
+<ul>
+<li>最普遍的引用：Object obj = new Object()</li>
+<li>抛出OutOfMemoryError终止程序也不会回收具有强引用的对象</li>
+<li>通过将对象设置为null来弱化引用，使其被回收</li>
+</ul>
+<p><strong>软引用（Soft Reference）</strong></p>
+<ul>
+<li>对象处在有用但非必须的状态</li>
+<li>只有当内存空间不足时，GC会回收该引用的内存</li>
+<li>可以用来实现高速缓存</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Stirng str = new String(&quot;abc&quot;);//强引用</span><br><span class="line">SoftRefence&lt;String&gt;softRef = new SoftRefence&lt;String&gt;(str);//弱引用</span><br></pre></td></tr></table></figure>
+
+<p><strong>弱引用（Weak Reference）</strong></p>
+<ul>
+<li>非必须的对象，比软引用更弱一些</li>
+<li>GC时会被回收</li>
+<li>被回收的概率也不大，因为GC线程优先级比较低</li>
+<li>适用于引用偶尔被使用且不影响垃圾收集的对象</li>
+</ul>
+<p><strong>虚引用（Phantom Reference）</strong></p>
+<ul>
+<li>不会决定对象的生命周期</li>
+<li>任何时候都可能被垃圾收集器回收</li>
+<li>跟踪对象被垃圾收集器回收的活动，起哨兵作用</li>
+<li>必须和引用队列ReferenceQueue联合使用</li>
+</ul>
+<p><img src="/2019/11/02/Java垃圾回收之垃圾回收器/%E5%90%84%E5%BC%95%E7%94%A8%E7%9A%84%E5%AF%B9%E6%AF%94.jpg" alt></p>
+<p><strong>引用队列（ReferenceQueue）</strong></p>
+<ul>
+<li>无实际存储结构，存储逻辑依赖于内部节点之间的关系来表达</li>
+<li>存储关联的企鹅杯GC的软引用，弱引用以及虚引用</li>
+</ul>
+
       
     </div>
     <footer class="entry-meta entry-footer">
@@ -856,47 +973,6 @@
 <!-- Table of Contents -->
 
   
-    <article id="post-Redis集群"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/10/21/Redis集群/">Redis集群</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/10/21/Redis集群/" class="article-date">
-	  <time datetime="2019-10-21T14:27:28.000Z" itemprop="datePublished">October 21, 2019</time>
-	</a>
-
-       
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-      
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
 
 
   <nav id="page-nav">
@@ -995,6 +1071,18 @@
               <div class="widget-entry-summary" style="margin: 0;">
             
 
+              <h6 style="margin: 0;"><a href="/2019/11/05/进程和线程的区别/">进程和线程的区别</a></h6>
+              <span>November 5, 2019</span>
+            </div>
+
+          </li>
+        
+          <li class="clearfix">
+
+            
+              <div class="widget-entry-summary" style="margin: 0;">
+            
+
               <h6 style="margin: 0;"><a href="/2019/11/02/Java垃圾回收之垃圾回收器/">Java垃圾回收之垃圾回收器</a></h6>
               <span>November 2, 2019</span>
             </div>
@@ -1049,18 +1137,6 @@
 
           </li>
         
-          <li class="clearfix">
-
-            
-              <div class="widget-entry-summary" style="margin: 0;">
-            
-
-              <h6 style="margin: 0;"><a href="/2019/10/26/谈谈ClassLoader/">谈谈ClassLoader</a></h6>
-              <span>October 26, 2019</span>
-            </div>
-
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -1100,7 +1176,7 @@
     <h3 class="widget-title">Archives</h3>
 
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">25</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">25</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">1</span></li></ul>
     </div>
 
     <div>
@@ -1157,9 +1233,6 @@
 
 
     <!-- headerblur min height -->
-    
-      var headerblur = document.getElementById("header-blur");
-      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

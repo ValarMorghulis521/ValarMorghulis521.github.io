@@ -56,10 +56,32 @@
 
 
   
+  
+  <div class="site-header-image">
+    <img id="originBg" width="100%" alt="Hike News" src="">
+  </div>
+
+  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
+    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
+  </div>
+
+  <script>
+        var imgUrls = "css/images/pose01.jpg,https://source.unsplash.com/collection/954550/1920x1080,https://source.unsplash.com/collection/954550/1920x1081".split(",");
+        var random = Math.floor((Math.random() * imgUrls.length ));
+        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+          document.getElementById("originBg").src=imgUrls[random];
+          document.getElementById("blurBg").src=imgUrls[random];
+        } else {
+          document.getElementById("originBg").src='/' + imgUrls[random];
+          document.getElementById("blurBg").src='/' + imgUrls[random];
+        }
+    </script>
+
+
 
 
 <header id="allheader" class="site-header" role="banner" 
-   >
+   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -119,11 +141,11 @@
         <!-- 
         <div id='tag_cloud' class="tags">
             
-                <a href="#HTTP" title="HTTP" rel="2">HTTP</a>
-            
                 <a href="#JVM内存结构模型" title="JVM内存结构模型" rel="1">JVM内存结构模型</a>
             
                 <a href="#反射" title="反射" rel="1">反射</a>
+            
+                <a href="#HTTP" title="HTTP" rel="2">HTTP</a>
             
                 <a href="#线程独占" title="线程独占" rel="1">线程独占</a>
             
@@ -175,13 +197,13 @@
             
                 <a href="#MyISAM" title="MyISAM" rel="1">MyISAM</a>
             
-                <a href="#lombok" title="lombok" rel="1">lombok</a>
-            
                 <a href="#mysql" title="mysql" rel="1">mysql</a>
             
-                <a href="#日志框架" title="日志框架" rel="1">日志框架</a>
+                <a href="#lombok" title="lombok" rel="1">lombok</a>
             
                 <a href="#语法" title="语法" rel="1">语法</a>
+            
+                <a href="#日志框架" title="日志框架" rel="1">日志框架</a>
             
                 <a href="#数据库架构" title="数据库架构" rel="1">数据库架构</a>
             
@@ -1627,7 +1649,7 @@
               <div class="widget-entry-summary" style="margin: 0;">
             
 
-              <h6 style="margin: 0;"><a href="/2019/11/05/进程和线程的区别/">进程和线程的区别</a></h6>
+              <h6 style="margin: 0;"><a href="/2019/11/05/Java多线程与并发/">Java多线程与并发</a></h6>
               <span>November 5, 2019</span>
             </div>
 
@@ -1777,6 +1799,9 @@
 
 
     <!-- headerblur min height -->
+    
+      var headerblur = document.getElementById("header-blur");
+      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

@@ -21,7 +21,7 @@
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/2019/11/05/Java多线程与并发/start%E5%92%8Crun%E6%96%B9%E6%B3%95%E5%85%B3%E7%B3%BB%E5%9B%BE.jpg">
 <meta property="og:image" content="http://yoursite.com/2019/11/05/Java多线程与并发/%E7%BA%BF%E7%A8%8B%E4%BB%A5%E5%8F%8A%E7%BA%BF%E7%A8%8B%E4%B9%8B%E9%97%B4%E7%9A%84%E8%BD%AC%E6%8D%A2.jpg">
-<meta property="og:updated_time" content="2019-11-06T09:28:51.088Z">
+<meta property="og:updated_time" content="2019-11-07T03:38:42.369Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java多线程与并发">
 <meta name="twitter:description" content="进程和线程的区别进程和线程的由来 串行：初期的计算机智能执行任务，并且需要长时间等待用户输入 批处理：预先将用户的指令集中成清单，批量串行处理用户指令，仍然无法并发执行 进程：进程独占内存空间，保存各自运行的状态，互不干扰可以相互切换，为并发处理任务提供了可能 线程：共享进程的内存资源，相互间切换更快速，支持更细粒度的任务控制，使进程内的子任务得以并发执行  进程是资源分配的最小单位，线程是CPU">
@@ -236,7 +236,7 @@
 
 <h4 id="notify和notifyall的区别"><a href="#notify和notifyall的区别" class="headerlink" title="notify和notifyall的区别"></a>notify和notifyall的区别</h4><h5 id="两个概念"><a href="#两个概念" class="headerlink" title="两个概念"></a>两个概念</h5><ul>
 <li>锁池 entryList ：<br>假设线程A已经拥有了某个对象（不是类）的锁，而其它线程B,C想要调用这个对象的synchronized方法（或者块），由于B、C线程在进入对象的synchronized方法（或者块）之前必须先获得该对象锁的拥有权，而恰巧该对象的锁目前被线程A锁占有，此时B、C线程就会被阻塞，进入一个地方去等待锁的释放，这个地方便是该对象的锁池</li>
-<li>等待池 WaitLIst：<br>假设线程A调用了某个对象的wait方法，线程A就会释放该对象的锁，同时线程A就进入到了该对象的等待池中，进入到等待池中的线程不会去竞争该对象的锁</li>
+<li>等待池 WaitList：<br>假设线程A调用了某个对象的wait方法，线程A就会释放该对象的锁，同时线程A就进入到了该对象的等待池中，进入到等待池中的线程不会去竞争该对象的锁</li>
 </ul>
 <h5 id="区别："><a href="#区别：" class="headerlink" title="区别："></a>区别：</h5><ul>
 <li>notifyAll 会让所有处于等待池的线程全部进入锁池去竞争获取锁的机会</li>
@@ -252,7 +252,7 @@
 <li>suspend（）和resunme（）<br>原因：暴力中断线程，如A调用B的stop去终止B线程，由于A不知道B的运行状态，突然停止将可能导致B的一些清理工作无法完成，stop（）方法执行后会马上释放锁，这可能引发数据不同步的问题</li>
 </ol>
 <h5 id="目前使用的方法"><a href="#目前使用的方法" class="headerlink" title="目前使用的方法"></a>目前使用的方法</h5><ol>
-<li><p>调用interrupt（），通知线程应该中断了<br>1）如果线程处于阻塞状态，那么线程将立即退出被阻塞状态，并抛出一个InterruptedException异常<br>2）如果线程处于正常活动状态，那么会将该线程的终端标记设置为true。被设置中断标志的线程将继续正常运行，不受影响</p>
+<li><p>调用interrupt（），通知线程应该中断了<br>1）如果线程处于阻塞状态，那么线程将立即退出被阻塞状态，并抛出一个InterruptedException异常<br>2）如果线程处于正常活动状态，那么会将该线程的中断标记设置为true。被设置中断标志的线程将继续正常运行，不受影响</p>
 </li>
 <li><p>需要被调用的线程配合中断<br>1）在正常运行任务时，进程检查本线程的中断标志位，如果被设置了中断标志就自行停止线程<br>2）如果线程处于正常活动状态，那么会将该线程的终端标记设置为true。被设置中断标志的线程将继续正常运行，不受影响</p>
 </li>

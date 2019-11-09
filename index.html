@@ -127,6 +127,311 @@
         
           <section id="main">
   
+    <article id="post-服务拆分"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/11/08/服务拆分/">服务拆分</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/11/08/服务拆分/" class="article-date">
+	  <time datetime="2019-11-08T09:00:20.000Z" itemprop="datePublished">November 8, 2019</time>
+	</a>
+
+       
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="微服务拆分的起点和重点"><a href="#微服务拆分的起点和重点" class="headerlink" title="微服务拆分的起点和重点"></a>微服务拆分的起点和重点</h4><h5 id="微服务如何拆分："><a href="#微服务如何拆分：" class="headerlink" title="微服务如何拆分："></a>微服务如何拆分：</h5><ol>
+<li>先明白起点和终点<br> 起点：既有的架构形态（老项目、新项目）<br> 终点：好的架构不是设计出来的，而是进化而来的。进化一直在演进  </li>
+<li>需要考虑的因素与坚持的原则</li>
+</ol>
+<h5 id="不适合用微服务的业务场景"><a href="#不适合用微服务的业务场景" class="headerlink" title="不适合用微服务的业务场景"></a>不适合用微服务的业务场景</h5><ol>
+<li>系统中包含很多很多强事务场景的</li>
+<li>业务相对稳定，迭代周期长</li>
+<li>访问压力不大，可用性要求不高</li>
+</ol>
+<p>康威定律：沟通的问题会影响系统的设计</p>
+<h4 id="点餐业务服务拆分"><a href="#点餐业务服务拆分" class="headerlink" title="点餐业务服务拆分"></a>点餐业务服务拆分</h4><p>服务拆分的方法论：&lt;可扩展的艺术&gt;</p>
+<h5 id="扩展立方模型"><a href="#扩展立方模型" class="headerlink" title="扩展立方模型"></a>扩展立方模型</h5><ul>
+<li>x轴：水平复制，通过副本扩展，将应用程序水平复制，通过负载均衡运行程序的多个完全一样的副本方式，来实现应用程序的伸缩性，提高应用程序的容量和可用度。</li>
+<li>Z轴：数据分区，每个服务器负责一个数据子集。每个服务器运行的代码是一样的。</li>
+<li>Y轴：功能解耦，将不同职责的模块，分成不同的服务<h5 id="如何拆分功能"><a href="#如何拆分功能" class="headerlink" title="如何拆分功能"></a>如何拆分功能</h5><ul>
+<li>单一职责，松耦合、高内聚 ：<br> （每个服务只负责业务功能的一个单独部分。服务之间耦合度低，修改一个服务不用导致另外一个服务跟着修改，高内聚指的是服务内部相关的行为聚集在一个服务内，而不是分散在不同的服务中，需要修改一个行为时，只需要修改一个服务就行）</li>
+<li>关注点分离</li>
+</ul>
+<ol>
+<li>按职责（给我们的服务进行分类，明显按照业务领域可以划分出来的服务，职责比较单一</li>
+<li>按通用性（一些基础组件，与具体的业务无关的可以划分成单独的服务 消息 用户</li>
+<li>按粒度级别<h5 id="服务和数据的关系"><a href="#服务和数据的关系" class="headerlink" title="服务和数据的关系"></a>服务和数据的关系</h5></li>
+</ol>
+<ul>
+<li>先考虑拆分业务功能，在考虑拆分业务功能对应的数据</li>
+<li>无状态服务</li>
+</ul>
+<ol>
+<li>一个数据需要被多个服务共享才能完成一个请求，这个数据就是有状态</li>
+<li>把数据迁移到分布式缓存中存储，让业务服务变成无状态计算结点，后端服务能做到按需动态伸缩，在运行时动态增删结点不用考虑缓存同步问题</li>
+</ol>
+</li>
+</ul>
+<p><img src="/2019/11/08/服务拆分/%E4%B8%8D%E7%94%A8%E8%80%83%E8%99%91%E7%BC%93%E5%AD%98%E5%90%8C%E6%AD%A5.jpg" alt>     </p>
+<h5 id="点餐业务拆分分析"><a href="#点餐业务拆分分析" class="headerlink" title="点餐业务拆分分析"></a>点餐业务拆分分析</h5><p><img src="/2019/11/08/服务拆分/%E7%82%B9%E9%A4%90%E4%B8%9A%E5%8A%A1%E6%8B%86%E5%88%86%E5%88%86%E6%9E%90.jpg" alt>  </p>
+<h4 id="商品服务"><a href="#商品服务" class="headerlink" title="商品服务"></a>商品服务</h4><h4 id="订单服务"><a href="#订单服务" class="headerlink" title="订单服务"></a>订单服务</h4>
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+      
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-服务注册与发现"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/11/08/服务注册与发现/">服务注册与发现</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/11/08/服务注册与发现/" class="article-date">
+	  <time datetime="2019-11-08T03:15:32.000Z" itemprop="datePublished">November 8, 2019</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/微服务实战/">微服务实战</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="微服务的注册与发现-（Spring-Cloud-Eureka）："><a href="#微服务的注册与发现-（Spring-Cloud-Eureka）：" class="headerlink" title="微服务的注册与发现 （Spring Cloud Eureka）："></a>微服务的注册与发现 （Spring Cloud Eureka）：</h4><ol>
+<li>基于Netflix Eureka做了二次封装</li>
+<li>两个组件：</li>
+</ol>
+<ul>
+<li>Eureka Server(注册中心）</li>
+<li>Eureka Client(服务注册)  </li>
+</ul>
+<p>Eureka Server作为服务注册功能的服务器，它是服务注册中心，而系统中其他微服务使用Eureka Client客户端，连接到Eureka Server并维持心跳连接，这样就能监控系统中各个微服务是否正常运行</p>
+<h4 id="Eureka-Server-注册中心"><a href="#Eureka-Server-注册中心" class="headerlink" title="Eureka Server 注册中心"></a>Eureka Server 注册中心</h4><h5 id="Eureka-Server的配置"><a href="#Eureka-Server的配置" class="headerlink" title="Eureka Server的配置"></a>Eureka Server的配置</h5><ol>
+<li><p>新建项目 Cloud Discovery -&gt; Eureka Server</p>
+</li>
+<li><p>修改pom文件中spring boot 2.0.0.M3 和 spring cloud Finchley.M2的版本</p>
+</li>
+<li><p>启动主类EurekaApplication  添加注解 @EnableEurekaServer，表明这个有注册中心的功能</p>
+</li>
+<li><p>配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">eureka:</span><br><span class="line">  client:</span><br><span class="line">    service-url:</span><br><span class="line">    # 配置的注册地址</span><br><span class="line">      defaultZone: http://localhost:8761/eureka/</span><br><span class="line">    # 本身就是注册中心，取消注册</span><br><span class="line">    register-with-eureka: false</span><br><span class="line">  server:</span><br><span class="line">  #Server端配置，关闭自我保护，开发环境</span><br><span class="line">    enable-self-preservation: false</span><br><span class="line"># 配置应用的名字</span><br><span class="line">spring:</span><br><span class="line">  application:</span><br><span class="line">    name: eureka</span><br><span class="line">server:</span><br><span class="line">  port: 8761</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>mvn打包,后台启动 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mvn clean package  </span><br><span class="line">nohup java -jar target/eureka-0.0.1-SNAPSHOT.jar &gt; /dev/null 2&gt;&amp;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h5 id="Eureka-Client的配置"><a href="#Eureka-Client的配置" class="headerlink" title="Eureka Client的配置"></a>Eureka Client的配置</h5><ol>
+<li>新建项目 Cloud Discovery -&gt; Eureka Client</li>
+<li>修改pom文件中spring boot 2.0.0.M3 和 spring cloud Finchley.M2的版本</li>
+<li>启动主类 ClientApplication  添加注解 @EnableDiscoveryClient，表明这个有注册中心的功能</li>
+<li>配置文件<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">eureka:</span><br><span class="line">  client:</span><br><span class="line">    service-url:</span><br><span class="line">    # 配置的注册地址</span><br><span class="line">      defaultZone: http://localhost:8761/eureka/</span><br><span class="line">    # 自定义连接跳转地址</span><br><span class="line">#   instance:</span><br><span class="line">#    hostname: clientName</span><br><span class="line"># 配置应用的名字</span><br><span class="line">spring:</span><br><span class="line">  application:</span><br><span class="line">    name: client</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>EurekaClient的使用  </p>
+<ol>
+<li>引入依赖</li>
+<li>配置上注册中心的地址</li>
+<li>在启动的主类上加@EnableDiscoveryClient</li>
+</ol>
+<h5 id="Eureka-的高可用"><a href="#Eureka-的高可用" class="headerlink" title="Eureka 的高可用"></a>Eureka 的高可用</h5><p>eureka server实现高可用，可以将他集群，然后互相注册。client端注册所有集群eureka<br><img src="/2019/11/08/服务注册与发现/%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E4%B8%8E%E5%8F%91%E7%8E%B0%5CEurekaServer%E9%AB%98%E5%8F%AF%E7%94%A8.jpg" alt><br>单个server且没有client的时候，自己注册自己，会显示自己，加一个参数register-with-eureka: false会取消显示； 3个server相互注册instances栏也不显示注册的另外的server（client）实例和自己本身，registered-replicas栏里倒是可以看另外的server；<br>改动register-with-eureka: true后，另外两个server实例和自己本身将都会显示。</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>Eureka Server的高可用，通过多个Eureka相互注册实现。   </p>
+<ul>
+<li>@EnableEurekaServer @EnableEurekaClient</li>
+<li>心跳检测，健康检查，负载均衡等功能</li>
+<li>Eureka的高可用，生产上建议至少两台以上</li>
+<li>分布式系统中，服务注册中心是最重要的部分</li>
+</ul>
+<h4 id="分布式下服务注册的地位和原理"><a href="#分布式下服务注册的地位和原理" class="headerlink" title="分布式下服务注册的地位和原理"></a>分布式下服务注册的地位和原理</h4><p><img src="/2019/11/08/服务注册与发现/%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E4%B8%8E%E5%8F%91%E7%8E%B0%5C%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E5%8F%91%E7%8E%B0.jpg" alt></p>
+<p>服务端发现两种方式：  </p>
+<ol>
+<li>客户端发现：Eureka</li>
+<li>服务端发现：Nginx,Zookeeper,Kubernetes  </li>
+</ol>
+<p>微服务的特点：异构  </p>
+<ol>
+<li>不同语言</li>
+<li>不同类型的数据库</li>
+</ol>
+<p>SpringCloud的调用方式：REST，其他语言可实现Eureka的客户端</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/微服务实战/">微服务实战</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Eureka/">Eureka</a></li></ul>
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-微服务介绍"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/11/08/微服务介绍/">微服务介绍</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/11/08/微服务介绍/" class="article-date">
+	  <time datetime="2019-11-08T02:50:52.000Z" itemprop="datePublished">November 8, 2019</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/微服务实战/">微服务实战</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="什么是微服务"><a href="#什么是微服务" class="headerlink" title="什么是微服务?"></a>什么是微服务?</h4><p>微服务是一种架构风格，不是组件不是框架。</p>
+<ol>
+<li>一系列微小的服务共同组成</li>
+<li>跑在自己的进程</li>
+<li>每个服务为独立的业务开发</li>
+<li>独立部署</li>
+<li>分布式的管理</li>
+</ol>
+<h4 id="什么是分布式？"><a href="#什么是分布式？" class="headerlink" title="什么是分布式？"></a>什么是分布式？</h4><p>旨在支持应用程序和服务的开发，可以利用物理架构由多个自治的处理元素，不共享内存，但通过网络发送消息合作。<br><img src="/2019/11/08/微服务介绍/%E6%9E%B6%E6%9E%84%E6%BC%94%E8%BF%9B.jpg" alt></p>
+<h4 id="单体架构的优点："><a href="#单体架构的优点：" class="headerlink" title="单体架构的优点："></a>单体架构的优点：</h4><p>容易测试（本地启动完整的测试，不需要外部依赖）<br>容易部署（直接打成war包，放在tomcat下面就可以了）</p>
+<h4 id="单体架构的缺点："><a href="#单体架构的缺点：" class="headerlink" title="单体架构的缺点："></a>单体架构的缺点：</h4><p>开发效率低（容易提交代码的时候造成冲突）<br>代码维护难（尤其是新人来的时候业务代码写在一块，不知从何下手）<br>部署不够灵活（任何小修改都要重新构建，构建时间特别长）<br>稳定性不够 （任何一个小问题容易让整个系统挂掉）<br>扩展性不够（无法满足高并发下的业务需求）   </p>
+<h4 id="微服务架构的基础框架或组件："><a href="#微服务架构的基础框架或组件：" class="headerlink" title="微服务架构的基础框架或组件："></a>微服务架构的基础框架或组件：</h4><ol>
+<li>服务注册发现</li>
+<li>服务网关（路由、监控、容器、日志、授权、反爬虫）</li>
+<li>后端通用服务（请求时将地址信息放在服务注册表中）</li>
+<li>前端服务（通过查询注册表发现并调用后端服务，主要是聚合后端服务和暴露外部接口）</li>
+</ol>
+<p><img src="/2019/11/08/微服务介绍/%E7%AE%80%E5%8D%95%E7%9A%84%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84.jpg" alt></p>
+<h4 id="Spring-Cloud-是什么？"><a href="#Spring-Cloud-是什么？" class="headerlink" title="Spring Cloud 是什么？"></a>Spring Cloud 是什么？</h4><ul>
+<li>Spring Cloud 是一个开发工具集，包含多个子项目<br>主要是基于对 Netflix 开源组件的进一步封装</li>
+<li>继承了了Spring Boot 的开发便利，简化了分布式开发</li>
+<li>不仅需要掌握如何使用，更要理解分布式架构的特点</li>
+</ul>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/微服务实战/">微服务实战</a>
+
+      
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-Java异常"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/11/07/Java异常/">Java异常</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/11/07/Java异常/" class="article-date">
+	  <time datetime="2019-11-07T13:33:15.000Z" itemprop="datePublished">November 7, 2019</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/Java常用类库与技巧/">Java常用类库与技巧</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>#### </p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/Java常用类库与技巧/">Java常用类库与技巧</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/异常/">异常</a></li></ul>
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-Java多线程与并发-原理"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
@@ -155,7 +460,246 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h4 id="synchronized"><a href="#synchronized" class="headerlink" title="synchronized"></a>synchronized</h4>
+        <h4 id="synchronized"><a href="#synchronized" class="headerlink" title="synchronized"></a>synchronized</h4><h5 id="线程安全问题的主要诱因"><a href="#线程安全问题的主要诱因" class="headerlink" title="线程安全问题的主要诱因"></a>线程安全问题的主要诱因</h5><ul>
+<li>存在共享数据（也称临界资源）</li>
+<li>存在多条线程共同操作这些共享数据  </li>
+</ul>
+<p><strong>解决问题的根本方法</strong><br>  同一时刻有且只有一个线程在操作共享数据，其他线程必须等到该线程处理完数据后再对共享数据进行操作</p>
+<h5 id="互斥锁的特性"><a href="#互斥锁的特性" class="headerlink" title="互斥锁的特性"></a>互斥锁的特性</h5><ul>
+<li><p>互斥性：即在同一时间只允许一个线程持有某个对象锁，通过这种特性来实现多线程的协调机制，这样在同一时间只有一个线程对需要同步的代码块（复合操作进行访问）。互斥性也成为操作的原子性。  </p>
+</li>
+<li><p>可见性：必须确保在锁被释放之前，对共享变量所做的修改，对于随后获得该锁的另一个线程是可见的（即在获得锁时应获得最新共享变量的值），否则另一个线程可能是在本地缓存的某个副本上继续操作，从而引起不一致</p>
+</li>
+<li><p>synchronized锁的不是代码，锁的是对象</p>
+</li>
+</ul>
+<h5 id="根据获取的锁的分类：获取对象锁和获取类锁"><a href="#根据获取的锁的分类：获取对象锁和获取类锁" class="headerlink" title="根据获取的锁的分类：获取对象锁和获取类锁"></a>根据获取的锁的分类：获取对象锁和获取类锁</h5><p>获取对象锁的两种用法  </p>
+<ol>
+<li>同步代码块（synchronized（this），synchronized（类实例对象）），锁是小括号（）中的实例对象</li>
+<li>同步非静态方法（synchronized method），锁的是当前对象的实例对象<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> *方法中有 synchronized(this|object) &#123;&#125; 同步代码块</span><br><span class="line"> */</span><br><span class="line">private void syncObjectBlock1() &#123;</span><br><span class="line">        System.out.println(Thread.currentThread().getName() + &quot;_SyncObjectBlock1: &quot; + new SimpleDateFormat(&quot;HH:mm:ss&quot;).format(new Date()));</span><br><span class="line">        synchronized (this) &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                System.out.println(Thread.currentThread().getName() + &quot;_SyncObjectBlock1_Start: &quot; + new SimpleDateFormat(&quot;HH:mm:ss&quot;).format(new Date()));</span><br><span class="line">                Thread.sleep(1000);</span><br><span class="line">                System.out.println(Thread.currentThread().getName() + &quot;_SyncObjectBlock1_End: &quot; + new SimpleDateFormat(&quot;HH:mm:ss&quot;).format(new Date()));</span><br><span class="line">            &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> *synchronized 修饰非静态方法</span><br><span class="line"> */</span><br><span class="line">private synchronized void syncObjectMethod1() &#123;</span><br><span class="line">        System.out.println(Thread.currentThread().getName() + &quot;_SyncObjectMethod1: &quot; + new SimpleDateFormat(&quot;HH:mm:ss&quot;).format(new Date()));</span><br><span class="line">        try &#123;</span><br><span class="line">            System.out.println(Thread.currentThread().getName() + &quot;_SyncObjectMethod1_Start: &quot; + new SimpleDateFormat(&quot;HH:mm:ss&quot;).format(new Date()));</span><br><span class="line">            Thread.sleep(1000);</span><br><span class="line">            System.out.println(Thread.currentThread().getName() + &quot;_SyncObjectMethod1_End: &quot; + new SimpleDateFormat(&quot;HH:mm:ss&quot;).format(new Date()));</span><br><span class="line">        &#125; catch (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>获取类锁的两种用法  </p>
+<ol>
+<li>同步代码块（synchronized（类.class），锁是小括号（）中的类对象（Class对象）</li>
+<li>同步静态方法（synchronized static method），锁是当前对象的类对象（Class对象）</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">private void syncClassBlock1() &#123;</span><br><span class="line">        System.out.println(Thread.currentThread().getName() + &quot;_SyncClassBlock1: &quot; + new SimpleDateFormat(&quot;HH:mm:ss&quot;).format(new Date()));</span><br><span class="line">        synchronized (SyncThread.class) &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                System.out.println(Thread.currentThread().getName() + &quot;_SyncClassBlock1_Start: &quot; + new SimpleDateFormat(&quot;HH:mm:ss&quot;).format(new Date()));</span><br><span class="line">                Thread.sleep(1000);</span><br><span class="line">                System.out.println(Thread.currentThread().getName() + &quot;_SyncClassBlock1_End: &quot; + new SimpleDateFormat(&quot;HH:mm:ss&quot;).format(new Date()));</span><br><span class="line">            &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">//同步静态方法</span><br><span class="line">private synchronized static void syncClassMethod1() &#123;</span><br><span class="line">        System.out.println(Thread.currentThread().getName() + &quot;_SyncClassMethod1: &quot; + new SimpleDateFormat(&quot;HH:mm:ss&quot;).format(new Date()));</span><br><span class="line">        try &#123;</span><br><span class="line">            System.out.println(Thread.currentThread().getName() + &quot;_SyncClassMethod1_Start: &quot; + new SimpleDateFormat(&quot;HH:mm:ss&quot;).format(new Date()));</span><br><span class="line">            Thread.sleep(1000);</span><br><span class="line">            System.out.println(Thread.currentThread().getName() + &quot;_SyncClassMethod1_End: &quot; + new SimpleDateFormat(&quot;HH:mm:ss&quot;).format(new Date()));</span><br><span class="line">        &#125; catch (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="类锁和对象锁的总结"><a href="#类锁和对象锁的总结" class="headerlink" title="类锁和对象锁的总结"></a>类锁和对象锁的总结</h5><ol>
+<li>有线程访问对象的同步代码块时，另外的线程可以访问该对象的非同步代码块；</li>
+<li>若锁的是同一个对象，一个线程在访问对象的同步代码块时，另一个访问对象的同步代码块的线程会被阻塞；</li>
+<li>若锁住的是同一个对象，一个线程在访问对象的同步方法时，另一个访问对象同步方法的线程会被阻塞；</li>
+<li>若锁住的是同一个对象，一个线程在访问对象的同步代码块时，另一个访问对象同步方法的线程会被阻塞，反之亦然</li>
+<li>同一个类的不同对象的对象锁互不干扰</li>
+<li>类锁由于也是一种特殊的对象锁，因此表现和上述1，2，3，4一致，而由于一个类只有一把对象锁，所以同一个类的不同对象使用类锁将会是同步的</li>
+<li>类锁和对象锁互不干扰</li>
+</ol>
+<hr>
+<h4 id="synchronized底层实现原理"><a href="#synchronized底层实现原理" class="headerlink" title="synchronized底层实现原理"></a>synchronized底层实现原理</h4><h5 id="实现synchronized的基础"><a href="#实现synchronized的基础" class="headerlink" title="实现synchronized的基础"></a>实现synchronized的基础</h5><ul>
+<li>Java对象头</li>
+<li>Monitor<h5 id="对象在内存中的布局"><a href="#对象在内存中的布局" class="headerlink" title="对象在内存中的布局"></a>对象在内存中的布局</h5></li>
+<li>对象头：Mark Work + Class Metadata Address</li>
+<li>实例数据</li>
+<li>对齐填充</li>
+</ul>
+<p><strong>对象头的结构：</strong><br>Mark Work：默认存储对象的hashCode,分代年龄，锁类型，锁标志位等信息 非固定的数据结构，以便效率<br>Class Metadata Address：类型指针指向对象的类元数据，JVM通过这个指针确定该对象是哪个类的数据 </p>
+<p><img src="/2019/11/06/Java多线程与并发-原理/MarkWord.jpg" alt></p>
+<p>重量级锁也就是通常说的synchronizd的对象锁，锁的标识位是10，指针指向的是Monitor对象的起始地址  </p>
+<p><strong>Monitor：在java的设计中每一个对象天生自带一把看不见的锁</strong><br>它叫做内部锁，或者Monitor锁，Monitor也叫做管程或者监视器锁，可以把它理解为一个同步工具，也可以描述为一种同步机制。通常他被描述为一个对象。每个对象都存在着一个Monitor与之关联</p>
+<p><strong>ObjectMonitor源码</strong><br><img src="/2019/11/06/Java多线程与并发-原理/ObjectMonitor%E6%BA%90%E7%A0%81.jpg" alt></p>
+<p>Monitor是由ObjectMonitor实现的，位于jvm源码即ObjectMonitor.hpp文件里面，它是通过c++来实现的，EntryList(锁池)，waitSet（等待池）。他们就是用来保存Objectwaiter的对象列表，每个对象锁的线程都会被封装成Objectwaiter来保存到里面，owner是指向指向持有ObjectMonitor的线程，当多个线程同时访问同一段同步代码的时候，首先会进如到EntryList集合里面，当线程获取到对象的Monitor后进入_Owner区域并把monitor中的_owner变量设置为当前线程，同时monitor中的计数器_count加1。即获得对象锁。若持有monitor的线程调用wait()方法，将释放当前持有的monitor，_owner变量恢复为null，_count自减1，同时该线程进入_WaitSet集合中等待被唤醒。若当前线程执行完毕也将释放monitor(锁)并复位变量的值，以便其他线程进入获取monitor(锁)。<br>monitor对象存在于每个java对象的对象头中，monitor也是class,其实例会存储在堆中,MarkWord中保存的是它的指针<br><a href="https://blog.csdn.net/uftjtt/article/details/80250182" target="_blank" rel="noopener">https://blog.csdn.net/uftjtt/article/details/80250182</a> 有类似的讲解  </p>
+<p>在上面的源码我们可以看到ObjectMonitor中有几个关键属性：</p>
+<ul>
+<li>_owner：指向持有ObjectMonitor对象的线程</li>
+<li>_WaitSet：存放处于wait状态的线程队列</li>
+<li>_EntryList：存放处于等待锁block状态的线程队列<br><img src="/2019/11/06/Java多线程与并发-原理/Monitor%E9%94%81%E7%9A%84%E7%AB%9E%E4%BA%89%E3%80%81%E8%8E%B7%E5%8F%96%E4%B8%8E%E9%87%8A%E6%94%BE.jpg" alt></li>
+</ul>
+<h5 id="什么是重入？"><a href="#什么是重入？" class="headerlink" title="什么是重入？"></a>什么是重入？</h5><p>从互斥的设计上来说，当一个线程师徒操作一个由其他线程持有的对象锁临界资源时，将会处于阻塞状态，但当一个线程再次请求自己持有对象锁的临界资源时，这种情况属于重入</p>
+<h5 id="为什么会对synchronized嗤之以鼻"><a href="#为什么会对synchronized嗤之以鼻" class="headerlink" title="为什么会对synchronized嗤之以鼻"></a>为什么会对synchronized嗤之以鼻</h5><ul>
+<li>早起版本中，synchronized属于重量级锁，依赖于Mutex Lock实现</li>
+<li>线程之间的切换需要从用户态转换为内核态，开销较大</li>
+<li>Java6以后，synchronized性能得到了很大的提升<br>Adaptice Spining,Lock Eliminate,Lock Coarsening,Lightweight Locking ,Biased Locking</li>
+</ul>
+<h5 id="自旋锁与自适应自旋锁"><a href="#自旋锁与自适应自旋锁" class="headerlink" title="自旋锁与自适应自旋锁"></a>自旋锁与自适应自旋锁</h5><p><strong>自旋锁</strong>  </p>
+<ol>
+<li>许多情况下，共享数据的锁定状态持续时间较短，切换线程不值得</li>
+<li>通过让线程执行忙循环等待锁的释放，不让出CPU</li>
+<li>缺点：若锁被其他线程长时间占用，会带来许多性能上的开销</li>
+</ol>
+<p><strong>自适应自旋锁</strong></p>
+<ol>
+<li>自旋的次数不再固定</li>
+<li>由前一次在同一个锁上的自旋时间及锁的拥有者的状态来决定<br>（如果在同一个锁对象上自旋等待刚刚成功获取过锁，并且持有锁的线程正在运行中，jvm会认位该锁自旋获取到锁的可能性很大，会自动增加等待时间，相反，如果对于某个锁 ，自旋很少成功获取到锁，那在以后要获取这个锁时，可能会省略掉自旋过程，以避免浪费处理器资源）<h5 id="锁消除"><a href="#锁消除" class="headerlink" title="锁消除"></a>锁消除</h5>更彻底的优化：JIT编译时，对运行上下文进行扫描，去除不可能存在竞争的锁</li>
+</ol>
+<h5 id="锁粗化"><a href="#锁粗化" class="headerlink" title="锁粗化"></a>锁粗化</h5><p>另一种极端：通过扩大加锁的范围，避免反复加锁和解锁</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public void add(String str1,String str2)&#123;</span><br><span class="line">    //StringBuffer是线程安全的，由于sb只会在append方法中使用，不可能被其他线程引用，因此sb属于不可能共享的资源，JVM会自动消除内部的锁</span><br><span class="line">    StringBuffer sb = new StringBuffer();</span><br><span class="line">    sb.append(str1).append(str2);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="synchronized的四种状态："><a href="#synchronized的四种状态：" class="headerlink" title="synchronized的四种状态："></a>synchronized的四种状态：</h5><ul>
+<li>无锁、偏向锁、轻量级锁、重量级锁</li>
+<li>锁膨胀方向：无锁-&gt; 偏向锁-&gt; 轻量级锁-&gt; 重量级锁</li>
+</ul>
+<p><strong>偏向锁:减少同一线程获取锁的代价</strong>  </p>
+<ul>
+<li>大多数情况下， 锁不存在多线程竞争，总是由同一线程多次获得<br>核心思想：如果一个线程获得了锁，那么锁就进入偏向模式，此时Mark Word的结构也变成了偏向锁结构，当该线程再次请求锁时，无需再做任何同步操作，即获取锁的过程只需要检查Mark Word的锁标记为偏向锁，以及当前线程Id等于Mark Word的ThreadID即可，这样就省去了大量有关锁申请的操作<br>不适用于锁竞争比较激烈的多线程场合</li>
+</ul>
+<p><strong>轻量级锁</strong><br>轻量级锁是由偏向锁升级来的，偏向锁运行在一个线程进入同步块的情况下，当第二个线程加入锁争用的时候，偏向锁会升级为轻量级锁<br>适应的场景：线程交替执行同步块<br>若存在同一时间访问同一锁的情况，就会导致轻量级锁膨胀为重量级锁</p>
+<p><img src="/2019/11/06/Java多线程与并发-原理/%E8%BD%BB%E9%87%8F%E7%BA%A7%E9%94%81%E5%8A%A0%E9%94%81%E8%BF%87%E7%A8%8B.jpg" alt></p>
+<p><img src="/2019/11/06/Java多线程与并发-原理/%E8%BD%BB%E9%87%8F%E7%BA%A7%E9%94%81%E5%8A%A0%E9%94%81%E8%BF%87%E7%A8%8B2.jpg" alt></p>
+<h5 id="锁的内存语义"><a href="#锁的内存语义" class="headerlink" title="锁的内存语义"></a>锁的内存语义</h5><p><img src="/2019/11/06/Java多线程与并发-原理/%E9%94%81%E7%9A%84%E5%86%85%E5%AD%98%E8%AF%AD%E4%B9%89.jpg" alt></p>
+<h5 id="偏向锁、轻量级锁、重量级锁的汇总"><a href="#偏向锁、轻量级锁、重量级锁的汇总" class="headerlink" title="偏向锁、轻量级锁、重量级锁的汇总"></a>偏向锁、轻量级锁、重量级锁的汇总</h5><p><img src="/2019/11/06/Java多线程与并发-原理/%E5%87%A0%E7%A7%8D%E9%94%81%E7%9A%84%E6%B1%87%E6%80%BB.jpg" alt></p>
+<hr>
+<h4 id="synchronized和ReentrantLock的区别"><a href="#synchronized和ReentrantLock的区别" class="headerlink" title="synchronized和ReentrantLock的区别"></a>synchronized和ReentrantLock的区别</h4><h5 id="ReentranLock-再入锁"><a href="#ReentranLock-再入锁" class="headerlink" title="ReentranLock(再入锁)"></a>ReentranLock(再入锁)</h5><ul>
+<li>位于java.util.concurrent.locks包</li>
+<li>和CountDownLatch、Futask、Semaphore一样基于AQS实现</li>
+<li>能够实现不synchronized更细粒度的控制，如控制fairness</li>
+<li>调用lock()之后，必须调用unlock()释放锁</li>
+<li>性能未必比synchronized高，并且也是可重入的</li>
+</ul>
+<h5 id="AbstractQueuedSynchronizer"><a href="#AbstractQueuedSynchronizer" class="headerlink" title="AbstractQueuedSynchronizer"></a>AbstractQueuedSynchronizer</h5><p>AQS：是构建锁 或 其他同步组件 的基础框架，是J.U.C包的核心。一般使用方式为继承<br>包含：  </p>
+<ol>
+<li>volatile 数组成员表征状态state</li>
+<li>一个FIFO等待线程队列 Node head和tail</li>
+<li>acquire()获取资源的独占权 (与同步相关的)</li>
+<li>release()释放对资源的独占权 (与同步相关的)</li>
+<li>其他基于CAS的基础操作方法</li>
+</ol>
+<h5 id="ReentrantLock公平锁的设置"><a href="#ReentrantLock公平锁的设置" class="headerlink" title="ReentrantLock公平锁的设置"></a>ReentrantLock公平锁的设置</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ReentrantLock fairLock = new ReentrantLock(true);</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>参数为true时，倾向于将锁赋予等待时间最久的线程</li>
+<li>公平锁：获取锁的顺序按先后调用lock方法的顺序依次获取锁（慎用）</li>
+<li>非公平锁：抢占的顺序不一定，看运气</li>
+<li>synchronized是非公平锁，通用场景中公平性未必有想象的那么重要，Java默认的调度策略很少会导致饥饿情况的发生；若要保证公平性则会引入额外的开销，自然会导致一定的吞吐量下降，当程序确实有公平性需要的时候，才有必要指定公平</li>
+</ol>
+<p><strong>公平锁和非公平锁的例子</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">public class ReentrantLockDemo implements  Runnable&#123;</span><br><span class="line">    private static ReentrantLock lock = new ReentrantLock(true);</span><br><span class="line">    @Override</span><br><span class="line">    public void run()&#123;</span><br><span class="line">        while (true)&#123;</span><br><span class="line">            try&#123;</span><br><span class="line">                lock.lock();</span><br><span class="line">                System.out.println(Thread.currentThread().getName() + &quot; get lock&quot;);</span><br><span class="line">                Thread.sleep(1000);</span><br><span class="line">            &#125; catch (Exception e)&#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125; finally &#123;</span><br><span class="line">                lock.unlock();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        ReentrantLockDemo rtld = new ReentrantLockDemo();</span><br><span class="line">        Thread thread1 = new Thread(rtld);</span><br><span class="line">        Thread thread2 = new Thread(rtld);</span><br><span class="line">        thread1.start();</span><br><span class="line">        thread2.start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="ReentranLock将锁对象化"><a href="#ReentranLock将锁对象化" class="headerlink" title="ReentranLock将锁对象化"></a>ReentranLock将锁对象化</h5><ul>
+<li>判断是否有线程，或者某个特定线程，在排队等待获取锁</li>
+<li>带超时的获取锁的尝试</li>
+<li>感知有没有成功获取锁<h5 id="将wait-notify-notifyall对象化"><a href="#将wait-notify-notifyall对象化" class="headerlink" title="将wait\notify\notifyall对象化"></a>将wait\notify\notifyall对象化</h5>java.util.concurrent.locks.Condition</li>
+</ul>
+<h5 id="synchronized和ReentrantLock的区别-1"><a href="#synchronized和ReentrantLock的区别-1" class="headerlink" title="synchronized和ReentrantLock的区别"></a>synchronized和ReentrantLock的区别</h5><ul>
+<li>synchronized是关键字，ReentrantLock是类</li>
+<li>ReentrantLock可以对获取锁的等待时间进行设置，避免死锁</li>
+<li>ReentrantLock可以获取各种锁的信息</li>
+<li>ReentrantLock可以灵活地实现多路通知</li>
+<li>机制：sync操作Mark Work,lock调用Unsafe类的park方法</li>
+</ul>
+<hr>
+<h4 id="jmm的内存可见性"><a href="#jmm的内存可见性" class="headerlink" title="jmm的内存可见性"></a>jmm的内存可见性</h4><h5 id="Java内存模型JMM"><a href="#Java内存模型JMM" class="headerlink" title="Java内存模型JMM"></a>Java内存模型JMM</h5><p>Java内存模型（Java Memory Model,简称JMM）是一种抽象的概念，并不真实存在，它描述的是一组规则或规范，通过这组规范定义了程序中各个变量（实例字段、静态字段、构成数组对象的元素）的访问方式</p>
+<p><img src="/2019/11/06/Java多线程与并发-原理/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8E%E5%B9%B6%E5%8F%91-%E5%8E%9F%E7%90%86%5CJava%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8BJMM.jpg" alt="Java内存模型JMM"></p>
+<ol>
+<li>由于JVM运行程序的实体是线程，而每个线程创建时JVM都会为其创建一个工作内存（有些地方称为栈空间），用于存储线程私有的数据，而Java内存模型中规定所有变量都存储在主内存中，主内存是共享内存区域所有线程都可以访问，但线程对变量的操作（读取、赋值等）必须在工作内存中进行。</li>
+<li>首先将变量从主内存copy到自己的工作内存空间当中，然后对变量进行操作，操作完成后，再将变量写回主内存，不能直接操作主内存中的变量；</li>
+<li>工作内存中存储着主内存中变量的副本拷贝，工作内存是每个线程的私有区域，因此不同的线程间无法访问对方的工作内存，线程间的通信传值必须通过主内存完成</li>
+</ol>
+<p><strong>JMM中的主内存</strong> </p>
+<ul>
+<li>存储Java实例对象</li>
+<li>包括成员变量、类变量、常量、静态变量等</li>
+<li>属于数据共享的区域，多线程并发操作时会引发线程安全问题</li>
+</ul>
+<p><strong>JMM中的工作内存</strong></p>
+<ul>
+<li>存储当前方法的所有本地变量信息，本地变量对其他线程不可见</li>
+<li>字节码行号指示器、Native方法信息</li>
+<li>属于线程私有数据区域，不存在线程安全问题</li>
+</ul>
+<p><strong>JMM与Java内存区域划分是不同的层次概念</strong> </p>
+<ul>
+<li>JMM描述的是一组规则，围绕原子性，有序性，可见性展开</li>
+<li>相似点：存在共享区域和私有区域</li>
+</ul>
+<p><strong>主内存与工作内存的数据存储类型以及操作方式归纳</strong> </p>
+<ol>
+<li>方法里的基本数据类型本地变量将直接存储在工作内存的栈帧结构中</li>
+<li>引用类型的本地变量：引用存储在工作内存中，实例存储在主内存中</li>
+<li>成员变量，static变量、类信息均会被存储在主内存中</li>
+<li>主内存共享的方式是线程各拷贝一份数据到工作内存，操作完成后刷新到主内存中</li>
+</ol>
+<h5 id="JMM如何解决可见性问题"><a href="#JMM如何解决可见性问题" class="headerlink" title="JMM如何解决可见性问题"></a>JMM如何解决可见性问题</h5><p><strong>指令重排序需要满足的条件</strong></p>
+<ul>
+<li>在单线程环境下不能改变程序运行的结果</li>
+<li>存在数据依赖关系的不允许重排序</li>
+<li>无法通过happends-before原则推导出来的，才能进行指令的重排序  </li>
+</ul>
+<p><strong>A操作的结果需要对B操作可见，则A与B存在happends-before关系</strong><br>是判断数据是否存在竞争，线程是否安全的主要依据；依靠这个原则我们便能解决在并发环境下两个操作之间存在冲突的问题。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">j = 1；//线程A执行</span><br><span class="line">j = i; //线程B执行</span><br></pre></td></tr></table></figure>
+
+<p><strong>happends-before的八大原则</strong>  </p>
+<ol>
+<li>单线程happen-before原则：在同一个线程中，书写在前面的操作happen-before后面的操作。</li>
+<li>锁的happen-before原则：同一个锁的unlock操作happen-before此锁的lock操作。</li>
+<li>volatile的happen-before原则：对一个volatile变量的写操作happen-before对此变量的任意操作(当然也包括写操作了)。</li>
+<li>happen-before的传递性原则：如果A操作 happen-before B操作，B操作happen-before C操作，那么A操作happen-before C操作。</li>
+<li>线程启动的happen-before原则：同一个线程的start方法happen-before此线程的其它方法。</li>
+<li>线程中断的happen-before原则：对线程interrupt方法的调用happen-before被中断线程的检测到中断发送的代码。</li>
+<li>线程终结的happen-before原则：线程中的所有操作都happen-before线程的终止检测。</li>
+<li>对象创建的happen-before原则：一个对象的初始化完成先于他的finalize方法调用</li>
+</ol>
+<p><strong>happends-before的概念</strong></p>
+<ul>
+<li>如果两个操作不满足上述任意一个happends-before规则，那么这两个操作就没有顺序的保障，JVM可以对这两个操作进行重排序</li>
+<li>如果操作A happends-before操作B,那么操作A在内存上所做的操作对操作B都是可见的</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">private int value = 0</span><br><span class="line">public void write(int input)&#123;</span><br><span class="line">    value = input;</span><br><span class="line">&#125;</span><br><span class="line">public int read()&#123;</span><br><span class="line">    return value;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>假设线程A执行write方法，线程B执行read方法，此代码块块不满足happends-before的八大原则，所以这段代码不是线程安全的；解决办法：</p>
+<ul>
+<li>加入synchronized锁</li>
+<li>对value加入volatile修饰符即可</li>
+</ul>
+<h5 id="volatile-JVM提供的轻量级同步机制"><a href="#volatile-JVM提供的轻量级同步机制" class="headerlink" title="volatile:JVM提供的轻量级同步机制"></a>volatile:JVM提供的轻量级同步机制</h5><ul>
+<li>保证被volatile修饰的共享变量对所有线程总是可见的</li>
+<li>禁止被指令重排序优化</li>
+</ul>
+<p><strong>volatile的可见性</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public class VolatileViasibility&#123;</span><br><span class="line">    public static volatile int value =0;</span><br><span class="line"></span><br><span class="line">    public static void increase()&#123;</span><br><span class="line">        value++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>此段代码中 value变量的任何变化都会反映到线程中，如果多个线程同时调用increase()会出现线程安全问题，因为value++操作不具备原子性（先读再写两步操作）</li>
+<li>解决办法：incarease()使用synchronized修饰保证线程安全，synchronized解决的是执行控制的问题，阻止其他线程获取当前对象的监控锁，当前被synchronized修饰的代码块无法被其他线程访问<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public class VolatileViasibility&#123;</span><br><span class="line">    public static volatil int value =0;</span><br><span class="line"></span><br><span class="line">    public synchronized static void increase()&#123;</span><br><span class="line">        value++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>synchronized 会创建一个内存屏障，保证所有cpu结果都会刷到主存中，从而保证操作的内存可见性。</p>
+<p><em>另外一种使volatile达到线程安全的场景</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">//对shutdown值的修改属于原子性操作</span><br><span class="line">public class VolatileSage(</span><br><span class="line">    volatile boolean shutdown;</span><br><span class="line">    </span><br><span class="line">    public void close()&#123;</span><br><span class="line">        shutdown=true;</span><br><span class="line">    &#125;</span><br><span class="line">    public void doWork()&#123;</span><br><span class="line">        while(!shutdown)&#123;</span><br><span class="line">            System.out.println(&quot;sage...&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p><strong>volatile变量为何立即可见？</strong>  </p>
+<ul>
+<li>当写一个volatile变量时，JMM会把该线程对应的工作内存中的共享变量刷新到主内存中；  </li>
+<li>当读取一个volatile变量时，JMM会把该线程对应的工作内存置为无效</li>
+</ul>
+<p><strong>volatile如何禁止重排优化</strong>  </p>
+<ul>
+<li>通过插入内存屏障指令在内存屏障指令执行重排序优化</li>
+<li>强制刷出各种cpu的缓存数据，因此任何cpu上的线程都能读取到这些数据的最新版本</li>
+</ul>
+<p><em>内存屏障（Memory Barrier）  1：保证特定操作的执行顺序<br>2：保证某些变量的内存可见性</em></p>
+<h5 id="单例的双重检测实现"><a href="#单例的双重检测实现" class="headerlink" title="单例的双重检测实现"></a>单例的双重检测实现</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">public class Singleton&#123;</span><br><span class="line">    //禁止指令重排优化</span><br><span class="line">    private volatile static Singleton instance;</span><br><span class="line"></span><br><span class="line">    private Singleton()&#123;&#125;</span><br><span class="line"></span><br><span class="line">    public static Singleton getIntance()&#123;</span><br><span class="line">        //第一次检测</span><br><span class="line">        if(instance==null)&#123;</span><br><span class="line">            //同步</span><br><span class="line">            synchronized(Singleton.class)&#123;</span><br><span class="line">                //多线程环境下可能会出现问题的地方</span><br><span class="line">                instance = new Singleton();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以上代码如果 intance不加volatile修饰会出现线程安全问题；某一个线程在执行到第一次检测时，读到的instance不为空时，instance的引用对象可能还没完全初始化，因为instance = new Singleton();分为以下三步完成  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">memory = allocarte();//1.分配对象内存空间</span><br><span class="line">intance(memery); //2.初始化对象</span><br><span class="line">instance = memory;//3.设置instance指向刚分配的内存地址，此时instance!=null</span><br></pre></td></tr></table></figure>
+
+<p>如果发生了重排序</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">memory = allocarte();//1.分配对象内存空间</span><br><span class="line">instance = memory;//3.设置instance指向刚分配的内存地址，此时instance!=null,但是对象还没有初始化完成</span><br><span class="line">intance(memery); //2.初始化对象</span><br></pre></td></tr></table></figure>
+
+<h5 id="volatile和synchronized的区别"><a href="#volatile和synchronized的区别" class="headerlink" title="volatile和synchronized的区别"></a>volatile和synchronized的区别</h5><ol>
+<li>volatile本质是在告诉JVM当前变量在寄存器（工作内存）中的值是不确定的，需要从主存中读取；synchronized则是锁定当前变量，只有当前线程可以访问该变量，其他线程被阻塞住知道该线程完成变量操作为止</li>
+<li>volatile仅能使用在变量级别；synchronized则可以使用在变量、方法和类级别</li>
+<li>volatile仅能实现变量的修改可见性，不能保证修改的原子性；而synchronized则可以脑正变量修改的可见性和原子性</li>
+<li>volatile不会造成线程的阻塞；synchronized可能会造成线程的阻塞</li>
+<li>volatile标记的变量不会被编译器优化；synchronnized标记的变量可以被编译器优化</li>
+</ol>
+
       
     </div>
     <footer class="entry-meta entry-footer">
@@ -860,305 +1404,6 @@
 <!-- Table of Contents -->
 
   
-    <article id="post-Java的内存模型常见问题"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/10/30/Java的内存模型常见问题/">Java的内存模型常见问题</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/10/30/Java的内存模型常见问题/" class="article-date">
-	  <time datetime="2019-10-30T14:57:48.000Z" itemprop="datePublished">October 30, 2019</time>
-	</a>
-
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/JVM/">JVM</a>
- 
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="JVM三大性能调优参数-Xms-Xmx-Xss的含义"><a href="#JVM三大性能调优参数-Xms-Xmx-Xss的含义" class="headerlink" title="JVM三大性能调优参数-Xms -Xmx -Xss的含义"></a>JVM三大性能调优参数-Xms -Xmx -Xss的含义</h4><ol>
-<li>-Xss：规定的每个虚拟机栈（堆栈）的大小。一般情况下，256K足够。此配置将会影响此进程中并发线程数的大小</li>
-<li>-Xms：初始java堆的大小，即该进程刚创建出来的时候java堆的大小。</li>
-<li>-Xmx：一旦对象容量超过-Xms大小，则将java堆大小扩容至改参数。为防止heap扩容导致内存抖动，影响程序运行稳定性，一般设置成与Xms一样大小</li>
-</ol>
-<h4 id="Java内存模型中堆和栈的区别"><a href="#Java内存模型中堆和栈的区别" class="headerlink" title="Java内存模型中堆和栈的区别"></a>Java内存模型中堆和栈的区别</h4><h5 id="内存分配策略"><a href="#内存分配策略" class="headerlink" title="内存分配策略"></a>内存分配策略</h5><p>静态存储：编译时确定每个数据目标在运行时的存储空间需求<br>栈式存储：数据区需求在编译时未知，运行时模块入口前确定<br>堆时存储：编译时或运行时模块入口都无法确定，动态分配</p>
-<h4 id="Java内存模型中堆和栈的区别-1"><a href="#Java内存模型中堆和栈的区别-1" class="headerlink" title="Java内存模型中堆和栈的区别"></a>Java内存模型中堆和栈的区别</h4><p>联系：引用对象、数组时，栈里定义变量保存堆中目标的首地址<br>管理方式：栈自动释放，堆需要GC<br>空间大小：栈比堆小<br>碎片相关：栈产生的碎片远小于堆<br>分配方式：栈支持静态和动态分配，而堆仅支持动态分配<br>效率：栈的效率比堆高</p>
-<h4 id="元空间、堆、线程独占部分间的联系-内存角度"><a href="#元空间、堆、线程独占部分间的联系-内存角度" class="headerlink" title="元空间、堆、线程独占部分间的联系-内存角度"></a>元空间、堆、线程独占部分间的联系-内存角度</h4><p><img src="/2019/10/30/Java的内存模型常见问题/%E5%85%83%E7%A9%BA%E9%97%B4%E5%A0%86%E7%BA%BF%E7%A8%8B%E7%8B%AC%E5%8D%A0%E9%83%A8%E5%88%86%E9%97%B4%E7%9A%84%E8%81%94%E7%B3%BB.jpg" alt></p>
-<h4 id="不同JDK版本之间的intern-方法的区别——JDK6-VS-JDK6"><a href="#不同JDK版本之间的intern-方法的区别——JDK6-VS-JDK6" class="headerlink" title="不同JDK版本之间的intern()方法的区别——JDK6 VS JDK6+"></a>不同JDK版本之间的intern()方法的区别——JDK6 VS JDK6+</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Stirng s = new String (&quot;a&quot;);</span><br><span class="line">s.intern();</span><br></pre></td></tr></table></figure>
-
-<p><strong>JDK6:</strong> 当调用intern 方法时，如果字符串常量池先前已创建出该字符串对象，则返回池中的该字符串的引用。否则，将此字符串对象添加到字符串常量池中，并且返回该字符串对象的引用<br><strong>JDK6+:</strong> 当调用intern 方法时，如果字符串常量池先前已创建出该字符串对象，则返回池中的该字符串的引用。否则，如果该字符串对象已经存在于java堆中，则将堆中对此对象的引用添加到字符串常量池中，并且返回该引用；如果堆中不存在，则在池中创建该字符串并返回其引用 </p>
-
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/JVM/">JVM</a>
-
-      
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-Java内存模型"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/10/30/Java内存模型/">Java内存模型</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/10/30/Java内存模型/" class="article-date">
-	  <time datetime="2019-10-30T06:01:08.000Z" itemprop="datePublished">October 30, 2019</time>
-	</a>
-
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/JVM/">JVM</a>
- 
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="内存简介"><a href="#内存简介" class="headerlink" title="内存简介"></a>内存简介</h4><p>计算机所有程序都是内存中运行的。在程序执行过程中，需要不断的将内存的逻辑地址和物理地址相互映射，找到相关的指令以及数据去执行。作为操作系统进程，java运行时受限于操作系统架构提供的可寻址空间。操作系统架构的可寻址空间由系统位数决定。</p>
-<ul>
-<li>32位处理器：2^32的可寻址范围</li>
-<li>64位处理器：2^64的可寻址范围<h5 id="地址空间的划分"><a href="#地址空间的划分" class="headerlink" title="地址空间的划分"></a>地址空间的划分</h5>内核空间<br>用户空间</li>
-</ul>
-<h4 id="JVM内存模型-JDK8"><a href="#JVM内存模型-JDK8" class="headerlink" title="JVM内存模型-JDK8"></a>JVM内存模型-JDK8</h4><p><img src="/2019/10/30/Java内存模型/Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B.jpg" alt></p>
-<ul>
-<li>线程私有：程序计数器、虚拟机栈、本地方法栈</li>
-<li>线程共享：MetaSpace、Java堆</li>
-</ul>
-<h4 id="程序计数器（Program-Counter-Register）"><a href="#程序计数器（Program-Counter-Register）" class="headerlink" title="程序计数器（Program Counter Register）"></a>程序计数器（Program Counter Register）</h4><ol>
-<li><p>程序计数器（逻辑的），是当前线程所执行的字节码的行号指示器。</p>
-</li>
-<li><p>由于Java 虚拟机的多线程是通过线程轮流切换并分配处理器执行时间的方式来实现的，在任何一个确定的时刻，一个处理器只会执行一条线程中的指令。因此，为了线程切换后能恢复到正确的执行位置，每条线程都需要有一个独立的程序计数器，各条线程独立存储，这种内存区域为“线程私有”的内存。</p>
-</li>
-<li><p>如果线程正在执行的是一个Java 方法，这个计数器记录的是正在执行的虚拟机字节码指令的地址；如果正在执行的是Natvie 方法，这个计数器值则为空（Undefined）。</p>
-</li>
-<li><p>因为只计数，所以不用担心内存泄露的问题</p>
-</li>
-</ol>
-<h4 id="Java虚拟机栈（Stack）"><a href="#Java虚拟机栈（Stack）" class="headerlink" title="Java虚拟机栈（Stack）"></a>Java虚拟机栈（Stack）</h4><p> <img src="/2019/10/30/Java内存模型/Stack.jpg" alt></p>
-<p>局部变量表：包含方法执行过程中的所有变量<br>操作数栈：入栈、出栈、复制、交换、产生消费变量</p>
-<p> <img src="/2019/10/30/Java内存模型/%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F%E8%A1%A8%E5%92%8C%E6%93%8D%E4%BD%9C%E6%A0%91%E6%A0%88%E7%9A%84%E4%BA%A4%E4%BA%92%E8%BF%87%E7%A8%8B.jpg" alt="局部变量表和操作树栈的交互过程"></p>
-<h5 id="递归引发java-lang-StackOverflowError异常"><a href="#递归引发java-lang-StackOverflowError异常" class="headerlink" title="递归引发java.lang.StackOverflowError异常"></a>递归引发java.lang.StackOverflowError异常</h5><p>  <img src="/2019/10/30/Java内存模型/StackOverfolwError.jpg" alt="局部变量表和操作树栈的交互过程"><br>原因：递归层数过多，当线程执行一个方法时就随之创建一个对应的栈帧，并将建立的栈帧压入虚拟机栈中，当方法执行完毕的时候便会当栈帧出栈，因此可知线程当前执行的方法所对应的的栈帧必定位于Java栈的顶部，而我们的递归函数不断去调用自身，每一次方法调用会涉及：第一，每新调用一次方法就会生成一个栈帧<br>第二,它会保存当前方法的栈帧状态将它放到虚拟机栈中<br>第三,栈帧上下文切换的时候会切换到最新的方法栈帧当中，而由于我们每个线程虚拟机栈深度是固定的，递归实现将导致栈的深度增加，每次递归都会往栈里压入一个栈帧，如果超出的最大允许的深度就会报StackOverfolwError</p>
-<h5 id="虚拟机栈过多引发java-lang-OutOfMemoryError异常"><a href="#虚拟机栈过多引发java-lang-OutOfMemoryError异常" class="headerlink" title="虚拟机栈过多引发java.lang.OutOfMemoryError异常"></a>虚拟机栈过多引发java.lang.OutOfMemoryError异常</h5><p>当虚拟机栈可以自动扩展但是无法申请到新的内存空间时就会抛出java.lang.OutOfMemoryError异常<br>例如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public void stackLeakByThread()&#123;</span><br><span class="line">  while(trur)&#123;</span><br><span class="line">    new Thread()&#123;</span><br><span class="line">      public void run()&#123;</span><br><span class="line">        while(true)&#123;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;.start()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="本地方法栈"><a href="#本地方法栈" class="headerlink" title="本地方法栈"></a>本地方法栈</h4><p> 与虚拟机栈相似，主要用于标注了native方法</p>
-<h4 id="元空间（MetaSpace）"><a href="#元空间（MetaSpace）" class="headerlink" title="元空间（MetaSpace）"></a>元空间（MetaSpace）</h4><h5 id="元空间（MetaSpace）与永久代（PermGen）的区别"><a href="#元空间（MetaSpace）与永久代（PermGen）的区别" class="headerlink" title="元空间（MetaSpace）与永久代（PermGen）的区别"></a>元空间（MetaSpace）与永久代（PermGen）的区别</h5><ul>
-<li>在8以后使用元空间（使用本地内存）替代永久代（使用jvm内存）<br>在7以后原先位于方法区的字符串常量池被移到堆中<br>元空间和永久代都是用来存储class的相关信息包括class对象的method和field等<br>元空间和永久代均是方法区的实现，方法区只是jvm的规范</li>
-</ul>
-<h5 id="MetaSpace相比PermGen的优势"><a href="#MetaSpace相比PermGen的优势" class="headerlink" title="MetaSpace相比PermGen的优势"></a>MetaSpace相比PermGen的优势</h5><ol>
-<li>字符串常量池存在永久代中，容易出现性能问题和内存溢出</li>
-<li>类和方法的信息大小难以确定，给永久代的大小指定带来困难</li>
-<li>永久代会为GC带来不必要的复杂性</li>
-<li>方便HotSpot与其它JVM如Jrockit的集成</li>
-</ol>
-<h4 id="Java堆（Heap）"><a href="#Java堆（Heap）" class="headerlink" title="Java堆（Heap）"></a>Java堆（Heap）</h4><ol>
-<li>对象实例的分配区域</li>
-<li>GC管理的主要区域</li>
-</ol>
-
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/JVM/">JVM</a>
-
-      
-  <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/线程共享/">线程共享</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/线程独占/">线程独占</a></li></ul>
-
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-谈谈ClassLoader"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/10/26/谈谈ClassLoader/">谈谈ClassLoader</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/10/26/谈谈ClassLoader/" class="article-date">
-	  <time datetime="2019-10-26T03:40:31.000Z" itemprop="datePublished">October 26, 2019</time>
-	</a>
-
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/JVM/">JVM</a>
- 
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="类从编译到执行的过程"><a href="#类从编译到执行的过程" class="headerlink" title="类从编译到执行的过程"></a>类从编译到执行的过程</h4><ol>
-<li>编译器将Robot.java源文件编译为Robot.class字节码文件</li>
-<li>ClassLoader将字节码转化为jvm中的Class<robot>对象</robot></li>
-<li>JVM利用Class<robot>对象实例化为Robot对象</robot></li>
-</ol>
-<h4 id="谈谈ClassLoader"><a href="#谈谈ClassLoader" class="headerlink" title="谈谈ClassLoader"></a>谈谈ClassLoader</h4><h5 id="ClassLoader-的种类"><a href="#ClassLoader-的种类" class="headerlink" title="ClassLoader 的种类"></a>ClassLoader 的种类</h5><ul>
-<li>BootStrapClassLoader:C++编写，加载核心库 java.*</li>
-<li>ExtClassLoader:Java编写，加载扩展库javaa.*</li>
-<li>AppClassLoader:Java编写，加载程序所在目录</li>
-<li>自定义ClassLoader:Java编写，定制化加载</li>
-</ul>
-<h5 id="ClassLoader的作用"><a href="#ClassLoader的作用" class="headerlink" title="ClassLoader的作用"></a>ClassLoader的作用</h5><p>在Java中有些非常重要的作用，ClassLoader主要工作在Class装载的加载阶段，主要作用是从系统外部获得Class二进制数据流。它是Java的核心组件，所有的Class都是由ClassLoader进行加载的，ClassLoader负责通过将Class文件里的二进制数据流装载进系统，然后交给Java虚拟机进行连接，初始化工作</p>
-<h5 id="ClassLoader双亲委派机制"><a href="#ClassLoader双亲委派机制" class="headerlink" title="ClassLoader双亲委派机制"></a>ClassLoader双亲委派机制</h5><ol>
-<li>自底而上检查类是否已经加载<br>Custom ClassLoader–App ClassLoader–Extension   ClassLoader–BootStrap ClassLoader  </li>
-<li>自上而下尝试加载类<br>BootStrap:加载 jre\lib\rt.jar 或者 Xbootclasspath选项指定的jar包<br>Extension:加载 jre\lib\ext*.jar 或者 Djava.ext.dirs指定目录下的jar包<br>App: 加载ClassPath 或者 Djava.class.path所指定的目录下的类和jar包</li>
-</ol>
-<p><img src="/2019/10/26/谈谈ClassLoader/%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%9C%BA%E5%88%B6.jpg" alt></p>
-<h5 id="为什么使用双亲委派机制"><a href="#为什么使用双亲委派机制" class="headerlink" title="为什么使用双亲委派机制"></a>为什么使用双亲委派机制</h5><p> 避免多份同样字节码的加载</p>
-<h4 id="类的装载过程"><a href="#类的装载过程" class="headerlink" title="类的装载过程"></a>类的装载过程</h4><ol>
-<li>加载：通过ClassLoader加载class文件字节码生成Class对象</li>
-<li>链接：<ul>
-<li>校验：检查加载的class的正确性和安全性</li>
-<li>准备：为类变量分配存储空间并设置类变量初始值</li>
-<li>解析：JVM将常量池内的符号引用转换为直接引用</li>
-</ul>
-</li>
-<li>初始化：执行类变量赋值和静态代码块<h4 id="loadClass和forName的区别"><a href="#loadClass和forName的区别" class="headerlink" title="loadClass和forName的区别"></a>loadClass和forName的区别</h4>Class.forName是类加载到初始化的步骤<br>Classloader.loadClass是刚执行完加载class</li>
-</ol>
-<h5 id="Class-forName已完成初始化，那为什么还要用LoadClass呢？"><a href="#Class-forName已完成初始化，那为什么还要用LoadClass呢？" class="headerlink" title="Class.forName已完成初始化，那为什么还要用LoadClass呢？"></a>Class.forName已完成初始化，那为什么还要用LoadClass呢？</h5><p>LoadClass在springIOC中资源加载器获取要读入的资源的时候，即读取一些bean的配置文件的时候，如果是以classPath方式来加载的话 就需要使用Classload.loadClass来加载，之所以这样做是和springIOC的lazy-loading（懒加载）有关，springIOC为了加快初始化速度因此大量使用延迟加载技术而使用ClassLoad不需要执行类中的初始化代码（static）步骤和连接步骤，这样子做可以加快加载速度 ，把类的初始化工作留到实际使用到这个类的时候才去做.</p>
-
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/JVM/">JVM</a>
-
-      
-  <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ClassLoader/">ClassLoader</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/类的装载/">类的装载</a></li></ul>
-
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-JVM如何加载class文件"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/10/26/JVM如何加载class文件/">JVM如何加载class文件</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/10/26/JVM如何加载class文件/" class="article-date">
-	  <time datetime="2019-10-26T01:53:49.000Z" itemprop="datePublished">October 26, 2019</time>
-	</a>
-
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/JVM/">JVM</a>
- 
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="Java虚拟机"><a href="#Java虚拟机" class="headerlink" title="Java虚拟机"></a>Java虚拟机</h4><p>Java虚拟机：抽象化的计算机，通过在实际的计算机上个仿真模拟计算机功能来实现的，有自己完善的硬件架构：处理器，堆栈，寄存器等，还具有相应的指令系统，jvm 屏蔽了与具体操作系统平台相关的信息，使得java程序只需要生成在java虚拟机上运行的字节码，就可以在不同平台上不加修改的运行。其中最重要的两点：JVM内存结构模型，GC  </p>
-<p><em>jvm是内存中的虚拟机，jvm的存储就是内存，所有写的 类，常量，变量，方法都在内存中这决定着程序的健壮和高效</em></p>
-<p><img src="/2019/10/26/JVM如何加载class文件/Java%E8%99%9A%E6%8B%9F%E6%9C%BA.jpg" alt></p>
-<ol>
-<li>Class Loader ： 依据特定格式，加载class文件到内存  </li>
-<li>Runtime Data Area ：JVM内存空间结构模型</li>
-<li>Native Interface: 融合不同开发语言的原生库为Java所用</li>
-<li>Execution Engine ：对命令进行解析</li>
-</ol>
-<p>JVM结构：  Class Loader, Runtime Data Area, Execution Engine, Native Interface</p>
-<hr>
-<h4 id="Java反射机制"><a href="#Java反射机制" class="headerlink" title="Java反射机制"></a>Java反射机制</h4><p>JAVA 反射机制是在运行状态中，对于任意一个类，都能够知道这个类的所有属性和方法；对于任意一个对象，都能够调用它的任意方法和属性；这种动态获取信息以及动态调用对象方法的功能称为java语言的反射机制。  </p>
-<h5 id="写一个反射的例子"><a href="#写一个反射的例子" class="headerlink" title="写一个反射的例子"></a>写一个反射的例子</h5><p>Robot.java</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">package com.interview.javabasic.reflect</span><br><span class="line"></span><br><span class="line">public class Robot&#123;</span><br><span class="line">    private String name;</span><br><span class="line">    public void sayHi(String helloSentence)&#123;</span><br><span class="line">        System.out.println(helloSentence + &quot;&quot; + name)</span><br><span class="line">    &#125;</span><br><span class="line">    private String throwHello(String tag)&#123;</span><br><span class="line">        return &quot;Hello&quot; + tag;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>ReflectSample.java</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args)&#123;</span><br><span class="line">    //先获取Robot类，需要全路径</span><br><span class="line">    Class rc = Class.forNam(&quot;com.interview.javabasic.reflect.Robot&quot;)</span><br><span class="line">    //创建实例,需要强转，newInstance返回的是泛型</span><br><span class="line">    Robot r = (Robot)rc.newInstance();</span><br><span class="line">    System.out.println(&quot;Class name is &quot; + rc.getName());</span><br><span class="line">    //通过反射获取私有方法,throwHello接收一个String类型的参数</span><br><span class="line">    Method getHello = rc.getDeclaredMethod( name: &quot;throwHello&quot;,String.class)；</span><br><span class="line">    getHello.setAccessible(true);</span><br><span class="line">    //需要传入对象实例，和方法参数</span><br><span class="line">    Object str = getHello.invoke(r,&quot;Bob&quot;);</span><br><span class="line">    System.out.println(&quot;getHello result is &quot; + str);</span><br><span class="line">    //第二种获取方法获取方法</span><br><span class="line">    Method sayHi = rc.getMethod( name: &quot;sayHi&quot;,String.class)；</span><br><span class="line">    sayHi.invoke(r,&quot;Welcome&quot;);</span><br><span class="line">    //获取私有类型的Filed</span><br><span class="line">    Filed name = rc.getDeclaredField(name: &quot;name&quot;);</span><br><span class="line">    name.setAccessible(true);</span><br><span class="line">    name.set(r,&quot;Alice&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>Metohd:</strong><br>newInstance()方法返回的是泛型。<br>getDeclaredMethod可以获得该类所有的方法，除去继承和实现了接口的方法。<br>如果是私有的方法，必须使用setAccessible(true)方法。<br>getMethod可以获得该类所有的公有方法，还有所继承的以及实现了接口的方法。  </p>
-<p><strong>Field:</strong><br>getDeclaredField获取属性<br>如果是私有属性也要设置setAccessible(true)  </p>
-<hr>
-
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/JVM/">JVM</a>
-
-      
-  <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JVM内存结构模型/">JVM内存结构模型</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/反射/">反射</a></li></ul>
-
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
 
 
   <nav id="page-nav">
@@ -1257,6 +1502,54 @@
               <div class="widget-entry-summary" style="margin: 0;">
             
 
+              <h6 style="margin: 0;"><a href="/2019/11/08/服务拆分/">服务拆分</a></h6>
+              <span>November 8, 2019</span>
+            </div>
+
+          </li>
+        
+          <li class="clearfix">
+
+            
+              <div class="widget-entry-summary" style="margin: 0;">
+            
+
+              <h6 style="margin: 0;"><a href="/2019/11/08/服务注册与发现/">服务注册与发现</a></h6>
+              <span>November 8, 2019</span>
+            </div>
+
+          </li>
+        
+          <li class="clearfix">
+
+            
+              <div class="widget-entry-summary" style="margin: 0;">
+            
+
+              <h6 style="margin: 0;"><a href="/2019/11/08/微服务介绍/">微服务介绍</a></h6>
+              <span>November 8, 2019</span>
+            </div>
+
+          </li>
+        
+          <li class="clearfix">
+
+            
+              <div class="widget-entry-summary" style="margin: 0;">
+            
+
+              <h6 style="margin: 0;"><a href="/2019/11/07/Java异常/">Java异常</a></h6>
+              <span>November 7, 2019</span>
+            </div>
+
+          </li>
+        
+          <li class="clearfix">
+
+            
+              <div class="widget-entry-summary" style="margin: 0;">
+            
+
               <h6 style="margin: 0;"><a href="/2019/11/06/Java多线程与并发-原理/">Java多线程与并发-原理</a></h6>
               <span>November 6, 2019</span>
             </div>
@@ -1275,54 +1568,6 @@
 
           </li>
         
-          <li class="clearfix">
-
-            
-              <div class="widget-entry-summary" style="margin: 0;">
-            
-
-              <h6 style="margin: 0;"><a href="/2019/11/05/Java多线程与并发/">Java多线程与并发</a></h6>
-              <span>November 5, 2019</span>
-            </div>
-
-          </li>
-        
-          <li class="clearfix">
-
-            
-              <div class="widget-entry-summary" style="margin: 0;">
-            
-
-              <h6 style="margin: 0;"><a href="/2019/11/02/Java垃圾回收之垃圾回收器/">Java垃圾回收之垃圾回收器</a></h6>
-              <span>November 2, 2019</span>
-            </div>
-
-          </li>
-        
-          <li class="clearfix">
-
-            
-              <div class="widget-entry-summary" style="margin: 0;">
-            
-
-              <h6 style="margin: 0;"><a href="/2019/11/02/Java垃圾回收之回收算法/">Java垃圾回收之回收算法</a></h6>
-              <span>November 2, 2019</span>
-            </div>
-
-          </li>
-        
-          <li class="clearfix">
-
-            
-              <div class="widget-entry-summary" style="margin: 0;">
-            
-
-              <h6 style="margin: 0;"><a href="/2019/11/02/Java垃圾回收之标记算法/">Java垃圾回收之标记算法</a></h6>
-              <span>November 2, 2019</span>
-            </div>
-
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -1332,7 +1577,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/GC相关/">GC相关</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java多线程与并发/">Java多线程与并发</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Redis/">Redis</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot-实战/">Spring Boot 实战</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">6</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/GC相关/">GC相关</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java多线程与并发/">Java多线程与并发</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java常用类库与技巧/">Java常用类库与技巧</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Redis/">Redis</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot-实战/">Spring Boot 实战</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务实战/">微服务实战</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">6</span></li></ul>
     </div>
   </div>
 
@@ -1342,7 +1587,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ACID/">ACID</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AOF/">AOF</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AOP/">AOP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ClassLoader/">ClassLoader</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/">HTTP</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IOC/">IOC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/InnoDB/">InnoDB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM内存结构模型/">JVM内存结构模型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java特性/">Java特性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyISAM/">MyISAM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OSI七层模型/">OSI七层模型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RDB/">RDB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTO/">RTO</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTT/">RTT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP的三次握手/">TCP的三次握手</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP的四次挥手/">TCP的四次挥手</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Thread和Runnable/">Thread和Runnable</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UDP/">UDP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interrupt/">interrupt</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lombok/">lombok</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/notify和notifyall/">notify和notifyall</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sleep和wait/">sleep和wait</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql调优/">sql调优</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/start和run/">start和run</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/yield/">yield</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式锁/">分布式锁</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/反射/">反射</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/回收算法/">回收算法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多路I-O复用模型/">多路I/O复用模型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密集索引/">密集索引</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/平台无关性/">平台无关性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异步队列/">异步队列</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/当前读/">当前读</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/快照读/">快照读</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库事务/">数据库事务</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库架构/">数据库架构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/新生代垃圾收集器/">新生代垃圾收集器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/日志框架/">日志框架</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/标记算法/">标记算法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/滑动窗口/">滑动窗口</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/稀疏索引/">稀疏索引</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/类的装载/">类的装载</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/索引/">索引</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/索引数据结构/">索引数据结构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线程共享/">线程共享</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线程状态/">线程状态</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线程独占/">线程独占</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/老年代垃圾收集器/">老年代垃圾收集器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/语法/">语法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/进程和线程/">进程和线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/锁模块/">锁模块</a><span class="tag-list-count">3</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ACID/">ACID</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AOF/">AOF</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AOP/">AOP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ClassLoader/">ClassLoader</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Eureka/">Eureka</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/">HTTP</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IOC/">IOC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/InnoDB/">InnoDB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM内存结构模型/">JVM内存结构模型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java特性/">Java特性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyISAM/">MyISAM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OSI七层模型/">OSI七层模型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RDB/">RDB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTO/">RTO</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTT/">RTT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP的三次握手/">TCP的三次握手</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP的四次挥手/">TCP的四次挥手</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Thread和Runnable/">Thread和Runnable</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UDP/">UDP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interrupt/">interrupt</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lombok/">lombok</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/notify和notifyall/">notify和notifyall</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sleep和wait/">sleep和wait</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql调优/">sql调优</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/start和run/">start和run</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/yield/">yield</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式锁/">分布式锁</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/反射/">反射</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/回收算法/">回收算法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多路I-O复用模型/">多路I/O复用模型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密集索引/">密集索引</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/平台无关性/">平台无关性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异常/">异常</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异步队列/">异步队列</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/当前读/">当前读</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/快照读/">快照读</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库事务/">数据库事务</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库架构/">数据库架构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/新生代垃圾收集器/">新生代垃圾收集器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/日志框架/">日志框架</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/标记算法/">标记算法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/滑动窗口/">滑动窗口</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/稀疏索引/">稀疏索引</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/类的装载/">类的装载</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/索引/">索引</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/索引数据结构/">索引数据结构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线程共享/">线程共享</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线程状态/">线程状态</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线程独占/">线程独占</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/老年代垃圾收集器/">老年代垃圾收集器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/语法/">语法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/进程和线程/">进程和线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/锁模块/">锁模块</a><span class="tag-list-count">3</span></li></ul>
     </div>
   </div>
 
@@ -1352,7 +1597,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/ACID/" style="font-size: 10px;">ACID</a> <a href="/tags/AOF/" style="font-size: 10px;">AOF</a> <a href="/tags/AOP/" style="font-size: 10px;">AOP</a> <a href="/tags/ClassLoader/" style="font-size: 10px;">ClassLoader</a> <a href="/tags/HTTP/" style="font-size: 15px;">HTTP</a> <a href="/tags/IOC/" style="font-size: 10px;">IOC</a> <a href="/tags/InnoDB/" style="font-size: 10px;">InnoDB</a> <a href="/tags/JVM内存结构模型/" style="font-size: 10px;">JVM内存结构模型</a> <a href="/tags/Java特性/" style="font-size: 10px;">Java特性</a> <a href="/tags/MyISAM/" style="font-size: 10px;">MyISAM</a> <a href="/tags/OSI七层模型/" style="font-size: 10px;">OSI七层模型</a> <a href="/tags/RDB/" style="font-size: 10px;">RDB</a> <a href="/tags/RTO/" style="font-size: 10px;">RTO</a> <a href="/tags/RTT/" style="font-size: 10px;">RTT</a> <a href="/tags/TCP的三次握手/" style="font-size: 10px;">TCP的三次握手</a> <a href="/tags/TCP的四次挥手/" style="font-size: 10px;">TCP的四次挥手</a> <a href="/tags/Thread和Runnable/" style="font-size: 10px;">Thread和Runnable</a> <a href="/tags/UDP/" style="font-size: 10px;">UDP</a> <a href="/tags/interrupt/" style="font-size: 10px;">interrupt</a> <a href="/tags/lombok/" style="font-size: 10px;">lombok</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/notify和notifyall/" style="font-size: 10px;">notify和notifyall</a> <a href="/tags/sleep和wait/" style="font-size: 10px;">sleep和wait</a> <a href="/tags/sql调优/" style="font-size: 10px;">sql调优</a> <a href="/tags/start和run/" style="font-size: 10px;">start和run</a> <a href="/tags/yield/" style="font-size: 10px;">yield</a> <a href="/tags/分布式锁/" style="font-size: 10px;">分布式锁</a> <a href="/tags/反射/" style="font-size: 10px;">反射</a> <a href="/tags/回收算法/" style="font-size: 10px;">回收算法</a> <a href="/tags/多路I-O复用模型/" style="font-size: 10px;">多路I/O复用模型</a> <a href="/tags/密集索引/" style="font-size: 10px;">密集索引</a> <a href="/tags/平台无关性/" style="font-size: 10px;">平台无关性</a> <a href="/tags/异步队列/" style="font-size: 10px;">异步队列</a> <a href="/tags/当前读/" style="font-size: 10px;">当前读</a> <a href="/tags/快照读/" style="font-size: 10px;">快照读</a> <a href="/tags/数据库事务/" style="font-size: 10px;">数据库事务</a> <a href="/tags/数据库架构/" style="font-size: 10px;">数据库架构</a> <a href="/tags/新生代垃圾收集器/" style="font-size: 10px;">新生代垃圾收集器</a> <a href="/tags/日志框架/" style="font-size: 10px;">日志框架</a> <a href="/tags/标记算法/" style="font-size: 10px;">标记算法</a> <a href="/tags/滑动窗口/" style="font-size: 10px;">滑动窗口</a> <a href="/tags/稀疏索引/" style="font-size: 10px;">稀疏索引</a> <a href="/tags/类的装载/" style="font-size: 10px;">类的装载</a> <a href="/tags/索引/" style="font-size: 15px;">索引</a> <a href="/tags/索引数据结构/" style="font-size: 10px;">索引数据结构</a> <a href="/tags/线程共享/" style="font-size: 10px;">线程共享</a> <a href="/tags/线程状态/" style="font-size: 10px;">线程状态</a> <a href="/tags/线程独占/" style="font-size: 10px;">线程独占</a> <a href="/tags/老年代垃圾收集器/" style="font-size: 10px;">老年代垃圾收集器</a> <a href="/tags/语法/" style="font-size: 10px;">语法</a> <a href="/tags/进程和线程/" style="font-size: 10px;">进程和线程</a> <a href="/tags/锁模块/" style="font-size: 20px;">锁模块</a>
+      <a href="/tags/ACID/" style="font-size: 10px;">ACID</a> <a href="/tags/AOF/" style="font-size: 10px;">AOF</a> <a href="/tags/AOP/" style="font-size: 10px;">AOP</a> <a href="/tags/ClassLoader/" style="font-size: 10px;">ClassLoader</a> <a href="/tags/Eureka/" style="font-size: 10px;">Eureka</a> <a href="/tags/HTTP/" style="font-size: 15px;">HTTP</a> <a href="/tags/IOC/" style="font-size: 10px;">IOC</a> <a href="/tags/InnoDB/" style="font-size: 10px;">InnoDB</a> <a href="/tags/JVM内存结构模型/" style="font-size: 10px;">JVM内存结构模型</a> <a href="/tags/Java特性/" style="font-size: 10px;">Java特性</a> <a href="/tags/MyISAM/" style="font-size: 10px;">MyISAM</a> <a href="/tags/OSI七层模型/" style="font-size: 10px;">OSI七层模型</a> <a href="/tags/RDB/" style="font-size: 10px;">RDB</a> <a href="/tags/RTO/" style="font-size: 10px;">RTO</a> <a href="/tags/RTT/" style="font-size: 10px;">RTT</a> <a href="/tags/TCP的三次握手/" style="font-size: 10px;">TCP的三次握手</a> <a href="/tags/TCP的四次挥手/" style="font-size: 10px;">TCP的四次挥手</a> <a href="/tags/Thread和Runnable/" style="font-size: 10px;">Thread和Runnable</a> <a href="/tags/UDP/" style="font-size: 10px;">UDP</a> <a href="/tags/interrupt/" style="font-size: 10px;">interrupt</a> <a href="/tags/lombok/" style="font-size: 10px;">lombok</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/notify和notifyall/" style="font-size: 10px;">notify和notifyall</a> <a href="/tags/sleep和wait/" style="font-size: 10px;">sleep和wait</a> <a href="/tags/sql调优/" style="font-size: 10px;">sql调优</a> <a href="/tags/start和run/" style="font-size: 10px;">start和run</a> <a href="/tags/yield/" style="font-size: 10px;">yield</a> <a href="/tags/分布式锁/" style="font-size: 10px;">分布式锁</a> <a href="/tags/反射/" style="font-size: 10px;">反射</a> <a href="/tags/回收算法/" style="font-size: 10px;">回收算法</a> <a href="/tags/多路I-O复用模型/" style="font-size: 10px;">多路I/O复用模型</a> <a href="/tags/密集索引/" style="font-size: 10px;">密集索引</a> <a href="/tags/平台无关性/" style="font-size: 10px;">平台无关性</a> <a href="/tags/异常/" style="font-size: 10px;">异常</a> <a href="/tags/异步队列/" style="font-size: 10px;">异步队列</a> <a href="/tags/当前读/" style="font-size: 10px;">当前读</a> <a href="/tags/快照读/" style="font-size: 10px;">快照读</a> <a href="/tags/数据库事务/" style="font-size: 10px;">数据库事务</a> <a href="/tags/数据库架构/" style="font-size: 10px;">数据库架构</a> <a href="/tags/新生代垃圾收集器/" style="font-size: 10px;">新生代垃圾收集器</a> <a href="/tags/日志框架/" style="font-size: 10px;">日志框架</a> <a href="/tags/标记算法/" style="font-size: 10px;">标记算法</a> <a href="/tags/滑动窗口/" style="font-size: 10px;">滑动窗口</a> <a href="/tags/稀疏索引/" style="font-size: 10px;">稀疏索引</a> <a href="/tags/类的装载/" style="font-size: 10px;">类的装载</a> <a href="/tags/索引/" style="font-size: 15px;">索引</a> <a href="/tags/索引数据结构/" style="font-size: 10px;">索引数据结构</a> <a href="/tags/线程共享/" style="font-size: 10px;">线程共享</a> <a href="/tags/线程状态/" style="font-size: 10px;">线程状态</a> <a href="/tags/线程独占/" style="font-size: 10px;">线程独占</a> <a href="/tags/老年代垃圾收集器/" style="font-size: 10px;">老年代垃圾收集器</a> <a href="/tags/语法/" style="font-size: 10px;">语法</a> <a href="/tags/进程和线程/" style="font-size: 10px;">进程和线程</a> <a href="/tags/锁模块/" style="font-size: 20px;">锁模块</a>
     </div>
   </div>
 
@@ -1362,7 +1607,7 @@
     <h3 class="widget-title">Archives</h3>
 
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">25</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">25</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">1</span></li></ul>
     </div>
 
     <div>

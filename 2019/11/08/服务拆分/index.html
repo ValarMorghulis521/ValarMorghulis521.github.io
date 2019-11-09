@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>服务拆分 | Contunued Story</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  
+  
+  
+  <meta name="description" content="微服务拆分的起点和重点微服务如何拆分： 先明白起点和终点 起点：既有的架构形态（老项目、新项目） 终点：好的架构不是设计出来的，而是进化而来的。进化一直在演进   需要考虑的因素与坚持的原则  不适合用微服务的业务场景 系统中包含很多很多强事务场景的 业务相对稳定，迭代周期长 访问压力不大，可用性要求不高  康威定律：沟通的问题会影响系统的设计 点餐业务服务拆分服务拆分的方法论：&amp;lt;可扩展的艺">
+<meta property="og:type" content="article">
+<meta property="og:title" content="服务拆分">
+<meta property="og:url" content="http://yoursite.com/2019/11/08/服务拆分/index.html">
+<meta property="og:site_name" content="Contunued Story">
+<meta property="og:description" content="微服务拆分的起点和重点微服务如何拆分： 先明白起点和终点 起点：既有的架构形态（老项目、新项目） 终点：好的架构不是设计出来的，而是进化而来的。进化一直在演进   需要考虑的因素与坚持的原则  不适合用微服务的业务场景 系统中包含很多很多强事务场景的 业务相对稳定，迭代周期长 访问压力不大，可用性要求不高  康威定律：沟通的问题会影响系统的设计 点餐业务服务拆分服务拆分的方法论：&amp;lt;可扩展的艺">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://yoursite.com/2019/11/08/服务拆分/%E4%B8%8D%E7%94%A8%E8%80%83%E8%99%91%E7%BC%93%E5%AD%98%E5%90%8C%E6%AD%A5.jpg">
+<meta property="og:image" content="http://yoursite.com/2019/11/08/服务拆分/%E7%82%B9%E9%A4%90%E4%B8%9A%E5%8A%A1%E6%8B%86%E5%88%86%E5%88%86%E6%9E%90.jpg">
+<meta property="og:updated_time" content="2019-11-08T12:15:47.589Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="服务拆分">
+<meta name="twitter:description" content="微服务拆分的起点和重点微服务如何拆分： 先明白起点和终点 起点：既有的架构形态（老项目、新项目） 终点：好的架构不是设计出来的，而是进化而来的。进化一直在演进   需要考虑的因素与坚持的原则  不适合用微服务的业务场景 系统中包含很多很多强事务场景的 业务相对稳定，迭代周期长 访问压力不大，可用性要求不高  康威定律：沟通的问题会影响系统的设计 点餐业务服务拆分服务拆分的方法论：&amp;lt;可扩展的艺">
+<meta name="twitter:image" content="http://yoursite.com/2019/11/08/服务拆分/%E4%B8%8D%E7%94%A8%E8%80%83%E8%99%91%E7%BC%93%E5%AD%98%E5%90%8C%E6%AD%A5.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Contunued Story" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+  <link rel="stylesheet" href="/css/fashion.css">
+  <link rel="stylesheet" href="/css/glyphs.css">
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  
+  <div class="site-header-image">
+    <img id="originBg" width="100%" alt="Hike News" src="">
+  </div>
+
+  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
+    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
+  </div>
+
+  <script>
+        var imgUrls = "css/images/pose01.jpg,https://source.unsplash.com/collection/954550/1920x1080,https://source.unsplash.com/collection/954550/1920x1081".split(",");
+        var random = Math.floor((Math.random() * imgUrls.length ));
+        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+          document.getElementById("originBg").src=imgUrls[random];
+          document.getElementById("blurBg").src=imgUrls[random];
+        } else {
+          document.getElementById("originBg").src='/' + imgUrls[random];
+          document.getElementById("blurBg").src='/' + imgUrls[random];
+        }
+    </script>
+
+
+
+
+<header id="allheader" class="site-header" role="banner" 
+   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="Contunued Story" rel="home"> Contunued Story </a>
+            
+          </h1>
+          
+          
+            <div class="site-description">Like a bird in the sky</div>
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">Home</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">Archives</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">Categories</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">Tags</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">About</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-服务拆分" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      服务拆分
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/11/08/服务拆分/" class="article-date">
+	  <time datetime="2019-11-08T09:00:20.000Z" itemprop="datePublished">November 8, 2019</time>
+	</a>
+
+       
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="微服务拆分的起点和重点"><a href="#微服务拆分的起点和重点" class="headerlink" title="微服务拆分的起点和重点"></a>微服务拆分的起点和重点</h4><h5 id="微服务如何拆分："><a href="#微服务如何拆分：" class="headerlink" title="微服务如何拆分："></a>微服务如何拆分：</h5><ol>
+<li>先明白起点和终点<br> 起点：既有的架构形态（老项目、新项目）<br> 终点：好的架构不是设计出来的，而是进化而来的。进化一直在演进  </li>
+<li>需要考虑的因素与坚持的原则</li>
+</ol>
+<h5 id="不适合用微服务的业务场景"><a href="#不适合用微服务的业务场景" class="headerlink" title="不适合用微服务的业务场景"></a>不适合用微服务的业务场景</h5><ol>
+<li>系统中包含很多很多强事务场景的</li>
+<li>业务相对稳定，迭代周期长</li>
+<li>访问压力不大，可用性要求不高</li>
+</ol>
+<p>康威定律：沟通的问题会影响系统的设计</p>
+<h4 id="点餐业务服务拆分"><a href="#点餐业务服务拆分" class="headerlink" title="点餐业务服务拆分"></a>点餐业务服务拆分</h4><p>服务拆分的方法论：&lt;可扩展的艺术&gt;</p>
+<h5 id="扩展立方模型"><a href="#扩展立方模型" class="headerlink" title="扩展立方模型"></a>扩展立方模型</h5><ul>
+<li>x轴：水平复制，通过副本扩展，将应用程序水平复制，通过负载均衡运行程序的多个完全一样的副本方式，来实现应用程序的伸缩性，提高应用程序的容量和可用度。</li>
+<li>Z轴：数据分区，每个服务器负责一个数据子集。每个服务器运行的代码是一样的。</li>
+<li>Y轴：功能解耦，将不同职责的模块，分成不同的服务<h5 id="如何拆分功能"><a href="#如何拆分功能" class="headerlink" title="如何拆分功能"></a>如何拆分功能</h5><ul>
+<li>单一职责，松耦合、高内聚 ：<br> （每个服务只负责业务功能的一个单独部分。服务之间耦合度低，修改一个服务不用导致另外一个服务跟着修改，高内聚指的是服务内部相关的行为聚集在一个服务内，而不是分散在不同的服务中，需要修改一个行为时，只需要修改一个服务就行）</li>
+<li>关注点分离</li>
+</ul>
+<ol>
+<li>按职责（给我们的服务进行分类，明显按照业务领域可以划分出来的服务，职责比较单一</li>
+<li>按通用性（一些基础组件，与具体的业务无关的可以划分成单独的服务 消息 用户</li>
+<li>按粒度级别<h5 id="服务和数据的关系"><a href="#服务和数据的关系" class="headerlink" title="服务和数据的关系"></a>服务和数据的关系</h5></li>
+</ol>
+<ul>
+<li>先考虑拆分业务功能，在考虑拆分业务功能对应的数据</li>
+<li>无状态服务</li>
+</ul>
+<ol>
+<li>一个数据需要被多个服务共享才能完成一个请求，这个数据就是有状态</li>
+<li>把数据迁移到分布式缓存中存储，让业务服务变成无状态计算结点，后端服务能做到按需动态伸缩，在运行时动态增删结点不用考虑缓存同步问题</li>
+</ol>
+</li>
+</ul>
+<p><img src="/2019/11/08/服务拆分/%E4%B8%8D%E7%94%A8%E8%80%83%E8%99%91%E7%BC%93%E5%AD%98%E5%90%8C%E6%AD%A5.jpg" alt>     </p>
+<h5 id="点餐业务拆分分析"><a href="#点餐业务拆分分析" class="headerlink" title="点餐业务拆分分析"></a>点餐业务拆分分析</h5><p><img src="/2019/11/08/服务拆分/%E7%82%B9%E9%A4%90%E4%B8%9A%E5%8A%A1%E6%8B%86%E5%88%86%E5%88%86%E6%9E%90.jpg" alt>  </p>
+<h4 id="商品服务"><a href="#商品服务" class="headerlink" title="商品服务"></a>商品服务</h4><h4 id="订单服务"><a href="#订单服务" class="headerlink" title="订单服务"></a>订单服务</h4>
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2019/11/08/服务注册与发现/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">服务注册与发现</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#微服务拆分的起点和重点"><span class="nav-number">1.</span> <span class="nav-text">微服务拆分的起点和重点</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#微服务如何拆分："><span class="nav-number">1.1.</span> <span class="nav-text">微服务如何拆分：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#不适合用微服务的业务场景"><span class="nav-number">1.2.</span> <span class="nav-text">不适合用微服务的业务场景</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#点餐业务服务拆分"><span class="nav-number">2.</span> <span class="nav-text">点餐业务服务拆分</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#扩展立方模型"><span class="nav-number">2.1.</span> <span class="nav-text">扩展立方模型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#如何拆分功能"><span class="nav-number">2.2.</span> <span class="nav-text">如何拆分功能</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#服务和数据的关系"><span class="nav-number">2.3.</span> <span class="nav-text">服务和数据的关系</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#点餐业务拆分分析"><span class="nav-number">2.4.</span> <span class="nav-text">点餐业务拆分分析</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#商品服务"><span class="nav-number">3.</span> <span class="nav-text">商品服务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#订单服务"><span class="nav-number">4.</span> <span class="nav-text">订单服务</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+<!-- Donate -->
+
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2019 Contunued Story All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+      var headerblur = document.getElementById("header-blur");
+      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/miku.model.json"},"display":{"position":"right","width":200,"height":400},"mobile":{"show":true,"scale":0.5},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

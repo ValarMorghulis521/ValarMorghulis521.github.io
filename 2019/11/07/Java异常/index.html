@@ -11,18 +11,21 @@
   
   
   
-  <meta name="description" content="####">
+  <meta name="description" content="异常机制主要回答了三个问题 what：异常类型回答了什么被抛出 where：异常堆栈跟踪回答了在哪抛出 why：异常信息回答了为什么被抛出  Java的异常体系  RuntimeException：不可预知的，程序应当自行避免（NullPointerException，IndexOutOfBoundsException ….. ） 非RuntimeExceptin：可预知的，从编译器校验的异常（I">
 <meta name="keywords" content="异常">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java异常">
 <meta property="og:url" content="http://yoursite.com/2019/11/07/Java异常/index.html">
 <meta property="og:site_name" content="Contunued Story">
-<meta property="og:description" content="####">
+<meta property="og:description" content="异常机制主要回答了三个问题 what：异常类型回答了什么被抛出 where：异常堆栈跟踪回答了在哪抛出 why：异常信息回答了为什么被抛出  Java的异常体系  RuntimeException：不可预知的，程序应当自行避免（NullPointerException，IndexOutOfBoundsException ….. ） 非RuntimeExceptin：可预知的，从编译器校验的异常（I">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-11-07T15:24:53.967Z">
+<meta property="og:image" content="http://yoursite.com/2019/11/07/Java异常/Java%E7%9A%84%E5%BC%82%E5%B8%B8%E4%BD%93%E7%B3%BB.jpg">
+<meta property="og:image" content="http://yoursite.com/2019/11/07/Java异常/%E9%AB%98%E6%95%88%E4%B8%BB%E6%B5%81%E7%9A%84%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E6%A1%86%E6%9E%B6.jpg">
+<meta property="og:updated_time" content="2019-11-10T08:17:54.782Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java异常">
-<meta name="twitter:description" content="####">
+<meta name="twitter:description" content="异常机制主要回答了三个问题 what：异常类型回答了什么被抛出 where：异常堆栈跟踪回答了在哪抛出 why：异常信息回答了为什么被抛出  Java的异常体系  RuntimeException：不可预知的，程序应当自行避免（NullPointerException，IndexOutOfBoundsException ….. ） 非RuntimeExceptin：可预知的，从编译器校验的异常（I">
+<meta name="twitter:image" content="http://yoursite.com/2019/11/07/Java异常/Java%E7%9A%84%E5%BC%82%E5%B8%B8%E4%BD%93%E7%B3%BB.jpg">
   
     <link rel="alternate" href="/atom.xml" title="Contunued Story" type="application/atom+xml">
   
@@ -161,7 +164,66 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p>#### </p>
+        <h4 id="异常机制主要回答了三个问题"><a href="#异常机制主要回答了三个问题" class="headerlink" title="异常机制主要回答了三个问题"></a>异常机制主要回答了三个问题</h4><ul>
+<li>what：异常类型回答了什么被抛出</li>
+<li>where：异常堆栈跟踪回答了在哪抛出</li>
+<li>why：异常信息回答了为什么被抛出</li>
+</ul>
+<h4 id="Java的异常体系"><a href="#Java的异常体系" class="headerlink" title="Java的异常体系"></a>Java的异常体系</h4><p><img src="/2019/11/07/Java异常/Java%E7%9A%84%E5%BC%82%E5%B8%B8%E4%BD%93%E7%B3%BB.jpg" alt></p>
+<ul>
+<li>RuntimeException：不可预知的，程序应当自行避免（NullPointerException，IndexOutOfBoundsException ….. ）</li>
+<li>非RuntimeExceptin：可预知的，从编译器校验的异常（IOException，SqlException…）<br>任</li>
+</ul>
+<h4 id="error和exceptin的区别"><a href="#error和exceptin的区别" class="headerlink" title="error和exceptin的区别"></a>error和exceptin的区别</h4><p><strong>从概念角度解析Java的异常处理机制</strong></p>
+<ul>
+<li>error：程序无法处理的系统错误，编译器不做检查（StackOverFlowError,OutOfMemoryError）</li>
+<li>exception：程序可以处理的异常，捕获后可能恢复<br>总结：前者是程序无法处理的错误，后者是可以处理的异常</li>
+</ul>
+<p><strong>从责任角度看</strong>  </p>
+<ol>
+<li>Error属于jvm需要承担的责任</li>
+<li>RuntimeException是程序应该承当的责任</li>
+<li>Checked Exception可检查异常是Java编译器应该负担的责</li>
+</ol>
+<h4 id="常见Error以及Exception"><a href="#常见Error以及Exception" class="headerlink" title="常见Error以及Exception"></a>常见Error以及Exception</h4><h5 id="RuntimeException"><a href="#RuntimeException" class="headerlink" title="RuntimeException"></a>RuntimeException</h5><ol>
+<li>NullPointerException-空指针异常</li>
+<li>ClassCastException-类型强制转换异常</li>
+<li>IllegalArguementException-传递非法参数异常</li>
+<li>IndexOutOfBoundsException-下标越界异常</li>
+<li>NumberFormatException-数字格式异常<h5 id="非RuntimeException"><a href="#非RuntimeException" class="headerlink" title="非RuntimeException"></a>非RuntimeException</h5></li>
+<li>ClassNotFoundException -找不到指定class的异常</li>
+<li>IOExceptin-IO操作异常</li>
+</ol>
+<h4 id="Error"><a href="#Error" class="headerlink" title="Error"></a>Error</h4><ol>
+<li>NotClassDefFoundError-找不到class定义的异常：<br> NotClassDefFondError的成因：<ul>
+<li>类依赖的class或者jar不存在</li>
+<li>类文件存在，但是存在不同域中：对应的class在Java的classpath中不可用，又或者有多个不同的类加载器重复加载了同一个class</li>
+<li>大小写问题，javac编译的时候无视大小写，很肯能编译出来的class文件就与想要的不一样</li>
+</ul>
+</li>
+<li>StackOverflowError-深递归导致栈被耗尽而抛出的异常</li>
+<li>OutOfMemeryError-内存溢出异常</li>
+</ol>
+<h4 id="Java的异常处理机制"><a href="#Java的异常处理机制" class="headerlink" title="Java的异常处理机制"></a>Java的异常处理机制</h4><ul>
+<li>抛出异常：创建异常对象，交由运行时系统处理</li>
+<li>捕获异常：寻找合适的异常处理器处理异常，否则终止运行</li>
+</ul>
+<h4 id="Java异常的处理原则"><a href="#Java异常的处理原则" class="headerlink" title="Java异常的处理原则"></a>Java异常的处理原则</h4><ul>
+<li>具体明确：抛出的异常应该能通过异常类名和message准确说明异常的类型和产出异常的愿意；</li>
+<li>提早抛出：应尽可能早的发现并抛出异常，便于精确定位问题；</li>
+<li>延迟捕获异常的捕获和处理应可能延迟，让掌握更多信息的作用域来处理</li>
+</ul>
+<h4 id="高效主流的异常处理框架"><a href="#高效主流的异常处理框架" class="headerlink" title="高效主流的异常处理框架"></a>高效主流的异常处理框架</h4><ul>
+<li>设计一个通用的继承自RuntimeExceptin的异常来统一处理</li>
+<li>其余异常都统一转译为上述异常AppException</li>
+<li>在catch之后，抛出上述异常的子类，并提供足以定位的信息</li>
+<li>由前端接受AppExcception做统一处理</li>
+</ul>
+<p><img src="/2019/11/07/Java异常/%E9%AB%98%E6%95%88%E4%B8%BB%E6%B5%81%E7%9A%84%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E6%A1%86%E6%9E%B6.jpg" alt="高效主流的异常处理框架"></p>
+<h4 id="try-catch的性能"><a href="#try-catch的性能" class="headerlink" title="try-catch的性能"></a>try-catch的性能</h4><h5 id="Java异常处理消耗性能的地方"><a href="#Java异常处理消耗性能的地方" class="headerlink" title="Java异常处理消耗性能的地方"></a>Java异常处理消耗性能的地方</h5><ul>
+<li>try-catch块影响JVM的优化</li>
+<li>异常对象实例需要保存栈快照等信息，开销较大</li>
+</ul>
 
       
     </div>
@@ -233,7 +295,7 @@
     <div id="toc" class="toc-article">
     <strong class="toc-title">Contents</strong>
     
-      <ol class="nav">None</ol>
+      <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#异常机制主要回答了三个问题"><span class="nav-number">1.</span> <span class="nav-text">异常机制主要回答了三个问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Java的异常体系"><span class="nav-number">2.</span> <span class="nav-text">Java的异常体系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#error和exceptin的区别"><span class="nav-number">3.</span> <span class="nav-text">error和exceptin的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常见Error以及Exception"><span class="nav-number">4.</span> <span class="nav-text">常见Error以及Exception</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#RuntimeException"><span class="nav-number">4.1.</span> <span class="nav-text">RuntimeException</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#非RuntimeException"><span class="nav-number">4.2.</span> <span class="nav-text">非RuntimeException</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Error"><span class="nav-number">5.</span> <span class="nav-text">Error</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Java的异常处理机制"><span class="nav-number">6.</span> <span class="nav-text">Java的异常处理机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Java异常的处理原则"><span class="nav-number">7.</span> <span class="nav-text">Java异常的处理原则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#高效主流的异常处理框架"><span class="nav-number">8.</span> <span class="nav-text">高效主流的异常处理框架</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#try-catch的性能"><span class="nav-number">9.</span> <span class="nav-text">try-catch的性能</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Java异常处理消耗性能的地方"><span class="nav-number">9.1.</span> <span class="nav-text">Java异常处理消耗性能的地方</span></a></li></ol></li></ol>
     
     </div>
   </aside>

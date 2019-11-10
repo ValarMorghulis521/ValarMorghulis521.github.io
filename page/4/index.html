@@ -127,6 +127,448 @@
         
           <section id="main">
   
+    <article id="post-锁模块之数据事务"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/10/12/锁模块之数据事务/">锁模块之数据事务</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/10/12/锁模块之数据事务/" class="article-date">
+	  <time datetime="2019-10-12T08:25:36.000Z" itemprop="datePublished">October 12, 2019</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/数据库/">数据库</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="数据库事务的四大特性"><a href="#数据库事务的四大特性" class="headerlink" title="数据库事务的四大特性"></a>数据库事务的四大特性</h4><h5 id="ACID"><a href="#ACID" class="headerlink" title="ACID"></a>ACID</h5><ul>
+<li>原子性(Athomic) : 事务包含的全部操作要么全部执行，要么全部失败回滚</li>
+<li>一致性(Consistency) : 事务应确保数据库的状态从一个一致状态到另一个一致状态(eg:转账问题，A和B一共2000，无论来回怎么转总和还是2000)</li>
+<li><strong>隔离性(Isolaton)：</strong>一个事务的执行不应该影响其它事务的执行</li>
+<li>持久性(Durability)：一个事务的提交代表了它对数据库的修改永久保存在数据库中，当系统发生故障时确保已提交事务的更新不能丢失，确保已提交事务的更新能恢复</li>
+</ul>
+<h4 id="事务隔离级别以及各级别下的并发访问问题"><a href="#事务隔离级别以及各级别下的并发访问问题" class="headerlink" title="事务隔离级别以及各级别下的并发访问问题"></a>事务隔离级别以及各级别下的并发访问问题</h4><p>更新丢失<br>（MySQL所有事务隔离级别在数据库层面上均可避免）<br>事务A对数据进行操作时，事务B也在对同一数据更新操作并完成了提交，然后事务A遇到异常进行回滚导致事务B的更新丢失。</p>
+<p>脏读<br>一个事务读到另一个事务未提交的数据。</p>
+<p>不可重复读<br>事务A在多次读取同一数据的过程中，事务B对数据进行更新并提交，导致事务A多次读取同一数据时结果不一致。</p>
+<p>幻读<br>事务A读取若干行数据，事务B以插入或删除行的方式来修改事务A的结果集。</p>
+<p>其中不可重复读与幻读比较相似，不可重复读侧重对同一数据的修改，幻读侧重插入增加或删除数据。<br>事务隔离级别越高，对性能的影响也越大。</p>
+<h5 id="事务并发访问引起的问题以及如何避免"><a href="#事务并发访问引起的问题以及如何避免" class="headerlink" title="事务并发访问引起的问题以及如何避免"></a>事务并发访问引起的问题以及如何避免</h5><ul>
+<li>更新丢失——mysql所有事务隔离级别在数据库层面上均可避免</li>
+<li>脏读——READ-COMMITTED事务隔离级别以上避免</li>
+<li>不可重复读——REPEATABLE-READ事务隔离级别以上可避免</li>
+<li>幻读——SERIALIZABLE事务隔离级别避免</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>事务隔离级别</th>
+<th align="left">更新丢失</th>
+<th align="right">脏读</th>
+<th align="center">不可重复度</th>
+<th align="center">幻读</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>未提交读</td>
+<td align="left">避免</td>
+<td align="right">发生</td>
+<td align="center">发生</td>
+<td align="center">发生</td>
+</tr>
+<tr>
+<td>已提交读</td>
+<td align="left">避免</td>
+<td align="right">避免</td>
+<td align="center">发生</td>
+<td align="center">发生</td>
+</tr>
+<tr>
+<td>可重复读</td>
+<td align="left">避免</td>
+<td align="right">避免</td>
+<td align="center">避免</td>
+<td align="center">发生</td>
+</tr>
+<tr>
+<td>串行化</td>
+<td align="left">避免</td>
+<td align="right">避免</td>
+<td align="center">避免</td>
+<td align="center">避免</td>
+</tr>
+</tbody></table>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/数据库/">数据库</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ACID/">ACID</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数据库事务/">数据库事务</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/锁模块/">锁模块</a></li></ul>
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-锁模块MyISAM与InooDB关于锁方面的区别"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/10/11/锁模块MyISAM与InooDB关于锁方面的区别/">锁模块MyISAM与InooDB关于锁方面的区别</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/10/11/锁模块MyISAM与InooDB关于锁方面的区别/" class="article-date">
+	  <time datetime="2019-10-11T10:42:44.000Z" itemprop="datePublished">October 11, 2019</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/数据库/">数据库</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h4><ul>
+<li>MyISAM与InnoDB关于锁方面的区别是什么</li>
+<li>数据库事务的四大特性</li>
+<li>事务隔离级别以及各级别下的并发访问问题</li>
+<li>InnoDB可重复度隔离级别下如何变幻读</li>
+<li>RC、RB级别下的InnoDB的非阻塞读如何实现<h4 id="MyISAM与InnoDB关于锁方面的区别"><a href="#MyISAM与InnoDB关于锁方面的区别" class="headerlink" title="MyISAM与InnoDB关于锁方面的区别"></a>MyISAM与InnoDB关于锁方面的区别</h4></li>
+</ul>
+<ol>
+<li>MyISAM默认用的是表级锁，不支持行级锁 ，MyISAM不支持事务</li>
+<li>InnoDB默认用的是行级锁 ，也支持表级锁，InnoDB在不走索引的时候用的是表级锁，而sql用到索引的时候用的是行级锁</li>
+</ol>
+<p>值得注意的是：</p>
+<ul>
+<li>MyISAM默认会给select语句上共享锁(读锁)</li>
+<li>InnoDB默认不会给select语句上共享锁(读锁)</li>
+<li>上了共享锁的可以再上共享锁但是不能上排他锁</li>
+<li>上了排他锁的不可以再上共享锁和排他锁<h5 id="共享锁和排斥锁的兼容性"><a href="#共享锁和排斥锁的兼容性" class="headerlink" title="共享锁和排斥锁的兼容性"></a>共享锁和排斥锁的兼容性</h5><table>
+<thead>
+<tr>
+<th></th>
+<th align="left">X</th>
+<th align="center">S</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>X</td>
+<td align="left">冲突</td>
+<td align="center">冲突</td>
+</tr>
+<tr>
+<td>S</td>
+<td align="left">冲突</td>
+<td align="center">兼容</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#查看session是否为自动提交</span><br><span class="line">show variables like &apos;autocommit&apos;;</span><br><span class="line">#将session设置为自动提交</span><br><span class="line">set autocommit = 1;</span><br></pre></td></tr></table></figure>
+
+<h5 id="MyISAM适合的场景"><a href="#MyISAM适合的场景" class="headerlink" title="MyISAM适合的场景"></a>MyISAM适合的场景</h5><ol>
+<li>频繁执行全表count语句（有个变量保存了表的行数，可直接读该变量）</li>
+<li>对数据进行增删改的频率不高，查询非常频繁（增删改会涉及到锁表操作）</li>
+<li>没有事务</li>
+</ol>
+<h5 id="InnoDB适合的场景"><a href="#InnoDB适合的场景" class="headerlink" title="InnoDB适合的场景"></a>InnoDB适合的场景</h5><ol>
+<li>数据增删改查相当频繁（增删改的时候只是某些行被锁，大多数情况下，避免阻塞）</li>
+<li>可靠性要求比较高，要求支持事务</li>
+</ol>
+<h5 id="数据库锁的分类"><a href="#数据库锁的分类" class="headerlink" title="数据库锁的分类"></a>数据库锁的分类</h5><ol>
+<li>按锁的粒度划分，表级锁，行级锁，页级锁</li>
+<li>按锁级别划分，共享锁，排他锁</li>
+<li>按加锁方式划分，自动锁（意向锁），显式锁（手工加锁）</li>
+<li>按操作划分，DML锁，DDL锁</li>
+<li>按使用方式划分，乐观锁，悲观锁</li>
+</ol>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/数据库/">数据库</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/锁模块/">锁模块</a></li></ul>
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-索引额外问题之如何调优sql"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/10/11/索引额外问题之如何调优sql/">索引额外问题之如何调优sql</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/10/11/索引额外问题之如何调优sql/" class="article-date">
+	  <time datetime="2019-10-11T06:37:24.000Z" itemprop="datePublished">October 11, 2019</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/数据库/">数据库</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="常见问题总结"><a href="#常见问题总结" class="headerlink" title="常见问题总结"></a>常见问题总结</h4><ul>
+<li>如何定位并优化慢查询sql</li>
+<li>联合索引的最左匹配原则的成因</li>
+<li>索引建立的越多越好吗<h4 id="如何定位并优化慢sql大致思路"><a href="#如何定位并优化慢sql大致思路" class="headerlink" title="如何定位并优化慢sql大致思路"></a>如何定位并优化慢sql大致思路</h4></li>
+</ul>
+<ol>
+<li><p>根据慢日志定位慢sql</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">SHOW VARIABLES LIKE &apos;%quer%&apos;;  查看慢查询是否打开</span><br><span class="line">set global slow_query_log =on; 打开慢查询:</span><br><span class="line">set global long_query_time=1; 设置慢查询最大时间超过一秒就记录为慢查询 </span><br><span class="line">SHOW STATUS LIKE &apos;%slow_queries%&apos;; 查看慢sql条数</span><br><span class="line">sudo vim  /usr/local/mysql/data/VM_33_68_centos-slow.log; 查看被记录到慢日志里面的日志</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用explain等工具分析sql</p>
+</li>
+</ol>
+<ul>
+<li>explain字段 </li>
+<li>type ： mysql找到数据行的方式index 和 all 是全表扫描 </li>
+<li>extra：有很多值  Using filesort ，Using temporary 最常的慢的，</li>
+</ul>
+<ol start="3">
+<li><p>修改sql或者尽量让sql走索引</p>
+<p> 具体走那个索引是mysql查询优化器决定， 要强制制定走某个索引 要加上 force index（primary/其他）</p>
+</li>
+</ol>
+<h4 id="联合索引的最左匹配原则"><a href="#联合索引的最左匹配原则" class="headerlink" title="联合索引的最左匹配原则"></a>联合索引的最左匹配原则</h4><ol>
+<li>最左前缀匹配原则，非常重要的原则，mysql会一直向右匹配直到遇到范围查询（&gt; , &lt; , between, like ）就停止匹配，比如a=3 and b = 4 and c &gt; 5 and d =6 如果建立（a，b，c，d）顺序的索引，d是用不到索引的，如果建立（a，b，d，c）的索引则可以用到，a、b、d的顺序可以任意调整</li>
+<li>=和in可以乱序，比如a=1 and b=2 and c=3建立（a,b,c）索引可以任意顺序，mysql查询优化器会帮你优化成索引可以识别的形式</li>
+</ol>
+<p><img src="/2019/10/11/索引额外问题之如何调优sql/%E8%81%94%E5%90%88%E7%B4%A2%E5%BC%95%E7%9A%84%E6%9C%80%E5%B7%A6%E5%8C%B9%E9%85%8D%E5%8E%9F%E5%88%99%E7%9A%84%E6%88%90%E5%9B%A0.jpg" alt="联合索引的最左匹配原则的成因"></p>
+<h4 id="索引是建立得越多越好吗"><a href="#索引是建立得越多越好吗" class="headerlink" title="索引是建立得越多越好吗"></a>索引是建立得越多越好吗</h4><ol>
+<li>数据量小的表不需要建立索引，建立索引会增加额外的索引开销</li>
+<li>数据变更需要维护索引，因此更多的索引意味着更多的维护成本</li>
+<li>更多的索引也意味着更多的空间</li>
+</ol>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/数据库/">数据库</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql调优/">sql调优</a></li></ul>
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-密集索引和稀疏索引"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/10/11/密集索引和稀疏索引/">密集索引和稀疏索引</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/10/11/密集索引和稀疏索引/" class="article-date">
+	  <time datetime="2019-10-11T03:52:34.000Z" itemprop="datePublished">October 11, 2019</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/数据库/">数据库</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="密集索引和稀疏索引的区别"><a href="#密集索引和稀疏索引的区别" class="headerlink" title="密集索引和稀疏索引的区别"></a>密集索引和稀疏索引的区别</h4><ul>
+<li><p>密集索引文件中的每个搜索码值都对应一个索引值</p>
+</li>
+<li><p>稀疏索引文件只为索引码的某些值建立索引项</p>
+<h4 id="InnoDB-和-MyISAM"><a href="#InnoDB-和-MyISAM" class="headerlink" title="InnoDB 和 MyISAM"></a>InnoDB 和 MyISAM</h4></li>
+<li><p>InnoDB 采用密集索引+稀疏索引,主键索引可以直接找到叶子节点中的数据,辅助键索引需要先找到主键再通过主键B+树找到数据 ,即InnoDB数据和索引是存放在一个文件里的</p>
+</li>
+<li><p>MyISam 全部采用稀疏索引,根据主键和辅助键的索引都只能找到一个地址信息,要再根据这个地址信息去另外一个文件中寻找数据,即MyISam的索引和数据是分开存放的</p>
+</li>
+<li><p>表结构都存储在*.frm中<br>MyISAM索引和数据是分开存储的<br>.MYI存储索引<br>.MYD存储数据<br>InnoDB索引和数据是存在一起的.ibd<br><img src="/2019/10/11/密集索引和稀疏索引/%E5%AF%86%E9%9B%86%E7%B4%A2%E5%BC%95%E5%92%8C%E7%A8%80%E7%96%8F%E7%B4%A2%E5%BC%95.jpg" alt="密集索引和稀疏索引"></p>
+</li>
+<li></li>
+</ul>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/数据库/">数据库</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/InnoDB/">InnoDB</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MyISAM/">MyISAM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/密集索引/">密集索引</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/稀疏索引/">稀疏索引</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/索引/">索引</a></li></ul>
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-优化你的索引"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/10/10/优化你的索引/">优化你的索引</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/10/10/优化你的索引/" class="article-date">
+	  <time datetime="2019-10-10T10:26:36.000Z" itemprop="datePublished">October 10, 2019</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/数据库/">数据库</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="二叉查找树"><a href="#二叉查找树" class="headerlink" title="二叉查找树"></a>二叉查找树</h4><p>二叉树,(有明显缺陷的数据结构):</p>
+<ol>
+<li>如果添加的数据一直在某一侧的时候,就会变成线性而二叉树,查询复杂度会上升,查找效率会大幅度降低</li>
+<li>影响数据检索最根本的原因是IO,即数据库文件的读写，也就是将硬盘的数据读到内存中<br>而我们的二叉树在检索深度每次加1后都需要读取一个节点,执行一次IO,效率很低</li>
+</ol>
+<p><img src="/2019/10/10/优化你的索引/%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91.jpg" alt="二叉查找树"></p>
+<h4 id="B-Tree"><a href="#B-Tree" class="headerlink" title="B-Tree"></a>B-Tree</h4><p>B-TREE<br>B树的定义：</p>
+<ol>
+<li>根节点至少包含两个孩子</li>
+<li>树中每个节点最多含有m个孩子（ m &gt;= 2）</li>
+<li>除根节点和叶节点外，其他每个节点至少有 ceil(m/2)个孩子</li>
+<li>所有叶子节点都位于同一层</li>
+<li>假设每个非终端节点包含有n个关键字信息，其中<ul>
+<li>Ki(i=1,…n)为关键字，关键字按顺序排序K(i-1)&lt;Ki</li>
+<li>关键字个数n必须满足 : [cell(m/2)-1]&lt;=n&lt;=m-1</li>
+<li>非叶子节点的指针：P[1],p[2],….,p[M];其中P[1]指向关键字小于K[1]的子树，P[M]指向关键字大于K[M-1]的子树，其他P[i]指向关键字属于(K[i-1],K[i])的子树<br><img src="/2019/10/10/优化你的索引/BTree.jpg" alt="三阶B-Tree"></li>
+</ul>
+</li>
+</ol>
+<h4 id="B-Tree-1"><a href="#B-Tree-1" class="headerlink" title="B+-Tree"></a>B+-Tree</h4><p>B+树定义：</p>
+<ol>
+<li>非叶子节点的子树指针和关键字个数相同</li>
+<li>非叶子节点的子树指针P[i],指向关键字值[K[i],K[i+1])的子树, 大于等于 K[i] 小于 K[i+1]</li>
+<li>非叶子节点仅用来做索引，数据都保存在叶子节点中</li>
+<li>所有叶子节点均有一个链指针指向下一个叶子节点<br><img src="/2019/10/10/优化你的索引/B+Tree.jpg" alt="B+Tree"></li>
+</ol>
+<h5 id="B-Tree更适合用来存储索引"><a href="#B-Tree更适合用来存储索引" class="headerlink" title="B+Tree更适合用来存储索引"></a>B+Tree更适合用来存储索引</h5><ol>
+<li>B+ 树的磁盘读写代价更低（程序运行，往往最耗时的操作就是IO，如果IO的次数越少，那么运行也就越快，代价也就越低，非叶子节点结构没有指向关键字对应表记录的指针，只存放索引，因此节点比B树更小）</li>
+<li>B+ 树的查询效率更加稳定，数据存放在叶节点中，也就意味着每次查询都需要经过从根节点到叶节点的查询路径，时间复杂度味为O(logn)，比较稳定</li>
+<li>B+ 树更有利于对数据库的扫描（因为数据只存放在叶节点中，而且有顺序，所以更好的查询数据范围）</li>
+</ol>
+<h4 id="Hash-索引"><a href="#Hash-索引" class="headerlink" title="Hash 索引"></a>Hash 索引</h4><ol>
+<li>hash 命中key 直接定位数据，理论上高于 b-tree b+tree </li>
+<li>只能用 = 和 in ，不能范围查询，不能排序，不能组合索引(比较hash值是否相等来查询数据,并不能代表hash值的实际大小)</li>
+<li>hash值命中同一个存放位置， 效率不稳定，有可能还不如b+ tree（想想线性二叉树）<br><img src="/2019/10/10/优化你的索引/Hash%E7%B4%A2%E5%BC%95.jpg" alt="Hash索引"><h4 id="bitmap-索引"><a href="#bitmap-索引" class="headerlink" title="bitmap 索引"></a>bitmap 索引</h4>bitmap位图，适用于字段值只是固定的几个，如男、女，颜色；便于高效统计。Oracle支持位图索引，数据结构了类似B+树。锁很严重，可能因为某行修改都会锁。适合并发较少，统计较多的情况</li>
+</ol>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/数据库/">数据库</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/索引/">索引</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/索引数据结构/">索引数据结构</a></li></ul>
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-数据库架构"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
@@ -301,6 +743,66 @@
 <!-- Table of Contents -->
 
   
+    <article id="post-TCP的滑动窗口"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/10/06/TCP的滑动窗口/">TCP的滑动窗口</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/10/06/TCP的滑动窗口/" class="article-date">
+	  <time datetime="2019-10-06T08:59:45.000Z" itemprop="datePublished">October 6, 2019</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/计算机网络/">计算机网络</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="RTT和RTO"><a href="#RTT和RTO" class="headerlink" title="RTT和RTO"></a>RTT和RTO</h4><ul>
+<li>RTT:发送一个数据包到接受对应ACK所花费的时间</li>
+<li>RTO:重传时间间隔；RTT是根据RTO计算出来的</li>
+</ul>
+<p>我们要实现对数据的批量发送，TCP要解决可靠传输和包乱序的问题，所以TCP需要知道网络实际的数据处理带宽或是数据处理速度才不会引起网络拥塞导致丢包</p>
+<h4 id="TCP使用滑动窗口做流量控制与乱序重排"><a href="#TCP使用滑动窗口做流量控制与乱序重排" class="headerlink" title="TCP使用滑动窗口做流量控制与乱序重排"></a>TCP使用滑动窗口做流量控制与乱序重排</h4><ul>
+<li>保证TCP可靠性</li>
+<li>保证TCP的流控特性。（流量控制：window，用于接收方通知发送方自己还有多少缓冲区可以接受数据，发送方根据接收方的处理能力发送数据，不会导致接受不过来）</li>
+</ul>
+<p>TCP的传输可靠性来源于确认重传机制，TCP的滑动窗口可靠性也是建立在确认重传基础上。</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/计算机网络/">计算机网络</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RTO/">RTO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RTT/">RTT</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/滑动窗口/">滑动窗口</a></li></ul>
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-HTTP相关"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
@@ -417,66 +919,6 @@
 <!-- Table of Contents -->
 
   
-    <article id="post-TCP的滑动窗口"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/10/06/TCP的滑动窗口/">TCP的滑动窗口</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/10/06/TCP的滑动窗口/" class="article-date">
-	  <time datetime="2019-10-06T08:59:45.000Z" itemprop="datePublished">October 6, 2019</time>
-	</a>
-
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/计算机网络/">计算机网络</a>
- 
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="RTT和RTO"><a href="#RTT和RTO" class="headerlink" title="RTT和RTO"></a>RTT和RTO</h4><ul>
-<li>RTT:发送一个数据包到接受对应ACK所花费的时间</li>
-<li>RTO:重传时间间隔；RTT是根据RTO计算出来的</li>
-</ul>
-<p>我们要实现对数据的批量发送，TCP要解决可靠传输和包乱序的问题，所以TCP需要知道网络实际的数据处理带宽或是数据处理速度才不会引起网络拥塞导致丢包</p>
-<h4 id="TCP使用滑动窗口做流量控制与乱序重排"><a href="#TCP使用滑动窗口做流量控制与乱序重排" class="headerlink" title="TCP使用滑动窗口做流量控制与乱序重排"></a>TCP使用滑动窗口做流量控制与乱序重排</h4><ul>
-<li>保证TCP可靠性</li>
-<li>保证TCP的流控特性。（流量控制：window，用于接收方通知发送方自己还有多少缓冲区可以接受数据，发送方根据接收方的处理能力发送数据，不会导致接受不过来）</li>
-</ul>
-<p>TCP的传输可靠性来源于确认重传机制，TCP的滑动窗口可靠性也是建立在确认重传基础上。</p>
-
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/计算机网络/">计算机网络</a>
-
-      
-  <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RTO/">RTO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RTT/">RTT</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/滑动窗口/">滑动窗口</a></li></ul>
-
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
     <article id="post-TCP和UDP的区别"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
@@ -542,349 +984,11 @@
 <!-- Table of Contents -->
 
   
-    <article id="post-微信点餐系统-service层设计"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/09/20/微信点餐系统-service层设计/">微信点餐系统-service层设计</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/09/20/微信点餐系统-service层设计/" class="article-date">
-	  <time datetime="2019-09-20T05:40:03.000Z" itemprop="datePublished">September 20, 2019</time>
-	</a>
-
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/Spring-Boot-实战/">Spring Boot 实战</a>
- 
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="常用注解"><a href="#常用注解" class="headerlink" title="常用注解"></a>常用注解</h4><p>@Entity 表明该类为一个实体类,类名和表明要一致。<br>@Table 当实体类映射的数据表名不同名时使用，与@Entity并列使用 @Table(name=”XXXXX”)。<br>@DynamicUpdate 自动更新updateTime<br>@Data 自动生成getter和setter方法以及构造方法<br>@Transational 在测试方法中使用测试完自动回滚，数据不保存数据库 </p>
-<h4 id="如何自动生成getter-setter-toString的方法、"><a href="#如何自动生成getter-setter-toString的方法、" class="headerlink" title="如何自动生成getter/setter,toString的方法、"></a>如何自动生成getter/setter,toString的方法、</h4><p>1.引入lombok依赖</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">     &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;</span><br><span class="line">     &lt;artifactId&gt;lombok&lt;/artifactId&gt;</span><br><span class="line">     &lt;version&gt;1.16.10&lt;/version&gt;</span><br><span class="line"> &lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
-
-<p>2.安装lombok插件<br>3.使用注解@Data</p>
-<h4 id="如何根据categoryType-查询返回List-对象"><a href="#如何根据categoryType-查询返回List-对象" class="headerlink" title="如何根据categoryType 查询返回List 对象"></a>如何根据categoryType 查询返回List 对象</h4><p>方法命名规则： </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">List&lt;ProductCategory&gt; findByCategoryTypeIn(List&lt;Integer&gt; list)</span><br><span class="line">List&lt;Integer&gt; list = Arrays.asList(1,2,3,4);</span><br><span class="line">repository.findByCategoryTypeIn(list);</span><br></pre></td></tr></table></figure>
-
-<h4 id="JAVA8特性"><a href="#JAVA8特性" class="headerlink" title="JAVA8特性"></a>JAVA8特性</h4><p>把List<productinfo>里的属性封装进另一个List</productinfo></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Integer&gt; categoryTypeList = productInfoList.strem().map(e -&gt; e.getCategoryType()).collect(Collectors.toList())</span><br></pre></td></tr></table></figure>
-
-<h4 id="VO-ViewObject-返回给前端的对象"><a href="#VO-ViewObject-返回给前端的对象" class="headerlink" title="VO ViewObject 返回给前端的对象"></a>VO ViewObject 返回给前端的对象</h4><p>1.应根据前端需要的字段重新定义一个 VO，不要有多余字段<br>2.VO字段应该和对象的字段名称保持一致，方便Copy属性<br>3.@JsonProperty 注解的使用，</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">//返回给前台的JSON字段 转成自定义的名称</span><br><span class="line">@JsonProperty(&quot;id&quot;)</span><br><span class="line">private String productId</span><br></pre></td></tr></table></figure>
-
-<h4 id="写代码中的注意事项"><a href="#写代码中的注意事项" class="headerlink" title="写代码中的注意事项"></a>写代码中的注意事项</h4><p>1.不要在 for循环里有查询<br>2.不要在代码里直接写数字，应该使用枚举</p>
-
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/Spring-Boot-实战/">Spring Boot 实战</a>
-
-      
-  <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/lombok/">lombok</a></li></ul>
-
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-微信点餐系统-日志框架"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/09/18/微信点餐系统-日志框架/">微信点餐系统-日志框架</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/09/18/微信点餐系统-日志框架/" class="article-date">
-	  <time datetime="2019-09-18T06:22:17.000Z" itemprop="datePublished">September 18, 2019</time>
-	</a>
-
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/Spring-Boot-实战/">Spring Boot 实战</a>
- 
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="使用的日志框架"><a href="#使用的日志框架" class="headerlink" title="使用的日志框架"></a>使用的日志框架</h4><p>日志门面：SLF4J<br>日志实现：Logback</p>
-<h4 id="使用slf4j-打印日志的两种方式"><a href="#使用slf4j-打印日志的两种方式" class="headerlink" title="使用slf4j 打印日志的两种方式"></a>使用slf4j 打印日志的两种方式</h4><p>1.手动初始化Log4j的一个实例</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Logger logger = LoggerFactory.getLogger(this.class)</span><br><span class="line">logger.info(&quot;info...&quot;);</span><br></pre></td></tr></table></figure>
-
-<p>2.使用注解 @Slf4j ,可以直接使用log<br>添加依赖</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">        &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;lombok&lt;/artifactId&gt;</span><br><span class="line">        &lt;version&gt;1.16.10&lt;/version&gt;</span><br><span class="line">        &lt;scope&gt;provided&lt;/scope&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">log.info(&quot;info...&quot;);</span><br></pre></td></tr></table></figure>
-
-<h4 id="使用占位符可直接打印变量"><a href="#使用占位符可直接打印变量" class="headerlink" title="使用占位符可直接打印变量"></a>使用占位符可直接打印变量</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">String name = &quot;root&quot;;</span><br><span class="line">String password = &quot;123455&quot;;</span><br><span class="line">log.info(&quot;name: &#123;&#125;, password: &#123;&#125;&quot; , name,password)</span><br></pre></td></tr></table></figure>
-
-<h4 id="Logback配置"><a href="#Logback配置" class="headerlink" title="Logback配置"></a>Logback配置</h4><p>1.创建 logback-spring.xml</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">    &lt;appender name=&quot;consoleLog&quot; class=&quot;ch.qos.logback.core.ConsoleAppender&quot;&gt;</span><br><span class="line">            &lt;layout class=&quot;ch.qos.logback.classic.PatternLayout&quot;&gt;</span><br><span class="line">                &lt;pattern&gt;</span><br><span class="line">                    %d - %msg%n</span><br><span class="line">                &lt;/pattern&gt;</span><br><span class="line">            &lt;/layout&gt;</span><br><span class="line">    &lt;/appender&gt;</span><br><span class="line">    &lt;appender name=&quot;fileInfoLog&quot; class=&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;&gt;</span><br><span class="line">        &lt;filter class=&quot;ch.qos.logback.classic.filter.LevelFilter&quot;&gt;</span><br><span class="line">            &lt;level&gt;ERROR&lt;/level&gt;</span><br><span class="line">            &lt;onMatch&gt;DENY&lt;/onMatch&gt;</span><br><span class="line">            &lt;onMismatch&gt;ACCEPT&lt;/onMismatch&gt;</span><br><span class="line">        &lt;/filter&gt;</span><br><span class="line">        &lt;encoder&gt;</span><br><span class="line">            &lt;pattern&gt;</span><br><span class="line">                %msg%n</span><br><span class="line">            &lt;/pattern&gt;</span><br><span class="line">        &lt;/encoder&gt;</span><br><span class="line">        &lt;!--滚动策略,每天一个日志--&gt;</span><br><span class="line">        &lt;rollingPolicy class=&quot;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&quot;&gt;</span><br><span class="line">            &lt;!--路径--&gt;</span><br><span class="line">            &lt;fileNamePattern&gt;</span><br><span class="line">                F:\log\tomcat\info.%d.log</span><br><span class="line">            &lt;/fileNamePattern&gt;</span><br><span class="line">        &lt;/rollingPolicy&gt;</span><br><span class="line">    &lt;/appender&gt;</span><br><span class="line"></span><br><span class="line">    &lt;appender name=&quot;fileErrorLog&quot; class=&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;&gt;</span><br><span class="line">        &lt;filter class=&quot;ch.qos.logback.classic.filter.ThresholdFilter&quot;&gt;</span><br><span class="line">            &lt;level&gt;ERROR&lt;/level&gt;</span><br><span class="line">        &lt;/filter&gt;</span><br><span class="line">        &lt;encoder&gt;</span><br><span class="line">            &lt;pattern&gt;</span><br><span class="line">                %msg%n</span><br><span class="line">            &lt;/pattern&gt;</span><br><span class="line"></span><br><span class="line">        &lt;/encoder&gt;</span><br><span class="line">        &lt;!--滚动策略--&gt;</span><br><span class="line">        &lt;rollingPolicy class=&quot;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&quot;&gt;</span><br><span class="line">            &lt;!--路径--&gt;</span><br><span class="line">            &lt;fileNamePattern&gt;</span><br><span class="line">                F:\log\tomcat\error.%d.log</span><br><span class="line">            &lt;/fileNamePattern&gt;</span><br><span class="line">        &lt;/rollingPolicy&gt;</span><br><span class="line">    &lt;/appender&gt;</span><br><span class="line">    &lt;root level=&quot;info&quot;&gt;</span><br><span class="line">        &lt;appender-ref ref=&quot;consoleLog&quot;/&gt;</span><br><span class="line">        &lt;appender-ref ref=&quot;fileInfoLog&quot;/&gt;</span><br><span class="line">        &lt;appender-ref ref=&quot;fileErrorLog&quot;/&gt;</span><br><span class="line">    &lt;/root&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/Spring-Boot-实战/">Spring Boot 实战</a>
-
-      
-  <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/日志框架/">日志框架</a></li></ul>
-
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-微信点餐系统-数据库设计"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/09/18/微信点餐系统-数据库设计/">微信点餐系统-数据库设计</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/09/18/微信点餐系统-数据库设计/" class="article-date">
-	  <time datetime="2019-09-18T01:36:50.000Z" itemprop="datePublished">September 18, 2019</time>
-	</a>
-
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/Spring-Boot-实战/">Spring Boot 实战</a>
- 
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="数据库设计"><a href="#数据库设计" class="headerlink" title="数据库设计"></a>数据库设计</h4><h5 id="表的的构成"><a href="#表的的构成" class="headerlink" title="表的的构成"></a>表的的构成</h5><p>类目表，商品表，订单主表，订单详情表</p>
-<h5 id="日期"><a href="#日期" class="headerlink" title="日期"></a>日期</h5><p>时间类型设置默认时间，DEFAULT CURRENT_TIMESTAMP<br>时间类型字段自动更新数据，ON UPDATE CURRENT_TIMESTAMP</p>
-<h5 id="SQL-UNIQUE-约束"><a href="#SQL-UNIQUE-约束" class="headerlink" title="SQL UNIQUE 约束"></a>SQL UNIQUE 约束</h5><p>UNIQUE约束唯一标识数据库表中的每条记录。<br>UNIQUE和PRIMARY KEY 约束均为列或列激活提供了唯一性的保证。PRIMARY KEY 拥有自动定义的 UNIQUE约束。<br>请注意，每个表可以有多个UNIQUE约束，但是每个表只能有一个 PRIMARY KEY 约束。</p>
-<h5 id="数据库编码"><a href="#数据库编码" class="headerlink" title="数据库编码"></a>数据库编码</h5><p>使用 UTF-8 unicode(uftf8mb4)可以存表情</p>
-
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/Spring-Boot-实战/">Spring Boot 实战</a>
-
-      
-  <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li></ul>
-
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-TCP的三次握手和四次挥手"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/05/22/TCP的三次握手和四次挥手/">TCP的三次握手和四次挥手</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/05/22/TCP的三次握手和四次挥手/" class="article-date">
-	  <time datetime="2019-05-22T07:51:17.000Z" itemprop="datePublished">May 22, 2019</time>
-	</a>
-
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/计算机网络/">计算机网络</a>
- 
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="TCP的三次握手"><a href="#TCP的三次握手" class="headerlink" title="TCP的三次握手"></a>TCP的三次握手</h4><h5 id="TCP报文头"><a href="#TCP报文头" class="headerlink" title="TCP报文头"></a>TCP报文头</h5><p>source port （源端口）<br>destination（目标端口）<br>Sequence Number（同步序号）<br>Acknowledgement Number（确认序号）<br>Offset（偏移量）<br>Reserved（保留域）<br>TCP Flags（标志位）<br>Window（滑动窗口）<br>CheckSum（检验和）<br>Urgent Pointer（紧急指针）<br>TCP Options（定义一些可选参数）</p>
-<p>TCP报文头包含源端口及目的端口，IP地址可以唯一标识主机，TCP协议加端口可以唯一标识主机中的一个进程。可以使用IP+协议+端口来唯一标识网络中的一个进程。在一些场景下也把这种模式称为“套接字”即Socket。   </p>
-<p><img src="/2019/05/22/TCP的三次握手和四次挥手/TCP%E6%8A%A5%E6%96%87%E5%A4%B4.jpg" alt></p>
-<h5 id="TCP-Flags"><a href="#TCP-Flags" class="headerlink" title="TCP Flags"></a>TCP Flags</h5><p>URG: 紧急指针是否有效<br>ACK: 表示确认标志，携带 ack 标志的报文也称为确认报文<br>PSH: 提示接收端收到报文之后应该立即将数据推送给应用程  序，而不是放在缓冲区排队<br>RET: 表示要求对方重新简历连接。<br>SYN: 同步序列号，用于建立连接过程<br>FIN: 传输结束标志，告知对方自己即将关闭连接。  </p>
-<h5 id="TCP三次握手流程（“握手是为了建立连接”）"><a href="#TCP三次握手流程（“握手是为了建立连接”）" class="headerlink" title="TCP三次握手流程（“握手是为了建立连接”）"></a>TCP三次握手流程（“握手是为了建立连接”）</h5><p><img src="/2019/05/22/TCP的三次握手和四次挥手/TCP%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B.jpg" alt="TCP三次握手"></p>
-<p>在TPC/IP协议中，TCP协议提供可靠的连接服务，采用三次握手建立一个连接  </p>
-<p>第一次握手： 建立连接时，客户端发送SYN包（seq=x）到服务器，并进入SYN_SENT状态，等待服务器确认 </p>
-<p>第二次握手：服务器收到SYN包，必须确认客户的SYN(ack=x+1),<br>同时自己也发送一个SYN包（sql=y）,即SYN+ACK包，此时服务器进入SYN_RECV状态  </p>
-<p>第三次握手：客户端收到服务器的SYN+ACK包，向服务器发送确认包ACK(ack=y+1) ,此包发送完毕，客户端和服务器进入ESTABLISHED状态，完成三次握手<br><strong>各个状态的意义如下：</strong></p>
-<ul>
-<li>LISTEN - 侦听来自远方TCP端口的连接请求； </li>
-<li>SYN-SENT -在发送连接请求后等待匹配的连接请求； </li>
-<li>SYN-RECEIVED - 在收到和发送一个连接请求后等待对连接请求的确认； </li>
-<li>ESTABLISHED- 代表一个打开的连接，数据可以传送给用户； <h5 id="为什么需要三次握手才能建立连接"><a href="#为什么需要三次握手才能建立连接" class="headerlink" title="为什么需要三次握手才能建立连接"></a>为什么需要三次握手才能建立连接</h5>为了初始化Sequence Number的初始值</li>
-</ul>
-<h5 id="首次握手隐患——SYN超时"><a href="#首次握手隐患——SYN超时" class="headerlink" title="首次握手隐患——SYN超时"></a>首次握手隐患——SYN超时</h5><ul>
-<li>Server收到Client的SYN，回复SYN-ACK的时候未收到ACK确认</li>
-<li>Server不断重试直至超时，Linux默认5次，总共需要63秒断开连接。<h5 id="针对SYN-Flood的防护措施"><a href="#针对SYN-Flood的防护措施" class="headerlink" title="针对SYN Flood的防护措施"></a>针对SYN Flood的防护措施</h5>客户端给服务器发送一个SYN报文，下线，服务器需要默认等63秒才会断开。通过这个方法可以耗尽服务器的SYN连接队列。</li>
-<li>SYN队列满后，通过tcp_syncookies参数回发SYN Cookie</li>
-<li>若为正常连接则Client会回发SYN Cookie，直接建立连接<h5 id="建立连接后，Client出现故障怎么办"><a href="#建立连接后，Client出现故障怎么办" class="headerlink" title="建立连接后，Client出现故障怎么办"></a>建立连接后，Client出现故障怎么办</h5>保活机制：<br>建立TCP连接后，TCP有保活机制，以应对其中一端出现故障。若连接处于非活动状态，则开启保活功能的一方将向另一方发送保活探测报文，达到keepalive time时间间隔仍未收到响应则重试，若尝试次数达到保活探测数仍未收到对方的响应，则连接断开。</li>
-</ul>
-<h4 id="TCP的四次挥手"><a href="#TCP的四次挥手" class="headerlink" title="TCP的四次挥手"></a>TCP的四次挥手</h4><h5 id="TCP四次挥手流程（挥手是为了终止连接）"><a href="#TCP四次挥手流程（挥手是为了终止连接）" class="headerlink" title="TCP四次挥手流程（挥手是为了终止连接）"></a>TCP四次挥手流程（挥手是为了终止连接）</h5><p>第一次挥手： Client发送一个FIN,用来关闭Client到Server的数据传送，Client进入FIN_WAIT_1状态；  </p>
-<p>第二次挥手： Server收到FIN后，发送ACK给Client,确认序号为收到序号+1（与SYN相同，一个FIN占用一个序号），Server进入CLOSE_WAIT状态；  </p>
-<p>第三次握手： Serveer发送一个FIN,用来关闭Server到Client的数据传送，Server进入LAST_ACK状态；</p>
-<p>第四次挥手： Clien收到FIN后，Client进入TIME_WAIT状态，急着发送一个ACK给Server,确认序号为收到的序号+1，Server进入CLOSED状态，完成四次挥手；</p>
-<p><img src="/2019/05/22/TCP的三次握手和四次挥手/TCP%E7%9A%84%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B.jpg" alt="TCP的四次挥手"></p>
-<p>TCP连接必须经过时间2MSL后才真正释放掉？</p>
-<ul>
-<li>保证有足够时间让对方收到ACK包</li>
-<li>避免新旧连接混淆</li>
-</ul>
-<h5 id="为什么四次挥手才能断开连接"><a href="#为什么四次挥手才能断开连接" class="headerlink" title="为什么四次挥手才能断开连接"></a>为什么四次挥手才能断开连接</h5><p>因为TCP是全双工的，发送方和接收方都需要FIN报文和ACK报文</p>
-<h5 id="服务器出现大量CLOSE-WAIT状态的原因"><a href="#服务器出现大量CLOSE-WAIT状态的原因" class="headerlink" title="服务器出现大量CLOSE_WAIT状态的原因"></a>服务器出现大量CLOSE_WAIT状态的原因</h5><p>对方关闭socket连接，我方忙于读或写，没有及时关闭</p>
-<ul>
-<li>检查代码，特别是释放资源的代码</li>
-<li>检查配置，特别是处理请求的线程配置</li>
-</ul>
-<h5 id="netstat查看机器网络状态的指令"><a href="#netstat查看机器网络状态的指令" class="headerlink" title="netstat查看机器网络状态的指令"></a>netstat查看机器网络状态的指令</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">查看服务器处于各个状态下的连接数  </span><br><span class="line">netstat -n | awk &apos;/^tcp/&#123;++S[$NF]&#125;END(FOR(a in S) print a,S[a])&apos;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/计算机网络/">计算机网络</a>
-
-      
-  <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TCP的三次握手/">TCP的三次握手</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TCP的四次挥手/">TCP的四次挥手</a></li></ul>
-
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-网络基础知识讲解"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/04/25/网络基础知识讲解/">网络基础知识</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/04/25/网络基础知识讲解/" class="article-date">
-	  <time datetime="2019-04-25T10:40:12.000Z" itemprop="datePublished">April 25, 2019</time>
-	</a>
-
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/计算机网络/">计算机网络</a>
- 
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="OSI开放式互联参考模型"><a href="#OSI开放式互联参考模型" class="headerlink" title="OSI开放式互联参考模型"></a>OSI开放式互联参考模型</h4><ul>
-<li><strong>物理层：</strong> 定义物理设备标准（网线类型、光纤接口类型、各种传输介质的传输速率）,主要作用：传输比特流0101二进制数据 —&gt; 转化为电流强弱 —&gt; 0101 数模转换和模数转换 单位:比特  （网卡）</li>
-<li><strong>数据链路层：</strong> 定义了如何格式化数据以进行传输，和控制对物理介质的访问。主要作用：提供错误检测和纠正，确保数据传输可靠性。该层将比特数据组成为帧。（交换机）</li>
-<li><strong>网络层：</strong> 将网络地址翻译成对应的物理地址，决定数据从发送方路由到接收方，单位是数据包。有IP协议）路由器 </li>
-<li><strong>传输层：</strong>  解决主机间的数据传输。（传输协议，流量控制，接收方接收数据快慢程度，规定发送速率；还可以分割大的数据包；TCP和UDP协议）</li>
-<li><strong>会话层：</strong> 定义不同机器上的用户之间建立及管理回话，解决应用程序之间的通信，自动收发包和寻址的功能</li>
-<li><strong>表示层：</strong> 解决不同操作系统之间的通信语法问题。信息的语法语义，加密解密，转换翻译</li>
-<li><strong>应用层：</strong> 规定接收方发送方必须使用一个固定长度的消息头，消息头必须使用固定的组成继续消息体的长度，关注TCP/IP协议中的http协议</li>
-</ul>
-<p><img src="/2019/04/25/网络基础知识讲解/OSI%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E8%BF%87%E7%A8%8B.png" alt="OSI数据传输过程"></p>
-<blockquote>
-<p>OSI 参考模型并不是一个标准，概念性框架。事实的标准是 TCP/IP 四层架构参考模型</p>
-</blockquote>
-<h4 id="OSI的“实现”-TCP-IP协议"><a href="#OSI的“实现”-TCP-IP协议" class="headerlink" title="OSI的“实现” TCP/IP协议"></a>OSI的“实现” TCP/IP协议</h4><p><img src="/2019/04/25/网络基础知识讲解/OSI%E4%B8%8ETCPIP%E7%9A%84%E6%AF%94%E8%BE%83.jpg" alt="OSI与TCPIP的比较"></p>
-<p><img src="/2019/04/25/网络基础知识讲解/TCPIP%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E8%BF%87%E7%A8%8B.jpg" alt="OSI与TCPIP的比较"></p>
-<blockquote>
-<p>TCP/IP四层模型（从下到上）：<br>链路层：获取以太网首部<br>网络层：获取IP首部<br>传输层：获取TCP首部<br>应用层：HTTP数据</p>
-</blockquote>
-
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/计算机网络/">计算机网络</a>
-
-      
-  <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OSI七层模型/">OSI七层模型</a></li></ul>
-
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
 
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/3/">Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span>
+    <a class="extend prev" rel="prev" href="/page/3/">Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/5/">Next</a>
   </nav>
 
 </section>
@@ -978,68 +1082,68 @@
               <div class="widget-entry-summary" style="margin: 0;">
             
 
+              <h6 style="margin: 0;"><a href="/2019/11/10/Java的IO机制/">Java的IO机制</a></h6>
+              <span>November 10, 2019</span>
+            </div>
+
+          </li>
+        
+          <li class="clearfix">
+
+            
+              <div class="widget-entry-summary" style="margin: 0;">
+            
+
+              <h6 style="margin: 0;"><a href="/2019/11/10/J-U-C包的梳理/">J.U.C包的梳理</a></h6>
+              <span>November 10, 2019</span>
+            </div>
+
+          </li>
+        
+          <li class="clearfix">
+
+            
+              <div class="widget-entry-summary" style="margin: 0;">
+            
+
+              <h6 style="margin: 0;"><a href="/2019/11/10/ConcurrentHashMap/">ConcurrentHashMap</a></h6>
+              <span>November 10, 2019</span>
+            </div>
+
+          </li>
+        
+          <li class="clearfix">
+
+            
+              <div class="widget-entry-summary" style="margin: 0;">
+            
+
+              <h6 style="margin: 0;"><a href="/2019/11/10/HashMap/">HashMap</a></h6>
+              <span>November 10, 2019</span>
+            </div>
+
+          </li>
+        
+          <li class="clearfix">
+
+            
+              <div class="widget-entry-summary" style="margin: 0;">
+            
+
+              <h6 style="margin: 0;"><a href="/2019/11/10/Collection体系/">Collection体系</a></h6>
+              <span>November 10, 2019</span>
+            </div>
+
+          </li>
+        
+          <li class="clearfix">
+
+            
+              <div class="widget-entry-summary" style="margin: 0;">
+            
+
               <h6 style="margin: 0;"><a href="/2019/11/08/服务拆分/">服务拆分</a></h6>
               <span>November 8, 2019</span>
-            </div>
-
-          </li>
-        
-          <li class="clearfix">
-
-            
-              <div class="widget-entry-summary" style="margin: 0;">
-            
-
-              <h6 style="margin: 0;"><a href="/2019/11/08/服务注册与发现/">服务注册与发现</a></h6>
-              <span>November 8, 2019</span>
-            </div>
-
-          </li>
-        
-          <li class="clearfix">
-
-            
-              <div class="widget-entry-summary" style="margin: 0;">
-            
-
-              <h6 style="margin: 0;"><a href="/2019/11/08/微服务介绍/">微服务介绍</a></h6>
-              <span>November 8, 2019</span>
-            </div>
-
-          </li>
-        
-          <li class="clearfix">
-
-            
-              <div class="widget-entry-summary" style="margin: 0;">
-            
-
-              <h6 style="margin: 0;"><a href="/2019/11/07/Java异常/">Java异常</a></h6>
-              <span>November 7, 2019</span>
-            </div>
-
-          </li>
-        
-          <li class="clearfix">
-
-            
-              <div class="widget-entry-summary" style="margin: 0;">
-            
-
-              <h6 style="margin: 0;"><a href="/2019/11/06/Java多线程与并发-原理/">Java多线程与并发-原理</a></h6>
-              <span>November 6, 2019</span>
-            </div>
-
-          </li>
-        
-          <li class="clearfix">
-
-            
-              <div class="widget-entry-summary" style="margin: 0;">
-            
-
-              <h6 style="margin: 0;"><a href="/2019/11/05/Java框架-Spring/">Java框架-Spring</a></h6>
-              <span>November 5, 2019</span>
             </div>
 
           </li>
@@ -1053,7 +1157,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/GC相关/">GC相关</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java多线程与并发/">Java多线程与并发</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java常用类库与技巧/">Java常用类库与技巧</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Redis/">Redis</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot-实战/">Spring Boot 实战</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务实战/">微服务实战</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">6</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/GC相关/">GC相关</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java多线程与并发/">Java多线程与并发</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java常用类库与技巧/">Java常用类库与技巧</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Redis/">Redis</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot-实战/">Spring Boot 实战</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务实战/">微服务实战</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">6</span></li></ul>
     </div>
   </div>
 
@@ -1063,7 +1167,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ACID/">ACID</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AOF/">AOF</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AOP/">AOP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ClassLoader/">ClassLoader</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Eureka/">Eureka</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/">HTTP</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IOC/">IOC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/InnoDB/">InnoDB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM内存结构模型/">JVM内存结构模型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java特性/">Java特性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyISAM/">MyISAM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OSI七层模型/">OSI七层模型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RDB/">RDB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTO/">RTO</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTT/">RTT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP的三次握手/">TCP的三次握手</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP的四次挥手/">TCP的四次挥手</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Thread和Runnable/">Thread和Runnable</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UDP/">UDP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interrupt/">interrupt</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lombok/">lombok</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/notify和notifyall/">notify和notifyall</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sleep和wait/">sleep和wait</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql调优/">sql调优</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/start和run/">start和run</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/yield/">yield</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式锁/">分布式锁</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/反射/">反射</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/回收算法/">回收算法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多路I-O复用模型/">多路I/O复用模型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密集索引/">密集索引</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/平台无关性/">平台无关性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异常/">异常</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异步队列/">异步队列</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/当前读/">当前读</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/快照读/">快照读</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库事务/">数据库事务</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库架构/">数据库架构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/新生代垃圾收集器/">新生代垃圾收集器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/日志框架/">日志框架</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/标记算法/">标记算法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/滑动窗口/">滑动窗口</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/稀疏索引/">稀疏索引</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/类的装载/">类的装载</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/索引/">索引</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/索引数据结构/">索引数据结构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线程共享/">线程共享</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线程状态/">线程状态</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线程独占/">线程独占</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/老年代垃圾收集器/">老年代垃圾收集器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/语法/">语法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/进程和线程/">进程和线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/锁模块/">锁模块</a><span class="tag-list-count">3</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ACID/">ACID</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AOF/">AOF</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AOP/">AOP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ClassLoader/">ClassLoader</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ConcurrentHashMap/">ConcurrentHashMap</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Eureka/">Eureka</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/">HTTP</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HashMap/">HashMap</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hashtable/">Hashtable</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IOC/">IOC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO机制/">IO机制</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/InnoDB/">InnoDB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/J-U-C包的梳理/">J.U.C包的梳理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM内存结构模型/">JVM内存结构模型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java特性/">Java特性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/List/">List</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyISAM/">MyISAM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OSI七层模型/">OSI七层模型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RDB/">RDB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTO/">RTO</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTT/">RTT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Set/">Set</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP的三次握手/">TCP的三次握手</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP的四次挥手/">TCP的四次挥手</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Thread和Runnable/">Thread和Runnable</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UDP/">UDP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interrupt/">interrupt</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lombok/">lombok</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/notify和notifyall/">notify和notifyall</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sleep和wait/">sleep和wait</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql调优/">sql调优</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/start和run/">start和run</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/yield/">yield</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式锁/">分布式锁</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/反射/">反射</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/回收算法/">回收算法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多路I-O复用模型/">多路I/O复用模型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密集索引/">密集索引</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/平台无关性/">平台无关性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异常/">异常</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异步队列/">异步队列</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/当前读/">当前读</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/快照读/">快照读</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库事务/">数据库事务</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库架构/">数据库架构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/新生代垃圾收集器/">新生代垃圾收集器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/日志框架/">日志框架</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/标记算法/">标记算法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/滑动窗口/">滑动窗口</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/稀疏索引/">稀疏索引</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/类的装载/">类的装载</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/索引/">索引</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/索引数据结构/">索引数据结构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线程共享/">线程共享</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线程状态/">线程状态</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线程独占/">线程独占</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/老年代垃圾收集器/">老年代垃圾收集器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/语法/">语法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/进程和线程/">进程和线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/锁模块/">锁模块</a><span class="tag-list-count">3</span></li></ul>
     </div>
   </div>
 
@@ -1073,7 +1177,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/ACID/" style="font-size: 10px;">ACID</a> <a href="/tags/AOF/" style="font-size: 10px;">AOF</a> <a href="/tags/AOP/" style="font-size: 10px;">AOP</a> <a href="/tags/ClassLoader/" style="font-size: 10px;">ClassLoader</a> <a href="/tags/Eureka/" style="font-size: 10px;">Eureka</a> <a href="/tags/HTTP/" style="font-size: 15px;">HTTP</a> <a href="/tags/IOC/" style="font-size: 10px;">IOC</a> <a href="/tags/InnoDB/" style="font-size: 10px;">InnoDB</a> <a href="/tags/JVM内存结构模型/" style="font-size: 10px;">JVM内存结构模型</a> <a href="/tags/Java特性/" style="font-size: 10px;">Java特性</a> <a href="/tags/MyISAM/" style="font-size: 10px;">MyISAM</a> <a href="/tags/OSI七层模型/" style="font-size: 10px;">OSI七层模型</a> <a href="/tags/RDB/" style="font-size: 10px;">RDB</a> <a href="/tags/RTO/" style="font-size: 10px;">RTO</a> <a href="/tags/RTT/" style="font-size: 10px;">RTT</a> <a href="/tags/TCP的三次握手/" style="font-size: 10px;">TCP的三次握手</a> <a href="/tags/TCP的四次挥手/" style="font-size: 10px;">TCP的四次挥手</a> <a href="/tags/Thread和Runnable/" style="font-size: 10px;">Thread和Runnable</a> <a href="/tags/UDP/" style="font-size: 10px;">UDP</a> <a href="/tags/interrupt/" style="font-size: 10px;">interrupt</a> <a href="/tags/lombok/" style="font-size: 10px;">lombok</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/notify和notifyall/" style="font-size: 10px;">notify和notifyall</a> <a href="/tags/sleep和wait/" style="font-size: 10px;">sleep和wait</a> <a href="/tags/sql调优/" style="font-size: 10px;">sql调优</a> <a href="/tags/start和run/" style="font-size: 10px;">start和run</a> <a href="/tags/yield/" style="font-size: 10px;">yield</a> <a href="/tags/分布式锁/" style="font-size: 10px;">分布式锁</a> <a href="/tags/反射/" style="font-size: 10px;">反射</a> <a href="/tags/回收算法/" style="font-size: 10px;">回收算法</a> <a href="/tags/多路I-O复用模型/" style="font-size: 10px;">多路I/O复用模型</a> <a href="/tags/密集索引/" style="font-size: 10px;">密集索引</a> <a href="/tags/平台无关性/" style="font-size: 10px;">平台无关性</a> <a href="/tags/异常/" style="font-size: 10px;">异常</a> <a href="/tags/异步队列/" style="font-size: 10px;">异步队列</a> <a href="/tags/当前读/" style="font-size: 10px;">当前读</a> <a href="/tags/快照读/" style="font-size: 10px;">快照读</a> <a href="/tags/数据库事务/" style="font-size: 10px;">数据库事务</a> <a href="/tags/数据库架构/" style="font-size: 10px;">数据库架构</a> <a href="/tags/新生代垃圾收集器/" style="font-size: 10px;">新生代垃圾收集器</a> <a href="/tags/日志框架/" style="font-size: 10px;">日志框架</a> <a href="/tags/标记算法/" style="font-size: 10px;">标记算法</a> <a href="/tags/滑动窗口/" style="font-size: 10px;">滑动窗口</a> <a href="/tags/稀疏索引/" style="font-size: 10px;">稀疏索引</a> <a href="/tags/类的装载/" style="font-size: 10px;">类的装载</a> <a href="/tags/索引/" style="font-size: 15px;">索引</a> <a href="/tags/索引数据结构/" style="font-size: 10px;">索引数据结构</a> <a href="/tags/线程共享/" style="font-size: 10px;">线程共享</a> <a href="/tags/线程状态/" style="font-size: 10px;">线程状态</a> <a href="/tags/线程独占/" style="font-size: 10px;">线程独占</a> <a href="/tags/老年代垃圾收集器/" style="font-size: 10px;">老年代垃圾收集器</a> <a href="/tags/语法/" style="font-size: 10px;">语法</a> <a href="/tags/进程和线程/" style="font-size: 10px;">进程和线程</a> <a href="/tags/锁模块/" style="font-size: 20px;">锁模块</a>
+      <a href="/tags/ACID/" style="font-size: 10px;">ACID</a> <a href="/tags/AOF/" style="font-size: 10px;">AOF</a> <a href="/tags/AOP/" style="font-size: 10px;">AOP</a> <a href="/tags/ClassLoader/" style="font-size: 10px;">ClassLoader</a> <a href="/tags/ConcurrentHashMap/" style="font-size: 10px;">ConcurrentHashMap</a> <a href="/tags/Eureka/" style="font-size: 10px;">Eureka</a> <a href="/tags/HTTP/" style="font-size: 15px;">HTTP</a> <a href="/tags/HashMap/" style="font-size: 10px;">HashMap</a> <a href="/tags/Hashtable/" style="font-size: 10px;">Hashtable</a> <a href="/tags/IOC/" style="font-size: 10px;">IOC</a> <a href="/tags/IO机制/" style="font-size: 10px;">IO机制</a> <a href="/tags/InnoDB/" style="font-size: 10px;">InnoDB</a> <a href="/tags/J-U-C包的梳理/" style="font-size: 10px;">J.U.C包的梳理</a> <a href="/tags/JVM内存结构模型/" style="font-size: 10px;">JVM内存结构模型</a> <a href="/tags/Java特性/" style="font-size: 10px;">Java特性</a> <a href="/tags/List/" style="font-size: 10px;">List</a> <a href="/tags/MyISAM/" style="font-size: 10px;">MyISAM</a> <a href="/tags/OSI七层模型/" style="font-size: 10px;">OSI七层模型</a> <a href="/tags/RDB/" style="font-size: 10px;">RDB</a> <a href="/tags/RTO/" style="font-size: 10px;">RTO</a> <a href="/tags/RTT/" style="font-size: 10px;">RTT</a> <a href="/tags/Set/" style="font-size: 10px;">Set</a> <a href="/tags/TCP的三次握手/" style="font-size: 10px;">TCP的三次握手</a> <a href="/tags/TCP的四次挥手/" style="font-size: 10px;">TCP的四次挥手</a> <a href="/tags/Thread和Runnable/" style="font-size: 10px;">Thread和Runnable</a> <a href="/tags/UDP/" style="font-size: 10px;">UDP</a> <a href="/tags/interrupt/" style="font-size: 10px;">interrupt</a> <a href="/tags/lombok/" style="font-size: 10px;">lombok</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/notify和notifyall/" style="font-size: 10px;">notify和notifyall</a> <a href="/tags/sleep和wait/" style="font-size: 10px;">sleep和wait</a> <a href="/tags/sql调优/" style="font-size: 10px;">sql调优</a> <a href="/tags/start和run/" style="font-size: 10px;">start和run</a> <a href="/tags/yield/" style="font-size: 10px;">yield</a> <a href="/tags/分布式锁/" style="font-size: 10px;">分布式锁</a> <a href="/tags/反射/" style="font-size: 10px;">反射</a> <a href="/tags/回收算法/" style="font-size: 10px;">回收算法</a> <a href="/tags/多路I-O复用模型/" style="font-size: 10px;">多路I/O复用模型</a> <a href="/tags/密集索引/" style="font-size: 10px;">密集索引</a> <a href="/tags/平台无关性/" style="font-size: 10px;">平台无关性</a> <a href="/tags/异常/" style="font-size: 10px;">异常</a> <a href="/tags/异步队列/" style="font-size: 10px;">异步队列</a> <a href="/tags/当前读/" style="font-size: 10px;">当前读</a> <a href="/tags/快照读/" style="font-size: 10px;">快照读</a> <a href="/tags/数据库事务/" style="font-size: 10px;">数据库事务</a> <a href="/tags/数据库架构/" style="font-size: 10px;">数据库架构</a> <a href="/tags/新生代垃圾收集器/" style="font-size: 10px;">新生代垃圾收集器</a> <a href="/tags/日志框架/" style="font-size: 10px;">日志框架</a> <a href="/tags/标记算法/" style="font-size: 10px;">标记算法</a> <a href="/tags/滑动窗口/" style="font-size: 10px;">滑动窗口</a> <a href="/tags/稀疏索引/" style="font-size: 10px;">稀疏索引</a> <a href="/tags/类的装载/" style="font-size: 10px;">类的装载</a> <a href="/tags/索引/" style="font-size: 15px;">索引</a> <a href="/tags/索引数据结构/" style="font-size: 10px;">索引数据结构</a> <a href="/tags/线程共享/" style="font-size: 10px;">线程共享</a> <a href="/tags/线程状态/" style="font-size: 10px;">线程状态</a> <a href="/tags/线程独占/" style="font-size: 10px;">线程独占</a> <a href="/tags/老年代垃圾收集器/" style="font-size: 10px;">老年代垃圾收集器</a> <a href="/tags/语法/" style="font-size: 10px;">语法</a> <a href="/tags/进程和线程/" style="font-size: 10px;">进程和线程</a> <a href="/tags/锁模块/" style="font-size: 20px;">锁模块</a>
     </div>
   </div>
 
@@ -1083,7 +1187,7 @@
     <h3 class="widget-title">Archives</h3>
 
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">25</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">25</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">1</span></li></ul>
     </div>
 
     <div>

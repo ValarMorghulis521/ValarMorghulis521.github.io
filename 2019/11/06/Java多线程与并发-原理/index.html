@@ -24,7 +24,11 @@
 <meta property="og:image" content="http://yoursite.com/2019/11/06/Java多线程与并发-原理/%E9%94%81%E7%9A%84%E5%86%85%E5%AD%98%E8%AF%AD%E4%B9%89.jpg">
 <meta property="og:image" content="http://yoursite.com/2019/11/06/Java多线程与并发-原理/%E5%87%A0%E7%A7%8D%E9%94%81%E7%9A%84%E6%B1%87%E6%80%BB.jpg">
 <meta property="og:image" content="http://yoursite.com/2019/11/06/Java多线程与并发-原理/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8E%E5%B9%B6%E5%8F%91-%E5%8E%9F%E7%90%86%5CJava%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8BJMM.jpg">
-<meta property="og:updated_time" content="2019-11-09T05:38:02.329Z">
+<meta property="og:image" content="http://yoursite.com/2019/11/06/Java多线程与并发-原理/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8E%E5%B9%B6%E5%8F%91-%E5%8E%9F%E7%90%86%5CExecutor%E6%A1%86%E6%9E%B6.jpg">
+<meta property="og:image" content="http://yoursite.com/2019/11/06/Java多线程与并发-原理/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8E%E5%B9%B6%E5%8F%91-%E5%8E%9F%E7%90%86%5CThreadPoolExecutor%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86.jpg">
+<meta property="og:image" content="http://yoursite.com/2019/11/06/Java多线程与并发-原理/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8E%E5%B9%B6%E5%8F%91-%E5%8E%9F%E7%90%86%5C%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E7%8A%B6%E6%80%81%E8%BD%AC%E6%8D%A2%E5%9B%BE.jpg">
+<meta property="og:image" content="http://yoursite.com/2019/11/06/Java多线程与并发-原理/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8E%E5%B9%B6%E5%8F%91-%E5%8E%9F%E7%90%86%5C%E5%B7%A5%E4%BD%9C%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.jpg">
+<meta property="og:updated_time" content="2019-11-10T07:00:07.364Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java多线程与并发-原理">
 <meta name="twitter:description" content="synchronized线程安全问题的主要诱因 存在共享数据（也称临界资源） 存在多条线程共同操作这些共享数据    解决问题的根本方法  同一时刻有且只有一个线程在操作共享数据，其他线程必须等到该线程处理完数据后再对共享数据进行操作 互斥锁的特性 互斥性：即在同一时间只允许一个线程持有某个对象锁，通过这种特性来实现多线程的协调机制，这样在同一时间只有一个线程对需要同步的代码块（复合操作进行访问）">
@@ -287,7 +291,7 @@
 <p><strong>公平锁和非公平锁的例子</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">public class ReentrantLockDemo implements  Runnable&#123;</span><br><span class="line">    private static ReentrantLock lock = new ReentrantLock(true);</span><br><span class="line">    @Override</span><br><span class="line">    public void run()&#123;</span><br><span class="line">        while (true)&#123;</span><br><span class="line">            try&#123;</span><br><span class="line">                lock.lock();</span><br><span class="line">                System.out.println(Thread.currentThread().getName() + &quot; get lock&quot;);</span><br><span class="line">                Thread.sleep(1000);</span><br><span class="line">            &#125; catch (Exception e)&#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125; finally &#123;</span><br><span class="line">                lock.unlock();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        ReentrantLockDemo rtld = new ReentrantLockDemo();</span><br><span class="line">        Thread thread1 = new Thread(rtld);</span><br><span class="line">        Thread thread2 = new Thread(rtld);</span><br><span class="line">        thread1.start();</span><br><span class="line">        thread2.start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h5 id="ReentranLock将锁对象化"><a href="#ReentranLock将锁对象化" class="headerlink" title="ReentranLock将锁对象化"></a>ReentranLock将锁对象化</h5><ul>
+<h5 id="ReentrantLock将锁对象化"><a href="#ReentrantLock将锁对象化" class="headerlink" title="ReentrantLock将锁对象化"></a>ReentrantLock将锁对象化</h5><ul>
 <li>判断是否有线程，或者某个特定线程，在排队等待获取锁</li>
 <li>带超时的获取锁的尝试</li>
 <li>感知有没有成功获取锁<h5 id="将wait-notify-notifyall对象化"><a href="#将wait-notify-notifyall对象化" class="headerlink" title="将wait\notify\notifyall对象化"></a>将wait\notify\notifyall对象化</h5>java.util.concurrent.locks.Condition</li>
@@ -406,6 +410,96 @@
 <li>volatile不会造成线程的阻塞；synchronized可能会造成线程的阻塞</li>
 <li>volatile标记的变量不会被编译器优化；synchronnized标记的变量可以被编译器优化</li>
 </ol>
+<h4 id="CAS-Compare-and-Swap"><a href="#CAS-Compare-and-Swap" class="headerlink" title="CAS(Compare and Swap)"></a>CAS(Compare and Swap)</h4><h5 id="一种高效实现线程安全性的方法"><a href="#一种高效实现线程安全性的方法" class="headerlink" title="一种高效实现线程安全性的方法"></a>一种高效实现线程安全性的方法</h5><ul>
+<li>支持原子更新操作，适用于计算器，序列发生器等场景</li>
+<li>属于乐观锁机制，号称 lock-free</li>
+<li>CAS操作失败时由于发者决定是继续尝试，还是执行别的操作</li>
+</ul>
+<p>synchronized这种独占锁，属于悲观锁，悲观锁始终假定会发生并发冲突。因此会屏蔽一切可能违反数据完整性的操作，除此之外还有乐观锁。它假设不会发生并发冲突，因此只在提交操作时检查是否违反数据完整性，如果提交失败则会进行重试。</p>
+<h5 id="CAS多数情况下对开发者来说是透明的"><a href="#CAS多数情况下对开发者来说是透明的" class="headerlink" title="CAS多数情况下对开发者来说是透明的"></a>CAS多数情况下对开发者来说是透明的</h5><ul>
+<li>J.U.C的atomic包提供了常用的原子性数据类型以及引用、数据等相关原子类型和更新操作工具，是很多线程安全程序的首选</li>
+<li>Unsafe类虽然提供CAS服务，但因能够操纵任意内存地址读写而有隐患</li>
+<li>Java9以后，可以使用Variable Handle API来代替Unsafe</li>
+</ul>
+<h5 id="CAS存在的问题"><a href="#CAS存在的问题" class="headerlink" title="CAS存在的问题"></a>CAS存在的问题</h5><ul>
+<li>若循环时间长，则开销很大</li>
+<li>只能保证一个共享变量的原子操作</li>
+<li>ABA问题：一个线程读到的值为A 进行compare的时候 也是A 不能说这个变量就没被改变过 可能是另外的线程对这个变量进行了改变 然后又改回了A 可以用AtomicStampedReferrence来解决 原理是会给当前结果一个版本号 compare的时候会比对这个版本号是否一样<br>所以CAS适用于计数操作</li>
+</ul>
+<h4 id="Java线程池"><a href="#Java线程池" class="headerlink" title="Java线程池"></a>Java线程池</h4><p>前言：在web开发中，服务器需要接受并处理请求，所以会为一个请求来分配一个线程进行处理，如果并发的请求数量非常多，但每个线程执行的时间很短，这样就会频繁的创建和销毁线程，如此一来会大大降低系统的效率，可能出现服务器在为每个请求创建新线程和销毁线程上花费的时间和消耗的系统资源要比处理实际的用户请求的时间和资源更多。</p>
+<h5 id="利用Executors创建不同的线程池满足不同场景的需求"><a href="#利用Executors创建不同的线程池满足不同场景的需求" class="headerlink" title="利用Executors创建不同的线程池满足不同场景的需求"></a>利用Executors创建不同的线程池满足不同场景的需求</h5><p>位于JUC包下Executor.java</p>
+<ol>
+<li>new FixedThreadPool(int nThreads):指定工作线程数量的线程池</li>
+<li>newCachedThreadPool()处理大量短时间工作任务的线程池<ul>
+<li>试图缓存线程并重用，当无缓存线程可用时，就会创建新的工作线程</li>
+<li>如果线程闲置的时候超过阈值，则会被终止并移出缓存</li>
+<li>系统长时间闲置的时候，不会消耗什么资源</li>
+</ul>
+</li>
+<li>newSingleThreadExecutor()：创建唯一的工作者线程来执行任务，如果线程异常结束，会有另一个线程取代它</li>
+<li>newSingleThreadScheduledExecutor()与newScheduledThreadPool(int corePoolSize)<br>定时或周期性的工作调度，两者区别在于单一工作线程还是多个线程</li>
+<li>newWorkStealingPool()<br>内部会构建ForkJoinPool,利用working-stealing算法，并行地处理任务，不保证处理顺序<ul>
+<li>Fork/Join框架：把大任务分割成若干小任务并行执行，最终汇总每个小任务结果后得到大任务结果的框架</li>
+</ul>
+</li>
+</ol>
+<h5 id="为什么要使用线程池"><a href="#为什么要使用线程池" class="headerlink" title="为什么要使用线程池?"></a>为什么要使用线程池?</h5><ol>
+<li>降低资源消耗：通过重复利用已经创建的线程降低线程创建和销毁造成的消耗</li>
+<li>提高线程的可管理性，线程是稀缺资源，不加以控制会消耗系统资源还会降低系统的稳定性，使用线程池可以进行统一的分配、调优和监控</li>
+</ol>
+<p><strong>Executor框架</strong></p>
+<p><img src="/2019/11/06/Java多线程与并发-原理/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8E%E5%B9%B6%E5%8F%91-%E5%8E%9F%E7%90%86%5CExecutor%E6%A1%86%E6%9E%B6.jpg" alt></p>
+<h5 id="J-U-C的三个Executor接口"><a href="#J-U-C的三个Executor接口" class="headerlink" title="J.U.C的三个Executor接口"></a>J.U.C的三个Executor接口</h5><ul>
+<li><p>Executor:运行新任务的简单接口，将任务提交和任务执行细节解耦</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Thread t = new Thread();</span><br><span class="line">t.start();</span><br><span class="line">//交给execute</span><br><span class="line">Thread t = new Thread();</span><br><span class="line">execute.execute(t);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>ExecutorService:具备管理执行器和任务生命周期的方法，提交任务机制更完善<br>例如，其中submit方法传入了Callable,弥补了Runnable无法返回结果的短板，因此较Executor提供了更加完善的提交机制</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;T&gt; Future&lt;T&gt; submit(Callable&lt;T&gt; task);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>ScheduledExecutorService:扩展了ExecutorService，同时支持Future和定期执行任务</p>
+</li>
+</ul>
+<h5 id="Java-线程池-ThreadPoolExecutor"><a href="#Java-线程池-ThreadPoolExecutor" class="headerlink" title="Java 线程池 ThreadPoolExecutor"></a>Java 线程池 ThreadPoolExecutor</h5><p><img src="/2019/11/06/Java多线程与并发-原理/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8E%E5%B9%B6%E5%8F%91-%E5%8E%9F%E7%90%86%5CThreadPoolExecutor%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86.jpg" alt></p>
+<ol>
+<li>线程池会有一个工作队列WorkQueue接客，存储用户提交的各个任务</li>
+<li>队列接到任务后就会排队交给线程池 即工作线程的集合WorkerThread，该集合需要在运行的过程中管理线程的创建和销毁。线程池的线程被抽象为Worker静态内部类，ThreadPool其实维护的就是一组Worker对象。</li>
+<li>ThreadPoolExecutor的构造函数：<ul>
+<li>corePoolSize:核心线程数量；</li>
+<li>maximumPoolSize:线程不够用的时候能够创建最大线程数</li>
+<li>workQueue:任务等待队列：当任务提交时如果线程池中的线程数量&gt;=corePoolSize的时候，把该任务封装成一个worker对象放入到等待队列中；</li>
+<li>keepAliveTime:线程池允许线程维护的空闲时间；</li>
+<li>threadFactory:创建新线程，默认使用的是Executors.defaultThreadFactory()</li>
+<li>handler:线程池的饱和策略：<br>  AborPolicy:直接抛出异常，这是默认策略；<br>  CallerRUnsPolicy:用调用者所在的线程来执行任务；<br>  DiscardOldersPolicy:丢弃队列中靠最前的任务，并执行当前任务；<br>  DiscardPolicy:直接丢弃任务；<br>  实现RejectedExecutionHander接口的自定义hander</li>
+</ul>
+</li>
+</ol>
+<p><strong>新任务提交execute执行后的判断</strong></p>
+<ul>
+<li>如果运行的线程少于 corePoolSize,则创建新线程来处理任务，即使线程池中的其他线程是空闲的；</li>
+<li>如果线程池中的线程数量大于等于 corePoolSize切小于maximumPoolSize,则只有当workQueue满时才创建新的线程去处理任务；</li>
+<li>如果设置的corePoolSize 和 maximumPoolSize相同，则创建线程池的大小是固定的，这使如果有新任务提交，若workQueue未满，则将请求放入workQueue中，等待有空闲的线程去从workQueue中取任务并处理;</li>
+<li>如果运行的线程数量大于等于maximumPoolSize，这时如果workQueue已经满了，则通过handler所指定的策略来处理任务；</li>
+</ul>
+<p><strong>线程池的状态</strong></p>
+<ul>
+<li>RUNNING:能接受新提交的任务，并且也能处理阻塞队列中的任务</li>
+<li>SHUTDOWN:不再接受新提交的任务，但可以处理存量任务</li>
+<li>STOP:不再接受新提交的任务，也不处理存量任务</li>
+<li>TIDYING:所有的任务都已经终止</li>
+<li>TERMINATED:terminated()方法执行完后进入该状态</li>
+</ul>
+<p><strong>状态转换图</strong><br><img src="/2019/11/06/Java多线程与并发-原理/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8E%E5%B9%B6%E5%8F%91-%E5%8E%9F%E7%90%86%5C%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E7%8A%B6%E6%80%81%E8%BD%AC%E6%8D%A2%E5%9B%BE.jpg" alt="线程池的状态转换图"></p>
+<ol>
+<li>shutdown 会关闭提交任务到队列 但是队列中的任务还是会执行完<ol start="2">
+<li>shutsownnow 会关闭提交任务到队列 且 不会执行队列中的任务 并且正在执行任务的线程也会被interrupt</li>
+</ol>
+</li>
+</ol>
+<p><strong>工作线程的生命周期</strong><br><img src="/2019/11/06/Java多线程与并发-原理/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8E%E5%B9%B6%E5%8F%91-%E5%8E%9F%E7%90%86%5C%E5%B7%A5%E4%BD%9C%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.jpg" alt="工作线程的生命周期"></p>
+<h5 id="线程池的大小如何选定"><a href="#线程池的大小如何选定" class="headerlink" title="线程池的大小如何选定"></a>线程池的大小如何选定</h5><ul>
+<li>CPU密集型：线程数=按照核数或者核数+1设定</li>
+<li>I/0密集型：线程数*(1+平均等待时间/平均工作时间)</li>
+</ul>
 
       
     </div>
@@ -474,7 +568,7 @@
     <div id="toc" class="toc-article">
     <strong class="toc-title">Contents</strong>
     
-      <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#synchronized"><span class="nav-number">1.</span> <span class="nav-text">synchronized</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#线程安全问题的主要诱因"><span class="nav-number">1.1.</span> <span class="nav-text">线程安全问题的主要诱因</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#互斥锁的特性"><span class="nav-number">1.2.</span> <span class="nav-text">互斥锁的特性</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#根据获取的锁的分类：获取对象锁和获取类锁"><span class="nav-number">1.3.</span> <span class="nav-text">根据获取的锁的分类：获取对象锁和获取类锁</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#类锁和对象锁的总结"><span class="nav-number">1.4.</span> <span class="nav-text">类锁和对象锁的总结</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#synchronized底层实现原理"><span class="nav-number">2.</span> <span class="nav-text">synchronized底层实现原理</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#实现synchronized的基础"><span class="nav-number">2.1.</span> <span class="nav-text">实现synchronized的基础</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#对象在内存中的布局"><span class="nav-number">2.2.</span> <span class="nav-text">对象在内存中的布局</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#什么是重入？"><span class="nav-number">2.3.</span> <span class="nav-text">什么是重入？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#为什么会对synchronized嗤之以鼻"><span class="nav-number">2.4.</span> <span class="nav-text">为什么会对synchronized嗤之以鼻</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#自旋锁与自适应自旋锁"><span class="nav-number">2.5.</span> <span class="nav-text">自旋锁与自适应自旋锁</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#锁消除"><span class="nav-number">2.6.</span> <span class="nav-text">锁消除</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#锁粗化"><span class="nav-number">2.7.</span> <span class="nav-text">锁粗化</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#synchronized的四种状态："><span class="nav-number">2.8.</span> <span class="nav-text">synchronized的四种状态：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#锁的内存语义"><span class="nav-number">2.9.</span> <span class="nav-text">锁的内存语义</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#偏向锁、轻量级锁、重量级锁的汇总"><span class="nav-number">2.10.</span> <span class="nav-text">偏向锁、轻量级锁、重量级锁的汇总</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#synchronized和ReentrantLock的区别"><span class="nav-number">3.</span> <span class="nav-text">synchronized和ReentrantLock的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#ReentranLock-再入锁"><span class="nav-number">3.1.</span> <span class="nav-text">ReentranLock(再入锁)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#AbstractQueuedSynchronizer"><span class="nav-number">3.2.</span> <span class="nav-text">AbstractQueuedSynchronizer</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ReentrantLock公平锁的设置"><span class="nav-number">3.3.</span> <span class="nav-text">ReentrantLock公平锁的设置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ReentranLock将锁对象化"><span class="nav-number">3.4.</span> <span class="nav-text">ReentranLock将锁对象化</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#将wait-notify-notifyall对象化"><span class="nav-number">3.5.</span> <span class="nav-text">将wait\notify\notifyall对象化</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#synchronized和ReentrantLock的区别-1"><span class="nav-number">3.6.</span> <span class="nav-text">synchronized和ReentrantLock的区别</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#jmm的内存可见性"><span class="nav-number">4.</span> <span class="nav-text">jmm的内存可见性</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Java内存模型JMM"><span class="nav-number">4.1.</span> <span class="nav-text">Java内存模型JMM</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#JMM如何解决可见性问题"><span class="nav-number">4.2.</span> <span class="nav-text">JMM如何解决可见性问题</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#volatile-JVM提供的轻量级同步机制"><span class="nav-number">4.3.</span> <span class="nav-text">volatile:JVM提供的轻量级同步机制</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#单例的双重检测实现"><span class="nav-number">4.4.</span> <span class="nav-text">单例的双重检测实现</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#volatile和synchronized的区别"><span class="nav-number">4.5.</span> <span class="nav-text">volatile和synchronized的区别</span></a></li></ol></li></ol>
+      <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#synchronized"><span class="nav-number">1.</span> <span class="nav-text">synchronized</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#线程安全问题的主要诱因"><span class="nav-number">1.1.</span> <span class="nav-text">线程安全问题的主要诱因</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#互斥锁的特性"><span class="nav-number">1.2.</span> <span class="nav-text">互斥锁的特性</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#根据获取的锁的分类：获取对象锁和获取类锁"><span class="nav-number">1.3.</span> <span class="nav-text">根据获取的锁的分类：获取对象锁和获取类锁</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#类锁和对象锁的总结"><span class="nav-number">1.4.</span> <span class="nav-text">类锁和对象锁的总结</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#synchronized底层实现原理"><span class="nav-number">2.</span> <span class="nav-text">synchronized底层实现原理</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#实现synchronized的基础"><span class="nav-number">2.1.</span> <span class="nav-text">实现synchronized的基础</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#对象在内存中的布局"><span class="nav-number">2.2.</span> <span class="nav-text">对象在内存中的布局</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#什么是重入？"><span class="nav-number">2.3.</span> <span class="nav-text">什么是重入？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#为什么会对synchronized嗤之以鼻"><span class="nav-number">2.4.</span> <span class="nav-text">为什么会对synchronized嗤之以鼻</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#自旋锁与自适应自旋锁"><span class="nav-number">2.5.</span> <span class="nav-text">自旋锁与自适应自旋锁</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#锁消除"><span class="nav-number">2.6.</span> <span class="nav-text">锁消除</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#锁粗化"><span class="nav-number">2.7.</span> <span class="nav-text">锁粗化</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#synchronized的四种状态："><span class="nav-number">2.8.</span> <span class="nav-text">synchronized的四种状态：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#锁的内存语义"><span class="nav-number">2.9.</span> <span class="nav-text">锁的内存语义</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#偏向锁、轻量级锁、重量级锁的汇总"><span class="nav-number">2.10.</span> <span class="nav-text">偏向锁、轻量级锁、重量级锁的汇总</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#synchronized和ReentrantLock的区别"><span class="nav-number">3.</span> <span class="nav-text">synchronized和ReentrantLock的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#ReentranLock-再入锁"><span class="nav-number">3.1.</span> <span class="nav-text">ReentranLock(再入锁)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#AbstractQueuedSynchronizer"><span class="nav-number">3.2.</span> <span class="nav-text">AbstractQueuedSynchronizer</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ReentrantLock公平锁的设置"><span class="nav-number">3.3.</span> <span class="nav-text">ReentrantLock公平锁的设置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ReentrantLock将锁对象化"><span class="nav-number">3.4.</span> <span class="nav-text">ReentrantLock将锁对象化</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#将wait-notify-notifyall对象化"><span class="nav-number">3.5.</span> <span class="nav-text">将wait\notify\notifyall对象化</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#synchronized和ReentrantLock的区别-1"><span class="nav-number">3.6.</span> <span class="nav-text">synchronized和ReentrantLock的区别</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#jmm的内存可见性"><span class="nav-number">4.</span> <span class="nav-text">jmm的内存可见性</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Java内存模型JMM"><span class="nav-number">4.1.</span> <span class="nav-text">Java内存模型JMM</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#JMM如何解决可见性问题"><span class="nav-number">4.2.</span> <span class="nav-text">JMM如何解决可见性问题</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#volatile-JVM提供的轻量级同步机制"><span class="nav-number">4.3.</span> <span class="nav-text">volatile:JVM提供的轻量级同步机制</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#单例的双重检测实现"><span class="nav-number">4.4.</span> <span class="nav-text">单例的双重检测实现</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#volatile和synchronized的区别"><span class="nav-number">4.5.</span> <span class="nav-text">volatile和synchronized的区别</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CAS-Compare-and-Swap"><span class="nav-number">5.</span> <span class="nav-text">CAS(Compare and Swap)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#一种高效实现线程安全性的方法"><span class="nav-number">5.1.</span> <span class="nav-text">一种高效实现线程安全性的方法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#CAS多数情况下对开发者来说是透明的"><span class="nav-number">5.2.</span> <span class="nav-text">CAS多数情况下对开发者来说是透明的</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#CAS存在的问题"><span class="nav-number">5.3.</span> <span class="nav-text">CAS存在的问题</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Java线程池"><span class="nav-number">6.</span> <span class="nav-text">Java线程池</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#利用Executors创建不同的线程池满足不同场景的需求"><span class="nav-number">6.1.</span> <span class="nav-text">利用Executors创建不同的线程池满足不同场景的需求</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#为什么要使用线程池"><span class="nav-number">6.2.</span> <span class="nav-text">为什么要使用线程池?</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#J-U-C的三个Executor接口"><span class="nav-number">6.3.</span> <span class="nav-text">J.U.C的三个Executor接口</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Java-线程池-ThreadPoolExecutor"><span class="nav-number">6.4.</span> <span class="nav-text">Java 线程池 ThreadPoolExecutor</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#线程池的大小如何选定"><span class="nav-number">6.5.</span> <span class="nav-text">线程池的大小如何选定</span></a></li></ol></li></ol>
     
     </div>
   </aside>

@@ -18,7 +18,7 @@
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/2019/11/08/服务拆分/%E4%B8%8D%E7%94%A8%E8%80%83%E8%99%91%E7%BC%93%E5%AD%98%E5%90%8C%E6%AD%A5.jpg">
 <meta property="og:image" content="http://yoursite.com/2019/11/08/服务拆分/%E7%82%B9%E9%A4%90%E4%B8%9A%E5%8A%A1%E6%8B%86%E5%88%86%E5%88%86%E6%9E%90.jpg">
-<meta property="og:updated_time" content="2019-11-08T12:15:47.589Z">
+<meta property="og:updated_time" content="2019-11-11T15:05:43.295Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="服务拆分">
 <meta name="twitter:description" content="微服务拆分的起点和重点微服务如何拆分： 先明白起点和终点 起点：既有的架构形态（老项目、新项目） 终点：好的架构不是设计出来的，而是进化而来的。进化一直在演进   需要考虑的因素与坚持的原则  不适合用微服务的业务场景 系统中包含很多很多强事务场景的 业务相对稳定，迭代周期长 访问压力不大，可用性要求不高  康威定律：沟通的问题会影响系统的设计 点餐业务服务拆分服务拆分的方法论：&amp;lt;可扩展的艺">
@@ -149,7 +149,10 @@
 	  <time datetime="2019-11-08T09:00:20.000Z" itemprop="datePublished">November 8, 2019</time>
 	</a>
 
-       
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/微服务实战/">微服务实战</a>
+ 
       
 	<span id="busuanzi_container_page_pv">
 	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
@@ -193,11 +196,35 @@
 </ul>
 <p><img src="/2019/11/08/服务拆分/%E4%B8%8D%E7%94%A8%E8%80%83%E8%99%91%E7%BC%93%E5%AD%98%E5%90%8C%E6%AD%A5.jpg" alt>     </p>
 <h5 id="点餐业务拆分分析"><a href="#点餐业务拆分分析" class="headerlink" title="点餐业务拆分分析"></a>点餐业务拆分分析</h5><p><img src="/2019/11/08/服务拆分/%E7%82%B9%E9%A4%90%E4%B8%9A%E5%8A%A1%E6%8B%86%E5%88%86%E5%88%86%E6%9E%90.jpg" alt>  </p>
-<h4 id="商品服务"><a href="#商品服务" class="headerlink" title="商品服务"></a>商品服务</h4><h4 id="订单服务"><a href="#订单服务" class="headerlink" title="订单服务"></a>订单服务</h4>
+<h5 id="服务拆分的方法论：-lt-可扩展的艺术-gt"><a href="#服务拆分的方法论：-lt-可扩展的艺术-gt" class="headerlink" title="服务拆分的方法论：&lt;可扩展的艺术&gt;"></a>服务拆分的方法论：&lt;可扩展的艺术&gt;</h5><p>  扩展立方模型：  </p>
+<ul>
+<li>x轴：水平复制，通过副本扩展，将应用程序水平复制，通过负载均衡运行程序的多个完全一样的副本方式，来实现应用程序的伸缩性，提高应用程序的容量和可用度。</li>
+<li>Z轴：数据分区，每个服务器负责一个数据子集。每个服务器运行的代码是一样的。</li>
+<li>Y轴：功能解耦，将不同职责的模块，分成不同的服务</li>
+</ul>
+<h4 id="业务流程"><a href="#业务流程" class="headerlink" title="业务流程"></a>业务流程</h4><ol>
+<li><p>开发商品服务和订单服务作为服务注册到 注册中心Eureka Server</p>
+</li>
+<li><p>每个服务的开发流程大致 连接数据库-&gt;创建所需对象-&gt;dao层-&gt;分析controller中方法的业务流程-&gt;写出需要的service方法-&gt;写controller ,注意每个方法写完后都及时单元测试</p>
+</li>
+<li><p>返回给前端的数据自定义VO对象</p>
+</li>
+<li><p>前端请求过来的数据使用form对象封装，controller传给service的数据使用DTO封装</p>
+<h4 id="如何拆数据"><a href="#如何拆数据" class="headerlink" title="如何拆数据"></a>如何拆数据</h4><ol>
+<li>每个微服务都有单独的数据存储，达到松耦合，其它服务避免访问别的服务的数据库。一个服务的数据，只能通过这个服务提供的api来访问，服务之间都是有隔离的。</li>
+<li>依据服务特点选择不同结构的数据库类型。依据功能特点选择合适的数据库。mongodb（前端服务，对事物要求低）、Elasticsearch(ES搜索)、mysql</li>
+<li>难点在确定边界</li>
+</ol>
+</li>
+</ol>
+
       
     </div>
     <footer class="entry-meta entry-footer">
       
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/微服务实战/">微服务实战</a>
+
       
       
         
@@ -258,7 +285,7 @@
     <div id="toc" class="toc-article">
     <strong class="toc-title">Contents</strong>
     
-      <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#微服务拆分的起点和重点"><span class="nav-number">1.</span> <span class="nav-text">微服务拆分的起点和重点</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#微服务如何拆分："><span class="nav-number">1.1.</span> <span class="nav-text">微服务如何拆分：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#不适合用微服务的业务场景"><span class="nav-number">1.2.</span> <span class="nav-text">不适合用微服务的业务场景</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#点餐业务服务拆分"><span class="nav-number">2.</span> <span class="nav-text">点餐业务服务拆分</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#扩展立方模型"><span class="nav-number">2.1.</span> <span class="nav-text">扩展立方模型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#如何拆分功能"><span class="nav-number">2.2.</span> <span class="nav-text">如何拆分功能</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#服务和数据的关系"><span class="nav-number">2.3.</span> <span class="nav-text">服务和数据的关系</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#点餐业务拆分分析"><span class="nav-number">2.4.</span> <span class="nav-text">点餐业务拆分分析</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#商品服务"><span class="nav-number">3.</span> <span class="nav-text">商品服务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#订单服务"><span class="nav-number">4.</span> <span class="nav-text">订单服务</span></a></li></ol>
+      <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#微服务拆分的起点和重点"><span class="nav-number">1.</span> <span class="nav-text">微服务拆分的起点和重点</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#微服务如何拆分："><span class="nav-number">1.1.</span> <span class="nav-text">微服务如何拆分：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#不适合用微服务的业务场景"><span class="nav-number">1.2.</span> <span class="nav-text">不适合用微服务的业务场景</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#点餐业务服务拆分"><span class="nav-number">2.</span> <span class="nav-text">点餐业务服务拆分</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#扩展立方模型"><span class="nav-number">2.1.</span> <span class="nav-text">扩展立方模型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#如何拆分功能"><span class="nav-number">2.2.</span> <span class="nav-text">如何拆分功能</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#服务和数据的关系"><span class="nav-number">2.3.</span> <span class="nav-text">服务和数据的关系</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#点餐业务拆分分析"><span class="nav-number">2.4.</span> <span class="nav-text">点餐业务拆分分析</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#服务拆分的方法论：-lt-可扩展的艺术-gt"><span class="nav-number">2.5.</span> <span class="nav-text">服务拆分的方法论：&lt;可扩展的艺术&gt;</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#业务流程"><span class="nav-number">3.</span> <span class="nav-text">业务流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何拆数据"><span class="nav-number">4.</span> <span class="nav-text">如何拆数据</span></a></li></ol>
     
     </div>
   </aside>

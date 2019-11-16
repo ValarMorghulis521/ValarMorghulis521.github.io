@@ -6,23 +6,26 @@
   <title>消息和异步 | Contunued Story</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta name="keywords" content="rabbitmq">
+  <meta name="keywords" content="RabbitMQSpring Cliud Stream">
   
   
   
   
-  <meta name="description" content="rabbitmq在docker下的安装 下载镜像地址 1docker pull hub.c.163.com/library/rabbitmq:3.7.3-management  安装启动rabbitmq 1docker run -d --hostname my-rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.7.3-management    156">
-<meta name="keywords" content="rabbitmq">
+  <meta name="description" content="异步和消息什么是异步客户端请求不会阻塞进程，服务端的响应可以是非即时的 异步的常见形态 通知 请求/异步响应 消息   微服务和容器是天生一对 通过docker的镜像部署超快速实现水平扩展副本克隆 docker的隔离性实现了不同的应用服务打包成不同的MQ应用场景   异步处理：用户注册之后需要发短信，加积分；用户注册成功后通过异步消息让短信服务和积分服务去做他们的事 流量削峰：秒杀活动会因为流量暴">
+<meta name="keywords" content="RabbitMQ,Spring Cliud Stream">
 <meta property="og:type" content="article">
 <meta property="og:title" content="消息和异步">
 <meta property="og:url" content="http://yoursite.com/2019/11/13/消息和异步/index.html">
 <meta property="og:site_name" content="Contunued Story">
-<meta property="og:description" content="rabbitmq在docker下的安装 下载镜像地址 1docker pull hub.c.163.com/library/rabbitmq:3.7.3-management  安装启动rabbitmq 1docker run -d --hostname my-rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.7.3-management    156">
+<meta property="og:description" content="异步和消息什么是异步客户端请求不会阻塞进程，服务端的响应可以是非即时的 异步的常见形态 通知 请求/异步响应 消息   微服务和容器是天生一对 通过docker的镜像部署超快速实现水平扩展副本克隆 docker的隔离性实现了不同的应用服务打包成不同的MQ应用场景   异步处理：用户注册之后需要发短信，加积分；用户注册成功后通过异步消息让短信服务和积分服务去做他们的事 流量削峰：秒杀活动会因为流量暴">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-11-13T10:24:33.983Z">
+<meta property="og:image" content="http://yoursite.com/2019/11/13/消息和异步/Stream.jpg">
+<meta property="og:image" content="http://yoursite.com/2019/11/13/消息和异步/%E5%95%86%E5%93%81%E5%92%8C%E8%AE%A2%E5%8D%95%E4%BD%BF%E7%94%A8MQ.png">
+<meta property="og:updated_time" content="2019-11-16T08:39:39.011Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="消息和异步">
-<meta name="twitter:description" content="rabbitmq在docker下的安装 下载镜像地址 1docker pull hub.c.163.com/library/rabbitmq:3.7.3-management  安装启动rabbitmq 1docker run -d --hostname my-rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.7.3-management    156">
+<meta name="twitter:description" content="异步和消息什么是异步客户端请求不会阻塞进程，服务端的响应可以是非即时的 异步的常见形态 通知 请求/异步响应 消息   微服务和容器是天生一对 通过docker的镜像部署超快速实现水平扩展副本克隆 docker的隔离性实现了不同的应用服务打包成不同的MQ应用场景   异步处理：用户注册之后需要发短信，加积分；用户注册成功后通过异步消息让短信服务和积分服务去做他们的事 流量削峰：秒杀活动会因为流量暴">
+<meta name="twitter:image" content="http://yoursite.com/2019/11/13/消息和异步/Stream.jpg">
   
     <link rel="alternate" href="/atom.xml" title="Contunued Story" type="application/atom+xml">
   
@@ -161,11 +164,28 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h4 id="rabbitmq在docker下的安装"><a href="#rabbitmq在docker下的安装" class="headerlink" title="rabbitmq在docker下的安装"></a>rabbitmq在docker下的安装</h4><ol>
+        <h2 id="异步和消息"><a href="#异步和消息" class="headerlink" title="异步和消息"></a>异步和消息</h2><h3 id="什么是异步"><a href="#什么是异步" class="headerlink" title="什么是异步"></a>什么是异步</h3><p>客户端请求不会阻塞进程，服务端的响应可以是非即时的</p>
+<h3 id="异步的常见形态"><a href="#异步的常见形态" class="headerlink" title="异步的常见形态"></a>异步的常见形态</h3><ul>
+<li>通知</li>
+<li>请求/异步响应</li>
+<li>消息 </li>
+</ul>
+<h3 id="微服务和容器是天生一对"><a href="#微服务和容器是天生一对" class="headerlink" title="微服务和容器是天生一对"></a>微服务和容器是天生一对</h3><ol>
+<li>通过docker的镜像部署超快速实现水平扩展副本克隆</li>
+<li>docker的隔离性实现了不同的应用服务打包成不同的<h3 id="MQ应用场景"><a href="#MQ应用场景" class="headerlink" title="MQ应用场景"></a>MQ应用场景</h3></li>
+</ol>
+<ul>
+<li>异步处理：用户注册之后需要发短信，加积分；用户注册成功后通过异步消息让短信服务和积分服务去做他们的事</li>
+<li>流量削峰：秒杀活动会因为流量暴增，在应用前端加入消息队列，控制活动的人数，消息队列超过最大长度，直接抛弃请求跳转到错误页面。</li>
+<li>日志处理:kafuka 用于日志处理，通过日志采集定时写入kafuka队列，然后kafuka消息队列对日志进行接收储存转发</li>
+<li>引用解耦：如用户下单后订单服务通知商品服务</li>
+</ul>
+<hr>
+<h2 id="RabbitMQ"><a href="#RabbitMQ" class="headerlink" title="RabbitMQ"></a>RabbitMQ</h2><h2 id="RabbitMQ在docker下的安装"><a href="#RabbitMQ在docker下的安装" class="headerlink" title="RabbitMQ在docker下的安装"></a>RabbitMQ在docker下的安装</h2><ol>
 <li><p>下载镜像地址</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull hub.c.163.com/library/rabbitmq:3.7.3-management</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>安装启动rabbitmq</p>
+<li><p>安装启动RabbitMQ</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --hostname my-rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.7.3-management</span><br></pre></td></tr></table></figure>
 
 </li>
@@ -175,9 +195,100 @@
 <li>访问，因为是安装在了虚拟机上，所以本机访问虚拟机的地址 <a href="http://192.168.1.105:15672" target="_blank" rel="noopener">http://192.168.1.105:15672</a> </li>
 <li>ok!默认账号密码 guest，成功访问！</li>
 </ol>
-<h5 id="微服务和容器是天生一对"><a href="#微服务和容器是天生一对" class="headerlink" title="微服务和容器是天生一对"></a>微服务和容器是天生一对</h5><ol>
-<li>通过docker的镜像部署超快速实现水平扩展副本克隆</li>
-<li>docker的隔离性实现了不同的应用服务打包成不同的docker</li>
+<h2 id="RabbitMQ的基本使用"><a href="#RabbitMQ的基本使用" class="headerlink" title="RabbitMQ的基本使用"></a>RabbitMQ的基本使用</h2><ol>
+<li><p>添加RabbitMQ的pom.xml的依赖配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-starter-amqp&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在yml文件中新增连接RabbitMQ的配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">spring:</span><br><span class="line">  rabbitmq:</span><br><span class="line">    host: </span><br><span class="line">    port: </span><br><span class="line">    username: </span><br><span class="line">    password:</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建一个接收端的类用来接收mq消息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 接收mq消息</span><br><span class="line"> */</span><br><span class="line">@Slf4j</span><br><span class="line">@Component</span><br><span class="line">public class MaReceiver &#123;</span><br><span class="line">//  1. @RabbitListener(queues = &quot;myQueue&quot;)</span><br><span class="line">//  2. 自动创建队列  @RabbitListener(queuesToDeclare = @Queue(&quot;myQueue&quot;))</span><br><span class="line">//  3.自动创建，Exchange和Queue绑定</span><br><span class="line">    @RabbitListener(bindings = @QueueBinding(</span><br><span class="line">            value = @Queue(&quot;myQueue&quot;),</span><br><span class="line">            exchange =@Exchange(&quot;myExchange&quot;)</span><br><span class="line">    ))</span><br><span class="line">    public void process(String message)&#123;</span><br><span class="line">        log.info(&quot;MqReceiver:&#123;&#125;&quot;,message);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 数码供应商服务接收消息</span><br><span class="line">     * @param message</span><br><span class="line">     */</span><br><span class="line">    @RabbitListener(bindings = @QueueBinding(</span><br><span class="line">            exchange =@Exchange(&quot;myOrder&quot;),</span><br><span class="line">            key = &quot;computer&quot;,</span><br><span class="line">            value = @Queue(&quot;computerOrder&quot;)</span><br><span class="line">    ))</span><br><span class="line">    public void processComputer(String message)&#123;</span><br><span class="line">        log.info(&quot;computer MqReceiver:&#123;&#125;&quot;,message);</span><br><span class="line">    &#125;</span><br><span class="line">    /**</span><br><span class="line">     * 水果供应商服务接收消息</span><br><span class="line">     * @param message</span><br><span class="line">     */</span><br><span class="line">    @RabbitListener(bindings = @QueueBinding(</span><br><span class="line">            exchange =@Exchange(&quot;myOrder&quot;),</span><br><span class="line">            key = &quot;fruit&quot;,</span><br><span class="line">            value = @Queue(&quot;fruitOrder&quot;)</span><br><span class="line">    ))</span><br><span class="line">    public void processFruit(String message)&#123;</span><br><span class="line">        log.info(&quot;fruit MqReceiver:&#123;&#125;&quot;,message);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>创建queue的两种方式 ：  </p>
+<ul>
+<li>@RabbitListener(queues = “myQueue”) 并在RabbitMQ中手动创建一个myQueue的队列</li>
+<li>@RabbitListener(queuesToDeclare = @Queue(“myQueue”)) 可自动创建</li>
+<li>key是分组的意思</li>
+</ul>
+<ol start="4">
+<li>写一个发送方 用到amqpTemplate.convertAndSend()<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 发送mq消息测试</span><br><span class="line"> */</span><br><span class="line">/**</span><br><span class="line"> * 发送mq消息测试</span><br><span class="line"> */</span><br><span class="line">@Component</span><br><span class="line">public class MqSenderTest extends OrderApplicationTests &#123;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    private AmqpTemplate amqpTemplate;</span><br><span class="line">    @Test</span><br><span class="line">    public void send()&#123;</span><br><span class="line">        amqpTemplate.convertAndSend(&quot;myQueue&quot;,&quot;now&quot;+ new Date());</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    //只会发送给 key=computer的监听</span><br><span class="line">    @Test</span><br><span class="line">    public void sendOrder()&#123;</span><br><span class="line">        amqpTemplate.convertAndSend(&quot;myOrder&quot;,&quot;computer&quot;,&quot;now&quot;+ new Date());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<hr>
+<h2 id="Spring-Cloud-Stream"><a href="#Spring-Cloud-Stream" class="headerlink" title="Spring Cloud Stream"></a>Spring Cloud Stream</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>SpringCloud Stream提供更方便的消息处理，达到代码层面对消息中间件的无感知的效果，支持RabbitMQ和ActiveMQ。只需定义Input和Output，无需过多考虑rabbitmq的Exchange和RoutingKey</p>
+<p><img src="/2019/11/13/消息和异步/Stream.jpg" alt></p>
+<h3 id="Spring-Cloud-Stream的基本使用"><a href="#Spring-Cloud-Stream的基本使用" class="headerlink" title="Spring Cloud Stream的基本使用"></a>Spring Cloud Stream的基本使用</h3><ol>
+<li><p>添加Stream的pom.xml的依赖配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-cloud-starter-stream-rabbit&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在yml中配置RabbitMQ的连接地址</p>
+</li>
+<li><p>先定义一个接口  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public interface StreamClient &#123;</span><br><span class="line">    String INPUT = &quot;myMessage&quot;;</span><br><span class="line">    @Input(StreamClient.INPUT)</span><br><span class="line">    SubscribableChannel input();</span><br><span class="line">    @Output(StreamClient.INPUT)</span><br><span class="line">    MessageChannel output();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>定义一个接收端</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@Component</span><br><span class="line">@EnableBinding(StreamClient.class)</span><br><span class="line">@Slf4j</span><br><span class="line">public class StreamReceiver &#123;</span><br><span class="line">    @StreamListener(StreamClient.INPUT)</span><br><span class="line">    public void process(Object message)&#123;</span><br><span class="line">        log.info(&quot;StreamReceiver:&#123;&#125;&quot;,message);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>定义一个发送端</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">@RestController</span><br><span class="line">public class SendMessageController &#123;</span><br><span class="line">    @Autowired</span><br><span class="line">    private StreamClient streamClient;</span><br><span class="line">    @GetMapping(&quot;/sendMessage&quot;)</span><br><span class="line">    public void process()&#123;</span><br><span class="line">        String message = &quot;now&quot;+ new Date();</span><br><span class="line">        streamClient.output().send(MessageBuilder.withPayload(message).build());</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置分组：一个实例发送消息只让一个实例收到消息<br>group 表示分组；content-type表示传送的格式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">stream:</span><br><span class="line">  bindings:</span><br><span class="line">    myMessage:</span><br><span class="line">      group: order</span><br><span class="line">      content-type: application/json</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如何在收到消息后回发消息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">@StreamListener(StreamClient.INPUT)</span><br><span class="line">@SendTo(StreamClient.INPUT2)</span><br><span class="line">public String process(Object message)&#123;</span><br><span class="line">    log.info(&quot;StreamReceiver:&#123;&#125;&quot;,message);</span><br><span class="line">    //使用SendTo 注解 回发mq消息给input2</span><br><span class="line">    return &quot;received.&quot;;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@StreamListener(StreamClient.INPUT2)</span><br><span class="line">public void process2(String message)&#123;</span><br><span class="line">    log.info(&quot;StreamReceiver2:&#123;&#125;&quot;,message);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<hr>
+<h2 id="商品和订单服务中使用MQ"><a href="#商品和订单服务中使用MQ" class="headerlink" title="商品和订单服务中使用MQ"></a>商品和订单服务中使用MQ</h2><h3 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h3><p><img src="/2019/11/13/消息和异步/%E5%95%86%E5%93%81%E5%92%8C%E8%AE%A2%E5%8D%95%E4%BD%BF%E7%94%A8MQ.png" alt></p>
+<ol>
+<li><p>商品服务接入配置中心添加依赖</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">    &lt;dependency&gt;</span><br><span class="line">        &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;spring-cloud-config-client&lt;/artifactId&gt;</span><br><span class="line">    &lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;spring-boot-starter-amqp&lt;/artifactId&gt;</span><br><span class="line">    &lt;/dependency&gt;</span><br><span class="line">&lt;/dependencies&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在yml文件中新增连接RabbitMQ的配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">spring:</span><br><span class="line">  rabbitmq:</span><br><span class="line">    host: </span><br><span class="line">    port: </span><br><span class="line">    username: </span><br><span class="line">    password:</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装redis和RedisDesktopManager ，引入依赖</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-starter-data-redis&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>在订单服务中配置redis的信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">redis:</span><br><span class="line">   host: 192.168.1.105</span><br><span class="line">   port: 6379</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li><p>在order服务中message包下新建ProductInfoReceiver 从mq中接受商品信息，把商品id和库存 放入redis中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">@Component</span><br><span class="line">@Slf4j</span><br><span class="line">public class ProductInfoReceiver &#123;</span><br><span class="line"></span><br><span class="line">    private static final String PRODUCT_STOCK_TEMPLATE = &quot;product_stock_%s&quot;;</span><br><span class="line">    @Autowired</span><br><span class="line">    private StringRedisTemplate stringRedisTemplate;</span><br><span class="line"></span><br><span class="line">    @RabbitListener(queuesToDeclare = @Queue(&quot;productInfo&quot;))</span><br><span class="line">    public void process(String message)&#123;</span><br><span class="line">        //message =&gt; ProductInfoOutput</span><br><span class="line">        //ProductInfoOutput productInfoOutput = (ProductInfoOutput)JsonUtil.fromJson(message, ProductInfoOutput.class);</span><br><span class="line">        List&lt;ProductInfoOutput&gt; productInfoOutputList = ( List&lt;ProductInfoOutput&gt;)JsonUtil.fromJson(message,</span><br><span class="line">                new TypeReference&lt; List&lt;ProductInfoOutput&gt;&gt;()&#123;&#125;);</span><br><span class="line"></span><br><span class="line">        log.info(&quot;从&#123;&#125;接受到消息:&#123;&#125;&quot;,&quot;productInfo&quot;,productInfoOutputList);</span><br><span class="line">        for(ProductInfoOutput productInfoOutput : productInfoOutputList)&#123;</span><br><span class="line">            //储存到redis中</span><br><span class="line">            stringRedisTemplate.opsForValue().set(String.format(PRODUCT_STOCK_TEMPLATE,productInfoOutput.getProductId()),</span><br><span class="line">                    String.valueOf(productInfoOutput.getProductStock()));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在product服务中改造减库存的方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">   public void decreaseStock(List&lt;DecreaseStockInput&gt; decreaseStockInputList) &#123;</span><br><span class="line">       List&lt;ProductInfo&gt; productInfoList = decreaseStockProcess(decreaseStockInputList);</span><br><span class="line">       //扣完库存发送mq消息</span><br><span class="line">       List&lt;ProductInfoOutput&gt; productInfoOutputList = productInfoList.stream().map(e -&gt;&#123;</span><br><span class="line">           ProductInfoOutput output = new ProductInfoOutput();</span><br><span class="line">           BeanUtils.copyProperties(e,output);</span><br><span class="line">           return output;</span><br><span class="line">       &#125;).collect(Collectors.toList());</span><br><span class="line">       amqpTemplate.convertAndSend(&quot;productInfo&quot;, JsonUtil.toJson(productInfoOutputList));</span><br><span class="line">   &#125;</span><br><span class="line">   @Transactional</span><br><span class="line">   public List&lt;ProductInfo&gt; decreaseStockProcess(List&lt;DecreaseStockInput&gt; decreaseStockInputList) &#123;</span><br><span class="line">       List&lt;ProductInfo&gt; productInfoList = new ArrayList&lt;&gt;();</span><br><span class="line">       for (DecreaseStockInput decreaseStockInput : decreaseStockInputList) &#123;</span><br><span class="line">           Optional&lt;ProductInfo&gt; productInfoOptional = productInfoRepository.findById(decreaseStockInput.getProductId());</span><br><span class="line">           //判断商品是否存在</span><br><span class="line">           if (!productInfoOptional.isPresent()) &#123;</span><br><span class="line">               throw new ProductException(ResultEnum.PRODUCT_NOT_EXIST);</span><br><span class="line">           &#125;</span><br><span class="line">           ProductInfo productInfo = productInfoOptional.get();</span><br><span class="line">           //库存是否足够</span><br><span class="line">           Integer result = productInfo.getProductStock() - decreaseStockInput.getProductQuantity();</span><br><span class="line">           if (result &lt; 0) &#123;</span><br><span class="line">               throw new ProductException(ResultEnum.PRODUCT_STOCK_ERROR);</span><br><span class="line">           &#125;</span><br><span class="line">           productInfo.setProductStock(result);</span><br><span class="line">           productInfoRepository.save(productInfo);</span><br><span class="line">           productInfoList.add(productInfo);</span><br><span class="line">       &#125;</span><br><span class="line">       return productInfoList;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="异步扣库存分析"><a href="#异步扣库存分析" class="headerlink" title="异步扣库存分析"></a>异步扣库存分析</h2><h3 id="原始流程"><a href="#原始流程" class="headerlink" title="原始流程"></a>原始流程</h3><ol>
+<li>查询商品信息（调用商品服务）</li>
+<li>计算总价（生成订单详情）</li>
+<li>商品服务扣库存（调用商品服务）</li>
+<li>订单入库（生成订单）<h3 id="改造成基于消息队列的异步事件驱动"><a href="#改造成基于消息队列的异步事件驱动" class="headerlink" title="改造成基于消息队列的异步事件驱动"></a>改造成基于消息队列的异步事件驱动</h3><h4 id="如果把订单入库这一步改造成异步的"><a href="#如果把订单入库这一步改造成异步的" class="headerlink" title="如果把订单入库这一步改造成异步的"></a>如果把订单入库这一步改造成异步的</h4>通过消息队列异步创建订单；如果第四步异步下单创失败了，解决办法 可以尝试重试生成订单，不处理成功mq的消息就一直存在<h4 id="异步扣库存分析-1"><a href="#异步扣库存分析-1" class="headerlink" title="异步扣库存分析"></a>异步扣库存分析</h4>如果商品服务扣库存也变成异步。如果订单服务生成订单成功，而商品扣库存失败又该如何回滚？<h5 id="方案一"><a href="#方案一" class="headerlink" title="方案一"></a>方案一</h5></li>
+</ol>
+<ul>
+<li>订单创建成功后，订单的状态是排队中，发布一个order_create事件到mq上，由mq负责转发给订阅该消息的服务，如果商品服务收到创建订单消息后执行扣库存操作。</li>
+<li>这里扣库存由于某些原因可能扣失败，商品服务会发送一个扣库存的消息给队列，消息里面的内容是扣库存的结果。订单服务来订阅扣库存的结果，接收到该消息后，如果扣库存成功将订单的状态改为已确认即下单成功，如果扣库存失败则把订单取消<ul>
+<li>以上需要可靠的消息投递。订单服务检测商品服务扣失败的情况，然后进行补偿</li>
+<li>在这种情况下，用户体验的变化。用户是不能立刻马上知道下单的结果。像12306买票会得到排队中的结果。可以承受住很大的并发请求。适合秒杀类的业务场景<h5 id="方案二"><a href="#方案二" class="headerlink" title="方案二"></a>方案二</h5></li>
+</ul>
+</li>
+<li>也可以订单创建后直接返回结果，发送创建订单的消息，让商品服务与订单服务订阅该消息并异步执行自己的操作，而创建订单写入数据库采用异步实现。但前提是若商品服务扣库存或订单服务下订单有一方操作失败要回滚，则异步写入数据库要实现相应错误处理或补偿机制】</li>
+</ul>
+<h4 id="异步扣库存分析汇总"><a href="#异步扣库存分析汇总" class="headerlink" title="异步扣库存分析汇总"></a>异步扣库存分析汇总</h4><ol>
+<li>订单服务实现复制一份库存副本，保存到Redis中</li>
+<li>收到请求，Redis判断是否库存充足，减掉Redis中库存</li>
+<li>订单服务创建订单写入数据库，并发送消息</li>
 </ol>
 
       
@@ -189,7 +300,7 @@
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rabbitmq/">rabbitmq</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RabbitMQ/">RabbitMQ</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Spring-Cliud-Stream/">Spring Cliud Stream</a></li></ul>
 
       
         
@@ -250,7 +361,7 @@
     <div id="toc" class="toc-article">
     <strong class="toc-title">Contents</strong>
     
-      <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#rabbitmq在docker下的安装"><span class="nav-number">1.</span> <span class="nav-text">rabbitmq在docker下的安装</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#微服务和容器是天生一对"><span class="nav-number">1.1.</span> <span class="nav-text">微服务和容器是天生一对</span></a></li></ol></li></ol>
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#异步和消息"><span class="nav-number">1.</span> <span class="nav-text">异步和消息</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是异步"><span class="nav-number">1.1.</span> <span class="nav-text">什么是异步</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#异步的常见形态"><span class="nav-number">1.2.</span> <span class="nav-text">异步的常见形态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#微服务和容器是天生一对"><span class="nav-number">1.3.</span> <span class="nav-text">微服务和容器是天生一对</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MQ应用场景"><span class="nav-number">1.4.</span> <span class="nav-text">MQ应用场景</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RabbitMQ"><span class="nav-number">2.</span> <span class="nav-text">RabbitMQ</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RabbitMQ在docker下的安装"><span class="nav-number">3.</span> <span class="nav-text">RabbitMQ在docker下的安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RabbitMQ的基本使用"><span class="nav-number">4.</span> <span class="nav-text">RabbitMQ的基本使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-Cloud-Stream"><span class="nav-number">5.</span> <span class="nav-text">Spring Cloud Stream</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定义"><span class="nav-number">5.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-Cloud-Stream的基本使用"><span class="nav-number">5.2.</span> <span class="nav-text">Spring Cloud Stream的基本使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#商品和订单服务中使用MQ"><span class="nav-number">6.</span> <span class="nav-text">商品和订单服务中使用MQ</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#流程图"><span class="nav-number">6.1.</span> <span class="nav-text">流程图</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#异步扣库存分析"><span class="nav-number">7.</span> <span class="nav-text">异步扣库存分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#原始流程"><span class="nav-number">7.1.</span> <span class="nav-text">原始流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#改造成基于消息队列的异步事件驱动"><span class="nav-number">7.2.</span> <span class="nav-text">改造成基于消息队列的异步事件驱动</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#如果把订单入库这一步改造成异步的"><span class="nav-number">7.2.1.</span> <span class="nav-text">如果把订单入库这一步改造成异步的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#异步扣库存分析-1"><span class="nav-number">7.2.2.</span> <span class="nav-text">异步扣库存分析</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#方案一"><span class="nav-number">7.2.2.1.</span> <span class="nav-text">方案一</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#方案二"><span class="nav-number">7.2.2.2.</span> <span class="nav-text">方案二</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#异步扣库存分析汇总"><span class="nav-number">7.2.3.</span> <span class="nav-text">异步扣库存分析汇总</span></a></li></ol></li></ol></li></ol>
     
     </div>
   </aside>

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title><![CDATA[docker的使用]]></title>
+    <title><![CDATA[Docker的使用]]></title>
     <url>%2F2019%2F11%2F13%2Fdocker%E7%9A%84%E4%BD%BF%E7%94%A8%2F</url>
-    <content type="text"><![CDATA[什么是docker? 从系统环境开始，自底至上打包应用 轻量级，对资源的有效该和管理 使用imageDocker思想 集装箱 标准化： 运输方式 存储方式 API接口 隔离:类似于虚拟机，更加轻量Docker解决了什么问题：让快速扩展，弹性伸缩变得简单 docker核心技术 docker镜像，实质上就是一系列文件（包括应用程序的文件、应用的运行环境的文件），使用了基于分层的联合文件系统实现了镜像存储 docker容器，本质就是一个进程；可以想象成一个虚拟机，但是是分层的，最上一层可读可写。通过一个镜像可以生成多个容器，独立运行； docker仓库，构建镜像在其他服务器上去运行我的程序。先把我的镜像传到仓库，再从其他服务器拉取，类似于起到中转作用 docker 安装 保证apt-get是最新版本 1apt-get update 安装docker 1apt-get install -y docker.io 查看docker版本 1docker version 如何创建一个docker镜像 拉取镜像 1docker pull [OPTIONS] NAME[:TAG] 查看本机都有哪些镜像 1docker images [OPTIONS] [REPOSITORY][:TAG] 后台运行镜像 1docker run NAME -d Docker运行Nginx 去网易云镜像中心下载nginx镜像 https://c.163yun.com/hub或者docker的nginx镜像仓库：https://hub.docker.com/ 1docker pull hub.c.163.com/library/nginx:latest 查看正在找运行的容器 1docker ps 进入容器内部 12docker exec [OPTION] CONTAINER COMMAND [ARG...]docker exec -it nginx bash 退出容器 1exit 停止容器 1docker stop 进程名 Docker网络网络类型 Bridge 桥接模式，独立ip，网络隔离 Host 宿主模式，跟主机一个网络 None 把nginx的80端口映射到主机的8080端口 1docker run -d -p 8080:80 nginx 制作自己的景象 写好Dockerfile 12345from hub.c.163.com/library/tomcatMAINTAINER sunchenming ***@163.comCOPY jpress.war /usr/local/tomcat/webapps 构建镜像，docker build 1docker build -t jpress:latest]]></content>
+    <content type="text"><![CDATA[什么是docker? 从系统环境开始，自底至上打包应用 轻量级，对资源的有效该和管理 使用imageDocker思想 集装箱 标准化： 运输方式 存储方式 API接口 隔离:类似于虚拟机，更加轻量Docker解决了什么问题：让快速扩展，弹性伸缩变得简单 Docker核心技术 Docker镜像，实质上就是一系列文件（包括应用程序的文件、应用的运行环境的文件），使用了基于分层的联合文件系统实现了镜像存储 Docker容器，本质就是一个进程；可以想象成一个虚拟机，但是是分层的，最上一层可读可写。通过一个镜像可以生成多个容器，独立运行； Docker仓库，构建镜像在其他服务器上去运行我的程序。先把我的镜像传到仓库，再从其他服务器拉取，类似于起到中转作用 Docker 安装 保证apt-get是最新版本 1apt-get update 安装Docker 1apt-get install -y docker.io 查看Docker版本 1docker version 如何创建一个Docker镜像 拉取镜像 1docker pull [OPTIONS] NAME[:TAG] 查看本机都有哪些镜像 1docker images [OPTIONS] [REPOSITORY][:TAG] 后台运行镜像 1docker run NAME -d Docker运行Nginx 去网易云镜像中心下载nginx镜像 https://c.163yun.com/hub或者Docker的nginx镜像仓库：https://hub.docker.com/ 1docker pull hub.c.163.com/library/nginx:latest 查看正在找运行的容器 1docker ps 进入容器内部 12docker exec [OPTION] CONTAINER COMMAND [ARG...]docker exec -it nginx bash 退出容器 1exit 停止容器 1docker stop 进程名 Docker网络网络类型 Bridge 桥接模式，独立ip，网络隔离 Host 宿主模式，跟主机一个网络 None 把nginx的80端口映射到主机的8080端口 1docker run -d -p 8080:80 nginx 制作自己的景象 写好Dockerfile 12345from hub.c.163.com/library/tomcatMAINTAINER sunchenming ***@163.comCOPY jpress.war /usr/local/tomcat/webapps 构建镜像，docker build 1docker build -t jpress:latest]]></content>
       <categories>
-        <category>docker</category>
+        <category>Docker</category>
       </categories>
       <tags>
-        <tag>docker</tag>
+        <tag>Docker</tag>
       </tags>
   </entry>
   <entry>

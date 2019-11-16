@@ -3,26 +3,26 @@
 <head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="utf-8">
   
-  <title>docker的使用 | Contunued Story</title>
+  <title>Docker的使用 | Contunued Story</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta name="keywords" content="docker">
+  <meta name="keywords" content="Docker">
   
   
   
   
-  <meta name="description" content="什么是docker? 从系统环境开始，自底至上打包应用 轻量级，对资源的有效该和管理 使用imageDocker思想   集装箱 标准化： 运输方式 存储方式 API接口   隔离:类似于虚拟机，更加轻量Docker解决了什么问题：让快速扩展，弹性伸缩变得简单  docker核心技术 docker镜像，实质上就是一系列文件（包括应用程序的文件、应用的运行环境的文件），使用了基于分层的联合文件系统实">
-<meta name="keywords" content="docker">
+  <meta name="description" content="什么是docker? 从系统环境开始，自底至上打包应用 轻量级，对资源的有效该和管理 使用imageDocker思想   集装箱 标准化： 运输方式 存储方式 API接口   隔离:类似于虚拟机，更加轻量Docker解决了什么问题：让快速扩展，弹性伸缩变得简单  Docker核心技术 Docker镜像，实质上就是一系列文件（包括应用程序的文件、应用的运行环境的文件），使用了基于分层的联合文件系统实">
+<meta name="keywords" content="Docker">
 <meta property="og:type" content="article">
-<meta property="og:title" content="docker的使用">
+<meta property="og:title" content="Docker的使用">
 <meta property="og:url" content="http://yoursite.com/2019/11/13/docker的使用/index.html">
 <meta property="og:site_name" content="Contunued Story">
-<meta property="og:description" content="什么是docker? 从系统环境开始，自底至上打包应用 轻量级，对资源的有效该和管理 使用imageDocker思想   集装箱 标准化： 运输方式 存储方式 API接口   隔离:类似于虚拟机，更加轻量Docker解决了什么问题：让快速扩展，弹性伸缩变得简单  docker核心技术 docker镜像，实质上就是一系列文件（包括应用程序的文件、应用的运行环境的文件），使用了基于分层的联合文件系统实">
+<meta property="og:description" content="什么是docker? 从系统环境开始，自底至上打包应用 轻量级，对资源的有效该和管理 使用imageDocker思想   集装箱 标准化： 运输方式 存储方式 API接口   隔离:类似于虚拟机，更加轻量Docker解决了什么问题：让快速扩展，弹性伸缩变得简单  Docker核心技术 Docker镜像，实质上就是一系列文件（包括应用程序的文件、应用的运行环境的文件），使用了基于分层的联合文件系统实">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-11-13T10:18:22.254Z">
+<meta property="og:updated_time" content="2019-11-16T08:45:21.020Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="docker的使用">
-<meta name="twitter:description" content="什么是docker? 从系统环境开始，自底至上打包应用 轻量级，对资源的有效该和管理 使用imageDocker思想   集装箱 标准化： 运输方式 存储方式 API接口   隔离:类似于虚拟机，更加轻量Docker解决了什么问题：让快速扩展，弹性伸缩变得简单  docker核心技术 docker镜像，实质上就是一系列文件（包括应用程序的文件、应用的运行环境的文件），使用了基于分层的联合文件系统实">
+<meta name="twitter:title" content="Docker的使用">
+<meta name="twitter:description" content="什么是docker? 从系统环境开始，自底至上打包应用 轻量级，对资源的有效该和管理 使用imageDocker思想   集装箱 标准化： 运输方式 存储方式 API接口   隔离:类似于虚拟机，更加轻量Docker解决了什么问题：让快速扩展，弹性伸缩变得简单  Docker核心技术 Docker镜像，实质上就是一系列文件（包括应用程序的文件、应用的运行环境的文件），使用了基于分层的联合文件系统实">
   
     <link rel="alternate" href="/atom.xml" title="Contunued Story" type="application/atom+xml">
   
@@ -137,7 +137,7 @@
         
   
     <h1 class="thumb" class="article-title" itemprop="name">
-      docker的使用
+      Docker的使用
     </h1>
   
 
@@ -151,7 +151,7 @@
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/docker/">docker</a>
+    <a class="article-category-link" href="/categories/Docker/">Docker</a>
  
       
 	<span id="busuanzi_container_page_pv">
@@ -176,24 +176,24 @@
 </li>
 <li>隔离:类似于虚拟机，更加轻量<h4 id="Docker解决了什么问题："><a href="#Docker解决了什么问题：" class="headerlink" title="Docker解决了什么问题："></a>Docker解决了什么问题：</h4>让快速扩展，弹性伸缩变得简单</li>
 </ol>
-<h4 id="docker核心技术"><a href="#docker核心技术" class="headerlink" title="docker核心技术"></a>docker核心技术</h4><ol>
-<li>docker镜像，实质上就是一系列文件（包括应用程序的文件、应用的运行环境的文件），使用了基于分层的联合文件系统实现了镜像存储</li>
-<li>docker容器，本质就是一个进程；可以想象成一个虚拟机，但是是分层的，最上一层可读可写。通过一个镜像可以生成多个容器，独立运行；</li>
-<li>docker仓库，构建镜像在其他服务器上去运行我的程序。先把我的镜像传到仓库，再从其他服务器拉取，类似于起到中转作用</li>
+<h4 id="Docker核心技术"><a href="#Docker核心技术" class="headerlink" title="Docker核心技术"></a>Docker核心技术</h4><ol>
+<li>Docker镜像，实质上就是一系列文件（包括应用程序的文件、应用的运行环境的文件），使用了基于分层的联合文件系统实现了镜像存储</li>
+<li>Docker容器，本质就是一个进程；可以想象成一个虚拟机，但是是分层的，最上一层可读可写。通过一个镜像可以生成多个容器，独立运行；</li>
+<li>Docker仓库，构建镜像在其他服务器上去运行我的程序。先把我的镜像传到仓库，再从其他服务器拉取，类似于起到中转作用</li>
 </ol>
-<h4 id="docker-安装"><a href="#docker-安装" class="headerlink" title="docker 安装"></a>docker 安装</h4><ol>
+<h4 id="Docker-安装"><a href="#Docker-安装" class="headerlink" title="Docker 安装"></a>Docker 安装</h4><ol>
 <li><p>保证apt-get是最新版本</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-get update</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>安装docker</p>
+<li><p>安装Docker</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-get install -y docker.io</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>查看docker版本</p>
+<li><p>查看Docker版本</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker version</span><br></pre></td></tr></table></figure>
 
 </li>
 </ol>
-<h4 id="如何创建一个docker镜像"><a href="#如何创建一个docker镜像" class="headerlink" title="如何创建一个docker镜像"></a>如何创建一个docker镜像</h4><ol>
+<h4 id="如何创建一个Docker镜像"><a href="#如何创建一个Docker镜像" class="headerlink" title="如何创建一个Docker镜像"></a>如何创建一个Docker镜像</h4><ol>
 <li><p>拉取镜像</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull [OPTIONS] NAME[:TAG]</span><br></pre></td></tr></table></figure>
 </li>
@@ -206,7 +206,7 @@
 </li>
 </ol>
 <h4 id="Docker运行Nginx"><a href="#Docker运行Nginx" class="headerlink" title="Docker运行Nginx"></a>Docker运行Nginx</h4><ol>
-<li><p>去网易云镜像中心下载nginx镜像  <a href="https://c.163yun.com/hub" target="_blank" rel="noopener">https://c.163yun.com/hub</a><br>或者docker的nginx镜像仓库：<a href="https://hub.docker.com/" target="_blank" rel="noopener">https://hub.docker.com/</a></p>
+<li><p>去网易云镜像中心下载nginx镜像  <a href="https://c.163yun.com/hub" target="_blank" rel="noopener">https://c.163yun.com/hub</a><br>或者Docker的nginx镜像仓库：<a href="https://hub.docker.com/" target="_blank" rel="noopener">https://hub.docker.com/</a></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull hub.c.163.com/library/nginx:latest</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>查看正在找运行的容器</p>
@@ -246,11 +246,11 @@
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/docker/">docker</a>
+    <a class="article-category-link" href="/categories/Docker/">Docker</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/">docker</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Docker/">Docker</a></li></ul>
 
       
         
@@ -302,7 +302,7 @@
     <div id="toc" class="toc-article">
     <strong class="toc-title">Contents</strong>
     
-      <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是docker"><span class="nav-number">1.</span> <span class="nav-text">什么是docker?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Docker思想"><span class="nav-number">2.</span> <span class="nav-text">Docker思想</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Docker解决了什么问题："><span class="nav-number">3.</span> <span class="nav-text">Docker解决了什么问题：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#docker核心技术"><span class="nav-number">4.</span> <span class="nav-text">docker核心技术</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#docker-安装"><span class="nav-number">5.</span> <span class="nav-text">docker 安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何创建一个docker镜像"><span class="nav-number">6.</span> <span class="nav-text">如何创建一个docker镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Docker运行Nginx"><span class="nav-number">7.</span> <span class="nav-text">Docker运行Nginx</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Docker网络"><span class="nav-number">8.</span> <span class="nav-text">Docker网络</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#网络类型"><span class="nav-number">8.1.</span> <span class="nav-text">网络类型</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#制作自己的景象"><span class="nav-number">9.</span> <span class="nav-text">制作自己的景象</span></a></li></ol>
+      <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是docker"><span class="nav-number">1.</span> <span class="nav-text">什么是docker?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Docker思想"><span class="nav-number">2.</span> <span class="nav-text">Docker思想</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Docker解决了什么问题："><span class="nav-number">3.</span> <span class="nav-text">Docker解决了什么问题：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Docker核心技术"><span class="nav-number">4.</span> <span class="nav-text">Docker核心技术</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Docker-安装"><span class="nav-number">5.</span> <span class="nav-text">Docker 安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何创建一个Docker镜像"><span class="nav-number">6.</span> <span class="nav-text">如何创建一个Docker镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Docker运行Nginx"><span class="nav-number">7.</span> <span class="nav-text">Docker运行Nginx</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Docker网络"><span class="nav-number">8.</span> <span class="nav-text">Docker网络</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#网络类型"><span class="nav-number">8.1.</span> <span class="nav-text">网络类型</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#制作自己的景象"><span class="nav-number">9.</span> <span class="nav-text">制作自己的景象</span></a></li></ol>
     
     </div>
   </aside>

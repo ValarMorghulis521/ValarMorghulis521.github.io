@@ -11,18 +11,18 @@
   
   
   
-  <meta name="description" content="什么是docker? 从系统环境开始，自底至上打包应用 轻量级，对资源的有效该和管理 使用imageDocker思想   集装箱 标准化： 运输方式 存储方式 API接口   隔离:类似于虚拟机，更加轻量Docker解决了什么问题：让快速扩展，弹性伸缩变得简单  Docker核心技术 Docker镜像，实质上就是一系列文件（包括应用程序的文件、应用的运行环境的文件），使用了基于分层的联合文件系统实">
+  <meta name="description" content="什么是docker? 从系统环境开始，自底至上打包应用 轻量级，对资源的有效该和管理 使用image  Docker思想 集装箱 标准化： 运输方式 存储方式 API接口   隔离:类似于虚拟机，更加轻量  Docker解决了什么问题：让快速扩展，弹性伸缩变得简单 Docker核心技术 Docker镜像，实质上就是一系列文件（包括应用程序的文件、应用的运行环境的文件），使用了基于分层的联合文件系统">
 <meta name="keywords" content="Docker">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Docker的使用">
 <meta property="og:url" content="http://yoursite.com/2019/11/13/docker的使用/index.html">
 <meta property="og:site_name" content="Contunued Story">
-<meta property="og:description" content="什么是docker? 从系统环境开始，自底至上打包应用 轻量级，对资源的有效该和管理 使用imageDocker思想   集装箱 标准化： 运输方式 存储方式 API接口   隔离:类似于虚拟机，更加轻量Docker解决了什么问题：让快速扩展，弹性伸缩变得简单  Docker核心技术 Docker镜像，实质上就是一系列文件（包括应用程序的文件、应用的运行环境的文件），使用了基于分层的联合文件系统实">
+<meta property="og:description" content="什么是docker? 从系统环境开始，自底至上打包应用 轻量级，对资源的有效该和管理 使用image  Docker思想 集装箱 标准化： 运输方式 存储方式 API接口   隔离:类似于虚拟机，更加轻量  Docker解决了什么问题：让快速扩展，弹性伸缩变得简单 Docker核心技术 Docker镜像，实质上就是一系列文件（包括应用程序的文件、应用的运行环境的文件），使用了基于分层的联合文件系统">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-11-16T08:45:21.020Z">
+<meta property="og:updated_time" content="2019-11-16T08:47:18.311Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker的使用">
-<meta name="twitter:description" content="什么是docker? 从系统环境开始，自底至上打包应用 轻量级，对资源的有效该和管理 使用imageDocker思想   集装箱 标准化： 运输方式 存储方式 API接口   隔离:类似于虚拟机，更加轻量Docker解决了什么问题：让快速扩展，弹性伸缩变得简单  Docker核心技术 Docker镜像，实质上就是一系列文件（包括应用程序的文件、应用的运行环境的文件），使用了基于分层的联合文件系统实">
+<meta name="twitter:description" content="什么是docker? 从系统环境开始，自底至上打包应用 轻量级，对资源的有效该和管理 使用image  Docker思想 集装箱 标准化： 运输方式 存储方式 API接口   隔离:类似于虚拟机，更加轻量  Docker解决了什么问题：让快速扩展，弹性伸缩变得简单 Docker核心技术 Docker镜像，实质上就是一系列文件（包括应用程序的文件、应用的运行环境的文件），使用了基于分层的联合文件系统">
   
     <link rel="alternate" href="/atom.xml" title="Contunued Story" type="application/atom+xml">
   
@@ -164,9 +164,9 @@
         <h4 id="什么是docker"><a href="#什么是docker" class="headerlink" title="什么是docker?"></a>什么是docker?</h4><ul>
 <li>从系统环境开始，自底至上打包应用</li>
 <li>轻量级，对资源的有效该和管理</li>
-<li>使用image<h4 id="Docker思想"><a href="#Docker思想" class="headerlink" title="Docker思想"></a>Docker思想</h4></li>
+<li>使用image</li>
 </ul>
-<ol>
+<h4 id="Docker思想"><a href="#Docker思想" class="headerlink" title="Docker思想"></a>Docker思想</h4><ol>
 <li>集装箱</li>
 <li>标准化：<ul>
 <li>运输方式</li>
@@ -174,8 +174,9 @@
 <li>API接口</li>
 </ul>
 </li>
-<li>隔离:类似于虚拟机，更加轻量<h4 id="Docker解决了什么问题："><a href="#Docker解决了什么问题：" class="headerlink" title="Docker解决了什么问题："></a>Docker解决了什么问题：</h4>让快速扩展，弹性伸缩变得简单</li>
+<li>隔离:类似于虚拟机，更加轻量</li>
 </ol>
+<h4 id="Docker解决了什么问题："><a href="#Docker解决了什么问题：" class="headerlink" title="Docker解决了什么问题："></a>Docker解决了什么问题：</h4><p>让快速扩展，弹性伸缩变得简单</p>
 <h4 id="Docker核心技术"><a href="#Docker核心技术" class="headerlink" title="Docker核心技术"></a>Docker核心技术</h4><ol>
 <li>Docker镜像，实质上就是一系列文件（包括应用程序的文件、应用的运行环境的文件），使用了基于分层的联合文件系统实现了镜像存储</li>
 <li>Docker容器，本质就是一个进程；可以想象成一个虚拟机，但是是分层的，最上一层可读可写。通过一个镜像可以生成多个容器，独立运行；</li>

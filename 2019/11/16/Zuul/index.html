@@ -11,22 +11,22 @@
   
   
   
-  <meta name="description" content="服务网关和Zuul常用的网关方案： Nginx+Lua  Kong(配置比Nginx简单，很多要付费的插件)  Tyk（各种支持、Go语言开发的）  Spring Cloud Zuul(路由+过滤器，过滤：安全、监控、限流、路由…..)  服务网关作为请求入口，不能挂掉。需要保证稳定性、高可用、并发性、安全性、扩展性。网关适合处理非业务功能的绝佳场所：协议转发、日志监控、流量管控、api权限等等。">
+  <meta name="description" content="服务网关和Zuul常用的网关方案： Nginx+Lua Kong(配置比Nginx简单，很多要付费的插件) Tyk（各种支持、Go语言开发的） Spring Cloud Zuul(路由+过滤器，过滤：安全、监控、限流、路由…..)  服务网关作为请求入口，不能挂掉。需要保证稳定性、高可用、并发性、安全性、扩展性。网关适合处理非业务功能的绝佳场所：协议转发、日志监控、流量管控、api权限等等。 服务">
 <meta name="keywords" content="服务网关,Zuul,Cookie和动态路由,限流,鉴权,跨域">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Zuul">
 <meta property="og:url" content="http://yoursite.com/2019/11/16/Zuul/index.html">
 <meta property="og:site_name" content="Contunued Story">
-<meta property="og:description" content="服务网关和Zuul常用的网关方案： Nginx+Lua  Kong(配置比Nginx简单，很多要付费的插件)  Tyk（各种支持、Go语言开发的）  Spring Cloud Zuul(路由+过滤器，过滤：安全、监控、限流、路由…..)  服务网关作为请求入口，不能挂掉。需要保证稳定性、高可用、并发性、安全性、扩展性。网关适合处理非业务功能的绝佳场所：协议转发、日志监控、流量管控、api权限等等。">
+<meta property="og:description" content="服务网关和Zuul常用的网关方案： Nginx+Lua Kong(配置比Nginx简单，很多要付费的插件) Tyk（各种支持、Go语言开发的） Spring Cloud Zuul(路由+过滤器，过滤：安全、监控、限流、路由…..)  服务网关作为请求入口，不能挂掉。需要保证稳定性、高可用、并发性、安全性、扩展性。网关适合处理非业务功能的绝佳场所：协议转发、日志监控、流量管控、api权限等等。 服务">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/2019/11/16/Zuul/Zuul%E7%9A%84%E8%AF%B7%E6%B1%82%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.jpg">
 <meta property="og:image" content="http://yoursite.com/2019/11/16/Zuul/Zuul%E7%BB%84%E4%BB%B6%E6%9E%B6%E6%9E%84%E5%9B%BE.jpg">
 <meta property="og:image" content="http://yoursite.com/2019/11/16/Zuul/Zuul%5C%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%E5%9B%BE.jpg">
 <meta property="og:image" content="http://yoursite.com/2019/11/16/Zuul/%E4%BB%A4%E7%89%8C%E6%A1%B6%E5%BC%8F%E9%99%90%E6%B5%81.jpg">
-<meta property="og:updated_time" content="2019-11-18T02:52:36.060Z">
+<meta property="og:updated_time" content="2019-11-18T07:38:48.900Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Zuul">
-<meta name="twitter:description" content="服务网关和Zuul常用的网关方案： Nginx+Lua  Kong(配置比Nginx简单，很多要付费的插件)  Tyk（各种支持、Go语言开发的）  Spring Cloud Zuul(路由+过滤器，过滤：安全、监控、限流、路由…..)  服务网关作为请求入口，不能挂掉。需要保证稳定性、高可用、并发性、安全性、扩展性。网关适合处理非业务功能的绝佳场所：协议转发、日志监控、流量管控、api权限等等。">
+<meta name="twitter:description" content="服务网关和Zuul常用的网关方案： Nginx+Lua Kong(配置比Nginx简单，很多要付费的插件) Tyk（各种支持、Go语言开发的） Spring Cloud Zuul(路由+过滤器，过滤：安全、监控、限流、路由…..)  服务网关作为请求入口，不能挂掉。需要保证稳定性、高可用、并发性、安全性、扩展性。网关适合处理非业务功能的绝佳场所：协议转发、日志监控、流量管控、api权限等等。 服务">
 <meta name="twitter:image" content="http://yoursite.com/2019/11/16/Zuul/Zuul%E7%9A%84%E8%AF%B7%E6%B1%82%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.jpg">
   
     <link rel="alternate" href="/atom.xml" title="Contunued Story" type="application/atom+xml">
@@ -64,32 +64,10 @@
 
 
   
-  
-  <div class="site-header-image">
-    <img id="originBg" width="100%" alt="Hike News" src="">
-  </div>
-
-  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
-    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
-  </div>
-
-  <script>
-        var imgUrls = "css/images/pose01.jpg,https://source.unsplash.com/collection/954550/1920x1080,https://source.unsplash.com/collection/954550/1920x1081".split(",");
-        var random = Math.floor((Math.random() * imgUrls.length ));
-        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
-          document.getElementById("originBg").src=imgUrls[random];
-          document.getElementById("blurBg").src=imgUrls[random];
-        } else {
-          document.getElementById("originBg").src='/' + imgUrls[random];
-          document.getElementById("blurBg").src='/' + imgUrls[random];
-        }
-    </script>
-
-
 
 
 <header id="allheader" class="site-header" role="banner" 
-   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
+   >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -167,23 +145,17 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h2 id="服务网关和Zuul"><a href="#服务网关和Zuul" class="headerlink" title="服务网关和Zuul"></a>服务网关和Zuul</h2><h3 id="常用的网关方案："><a href="#常用的网关方案：" class="headerlink" title="常用的网关方案："></a>常用的网关方案：</h3><ol>
-<li><p>Nginx+Lua</p>
-</li>
-<li><p>Kong(配置比Nginx简单，很多要付费的插件)</p>
-</li>
-<li><p>Tyk（各种支持、Go语言开发的）</p>
-</li>
-<li><p>Spring Cloud Zuul(路由+过滤器，过滤：安全、监控、限流、路由…..)</p>
-<p> 服务网关作为请求入口，不能挂掉。需要保证稳定性、高可用、并发性、安全性、扩展性。<br>网关适合处理非业务功能的绝佳场所：协议转发、日志监控、流量管控、api权限等等。</p>
-<h3 id="服务网管的要素"><a href="#服务网管的要素" class="headerlink" title="服务网管的要素"></a>服务网管的要素</h3></li>
-<li><p>稳定性，高可用</p>
-</li>
-<li><p>性能、并发性</p>
-</li>
-<li><p>安全性</p>
-</li>
-<li><p>扩展性</p>
-</li>
+<li>Nginx+Lua</li>
+<li>Kong(配置比Nginx简单，很多要付费的插件)</li>
+<li>Tyk（各种支持、Go语言开发的）</li>
+<li>Spring Cloud Zuul(路由+过滤器，过滤：安全、监控、限流、路由…..)</li>
+</ol>
+<p>服务网关作为请求入口，不能挂掉。需要保证稳定性、高可用、并发性、安全性、扩展性。<br>网关适合处理非业务功能的绝佳场所：协议转发、日志监控、流量管控、api权限等等。</p>
+<h3 id="服务网管的要素"><a href="#服务网管的要素" class="headerlink" title="服务网管的要素"></a>服务网管的要素</h3><ol>
+<li>稳定性，高可用</li>
+<li>性能、并发性</li>
+<li>安全性</li>
+<li>扩展性</li>
 </ol>
 <h3 id="Zuul组件内一次请求的生命周期"><a href="#Zuul组件内一次请求的生命周期" class="headerlink" title="Zuul组件内一次请求的生命周期"></a>Zuul组件内一次请求的生命周期</h3><p><img src="/2019/11/16/Zuul/Zuul%E7%9A%84%E8%AF%B7%E6%B1%82%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.jpg" alt></p>
 <h3 id="Zuul组件架构图"><a href="#Zuul组件架构图" class="headerlink" title="Zuul组件架构图"></a>Zuul组件架构图</h3><p><img src="/2019/11/16/Zuul/Zuul%E7%BB%84%E4%BB%B6%E6%9E%B6%E6%9E%84%E5%9B%BE.jpg" alt></p>
@@ -191,10 +163,10 @@
 <li>新建项目api-getway 选择Cloud Routing -&gt;Zuul、Config Client、Eureka Client</li>
 <li>配置config和eureka</li>
 <li>Application启动类添加 @EnableZuulProxy注解</li>
-<li>直接访问 路由地址/服务名/接口地址 如 localhost:8080/product/product/list (8080为路由的端口)<h3 id="如何自定义和排除"><a href="#如何自定义和排除" class="headerlink" title="如何自定义和排除"></a>如何自定义和排除</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">zuul:</span><br><span class="line">  routes:</span><br><span class="line">  # /myProduct/product/list -&gt; /product/product/list</span><br><span class="line">    myProduct:</span><br><span class="line">      path: /myProduct/**</span><br><span class="line">      serviceId: product</span><br><span class="line">  # 以上简洁写法</span><br><span class="line">    product: /myProduct/**</span><br><span class="line">  # 排除某些路由，可写多个，- 表示空格</span><br><span class="line">  ignored-patterns:</span><br><span class="line">    - /**/product/listForOrder</span><br></pre></td></tr></table></figure>
-
-</li>
+<li>直接访问 路由地址/服务名/接口地址 如 localhost:8080/product/product/list (8080为路由的端口)</li>
 </ol>
+<h3 id="如何自定义和排除"><a href="#如何自定义和排除" class="headerlink" title="如何自定义和排除"></a>如何自定义和排除</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">zuul:</span><br><span class="line">  routes:</span><br><span class="line">  # /myProduct/product/list -&gt; /product/product/list</span><br><span class="line">    myProduct:</span><br><span class="line">      path: /myProduct/**</span><br><span class="line">      serviceId: product</span><br><span class="line">  # 以上简洁写法</span><br><span class="line">    product: /myProduct/**</span><br><span class="line">  # 排除某些路由，可写多个，- 表示空格</span><br><span class="line">  ignored-patterns:</span><br><span class="line">    - /**/product/listForOrder</span><br></pre></td></tr></table></figure>
+
 <h3 id="查看所有路由-localhost-9090-application-routes"><a href="#查看所有路由-localhost-9090-application-routes" class="headerlink" title="查看所有路由 localhost: 9090/application/routes"></a>查看所有路由 localhost: 9090/application/routes</h3><h2 id="Zuul-Cookie和动态路由"><a href="#Zuul-Cookie和动态路由" class="headerlink" title="Zuul:Cookie和动态路由"></a>Zuul:Cookie和动态路由</h2><h3 id="不过滤cookie的办法-sensitiveHeaders不填"><a href="#不过滤cookie的办法-sensitiveHeaders不填" class="headerlink" title="不过滤cookie的办法 sensitiveHeaders不填"></a>不过滤cookie的办法 sensitiveHeaders不填</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">management:</span><br><span class="line">  security:</span><br><span class="line">    enabled: false</span><br><span class="line">zuul:</span><br><span class="line">  ignored-patterns:</span><br><span class="line">  - /**/product/listForOrder</span><br><span class="line">  routes:</span><br><span class="line">    myProduct:</span><br><span class="line">      path: /myProduct/**</span><br><span class="line">      sensitiveHeaders: &apos;&apos;</span><br><span class="line">      serviceId: product</span><br></pre></td></tr></table></figure>
 
 <h4 id="动态路由"><a href="#动态路由" class="headerlink" title="动态路由"></a>动态路由</h4><ol>
@@ -299,6 +271,15 @@
     
 <nav id="article-nav">
   
+    <a href="/2019/11/18/服务容错Hystrix/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          服务容错Hystrix
+        
+      </div>
+    </a>
+  
   
     <a href="/2019/11/13/docker的使用/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
@@ -369,9 +350,6 @@
 
 
     <!-- headerblur min height -->
-    
-      var headerblur = document.getElementById("header-blur");
-      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

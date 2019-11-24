@@ -55,10 +55,32 @@
 
 
   
+  
+  <div class="site-header-image">
+    <img id="originBg" width="100%" alt="Hike News" src="">
+  </div>
+
+  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
+    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
+  </div>
+
+  <script>
+        var imgUrls = "css/images/pose01.jpg,https://source.unsplash.com/collection/954550/1920x1080,https://source.unsplash.com/collection/954550/1920x1081".split(",");
+        var random = Math.floor((Math.random() * imgUrls.length ));
+        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+          document.getElementById("originBg").src=imgUrls[random];
+          document.getElementById("blurBg").src=imgUrls[random];
+        } else {
+          document.getElementById("originBg").src='/' + imgUrls[random];
+          document.getElementById("blurBg").src='/' + imgUrls[random];
+        }
+    </script>
+
+
 
 
 <header id="allheader" class="site-header" role="banner" 
-   >
+   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -104,6 +126,250 @@
       <div id="content" class="outer">
         
           <section id="main">
+  
+    <article id="post-容器部署"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/11/19/容器部署/">容器部署</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/11/19/容器部署/" class="article-date">
+	  <time datetime="2019-11-19T05:20:36.000Z" itemprop="datePublished">November 19, 2019</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/微服务实战/">微服务实战</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="实现IntelliJ-IDEA快速部署到远程docker"><a href="#实现IntelliJ-IDEA快速部署到远程docker" class="headerlink" title="实现IntelliJ IDEA快速部署到远程docker"></a>实现IntelliJ IDEA快速部署到远程docker</h2><hr>
+<ol>
+<li><p>IntelliJ IDEA安装Docker插件Docker</p>
+</li>
+<li><p>增加一个docker远程连接，此时连接的是我虚拟机上的docker<br><img src="/2019/11/19/容器部署/%E8%BF%9C%E7%A8%8Bdocker%E8%BF%9E%E6%8E%A5.png" alt></p>
+</li>
+<li><p>在项目的根目录下创建Dockerfile文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">#指定基础镜像，在其上进行定制</span><br><span class="line">FROM hub.c.163.com/library/java:8-alpine</span><br><span class="line"></span><br><span class="line">#维护者信息</span><br><span class="line">MAINTAINER sunchenming &lt;scm_5@outlook.com&gt;</span><br><span class="line"></span><br><span class="line">#添加target/*.jar 到容器里</span><br><span class="line">ADD target/*.jar app.jar</span><br><span class="line"></span><br><span class="line">#声明运行时容器提供服务端口，这只是一个声明，在运行时并不会因为这个声明应用就会开启这个端口的服务</span><br><span class="line">EXPOSE 8761</span><br><span class="line"></span><br><span class="line">#指定容器启动程序及参数   &lt;ENTRYPOINT&gt; &quot;&lt;CMD&gt;&quot;</span><br><span class="line">ENTRYPOINT [&quot;java&quot;,&quot;-jar&quot;,&quot;app.jar&quot;]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>打开IDEA右上角的 Run/Debug Configurations，新增Docker启动方式，然后在配置中填写如下信息</p>
+<p> <img src="/2019/11/19/容器部署/%E6%96%B0%E5%A2%9Edocker%E5%90%AF%E5%8A%A8.png" alt></p>
+<p> <img src="/2019/11/19/容器部署/%E7%AB%AF%E5%8F%A3%E4%BF%A1%E6%81%AF.png" alt></p>
+</li>
+<li><p>点击启动，构建成功</p>
+<p> <img src="/2019/11/19/容器部署/%E5%90%AF%E5%8A%A8.png" alt></p>
+</li>
+<li><p>查看docker镜像</p>
+<p>  <img src="/2019/11/19/容器部署/%E6%9F%A5%E7%9C%8B.png" alt></p>
+</li>
+<li><p>将镜像推送到阿里云的镜像个人中心</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sudo docker login --username=sunchenming registry.cn-hangzhou.aliyuncs.com</span><br><span class="line">$ sudo docker tag [ImageId] registry.cn-hangzhou.aliyuncs.com/monster_body/springcloud_eureka:[镜像版本号]</span><br><span class="line">$ sudo docker push registry.cn-hangzhou.aliyuncs.com/monster_body/springcloud_eureka:[镜像版本号]</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="Ranch"><a href="#Ranch" class="headerlink" title="Ranch"></a>Ranch</h2><hr>
+<p>Rancher入门：<a href="https://www.jianshu.com/p/3a492440c89b" target="_blank" rel="noopener">https://www.jianshu.com/p/3a492440c89b</a>  </p>
+<p>Rancher是使用一系列的Docker容器进行部署的。运行Rancher跟启动两个容器一样简单。一个容器作为管理服务器部署，另外一个作为集群节点的Agent部署  </p>
+<ol>
+<li><p>使用docker安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run -d --restart=unless-stopped -p 8080:8080 rancher/server:stable</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>确认安全组或防火墙允许以下通讯:与其他所有主机之间的 UDP 端口 500 和 4500 (用于IPsec网络)  </p>
+</li>
+</ol>
+<p>防火墙如何开启和关闭？  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl start firewalld</span><br><span class="line">sudo systemctl stop firewalld</span><br><span class="line"></span><br><span class="line">firewall-cmd  --permanent --zone=public --add-port=4500/udp 开启</span><br><span class="line">nc -vuz 192.168.1.106 500</span><br><span class="line">firewall-cmd --reload   //更新防火墙规则</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><p>在Ranch中添加主机，启动一台注册了Rancher-angent的主机</p>
+</li>
+<li><p>在应用选项-添加应用-springcloud</p>
+</li>
+<li><p>在springcloud应用下去添加服务</p>
+</li>
+</ol>
+<h2 id="项目版本升级"><a href="#项目版本升级" class="headerlink" title="项目版本升级"></a>项目版本升级</h2>
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/微服务实战/">微服务实战</a>
+
+      
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-链路监控"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/11/18/链路监控/">服务跟踪</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/11/18/链路监控/" class="article-date">
+	  <time datetime="2019-11-18T12:13:22.000Z" itemprop="datePublished">November 18, 2019</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/微服务实战/">微服务实战</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/微服务实战/">微服务实战</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/服务跟踪/">服务跟踪</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/链路监控/">链路监控</a></li></ul>
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-服务跟踪"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/11/18/服务跟踪/">链路监控</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/11/18/服务跟踪/" class="article-date">
+	  <time datetime="2019-11-18T12:13:22.000Z" itemprop="datePublished">November 18, 2019</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/微服务实战/">微服务实战</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Spring-Cloud-Sleuth"><a href="#Spring-Cloud-Sleuth" class="headerlink" title="Spring Cloud Sleuth"></a>Spring Cloud Sleuth</h2><hr>
+<ol>
+<li><p>添加sleuth的依赖</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-cloud-starter-sleuth&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>把 org.springframework.cloud.netflix.feign包 调整日志级别，添加配置</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">logging:</span><br><span class="line">  level:</span><br><span class="line">    org.springframework.cloud.netflix.feign: debug</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>调用order服务的创建订单接口<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">INFO [order,5b8dbc3132a06305,5b8dbc3132a06305,false] 8940 --- [nio-8083-exec-2] c.netflix.config.ChainedDynamicProperty  :</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>sleuth打印的四个值[服务名,id1,id2,true/false]:  </p>
+<ul>
+<li>id1: trace id,一条链路里面最多包含一条trans id，即一条链路的唯一<br>  标识；</li>
+<li>id2: span id，一条链路一面可以包含多个span id，它是一个基本的工作单元（比如发送一个HTTP请求）；</li>
+<li>true：将信息输出给其他服务（如zipkin），反之为false</li>
+</ul>
+<h2 id="Zipkin"><a href="#Zipkin" class="headerlink" title="Zipkin"></a>Zipkin</h2><hr>
+<p>链路可视化工具,集成Zinpin的步骤：</p>
+<ol>
+<li><p>docker 下安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 9411:9411 openzipkin/zipkin</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>添加Zipkin的依赖</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-cloud-starter-zipkin&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>注：以上依赖包等同于 spring-cloud-starter-sleuth + spring-cloud-sleuth-zipkin的整合，因此原来的spring-cloud-starter-sleuth依赖可直接注释掉</p>
+<ol start="3">
+<li><p>配置参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">zipkin:</span><br><span class="line">  base-url: http://192.168.1.106:9411/</span><br><span class="line">//统计日志的百分比为全部，如果10%填0.1</span><br><span class="line">sleuth:</span><br><span class="line">  sampler:</span><br><span class="line">    percentage: 1</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>调用下单接口，访问 Zipkin地址 <a href="http://192.168.1.106:9411" target="_blank" rel="noopener">http://192.168.1.106:9411</a></p>
+</li>
+</ol>
+<p><img src="/2019/11/18/服务跟踪/%E9%93%BE%E8%B7%AF%E7%9B%91%E6%8E%A7%5Czipkin.png" alt></p>
+<h2 id="OpenTracing"><a href="#OpenTracing" class="headerlink" title="OpenTracing"></a>OpenTracing</h2><hr>
+<p>OpenTracing是语义规范、是跨语言的，zipkin是根据这个规范的。  </p>
+<h3 id="几个重要的概念："><a href="#几个重要的概念：" class="headerlink" title="几个重要的概念："></a>几个重要的概念：</h3><p>traceId：在哪生成的id<br>spanId：下一次的请求id<br>parentId：上一次请求的id</p>
+<h3 id="事件类型"><a href="#事件类型" class="headerlink" title="事件类型"></a>事件类型</h3><p>把一个请求的生命周期划成四种事件类型</p>
+<ul>
+<li>cs(Client Send):客户端发起请求的时间  </li>
+<li>cr(Client Received):客户端收到处理完请求的时间  </li>
+<li>ss(Server Send):服务端处理完逻辑的时间  </li>
+<li>sr(Server Received):服务端收到调用端请求的时间</li>
+</ul>
+<p><img src="/2019/11/18/服务跟踪/%E9%93%BE%E8%B7%AF%E7%9B%91%E6%8E%A7%5CZinkin%E6%9E%B6%E6%9E%84.jpg" alt></p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/微服务实战/">微服务实战</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Spring-Cloud-Sleuth/">Spring Cloud Sleuth</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Zipkin/">Zipkin</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/链路监控/">链路监控</a></li></ul>
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
   
     <article id="post-服务容错Hystrix"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
@@ -162,6 +428,7 @@
 
 </li>
 </ol>
+<p>有时候第一次启动时都会超时。<br>原因：因为第一次有懒加载的过程，造成了超时。<br>解决方式：配置一下超时时间长一点就好了，如图</p>
 <h2 id="熔断"><a href="#熔断" class="headerlink" title="熔断"></a>熔断</h2><hr>
 <p>实现进程隔离，容器之间互不影响！  </p>
 <ol>
@@ -183,6 +450,15 @@
 <li>half open，熔断器打开状态达到了一定的时间，会进入半熔断状态，允许定量的服务请求主逻辑。如果都调用成功，或者一定比例成功，则认为恢复，关闭熔断器；否则，熔断器回到打开状态</li>
 </ol>
 <p><img src="/2019/11/18/服务容错Hystrix/CircuitBreaker.jpg" alt></p>
+<h3 id="添加熔断的可视化组件-hystrix-dashboard"><a href="#添加熔断的可视化组件-hystrix-dashboard" class="headerlink" title="添加熔断的可视化组件 hystrix-dashboard"></a>添加熔断的可视化组件 hystrix-dashboard</h3><ol>
+<li><p>引入hystrix-dashboard包依赖</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-cloud-starter-hystrix-dashboard&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启动类添加@EnableHystrixDashboard 注解</p>
+</li>
+<li><p>访问 <a href="http://localhost:8083/hystrix" target="_blank" rel="noopener">http://localhost:8083/hystrix</a> 添加配置进入<br><img src="/2019/11/18/服务容错Hystrix/Dashboard.png" alt></p>
+</li>
+</ol>
 
       
     </div>
@@ -963,278 +1239,6 @@
 <!-- Table of Contents -->
 
   
-    <article id="post-J-U-C包的梳理"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/11/10/J-U-C包的梳理/">J.U.C包的梳理</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/11/10/J-U-C包的梳理/" class="article-date">
-	  <time datetime="2019-11-10T12:28:36.000Z" itemprop="datePublished">November 10, 2019</time>
-	</a>
-
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/Java常用类库与技巧/">Java常用类库与技巧</a>
- 
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="J-U-C包的分类"><a href="#J-U-C包的分类" class="headerlink" title="J.U.C包的分类"></a>J.U.C包的分类</h4><ul>
-<li>线程执行器executor</li>
-<li>锁locks</li>
-<li>原子变量类atomic</li>
-<li>开发工具类tools</li>
-<li>并发集合collections</li>
-</ul>
-<p><img src="/2019/11/10/J-U-C包的梳理/JUC%E5%8C%85%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE.jpg" alt></p>
-<h4 id="并发工具类"><a href="#并发工具类" class="headerlink" title="并发工具类"></a>并发工具类</h4><ol>
-<li>闭锁 CountDownLatch</li>
-<li>栅栏 CyclicBarrier</li>
-<li>信号量 Semaphore</li>
-<li>交换器 Exchanger<h5 id="CountDownLatch：让主线程等待一组事件发生后继续执行"><a href="#CountDownLatch：让主线程等待一组事件发生后继续执行" class="headerlink" title="CountDownLatch：让主线程等待一组事件发生后继续执行"></a>CountDownLatch：让主线程等待一组事件发生后继续执行</h5><img src="/2019/11/10/J-U-C包的梳理/CountDownLatch.jpg" alt></li>
-</ol>
-<h5 id="CyclicBarrier-阻塞当前线程，等待其他线程"><a href="#CyclicBarrier-阻塞当前线程，等待其他线程" class="headerlink" title="CyclicBarrier:阻塞当前线程，等待其他线程"></a>CyclicBarrier:阻塞当前线程，等待其他线程</h5><p> <img src="/2019/11/10/J-U-C包的梳理/CyclicBarrier.jpg" alt></p>
-<h5 id="信号量-Semaphore"><a href="#信号量-Semaphore" class="headerlink" title="信号量 Semaphore"></a>信号量 Semaphore</h5><p> <img src="/2019/11/10/J-U-C包的梳理/Semaphore.jpg" alt></p>
-<h5 id="交换器-Exchanger"><a href="#交换器-Exchanger" class="headerlink" title="交换器 Exchanger"></a>交换器 Exchanger</h5><p> <img src="/2019/11/10/J-U-C包的梳理/Exchanger.jpg" alt></p>
-<h4 id="collections"><a href="#collections" class="headerlink" title="collections"></a>collections</h4><h5 id="BlockingQueue-提供可阻塞的入队和出队操作"><a href="#BlockingQueue-提供可阻塞的入队和出队操作" class="headerlink" title="BlockingQueue:提供可阻塞的入队和出队操作"></a>BlockingQueue:提供可阻塞的入队和出队操作</h5><p>主要用于生产者-消费者模式，在多线程场景时生产者线程在队列尾部添加元素，而消费者线程在队列头部消费元素，通过这种方式能够达到将任务的生产和消费进行隔离的目的<br> <img src="/2019/11/10/J-U-C包的梳理/BlockingQueue.jpg" alt></p>
-<p>由以下七个实现类， 都是线程安全<br><img src="/2019/11/10/J-U-C包的梳理/BlockingQueue%E5%AD%90%E7%B1%BB.jpg" alt></p>
-
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/Java常用类库与技巧/">Java常用类库与技巧</a>
-
-      
-  <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/J-U-C包的梳理/">J.U.C包的梳理</a></li></ul>
-
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-ConcurrentHashMap"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/11/10/ConcurrentHashMap/">ConcurrentHashMap</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/11/10/ConcurrentHashMap/" class="article-date">
-	  <time datetime="2019-11-10T11:34:16.000Z" itemprop="datePublished">November 10, 2019</time>
-	</a>
-
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/Java常用类库与技巧/">Java常用类库与技巧</a>
- 
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="Hashtable"><a href="#Hashtable" class="headerlink" title="Hashtable"></a>Hashtable</h4><ul>
-<li>早期Java类提供的哈希表的实现</li>
-<li>线程安全：涉及到修改Hashtable的方法，使用synchronized修饰</li>
-<li>串行化的方式运行，性能较差</li>
-</ul>
-<h4 id="如何优化Hashtable"><a href="#如何优化Hashtable" class="headerlink" title="如何优化Hashtable?"></a>如何优化Hashtable?</h4><ol>
-<li><p>通过锁细粒度化，将整锁拆解成多个锁进行优化</p>
-<ul>
-<li><p>早期的ConcurrentHashMap：通过分段锁Segment来实现</p>
-</li>
-<li><p>当前的ConcurrentHashMap:CAS+synchronized使锁更细化</p>
-<p><img src="/2019/11/10/ConcurrentHashMap/ConcurrentHashMap.jpg" alt><br>只是锁住每个 table 的首节点，所以只要 Hash 不冲突，就不会产生并发。</p>
-</li>
-</ul>
-</li>
-<li><p>使用Collections.synchronizedMap(hashMap);将HashMap包装成线程安全的。</p>
-</li>
-</ol>
-<h4 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h4><ol>
-<li>出自JUC包</li>
-<li>成员变量与HashMap相似；sizeCtl 是 ConcurrentHashMap 特有的成员变量<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//用来初始化或扩容的控制位标示量</span><br><span class="line"> private transient volatile int sizeCtl;</span><br></pre></td></tr></table></figure>
-
-</li>
-</ol>
-<h5 id="put方法"><a href="#put方法" class="headerlink" title="put方法"></a>put方法</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line">public V put(K key, V value) &#123;</span><br><span class="line">    return putVal(key, value, false);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  final V putVal(K key, V value, boolean onlyIfAbsent) &#123;</span><br><span class="line">    //不能放入为null的key</span><br><span class="line">    if (key == null || value == null) throw new NullPointerException();</span><br><span class="line">    //去计算key的hash值</span><br><span class="line">    int hash = spread(key.hashCode());</span><br><span class="line">    int binCount = 0;</span><br><span class="line">    //多数组的元素更新是使用CAS机制，需要不断的去做失败重试</span><br><span class="line">    for (Node&lt;K,V&gt;[] tab = table;;) &#123;</span><br><span class="line">        Node&lt;K,V&gt; f; int n, i, fh;</span><br><span class="line">        //数组为空初始化</span><br><span class="line">        if (tab == null || (n = tab.length) == 0)</span><br><span class="line">            tab = initTable();</span><br><span class="line">        //不等于0我们就通过hash值来找到f(头结点),根据定位到的元素检查是否存在</span><br><span class="line">        else if ((f = tabAt(tab, i = (n - 1) &amp; hash)) == null) &#123;</span><br><span class="line">            //如果没有则尝试使用CAS进行添加，添加失败则break，进入下一次循环</span><br><span class="line">            if (casTabAt(tab, i, null,</span><br><span class="line">                         new Node&lt;K,V&gt;(hash, key, value, null)))</span><br><span class="line">                break;                   // no lock when adding to empty bin</span><br><span class="line">        &#125;</span><br><span class="line">        //如果被别的线程正在移动，我们就协助其扩容</span><br><span class="line">        else if ((fh = f.hash) == MOVED)</span><br><span class="line">            tab = helpTransfer(tab, f);</span><br><span class="line">        else &#123;</span><br><span class="line">            V oldVal = null;</span><br><span class="line">            synchronized (f) &#123;</span><br><span class="line">                //判断f是否是链表的头结点，fh代表的是头结点的hash值</span><br><span class="line">                if (tabAt(tab, i) == f) &#123;</span><br><span class="line">                    //如果是链表的头结点，初始化计数器binCount，</span><br><span class="line">                    遍历链表。如果存在我们就去更新value，如果不存在就在链表尾部添加新的结点</span><br><span class="line">                    if (fh &gt;= 0) &#123;</span><br><span class="line">                        binCount = 1;</span><br><span class="line">                        for (Node&lt;K,V&gt; e = f;; ++binCount) &#123;</span><br><span class="line">                            K ek;</span><br><span class="line">                            if (e.hash == hash &amp;&amp;</span><br><span class="line">                                ((ek = e.key) == key ||</span><br><span class="line">                                 (ek != null &amp;&amp; key.equals(ek)))) &#123;</span><br><span class="line">                                oldVal = e.val;</span><br><span class="line">                                if (!onlyIfAbsent)</span><br><span class="line">                                    e.val = value;</span><br><span class="line">                                break;</span><br><span class="line">                            &#125;</span><br><span class="line">                            Node&lt;K,V&gt; pred = e;</span><br><span class="line">                            if ((e = e.next) == null) &#123;</span><br><span class="line">                                pred.next = new Node&lt;K,V&gt;(hash, key,</span><br><span class="line">                                                          value, null);</span><br><span class="line">                                break;</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                    else if (f instanceof TreeBin) &#123;</span><br><span class="line">                        Node&lt;K,V&gt; p;</span><br><span class="line">                        binCount = 2;</span><br><span class="line">                        if ((p = ((TreeBin&lt;K,V&gt;)f).putTreeVal(hash, key,</span><br><span class="line">                                                       value)) != null) &#123;</span><br><span class="line">                            oldVal = p.val;</span><br><span class="line">                            if (!onlyIfAbsent)</span><br><span class="line">                                p.val = value;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            if (binCount != 0) &#123;</span><br><span class="line">                if (binCount &gt;= TREEIFY_THRESHOLD)</span><br><span class="line">                    treeifyBin(tab, i);</span><br><span class="line">                if (oldVal != null)</span><br><span class="line">                    return oldVal;</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    addCount(1L, binCount);</span><br><span class="line">    return null;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>ConcurrentHashMap：put逻辑</strong>  </p>
-<ol>
-<li>判断Node[]数组是否初始化，没有进行初始化操作</li>
-<li>通过hash定位数组的索引坐标之后，判断当前下标是否有元素，如果没有则利用CAS进行添加，添加失败进行下次循环</li>
-<li>检查内部是否正在扩容，如果扩容，就帮他一块扩容</li>
-<li>使用syn锁住当前下标,如果是链表则执行链表插入，如果是树，则进行树的操作</li>
-<li>判断链表长度是否大于8，超过8进行树化</li>
-</ol>
-<p><strong>ConcurrentHashMap总结：比起Segment，锁拆的更细</strong></p>
-<ul>
-<li>首先使用无锁操作CAS插入头结点，失败则循环重试</li>
-<li>若头结点已存在，则尝试获取头结点的同步锁，再进行操作  </li>
-</ul>
-<h4 id="Hashap、Hashtable、ConcurrentHashMap三者的区别"><a href="#Hashap、Hashtable、ConcurrentHashMap三者的区别" class="headerlink" title="Hashap、Hashtable、ConcurrentHashMap三者的区别"></a>Hashap、Hashtable、ConcurrentHashMap三者的区别</h4><ul>
-<li>HashMap线程不安全，数组+链表+红黑树</li>
-<li>Hashtable线程安全，锁住整个对象，效率低，数组+链表</li>
-<li>ConcurrentHashMap线程安全，CAS+同步锁，数组+链表+红黑树</li>
-<li>Hashap的key、value均可为null,而其他的两个类均不支持</li>
-</ul>
-
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/Java常用类库与技巧/">Java常用类库与技巧</a>
-
-      
-  <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ConcurrentHashMap/">ConcurrentHashMap</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hashtable/">Hashtable</a></li></ul>
-
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-HashMap"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/11/10/HashMap/">HashMap</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/11/10/HashMap/" class="article-date">
-	  <time datetime="2019-11-10T08:17:26.000Z" itemprop="datePublished">November 10, 2019</time>
-	</a>
-
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/Java常用类库与技巧/">Java常用类库与技巧</a>
- 
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="Map的集合"><a href="#Map的集合" class="headerlink" title="Map的集合"></a>Map的集合</h4><p><img src="/2019/11/10/HashMap/%E9%9B%86%E5%90%88%E4%B9%8BMap.jpg" alt></p>
-<h4 id="HashMap-Java8以前-：数组-链表"><a href="#HashMap-Java8以前-：数组-链表" class="headerlink" title="HashMap(Java8以前)：数组+链表"></a>HashMap(Java8以前)：数组+链表</h4><p><img src="/2019/11/10/HashMap/HashMapJava8%E4%BB%A5%E5%89%8D.jpg" alt></p>
-<ol>
-<li>HashMap的数组长度再没有给他赋任何初始值的时候默认16，一个长度为16的数组中每个元素存储的就是链表的头节点<br>，通过hash(key.hashCOde())%len 函数去取模获得要添加的元素存放的数组的位置</li>
-<li>HashMap的hash算法是通过位运算来进行的相比取模运算效率更高</li>
-<li>存在极端情况，通过hash散列运算总是得到相同的值，即分配到同一个桶中，会使得某个桶的链表很长</li>
-</ol>
-<h4 id="HashMap-Java8以后-：数组-链表-红黑树"><a href="#HashMap-Java8以后-：数组-链表-红黑树" class="headerlink" title="HashMap(Java8以后)：数组+链表+红黑树"></a>HashMap(Java8以后)：数组+链表+红黑树</h4><p><img src="/2019/11/10/HashMap/HashMapJava8%E4%BB%A5%E5%90%8E.jpg" alt><br>1.红黑树的算法和实现</p>
-<h4 id="HashMap的内部结构解析"><a href="#HashMap的内部结构解析" class="headerlink" title="HashMap的内部结构解析"></a>HashMap的内部结构解析</h4><p>HashMap相关源码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">transient Node&lt;K,V&gt;[] table;</span><br></pre></td></tr></table></figure>
-
-<p>Node的源码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">static class Node&lt;K,V&gt; implements Map.Entry&lt;K,V&gt; &#123;</span><br><span class="line">    final int hash;</span><br><span class="line">    final K key;</span><br><span class="line">    V value;</span><br><span class="line">    Node&lt;K,V&gt; next;</span><br><span class="line"></span><br><span class="line">    Node(int hash, K key, V value, Node&lt;K,V&gt; next) &#123;</span><br><span class="line">        this.hash = hash;</span><br><span class="line">        this.key = key;</span><br><span class="line">        this.value = value;</span><br><span class="line">        this.next = next;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-<ol>
-<li>HashMap可以看做通过数组Node&lt;K,V&gt;这个table，和链表组成的数据结构。<br>Node是由hash值，键值对，以及指向的下一个节点来组成的；  </li>
-<li>而数组被分为一个个的bucket，通过hash值决定了键值对在这个数据的寻址，hash值相同的键值对则以链表的形式来存储，而如果链表的大小超过了 <em>TREEIFY_THRESHOLD =8</em> 就会被改造成红黑树。当某bucket上面的元素的总数因为删除而变得低于阈值 <em>UNTREEIFY_THRESHOLD =6</em> 了之后，红黑树又被转成链表以保持更高的性能！</li>
-</ol>
-<h5 id="HashMap的构造函数"><a href="#HashMap的构造函数" class="headerlink" title="HashMap的构造函数"></a>HashMap的构造函数</h5><p>源码</p>
-<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">* Constructs an empty &lt;tt&gt;HashMap&lt;/tt&gt; with the default initial capacity</span><br><span class="line">* (16) and the default load factor (0.75).</span><br><span class="line">*/</span><br><span class="line">public HashMap() &#123;</span><br><span class="line">    this.loadFactor = DEFAULT_LOAD_FACTOR; // all other fields defaulted</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></code></pre><p>根据构造函数可以看出HashMap 中的table数组并没有在开始初始化好，而是赋上了初始值，因为可以推断HashMap是按照lazyLoad去加载</p>
-<h5 id="HashMap的-put-方法"><a href="#HashMap的-put-方法" class="headerlink" title="HashMap的 put()方法"></a>HashMap的 put()方法</h5><p>源码分析加注释：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">public V put(K key, V value) &#123;</span><br><span class="line">    return putVal(hash(key), key, value, false, true);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">final V putVal(int hash, K key, V value, boolean onlyIfAbsent,</span><br><span class="line">               boolean evict) &#123;</span><br><span class="line">    Node&lt;K,V&gt;[] tab; Node&lt;K,V&gt; p; int n, i;</span><br><span class="line">    //根据源码可以看出如果数组为空就调用resize()方法给它初始化数组</span><br><span class="line">    if ((tab = table) == null || (n = tab.length) == 0)</span><br><span class="line">        n = (tab = resize()).length;</span><br><span class="line">    //做hash运算，算出键值对在table里面的具体位置，得到的运算还没有元素存储到里面则会直接new一个该键值对的node,放到该位置当中</span><br><span class="line">    if ((p = tab[i = (n - 1) &amp; hash]) == null)</span><br><span class="line">        tab[i] = newNode(hash, key, value, null);</span><br><span class="line">    else &#123;</span><br><span class="line">        Node&lt;K,V&gt; e; K k;</span><br><span class="line">        //如果发现同样的位置存在同样的已经存在键值对，且键和传入进来的键一致，则直接替换数组里面的元素</span><br><span class="line">        if (p.hash == hash &amp;&amp;</span><br><span class="line">            ((k = p.key) == key || (key != null &amp;&amp; key.equals(k))))</span><br><span class="line">            e = p;</span><br><span class="line">        //当前位置存储的是否是已经树化了之后的节点，如果是树化了的话则按照树的方式尝试存储键值对</span><br><span class="line">        else if (p instanceof TreeNode)</span><br><span class="line">            e = ((TreeNode&lt;K,V&gt;)p).putTreeVal(this, tab, hash, key, value);</span><br><span class="line">        //如果不是树化了，则按照链表的插入方式往链表后面添加元素，同时判断链表元素的总数，一旦超过TREEIFY_THRESHOLD，则将链表进行树化</span><br><span class="line">        else &#123;</span><br><span class="line">            for (int binCount = 0; ; ++binCount) &#123;</span><br><span class="line">                if ((e = p.next) == null) &#123;</span><br><span class="line">                    p.next = newNode(hash, key, value, null);</span><br><span class="line">                    if (binCount &gt;= TREEIFY_THRESHOLD - 1) // -1 for 1st</span><br><span class="line">                        treeifyBin(tab, hash);</span><br><span class="line">                    break;</span><br><span class="line">                &#125;</span><br><span class="line">                if (e.hash == hash &amp;&amp;</span><br><span class="line">                    ((k = e.key) == key || (key != null &amp;&amp; key.equals(k))))</span><br><span class="line">                    break;</span><br><span class="line">                p = e;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        //如果插入的键位存在于hashMap中则对对应的键位进行值的更新操作</span><br><span class="line">        if (e != null) &#123; // existing mapping for key</span><br><span class="line">            V oldValue = e.value;</span><br><span class="line">            if (!onlyIfAbsent || oldValue == null)</span><br><span class="line">                e.value = value;</span><br><span class="line">            afterNodeAccess(e);</span><br><span class="line">            return oldValue;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ++modCount;</span><br><span class="line">    //而当我们的HashMap的size大于阈值的时候也通用会调用resize()对HashMap进行扩容</span><br><span class="line">    if (++size &gt; threshold)</span><br><span class="line">        resize();</span><br><span class="line">    afterNodeInsertion(evict);</span><br><span class="line">    return null;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>个人理解： 根据源码可以看出如果数组为空就给它初始化数组（调用resize()方法），而当我们的HashMap的size大于阈值的时候也通用会调用resize()对HashMap进行扩容,因此resize方法即具备初始化又具备扩容的功能。</p>
-<p><strong>put方法逻辑总结</strong>  </p>
-<ol>
-<li>若HashMap未被初始化，则进行初始化操作；</li>
-<li>对key求Hash值，依据Hash值计算下标；</li>
-<li>若未发生碰撞，则直接放入桶中；</li>
-<li>若发生碰撞，则以链表的方式链接到后面；</li>
-<li>若链表长度超过阈值，且HashMap匀速超过最低树化容量，则将链表转成红黑树；</li>
-<li>若节点已经存在，则用新值替代旧值；</li>
-<li>若桶满了（默认容量16*扩容因子0.75），就需要resize(扩容2倍后重排)；</li>
-</ol>
-<h5 id="HashMap的-get-方法"><a href="#HashMap的-get-方法" class="headerlink" title="HashMap的 get()方法"></a>HashMap的 get()方法</h5><p>源码分析</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">public V get(Object key) &#123;</span><br><span class="line">    Node&lt;K,V&gt; e;</span><br><span class="line">    return (e = getNode(hash(key), key)) == null ? null : e.value;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">final Node&lt;K,V&gt; getNode(int hash, Object key) &#123;</span><br><span class="line">    Node&lt;K,V&gt;[] tab; Node&lt;K,V&gt; first, e; int n; K k;</span><br><span class="line">    if ((tab = table) != null &amp;&amp; (n = tab.length) &gt; 0 &amp;&amp;</span><br><span class="line">        (first = tab[(n - 1) &amp; hash]) != null) &#123;</span><br><span class="line">        if (first.hash == hash &amp;&amp; // always check first node</span><br><span class="line">            ((k = first.key) == key || (key != null &amp;&amp; key.equals(k))))</span><br><span class="line">            return first;</span><br><span class="line">        if ((e = first.next) != null) &#123;</span><br><span class="line">            if (first instanceof TreeNode)</span><br><span class="line">                return ((TreeNode&lt;K,V&gt;)first).getTreeNode(hash, key);</span><br><span class="line">            do &#123;</span><br><span class="line">                if (e.hash == hash &amp;&amp;</span><br><span class="line">                    ((k = e.key) == key || (key != null &amp;&amp; key.equals(k))))</span><br><span class="line">                    return e;</span><br><span class="line">            &#125; while ((e = e.next) != null);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return null;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>get方法逻辑总结</strong>  </p>
-<ol>
-<li>使用键对象的hashCode 通过hash算法找到bucket的位置；</li>
-<li>找到bucket位置之后调用 key.equals(k) 去找到链表中正确的节点最终找到要找的值，并返回；</li>
-</ol>
-<h4 id="HashMap如何有效减少碰撞"><a href="#HashMap如何有效减少碰撞" class="headerlink" title="HashMap如何有效减少碰撞"></a>HashMap如何有效减少碰撞</h4><ul>
-<li>扰动函数：促使元素位置分布均匀，减少碰撞机率；对于很多元素我们能够通过数组来直接去获取，hash算法内部实现目的是让不同的对象返回不同的hashCode</li>
-<li>使用final对象，并采用合适的equals和hashCode()方法:final类建议作为key是利用了其不可变性，如果一个key可以随便修改，那么修改后在hashmap就找不到了；适合String,Integer这样的键</li>
-</ul>
-<h4 id="HashMap的-hash-方法"><a href="#HashMap的-hash-方法" class="headerlink" title="HashMap的 hash()方法"></a>HashMap的 hash()方法</h4><p>源码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">static final int hash(Object key) &#123;</span><br><span class="line">    int h;</span><br><span class="line">    return (key == null) ? 0 : (h = key.hashCode()) ^ (h &gt;&gt;&gt; 16);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ol>
-<li>先获取key的hashCode,再将高位数移动16位，再与原先的数据异或运算<br><img src="/2019/11/10/HashMap/%E4%BB%8E%E8%8E%B7%E5%8F%96hash%E5%88%B0%E6%95%A3%E5%88%97%E7%9A%84%E8%BF%87%E7%A8%8B.jpg" alt="从获取hash到散列的过程"><br>如上图：key的hashCode是返回int散列值，如果直接拿这个散列值作为下标去访问hashMap数组的话，考虑到二进制的三十二位int范围</li>
-</ol>
-<p>-2147483648到2147483648，只要hash函数映射的均匀一般很难出现碰撞，一个40亿长度的数组内存是放不下的，况且HashMap的最初始数组大小才16，所以直接拿散列值用不现实！  直接将高半区向右移动16位再跟自己去做异或，可以混合原始hash码的高位和低位以此来加大低位的随机性，混合后后的低位掺杂了高位的特征，从速度功效考虑，也不会有太大的开销。</p>
-<h4 id="HashMap的-扩容方法"><a href="#HashMap的-扩容方法" class="headerlink" title="HashMap的 扩容方法"></a>HashMap的 扩容方法</h4><p>当hashMap无法装载更多的元素时，对象就需要扩大数组的长度；使用一个新的较大的数组来代替老的数组；hashMap的默认负载因子是0.75；当一个hashMap填满了75%的bucket的时候，将会创建原来hashMap大小的两倍的bucket数组来重新调整map的大小，这个过程是 rehashing</p>
-<h4 id="HashMap扩容问题"><a href="#HashMap扩容问题" class="headerlink" title="HashMap扩容问题"></a>HashMap扩容问题</h4><ul>
-<li>多线程环境下，调整大小会存在条件竞争，容易造成死锁</li>
-<li>rehashing是一个比较耗时的过程</li>
-</ul>
-
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/Java常用类库与技巧/">Java常用类库与技巧</a>
-
-      
-  <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HashMap/">HashMap</a></li></ul>
-
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
 
 
   <nav id="page-nav">
@@ -1333,6 +1337,42 @@
               <div class="widget-entry-summary" style="margin: 0;">
             
 
+              <h6 style="margin: 0;"><a href="/2019/11/19/容器部署/">容器部署</a></h6>
+              <span>November 19, 2019</span>
+            </div>
+
+          </li>
+        
+          <li class="clearfix">
+
+            
+              <div class="widget-entry-summary" style="margin: 0;">
+            
+
+              <h6 style="margin: 0;"><a href="/2019/11/18/链路监控/">服务跟踪</a></h6>
+              <span>November 18, 2019</span>
+            </div>
+
+          </li>
+        
+          <li class="clearfix">
+
+            
+              <div class="widget-entry-summary" style="margin: 0;">
+            
+
+              <h6 style="margin: 0;"><a href="/2019/11/18/服务跟踪/">链路监控</a></h6>
+              <span>November 18, 2019</span>
+            </div>
+
+          </li>
+        
+          <li class="clearfix">
+
+            
+              <div class="widget-entry-summary" style="margin: 0;">
+            
+
               <h6 style="margin: 0;"><a href="/2019/11/18/服务容错Hystrix/">服务容错Hystrix</a></h6>
               <span>November 18, 2019</span>
             </div>
@@ -1363,42 +1403,6 @@
 
           </li>
         
-          <li class="clearfix">
-
-            
-              <div class="widget-entry-summary" style="margin: 0;">
-            
-
-              <h6 style="margin: 0;"><a href="/2019/11/13/统一配置中心/">统一配置中心</a></h6>
-              <span>November 13, 2019</span>
-            </div>
-
-          </li>
-        
-          <li class="clearfix">
-
-            
-              <div class="widget-entry-summary" style="margin: 0;">
-            
-
-              <h6 style="margin: 0;"><a href="/2019/11/13/消息和异步/">消息和异步</a></h6>
-              <span>November 13, 2019</span>
-            </div>
-
-          </li>
-        
-          <li class="clearfix">
-
-            
-              <div class="widget-entry-summary" style="margin: 0;">
-            
-
-              <h6 style="margin: 0;"><a href="/2019/11/11/应用通信/">应用通信</a></h6>
-              <span>November 11, 2019</span>
-            </div>
-
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -1408,7 +1412,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/GC相关/">GC相关</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java多线程与并发/">Java多线程与并发</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java常用类库与技巧/">Java常用类库与技巧</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Redis/">Redis</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot-实战/">Spring Boot 实战</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务实战/">微服务实战</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">6</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/GC相关/">GC相关</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java多线程与并发/">Java多线程与并发</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java常用类库与技巧/">Java常用类库与技巧</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Redis/">Redis</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot-实战/">Spring Boot 实战</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务实战/">微服务实战</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">6</span></li></ul>
     </div>
   </div>
 
@@ -1418,7 +1422,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ACID/">ACID</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AOF/">AOF</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AOP/">AOP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ClassLoader/">ClassLoader</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ConcurrentHashMap/">ConcurrentHashMap</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Config-Clent/">Config Clent</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Config-Server/">Config Server</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cookie和动态路由/">Cookie和动态路由</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Eureka/">Eureka</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/">HTTP</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HashMap/">HashMap</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hashtable/">Hashtable</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hystrix/">Hystrix</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IOC/">IOC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO机制/">IO机制</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/InnoDB/">InnoDB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/J-U-C包的梳理/">J.U.C包的梳理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM内存结构模型/">JVM内存结构模型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java特性/">Java特性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/List/">List</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyISAM/">MyISAM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OSI七层模型/">OSI七层模型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RDB/">RDB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTO/">RTO</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTT/">RTT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RabbitMQ/">RabbitMQ</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Set/">Set</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cliud-Stream/">Spring Cliud Stream</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cloud-Bus/">Spring Cloud Bus</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP的三次握手/">TCP的三次握手</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP的四次挥手/">TCP的四次挥手</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Thread和Runnable/">Thread和Runnable</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UDP/">UDP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Zuul/">Zuul</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interrupt/">interrupt</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lombok/">lombok</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/notify和notifyall/">notify和notifyall</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sleep和wait/">sleep和wait</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql调优/">sql调优</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/start和run/">start和run</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/yield/">yield</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式锁/">分布式锁</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/反射/">反射</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/回收算法/">回收算法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多路I-O复用模型/">多路I/O复用模型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密集索引/">密集索引</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/平台无关性/">平台无关性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异常/">异常</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异步队列/">异步队列</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/当前读/">当前读</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/快照读/">快照读</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库事务/">数据库事务</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库架构/">数据库架构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/新生代垃圾收集器/">新生代垃圾收集器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/日志框架/">日志框架</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/服务容错/">服务容错</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/服务网关/">服务网关</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/标记算法/">标记算法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/滑动窗口/">滑动窗口</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/稀疏索引/">稀疏索引</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/类的装载/">类的装载</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/索引/">索引</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/索引数据结构/">索引数据结构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线程共享/">线程共享</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线程状态/">线程状态</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线程独占/">线程独占</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/老年代垃圾收集器/">老年代垃圾收集器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/语法/">语法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/跨域/">跨域</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/进程和线程/">进程和线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/鉴权/">鉴权</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/锁模块/">锁模块</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/限流/">限流</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ACID/">ACID</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AOF/">AOF</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AOP/">AOP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ClassLoader/">ClassLoader</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ConcurrentHashMap/">ConcurrentHashMap</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Config-Clent/">Config Clent</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Config-Server/">Config Server</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cookie和动态路由/">Cookie和动态路由</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Eureka/">Eureka</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/">HTTP</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HashMap/">HashMap</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hashtable/">Hashtable</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hystrix/">Hystrix</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IOC/">IOC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO机制/">IO机制</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/InnoDB/">InnoDB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/J-U-C包的梳理/">J.U.C包的梳理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM内存结构模型/">JVM内存结构模型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java特性/">Java特性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/List/">List</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyISAM/">MyISAM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OSI七层模型/">OSI七层模型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RDB/">RDB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTO/">RTO</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTT/">RTT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RabbitMQ/">RabbitMQ</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Set/">Set</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cliud-Stream/">Spring Cliud Stream</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cloud-Bus/">Spring Cloud Bus</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cloud-Sleuth/">Spring Cloud Sleuth</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP的三次握手/">TCP的三次握手</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP的四次挥手/">TCP的四次挥手</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Thread和Runnable/">Thread和Runnable</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UDP/">UDP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Zipkin/">Zipkin</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Zuul/">Zuul</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interrupt/">interrupt</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lombok/">lombok</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/notify和notifyall/">notify和notifyall</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sleep和wait/">sleep和wait</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql调优/">sql调优</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/start和run/">start和run</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/yield/">yield</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式锁/">分布式锁</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/反射/">反射</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/回收算法/">回收算法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多路I-O复用模型/">多路I/O复用模型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密集索引/">密集索引</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/平台无关性/">平台无关性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异常/">异常</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异步队列/">异步队列</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/当前读/">当前读</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/快照读/">快照读</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库事务/">数据库事务</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库架构/">数据库架构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/新生代垃圾收集器/">新生代垃圾收集器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/日志框架/">日志框架</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/服务容错/">服务容错</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/服务网关/">服务网关</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/服务跟踪/">服务跟踪</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/标记算法/">标记算法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/滑动窗口/">滑动窗口</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/稀疏索引/">稀疏索引</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/类的装载/">类的装载</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/索引/">索引</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/索引数据结构/">索引数据结构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线程共享/">线程共享</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线程状态/">线程状态</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线程独占/">线程独占</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/老年代垃圾收集器/">老年代垃圾收集器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/语法/">语法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/跨域/">跨域</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/进程和线程/">进程和线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/鉴权/">鉴权</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/链路监控/">链路监控</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/锁模块/">锁模块</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/限流/">限流</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -1428,7 +1432,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/ACID/" style="font-size: 10px;">ACID</a> <a href="/tags/AOF/" style="font-size: 10px;">AOF</a> <a href="/tags/AOP/" style="font-size: 10px;">AOP</a> <a href="/tags/ClassLoader/" style="font-size: 10px;">ClassLoader</a> <a href="/tags/ConcurrentHashMap/" style="font-size: 10px;">ConcurrentHashMap</a> <a href="/tags/Config-Clent/" style="font-size: 10px;">Config Clent</a> <a href="/tags/Config-Server/" style="font-size: 10px;">Config Server</a> <a href="/tags/Cookie和动态路由/" style="font-size: 10px;">Cookie和动态路由</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Eureka/" style="font-size: 10px;">Eureka</a> <a href="/tags/HTTP/" style="font-size: 15px;">HTTP</a> <a href="/tags/HashMap/" style="font-size: 10px;">HashMap</a> <a href="/tags/Hashtable/" style="font-size: 10px;">Hashtable</a> <a href="/tags/Hystrix/" style="font-size: 10px;">Hystrix</a> <a href="/tags/IOC/" style="font-size: 10px;">IOC</a> <a href="/tags/IO机制/" style="font-size: 10px;">IO机制</a> <a href="/tags/InnoDB/" style="font-size: 10px;">InnoDB</a> <a href="/tags/J-U-C包的梳理/" style="font-size: 10px;">J.U.C包的梳理</a> <a href="/tags/JVM内存结构模型/" style="font-size: 10px;">JVM内存结构模型</a> <a href="/tags/Java特性/" style="font-size: 10px;">Java特性</a> <a href="/tags/List/" style="font-size: 10px;">List</a> <a href="/tags/MyISAM/" style="font-size: 10px;">MyISAM</a> <a href="/tags/OSI七层模型/" style="font-size: 10px;">OSI七层模型</a> <a href="/tags/RDB/" style="font-size: 10px;">RDB</a> <a href="/tags/RTO/" style="font-size: 10px;">RTO</a> <a href="/tags/RTT/" style="font-size: 10px;">RTT</a> <a href="/tags/RabbitMQ/" style="font-size: 10px;">RabbitMQ</a> <a href="/tags/Set/" style="font-size: 10px;">Set</a> <a href="/tags/Spring-Cliud-Stream/" style="font-size: 10px;">Spring Cliud Stream</a> <a href="/tags/Spring-Cloud-Bus/" style="font-size: 10px;">Spring Cloud Bus</a> <a href="/tags/TCP的三次握手/" style="font-size: 10px;">TCP的三次握手</a> <a href="/tags/TCP的四次挥手/" style="font-size: 10px;">TCP的四次挥手</a> <a href="/tags/Thread和Runnable/" style="font-size: 10px;">Thread和Runnable</a> <a href="/tags/UDP/" style="font-size: 10px;">UDP</a> <a href="/tags/Zuul/" style="font-size: 10px;">Zuul</a> <a href="/tags/interrupt/" style="font-size: 10px;">interrupt</a> <a href="/tags/lombok/" style="font-size: 10px;">lombok</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/notify和notifyall/" style="font-size: 10px;">notify和notifyall</a> <a href="/tags/sleep和wait/" style="font-size: 10px;">sleep和wait</a> <a href="/tags/sql调优/" style="font-size: 10px;">sql调优</a> <a href="/tags/start和run/" style="font-size: 10px;">start和run</a> <a href="/tags/yield/" style="font-size: 10px;">yield</a> <a href="/tags/分布式锁/" style="font-size: 10px;">分布式锁</a> <a href="/tags/反射/" style="font-size: 10px;">反射</a> <a href="/tags/回收算法/" style="font-size: 10px;">回收算法</a> <a href="/tags/多路I-O复用模型/" style="font-size: 10px;">多路I/O复用模型</a> <a href="/tags/密集索引/" style="font-size: 10px;">密集索引</a> <a href="/tags/平台无关性/" style="font-size: 10px;">平台无关性</a> <a href="/tags/异常/" style="font-size: 10px;">异常</a> <a href="/tags/异步队列/" style="font-size: 10px;">异步队列</a> <a href="/tags/当前读/" style="font-size: 10px;">当前读</a> <a href="/tags/快照读/" style="font-size: 10px;">快照读</a> <a href="/tags/数据库事务/" style="font-size: 10px;">数据库事务</a> <a href="/tags/数据库架构/" style="font-size: 10px;">数据库架构</a> <a href="/tags/新生代垃圾收集器/" style="font-size: 10px;">新生代垃圾收集器</a> <a href="/tags/日志框架/" style="font-size: 10px;">日志框架</a> <a href="/tags/服务容错/" style="font-size: 10px;">服务容错</a> <a href="/tags/服务网关/" style="font-size: 10px;">服务网关</a> <a href="/tags/标记算法/" style="font-size: 10px;">标记算法</a> <a href="/tags/滑动窗口/" style="font-size: 10px;">滑动窗口</a> <a href="/tags/稀疏索引/" style="font-size: 10px;">稀疏索引</a> <a href="/tags/类的装载/" style="font-size: 10px;">类的装载</a> <a href="/tags/索引/" style="font-size: 15px;">索引</a> <a href="/tags/索引数据结构/" style="font-size: 10px;">索引数据结构</a> <a href="/tags/线程共享/" style="font-size: 10px;">线程共享</a> <a href="/tags/线程状态/" style="font-size: 10px;">线程状态</a> <a href="/tags/线程独占/" style="font-size: 10px;">线程独占</a> <a href="/tags/老年代垃圾收集器/" style="font-size: 10px;">老年代垃圾收集器</a> <a href="/tags/语法/" style="font-size: 10px;">语法</a> <a href="/tags/跨域/" style="font-size: 10px;">跨域</a> <a href="/tags/进程和线程/" style="font-size: 10px;">进程和线程</a> <a href="/tags/鉴权/" style="font-size: 10px;">鉴权</a> <a href="/tags/锁模块/" style="font-size: 20px;">锁模块</a> <a href="/tags/限流/" style="font-size: 10px;">限流</a>
+      <a href="/tags/ACID/" style="font-size: 10px;">ACID</a> <a href="/tags/AOF/" style="font-size: 10px;">AOF</a> <a href="/tags/AOP/" style="font-size: 10px;">AOP</a> <a href="/tags/ClassLoader/" style="font-size: 10px;">ClassLoader</a> <a href="/tags/ConcurrentHashMap/" style="font-size: 10px;">ConcurrentHashMap</a> <a href="/tags/Config-Clent/" style="font-size: 10px;">Config Clent</a> <a href="/tags/Config-Server/" style="font-size: 10px;">Config Server</a> <a href="/tags/Cookie和动态路由/" style="font-size: 10px;">Cookie和动态路由</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Eureka/" style="font-size: 10px;">Eureka</a> <a href="/tags/HTTP/" style="font-size: 15px;">HTTP</a> <a href="/tags/HashMap/" style="font-size: 10px;">HashMap</a> <a href="/tags/Hashtable/" style="font-size: 10px;">Hashtable</a> <a href="/tags/Hystrix/" style="font-size: 10px;">Hystrix</a> <a href="/tags/IOC/" style="font-size: 10px;">IOC</a> <a href="/tags/IO机制/" style="font-size: 10px;">IO机制</a> <a href="/tags/InnoDB/" style="font-size: 10px;">InnoDB</a> <a href="/tags/J-U-C包的梳理/" style="font-size: 10px;">J.U.C包的梳理</a> <a href="/tags/JVM内存结构模型/" style="font-size: 10px;">JVM内存结构模型</a> <a href="/tags/Java特性/" style="font-size: 10px;">Java特性</a> <a href="/tags/List/" style="font-size: 10px;">List</a> <a href="/tags/MyISAM/" style="font-size: 10px;">MyISAM</a> <a href="/tags/OSI七层模型/" style="font-size: 10px;">OSI七层模型</a> <a href="/tags/RDB/" style="font-size: 10px;">RDB</a> <a href="/tags/RTO/" style="font-size: 10px;">RTO</a> <a href="/tags/RTT/" style="font-size: 10px;">RTT</a> <a href="/tags/RabbitMQ/" style="font-size: 10px;">RabbitMQ</a> <a href="/tags/Set/" style="font-size: 10px;">Set</a> <a href="/tags/Spring-Cliud-Stream/" style="font-size: 10px;">Spring Cliud Stream</a> <a href="/tags/Spring-Cloud-Bus/" style="font-size: 10px;">Spring Cloud Bus</a> <a href="/tags/Spring-Cloud-Sleuth/" style="font-size: 10px;">Spring Cloud Sleuth</a> <a href="/tags/TCP的三次握手/" style="font-size: 10px;">TCP的三次握手</a> <a href="/tags/TCP的四次挥手/" style="font-size: 10px;">TCP的四次挥手</a> <a href="/tags/Thread和Runnable/" style="font-size: 10px;">Thread和Runnable</a> <a href="/tags/UDP/" style="font-size: 10px;">UDP</a> <a href="/tags/Zipkin/" style="font-size: 10px;">Zipkin</a> <a href="/tags/Zuul/" style="font-size: 10px;">Zuul</a> <a href="/tags/interrupt/" style="font-size: 10px;">interrupt</a> <a href="/tags/lombok/" style="font-size: 10px;">lombok</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/notify和notifyall/" style="font-size: 10px;">notify和notifyall</a> <a href="/tags/sleep和wait/" style="font-size: 10px;">sleep和wait</a> <a href="/tags/sql调优/" style="font-size: 10px;">sql调优</a> <a href="/tags/start和run/" style="font-size: 10px;">start和run</a> <a href="/tags/yield/" style="font-size: 10px;">yield</a> <a href="/tags/分布式锁/" style="font-size: 10px;">分布式锁</a> <a href="/tags/反射/" style="font-size: 10px;">反射</a> <a href="/tags/回收算法/" style="font-size: 10px;">回收算法</a> <a href="/tags/多路I-O复用模型/" style="font-size: 10px;">多路I/O复用模型</a> <a href="/tags/密集索引/" style="font-size: 10px;">密集索引</a> <a href="/tags/平台无关性/" style="font-size: 10px;">平台无关性</a> <a href="/tags/异常/" style="font-size: 10px;">异常</a> <a href="/tags/异步队列/" style="font-size: 10px;">异步队列</a> <a href="/tags/当前读/" style="font-size: 10px;">当前读</a> <a href="/tags/快照读/" style="font-size: 10px;">快照读</a> <a href="/tags/数据库事务/" style="font-size: 10px;">数据库事务</a> <a href="/tags/数据库架构/" style="font-size: 10px;">数据库架构</a> <a href="/tags/新生代垃圾收集器/" style="font-size: 10px;">新生代垃圾收集器</a> <a href="/tags/日志框架/" style="font-size: 10px;">日志框架</a> <a href="/tags/服务容错/" style="font-size: 10px;">服务容错</a> <a href="/tags/服务网关/" style="font-size: 10px;">服务网关</a> <a href="/tags/服务跟踪/" style="font-size: 10px;">服务跟踪</a> <a href="/tags/标记算法/" style="font-size: 10px;">标记算法</a> <a href="/tags/滑动窗口/" style="font-size: 10px;">滑动窗口</a> <a href="/tags/稀疏索引/" style="font-size: 10px;">稀疏索引</a> <a href="/tags/类的装载/" style="font-size: 10px;">类的装载</a> <a href="/tags/索引/" style="font-size: 15px;">索引</a> <a href="/tags/索引数据结构/" style="font-size: 10px;">索引数据结构</a> <a href="/tags/线程共享/" style="font-size: 10px;">线程共享</a> <a href="/tags/线程状态/" style="font-size: 10px;">线程状态</a> <a href="/tags/线程独占/" style="font-size: 10px;">线程独占</a> <a href="/tags/老年代垃圾收集器/" style="font-size: 10px;">老年代垃圾收集器</a> <a href="/tags/语法/" style="font-size: 10px;">语法</a> <a href="/tags/跨域/" style="font-size: 10px;">跨域</a> <a href="/tags/进程和线程/" style="font-size: 10px;">进程和线程</a> <a href="/tags/鉴权/" style="font-size: 10px;">鉴权</a> <a href="/tags/链路监控/" style="font-size: 15px;">链路监控</a> <a href="/tags/锁模块/" style="font-size: 20px;">锁模块</a> <a href="/tags/限流/" style="font-size: 10px;">限流</a>
     </div>
   </div>
 
@@ -1438,7 +1442,7 @@
     <h3 class="widget-title">Archives</h3>
 
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">25</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">25</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">1</span></li></ul>
     </div>
 
     <div>
@@ -1495,6 +1499,9 @@
 
 
     <!-- headerblur min height -->
+    
+      var headerblur = document.getElementById("header-blur");
+      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

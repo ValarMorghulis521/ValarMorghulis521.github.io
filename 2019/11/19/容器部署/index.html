@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>容器部署 | Contunued Story</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  
+  
+  
+  <meta name="description" content="实现IntelliJ IDEA快速部署到远程docker  IntelliJ IDEA安装Docker插件Docker  增加一个docker远程连接，此时连接的是我虚拟机上的docker  在项目的根目录下创建Dockerfile文件 1234567891011121314#指定基础镜像，在其上进行定制FROM hub.c.163.com/library/java:8-alpine#维护者信息M">
+<meta property="og:type" content="article">
+<meta property="og:title" content="容器部署">
+<meta property="og:url" content="http://yoursite.com/2019/11/19/容器部署/index.html">
+<meta property="og:site_name" content="Contunued Story">
+<meta property="og:description" content="实现IntelliJ IDEA快速部署到远程docker  IntelliJ IDEA安装Docker插件Docker  增加一个docker远程连接，此时连接的是我虚拟机上的docker  在项目的根目录下创建Dockerfile文件 1234567891011121314#指定基础镜像，在其上进行定制FROM hub.c.163.com/library/java:8-alpine#维护者信息M">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://yoursite.com/2019/11/19/容器部署/%E8%BF%9C%E7%A8%8Bdocker%E8%BF%9E%E6%8E%A5.png">
+<meta property="og:image" content="http://yoursite.com/2019/11/19/容器部署/%E6%96%B0%E5%A2%9Edocker%E5%90%AF%E5%8A%A8.png">
+<meta property="og:image" content="http://yoursite.com/2019/11/19/容器部署/%E7%AB%AF%E5%8F%A3%E4%BF%A1%E6%81%AF.png">
+<meta property="og:image" content="http://yoursite.com/2019/11/19/容器部署/%E5%90%AF%E5%8A%A8.png">
+<meta property="og:image" content="http://yoursite.com/2019/11/19/容器部署/%E6%9F%A5%E7%9C%8B.png">
+<meta property="og:updated_time" content="2019-11-24T04:43:05.889Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="容器部署">
+<meta name="twitter:description" content="实现IntelliJ IDEA快速部署到远程docker  IntelliJ IDEA安装Docker插件Docker  增加一个docker远程连接，此时连接的是我虚拟机上的docker  在项目的根目录下创建Dockerfile文件 1234567891011121314#指定基础镜像，在其上进行定制FROM hub.c.163.com/library/java:8-alpine#维护者信息M">
+<meta name="twitter:image" content="http://yoursite.com/2019/11/19/容器部署/%E8%BF%9C%E7%A8%8Bdocker%E8%BF%9E%E6%8E%A5.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Contunued Story" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+  <link rel="stylesheet" href="/css/fashion.css">
+  <link rel="stylesheet" href="/css/glyphs.css">
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  
+  <div class="site-header-image">
+    <img id="originBg" width="100%" alt="Hike News" src="">
+  </div>
+
+  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
+    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
+  </div>
+
+  <script>
+        var imgUrls = "css/images/pose01.jpg,https://source.unsplash.com/collection/954550/1920x1080,https://source.unsplash.com/collection/954550/1920x1081".split(",");
+        var random = Math.floor((Math.random() * imgUrls.length ));
+        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+          document.getElementById("originBg").src=imgUrls[random];
+          document.getElementById("blurBg").src=imgUrls[random];
+        } else {
+          document.getElementById("originBg").src='/' + imgUrls[random];
+          document.getElementById("blurBg").src='/' + imgUrls[random];
+        }
+    </script>
+
+
+
+
+<header id="allheader" class="site-header" role="banner" 
+   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="Contunued Story" rel="home"> Contunued Story </a>
+            
+          </h1>
+          
+          
+            <div class="site-description">Like a bird in the sky</div>
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">Home</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">Archives</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">Categories</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">Tags</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">About</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-容器部署" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      容器部署
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/11/19/容器部署/" class="article-date">
+	  <time datetime="2019-11-19T05:20:36.000Z" itemprop="datePublished">November 19, 2019</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/微服务实战/">微服务实战</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="实现IntelliJ-IDEA快速部署到远程docker"><a href="#实现IntelliJ-IDEA快速部署到远程docker" class="headerlink" title="实现IntelliJ IDEA快速部署到远程docker"></a>实现IntelliJ IDEA快速部署到远程docker</h2><hr>
+<ol>
+<li><p>IntelliJ IDEA安装Docker插件Docker</p>
+</li>
+<li><p>增加一个docker远程连接，此时连接的是我虚拟机上的docker<br><img src="/2019/11/19/容器部署/%E8%BF%9C%E7%A8%8Bdocker%E8%BF%9E%E6%8E%A5.png" alt></p>
+</li>
+<li><p>在项目的根目录下创建Dockerfile文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">#指定基础镜像，在其上进行定制</span><br><span class="line">FROM hub.c.163.com/library/java:8-alpine</span><br><span class="line"></span><br><span class="line">#维护者信息</span><br><span class="line">MAINTAINER sunchenming &lt;scm_5@outlook.com&gt;</span><br><span class="line"></span><br><span class="line">#添加target/*.jar 到容器里</span><br><span class="line">ADD target/*.jar app.jar</span><br><span class="line"></span><br><span class="line">#声明运行时容器提供服务端口，这只是一个声明，在运行时并不会因为这个声明应用就会开启这个端口的服务</span><br><span class="line">EXPOSE 8761</span><br><span class="line"></span><br><span class="line">#指定容器启动程序及参数   &lt;ENTRYPOINT&gt; &quot;&lt;CMD&gt;&quot;</span><br><span class="line">ENTRYPOINT [&quot;java&quot;,&quot;-jar&quot;,&quot;app.jar&quot;]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>打开IDEA右上角的 Run/Debug Configurations，新增Docker启动方式，然后在配置中填写如下信息</p>
+<p> <img src="/2019/11/19/容器部署/%E6%96%B0%E5%A2%9Edocker%E5%90%AF%E5%8A%A8.png" alt></p>
+<p> <img src="/2019/11/19/容器部署/%E7%AB%AF%E5%8F%A3%E4%BF%A1%E6%81%AF.png" alt></p>
+</li>
+<li><p>点击启动，构建成功</p>
+<p> <img src="/2019/11/19/容器部署/%E5%90%AF%E5%8A%A8.png" alt></p>
+</li>
+<li><p>查看docker镜像</p>
+<p>  <img src="/2019/11/19/容器部署/%E6%9F%A5%E7%9C%8B.png" alt></p>
+</li>
+<li><p>将镜像推送到阿里云的镜像个人中心</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sudo docker login --username=sunchenming registry.cn-hangzhou.aliyuncs.com</span><br><span class="line">$ sudo docker tag [ImageId] registry.cn-hangzhou.aliyuncs.com/monster_body/springcloud_eureka:[镜像版本号]</span><br><span class="line">$ sudo docker push registry.cn-hangzhou.aliyuncs.com/monster_body/springcloud_eureka:[镜像版本号]</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="Ranch"><a href="#Ranch" class="headerlink" title="Ranch"></a>Ranch</h2><hr>
+<p>Rancher入门：<a href="https://www.jianshu.com/p/3a492440c89b" target="_blank" rel="noopener">https://www.jianshu.com/p/3a492440c89b</a>  </p>
+<p>Rancher是使用一系列的Docker容器进行部署的。运行Rancher跟启动两个容器一样简单。一个容器作为管理服务器部署，另外一个作为集群节点的Agent部署  </p>
+<ol>
+<li><p>使用docker安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run -d --restart=unless-stopped -p 8080:8080 rancher/server:stable</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>确认安全组或防火墙允许以下通讯:与其他所有主机之间的 UDP 端口 500 和 4500 (用于IPsec网络)  </p>
+</li>
+</ol>
+<p>防火墙如何开启和关闭？  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl start firewalld</span><br><span class="line">sudo systemctl stop firewalld</span><br><span class="line"></span><br><span class="line">firewall-cmd  --permanent --zone=public --add-port=4500/udp 开启</span><br><span class="line">nc -vuz 192.168.1.106 500</span><br><span class="line">firewall-cmd --reload   //更新防火墙规则</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><p>在Ranch中添加主机，启动一台注册了Rancher-angent的主机</p>
+</li>
+<li><p>在应用选项-添加应用-springcloud</p>
+</li>
+<li><p>在springcloud应用下去添加服务</p>
+</li>
+</ol>
+<h2 id="项目版本升级"><a href="#项目版本升级" class="headerlink" title="项目版本升级"></a>项目版本升级</h2>
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/微服务实战/">微服务实战</a>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2019/11/18/链路监控/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">服务跟踪</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#实现IntelliJ-IDEA快速部署到远程docker"><span class="nav-number">1.</span> <span class="nav-text">实现IntelliJ IDEA快速部署到远程docker</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ranch"><span class="nav-number">2.</span> <span class="nav-text">Ranch</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#项目版本升级"><span class="nav-number">3.</span> <span class="nav-text">项目版本升级</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+<!-- Donate -->
+
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2019 Contunued Story All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+      var headerblur = document.getElementById("header-blur");
+      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/miku.model.json"},"display":{"position":"right","width":200,"height":400},"mobile":{"show":true,"scale":0.5},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

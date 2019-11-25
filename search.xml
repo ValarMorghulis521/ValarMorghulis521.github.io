@@ -9,20 +9,8 @@
       </categories>
   </entry>
   <entry>
-    <title><![CDATA[服务跟踪]]></title>
-    <url>%2F2019%2F11%2F18%2F%E9%93%BE%E8%B7%AF%E7%9B%91%E6%8E%A7%2F</url>
-    <content type="text"></content>
-      <categories>
-        <category>微服务实战</category>
-      </categories>
-      <tags>
-        <tag>链路监控</tag>
-        <tag>服务跟踪</tag>
-      </tags>
-  </entry>
-  <entry>
     <title><![CDATA[链路监控]]></title>
-    <url>%2F2019%2F11%2F18%2F%E6%9C%8D%E5%8A%A1%E8%B7%9F%E8%B8%AA%2F</url>
+    <url>%2F2019%2F11%2F18%2F%E9%93%BE%E8%B7%AF%E7%9B%91%E6%8E%A7%2F</url>
     <content type="text"><![CDATA[Spring Cloud Sleuth 添加sleuth的依赖 1234&lt;dependency&gt; &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt; &lt;artifactId&gt;spring-cloud-starter-sleuth&lt;/artifactId&gt;&lt;/dependency&gt; 把 org.springframework.cloud.netflix.feign包 调整日志级别，添加配置 123logging: level: org.springframework.cloud.netflix.feign: debug 调用order服务的创建订单接口1INFO [order,5b8dbc3132a06305,5b8dbc3132a06305,false] 8940 --- [nio-8083-exec-2] c.netflix.config.ChainedDynamicProperty : sleuth打印的四个值[服务名,id1,id2,true/false]: id1: trace id,一条链路里面最多包含一条trans id，即一条链路的唯一 标识； id2: span id，一条链路一面可以包含多个span id，它是一个基本的工作单元（比如发送一个HTTP请求）； true：将信息输出给其他服务（如zipkin），反之为false Zipkin 链路可视化工具,集成Zinpin的步骤： docker 下安装 1docker run -d -p 9411:9411 openzipkin/zipkin 添加Zipkin的依赖 1234&lt;dependency&gt; &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt; &lt;artifactId&gt;spring-cloud-starter-zipkin&lt;/artifactId&gt;&lt;/dependency&gt; 注：以上依赖包等同于 spring-cloud-starter-sleuth + spring-cloud-sleuth-zipkin的整合，因此原来的spring-cloud-starter-sleuth依赖可直接注释掉 配置参数 123456zipkin: base-url: http://192.168.1.106:9411///统计日志的百分比为全部，如果10%填0.1sleuth: sampler: percentage: 1 调用下单接口，访问 Zipkin地址 http://192.168.1.106:9411 OpenTracing OpenTracing是语义规范、是跨语言的，zipkin是根据这个规范的。 几个重要的概念：traceId：在哪生成的idspanId：下一次的请求idparentId：上一次请求的id 事件类型把一个请求的生命周期划成四种事件类型 cs(Client Send):客户端发起请求的时间 cr(Client Received):客户端收到处理完请求的时间 ss(Server Send):服务端处理完逻辑的时间 sr(Server Received):服务端收到调用端请求的时间]]></content>
       <categories>
         <category>微服务实战</category>
@@ -383,7 +371,7 @@
   <entry>
     <title><![CDATA[Redis简介]]></title>
     <url>%2F2019%2F10%2F16%2FRedis%E7%AE%80%E4%BB%8B%2F</url>
-    <content type="text"><![CDATA[缓存中间件——Memcache和Redis的区别Mecache：代码层次类似Hash 支持简单数据类型 不支持数据持久化存储 不支持主从 不支持分片Redis 数据类型丰富 支持数据磁盘持久化存储 支持主从 支持分片 为什么Redis能这么快100000+QPS(QPS既query per second 每秒内查询次数) 完全基于内存，绝大部分请求是纯粹的内存操作，执行效率高 数据结构简单，对数据操作也简单 采用单线程，单线程也能处理高并发请求，想多核也可启动多实例 使用多路I/O 复用模型，非阻塞IO redis 是跑在单线程中的，所有的操作又是按照线性顺序执行的，但是由于读写操作等待用户输入或者输出都是阻塞的，所以io操作在一般情况下往往不能直接返回，这会导致某一文件的io阻塞，进而导致整个进程无法对其他客户端提供服务而io多路复用就是为了解决这个问题的 多路I/O复用模型FD：File Descriptor,文件描述符一个打开的文件通过唯一的描述符进行引用，该描述符是打开文件的元数据到文件本身的映射 Redis采用的I/O多路复用函数：epoll/kqueue/evport/select? 因地制宜 优先选择时间复杂度为O(1)的I/O多路复用函数作为底层实现 以时间复杂度为O(n)的select作为保底 基于react设计模式监听I/O事件 Redis常用的数据类型 String:最基本的数据类型，二进制安全 Hash:String 元素组成的字典，适合用于存储对象 List:列表，按照String元素插入顺序排序 Set:String元素组成的无序集合，通过哈希表实现，不允许重复 Sorted-Set:通过分数来为集合中的成员进行从小到大的排序 用于计数的HyperLogLog ,用于支持存储地理信息位置的Geo 从海量数据查询某一固定的前缀key使用keys对线上的业务的影响KEYS pattern：查找所有符合给定模式pattern的key KEYS指令一次性返回所有匹配的key 键的数量过大会使服务器卡顿 KEYS CURSOR [MATCH pattern][COUNT count] 基于游标的迭代器，需要基于上一次的游标延续之前的迭代过程 以0作为游标开始一次新的迭代，知道命令返回游标0完成一次游历 不保证每次执行都返回某个给定数量的元素，支持模糊查询 一次返回的数量不可控，只能是大概率符合count参数 12//开始迭代返回以k1开始的key,希望一次返回10个scan 0 match k1* count 10]]></content>
+    <content type="text"><![CDATA[缓存中间件——Memcache和Redis的区别Mecache：代码层次类似Hash 支持简单数据类型 不支持数据持久化存储 不支持主从 不支持分片Redis 数据类型丰富 支持数据磁盘持久化存储 支持主从 支持分片 为什么Redis能这么快100000+QPS(QPS既query per second 每秒内查询次数) 完全基于内存，绝大部分请求是纯粹的内存操作，执行效率高 数据结构简单，对数据操作也简单 采用单线程，单线程也能处理高并发请求，想多核也可启动多实例 使用多路I/O 复用模型，非阻塞IO redis 是跑在单线程中的，所有的操作又是按照线性顺序执行的，但是由于读写操作等待用户输入或者输出都是阻塞的，所以io操作在一般情况下往往不能直接返回，这会导致某一文件的io阻塞，进而导致整个进程无法对其他客户端提供服务而io多路复用就是为了解决这个问题的 多路I/O复用模型FD：File Descriptor,文件描述符一个打开的文件通过唯一的描述符进行引用，该描述符是打开文件的元数据到文件本身的映射 Redis采用的I/O多路复用函数：epoll/kqueue/evport/select? 因地制宜 优先选择时间复杂度为O(1)的I/O多路复用函数作为底层实现 以时间复杂度为O(n)的select作为保底 基于react设计模式监听I/O事件 Redis常用的数据类型 String:最基本的数据类型，二进制安全 Hash:String 元素组成的字典，适合用于存储对象 List:列表，按照String元素插入顺序排序 Set:String元素组成的无序集合，通过哈希表实现，不允许重复 Sorted-Set:通过分数来为集合中的成员进行从小到大的排序 用于计数的HyperLogLog ,用于支持存储地理信息位置的Geo 从海量数据查询某一固定的前缀key使用keys对线上的业务的影响KEYS pattern：查找所有符合给定模式pattern的key KEYS指令一次性返回所有匹配的key 键的数量过大会使服务器卡顿 KEYS CURSOR [MATCH pattern][COUNT count] 基于游标的迭代器，需要基于上一次的游标延续之前的迭代过程 以0作为游标开始一次新的迭代，直到命令返回游标0完成一次游历 不保证每次执行都返回某个给定数量的元素，支持模糊查询 一次返回的数量不可控，只能是大概率符合count参数 12//开始迭代返回以k1开始的key,希望一次返回10个scan 0 match k1* count 10]]></content>
       <categories>
         <category>Redis</category>
       </categories>
@@ -488,7 +476,7 @@
   <entry>
     <title><![CDATA[数据库架构]]></title>
     <url>%2F2019%2F10%2F08%2F%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9E%B6%E6%9E%84%2F</url>
-    <content type="text"><![CDATA[如何去设计一个关系型数据库第一部分为存储部分，相当于文件系统，将数据持久化到存储设备中 第二部分为程序实例，对存储进行逻辑上的管理。 程序实例分为8个模块： 存储管理：将数据的逻辑关系转化为物理存储关系。 缓存机制：优化执行效率。 SQL解析：解析SQL语句。 日志管理：记录操作。 权限划分：进行多用户管理。 容灾机制：灾难恢复。 索引管理：优化数据查询效率。 锁管理：使数据库支持高并发。 常见问题 为什么要使用索引 什么样的信息能成为索引 索引的数据结构 密集索引和稀疏索引的区别 为什么要使用索引先说不使用索引情况下的全表扫描: 数据库存储的最小单位是块或者页,是由多行记录组成的。(一个表就是多个块或者多个页)我们把这些块或者页加载进来,然后对每个块或页进行轮训,找到目标返回,类似:要从一本字典的第一页开始查找数据,一页一页的查,如果数据量小还好,数据量大就很慢 所以我们推出索引的概念:也就是引入字典中目录的概念,我们可以通过字典的拼音,部首,进行一层又一层的有条理的查询而这些被另外定义出来的例如:拼音,部首,就可以叫做索引 简单讲就是:为了避免全表扫描,大幅提高查询数据的效率 什么样的信息能成为索引主键、唯一键、普通键 索引的数据结构 生成索引，建立二叉查找树进行二分查找 生成索引，建立B-Tree结构进行查找 生成索引，建立B+-Tree结构进行查找 生成索引，建立Hash结构进行查找]]></content>
+    <content type="text"><![CDATA[如何去设计一个关系型数据库第一部分为存储部分，相当于文件系统，将数据持久化到存储设备中 第二部分为程序实例，对存储进行逻辑上的管理。 程序实例分为8个模块： 存储管理：将数据的逻辑关系转化为物理存储关系。 缓存机制：优化执行效率。 SQL解析：解析SQL语句。 日志管理：记录操作。 权限划分：进行多用户管理。 容灾机制：灾难恢复。 索引管理：优化数据查询效率。 锁管理：使数据库支持高并发。 常见问题 为什么要使用索引 什么样的信息能成为索引 索引的数据结构 密集索引和稀疏索引的区别 为什么要使用索引先说不使用索引情况下的全表扫描: 数据库存储的最小单位是块或者页,是由多行记录组成的。(一个表就是多个块或者多个页)我们把这些块或者页加载进来,然后对每个块或页进行轮询,找到目标返回,类似:要从一本字典的第一页开始查找数据,一页一页的查,如果数据量小还好,数据量大就很慢 所以我们推出索引的概念:也就是引入字典中目录的概念,我们可以通过字典的拼音,部首,进行一层又一层的有条理的查询而这些被另外定义出来的例如:拼音,部首,就可以叫做索引 简单讲就是:为了避免全表扫描,大幅提高查询数据的效率 什么样的信息能成为索引主键、唯一键、普通键 索引的数据结构 生成索引，建立二叉查找树进行二分查找 生成索引，建立B-Tree结构进行查找 生成索引，建立B+-Tree结构进行查找 生成索引，建立Hash结构进行查找]]></content>
       <categories>
         <category>数据库</category>
       </categories>
@@ -510,7 +498,7 @@
   <entry>
     <title><![CDATA[TCP的滑动窗口]]></title>
     <url>%2F2019%2F10%2F06%2FTCP%E7%9A%84%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%2F</url>
-    <content type="text"><![CDATA[RTT和RTO RTT:发送一个数据包到接受对应ACK所花费的时间 RTO:重传时间间隔；RTT是根据RTO计算出来的 我们要实现对数据的批量发送，TCP要解决可靠传输和包乱序的问题，所以TCP需要知道网络实际的数据处理带宽或是数据处理速度才不会引起网络拥塞导致丢包 TCP使用滑动窗口做流量控制与乱序重排 保证TCP可靠性 保证TCP的流控特性。（流量控制：window，用于接收方通知发送方自己还有多少缓冲区可以接受数据，发送方根据接收方的处理能力发送数据，不会导致接受不过来） TCP的传输可靠性来源于确认重传机制，TCP的滑动窗口可靠性也是建立在确认重传基础上。]]></content>
+    <content type="text"><![CDATA[RTT和RTO RTT:发送一个数据包到接受对应ACK所花费的时间 RTO:重传时间间隔；RTT是根据RTO计算出来的 我们要实现对数据的批量发送，TCP要解决可靠传输和包乱序的问题，所以TCP需要知道网络实际的数据处理带宽或是数据处理速度才不会引起网络拥塞导致丢包 TCP使用滑动窗口做流量控制与乱序重排 保证TCP可靠性 保证TCP的流控特性。（流量控制：window，用于接收方通知发送方自己还有多少缓冲区可以接收数据，发送方根据接收方的处理能力发送数据，不会导致接受不过来） TCP的传输可靠性来源于确认重传机制，TCP的滑动窗口可靠性也是建立在确认重传基础上。]]></content>
       <categories>
         <category>计算机网络</category>
       </categories>
@@ -578,7 +566,7 @@
   <entry>
     <title><![CDATA[TCP的三次握手和四次挥手]]></title>
     <url>%2F2019%2F05%2F22%2FTCP%E7%9A%84%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E5%92%8C%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B%2F</url>
-    <content type="text"><![CDATA[TCP的三次握手TCP报文头source port （源端口）destination（目标端口）Sequence Number（同步序号）Acknowledgement Number（确认序号）Offset（偏移量）Reserved（保留域）TCP Flags（标志位）Window（滑动窗口）CheckSum（检验和）Urgent Pointer（紧急指针）TCP Options（定义一些可选参数） TCP报文头包含源端口及目的端口，IP地址可以唯一标识主机，TCP协议加端口可以唯一标识主机中的一个进程。可以使用IP+协议+端口来唯一标识网络中的一个进程。在一些场景下也把这种模式称为“套接字”即Socket。 TCP FlagsURG: 紧急指针是否有效ACK: 表示确认标志，携带 ack 标志的报文也称为确认报文PSH: 提示接收端收到报文之后应该立即将数据推送给应用程 序，而不是放在缓冲区排队RET: 表示要求对方重新简历连接。SYN: 同步序列号，用于建立连接过程FIN: 传输结束标志，告知对方自己即将关闭连接。 TCP三次握手流程（“握手是为了建立连接”） 在TPC/IP协议中，TCP协议提供可靠的连接服务，采用三次握手建立一个连接 第一次握手： 建立连接时，客户端发送SYN包（seq=x）到服务器，并进入SYN_SENT状态，等待服务器确认 第二次握手：服务器收到SYN包，必须确认客户的SYN(ack=x+1),同时自己也发送一个SYN包（sql=y）,即SYN+ACK包，此时服务器进入SYN_RECV状态 第三次握手：客户端收到服务器的SYN+ACK包，向服务器发送确认包ACK(ack=y+1) ,此包发送完毕，客户端和服务器进入ESTABLISHED状态，完成三次握手各个状态的意义如下： LISTEN - 侦听来自远方TCP端口的连接请求； SYN-SENT -在发送连接请求后等待匹配的连接请求； SYN-RECEIVED - 在收到和发送一个连接请求后等待对连接请求的确认； ESTABLISHED- 代表一个打开的连接，数据可以传送给用户； 为什么需要三次握手才能建立连接为了初始化Sequence Number的初始值 首次握手隐患——SYN超时 Server收到Client的SYN，回复SYN-ACK的时候未收到ACK确认 Server不断重试直至超时，Linux默认5次，总共需要63秒断开连接。针对SYN Flood的防护措施客户端给服务器发送一个SYN报文，下线，服务器需要默认等63秒才会断开。通过这个方法可以耗尽服务器的SYN连接队列。 SYN队列满后，通过tcp_syncookies参数回发SYN Cookie 若为正常连接则Client会回发SYN Cookie，直接建立连接建立连接后，Client出现故障怎么办保活机制：建立TCP连接后，TCP有保活机制，以应对其中一端出现故障。若连接处于非活动状态，则开启保活功能的一方将向另一方发送保活探测报文，达到keepalive time时间间隔仍未收到响应则重试，若尝试次数达到保活探测数仍未收到对方的响应，则连接断开。 TCP的四次挥手TCP四次挥手流程（挥手是为了终止连接）第一次挥手： Client发送一个FIN,用来关闭Client到Server的数据传送，Client进入FIN_WAIT_1状态； 第二次挥手： Server收到FIN后，发送ACK给Client,确认序号为收到序号+1（与SYN相同，一个FIN占用一个序号），Server进入CLOSE_WAIT状态； 第三次握手： Serveer发送一个FIN,用来关闭Server到Client的数据传送，Server进入LAST_ACK状态； 第四次挥手： Clien收到FIN后，Client进入TIME_WAIT状态，急着发送一个ACK给Server,确认序号为收到的序号+1，Server进入CLOSED状态，完成四次挥手； TCP连接必须经过时间2MSL后才真正释放掉？ 保证有足够时间让对方收到ACK包 避免新旧连接混淆 为什么四次挥手才能断开连接因为TCP是全双工的，发送方和接收方都需要FIN报文和ACK报文 服务器出现大量CLOSE_WAIT状态的原因对方关闭socket连接，我方忙于读或写，没有及时关闭 检查代码，特别是释放资源的代码 检查配置，特别是处理请求的线程配置 netstat查看机器网络状态的指令12查看服务器处于各个状态下的连接数 netstat -n | awk &apos;/^tcp/&#123;++S[$NF]&#125;END(FOR(a in S) print a,S[a])&apos;]]></content>
+    <content type="text"><![CDATA[TCP的三次握手TCP报文头source port （源端口）destination（目标端口）Sequence Number（同步序号）Acknowledgement Number（确认序号）Offset（偏移量）Reserved（保留域）TCP Flags（标志位）Window（滑动窗口）CheckSum（检验和）Urgent Pointer（紧急指针）TCP Options（定义一些可选参数） TCP报文头包含源端口及目的端口，IP地址可以唯一标识主机，TCP协议加端口可以唯一标识主机中的一个进程。可以使用IP+协议+端口来唯一标识网络中的一个进程。在一些场景下也把这种模式称为“套接字”即Socket。 TCP FlagsURG: 紧急指针是否有效ACK: 表示确认标志，携带 ACK 标志的报文也称为确认报文PSH: 提示接收端收到报文之后应该立即将数据推送给应用程序，而不是放在缓冲区排队RET: 表示要求对方重新建立连接。SYN: 同步序列号，用于建立连接过程FIN: 传输结束标志，告知对方自己即将关闭连接。 TCP三次握手流程（“握手是为了建立连接”） 在TPC/IP协议中，TCP协议提供可靠的连接服务，采用三次握手建立一个连接 第一次握手： 建立连接时，客户端发送SYN包（seq=x）到服务器，并进入SYN_SENT状态，等待服务器确认 第二次握手：服务器收到SYN包，必须确认客户的SYN(ack=x+1),同时自己也发送一个SYN包（sql=y）,即SYN+ACK包，此时服务器进入SYN_RECV状态 第三次握手：客户端收到服务器的SYN+ACK包，向服务器发送确认包ACK(ack=y+1) ,此包发送完毕，客户端和服务器进入ESTABLISHED状态，完成三次握手各个状态的意义如下： LISTEN - 侦听来自远方TCP端口的连接请求； SYN-SENT -在发送连接请求后等待匹配的连接请求； SYN-RECEIVED - 在收到和发送一个连接请求后等待对连接请求的确认； ESTABLISHED- 代表一个打开的连接，数据可以传送给用户； 为什么需要三次握手才能建立连接为了初始化Sequence Number的初始值 首次握手隐患——SYN超时 Server收到Client的SYN，回复SYN-ACK的时候未收到ACK确认 Server不断重试直至超时，Linux默认5次，总共需要63秒断开连接。针对SYN Flood的防护措施客户端给服务器发送一个SYN报文，下线，服务器需要默认等63秒才会断开。通过这个方法可以耗尽服务器的SYN连接队列。 SYN队列满后，通过tcp_syncookies参数回发SYN Cookie 若为正常连接则Client会回发SYN Cookie，直接建立连接建立连接后，Client出现故障怎么办保活机制：建立TCP连接后，TCP有保活机制，以应对其中一端出现故障。若连接处于非活动状态，则开启保活功能的一方将向另一方发送保活探测报文，达到keepalive time时间间隔仍未收到响应则重试，若尝试次数达到保活探测数仍未收到对方的响应，则连接断开。 TCP的四次挥手TCP四次挥手流程（挥手是为了终止连接）第一次挥手： Client发送一个FIN,用来关闭Client到Server的数据传送，Client进入FIN_WAIT_1状态； 第二次挥手： Server收到FIN后，发送ACK给Client,确认序号为收到序号+1（与SYN相同，一个FIN占用一个序号），Server进入CLOSE_WAIT状态； 第三次握手： Server发送一个FIN,用来关闭Server到Client的数据传送，Server进入LAST_ACK状态； 第四次挥手： Clien收到FIN后，Client进入TIME_WAIT状态，接着发送一个ACK给Server,确认序号为收到的序号+1，Server进入CLOSED状态，完成四次挥手； TCP连接必须经过时间2MSL后才真正释放掉？ 保证有足够时间让对方收到ACK包 避免新旧连接混淆 为什么四次挥手才能断开连接因为TCP是全双工的，发送方和接收方都需要FIN报文和ACK报文 服务器出现大量CLOSE_WAIT状态的原因对方关闭socket连接，我方忙于读或写，没有及时关闭 检查代码，特别是释放资源的代码 检查配置，特别是处理请求的线程配置 netstat查看机器网络状态的指令12查看服务器处于各个状态下的连接数 netstat -n | awk &apos;/^tcp/&#123;++S[$NF]&#125;END(FOR(a in S) print a,S[a])&apos;]]></content>
       <categories>
         <category>计算机网络</category>
       </categories>

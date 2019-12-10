@@ -11,20 +11,20 @@
   
   
   
-  <meta name="description" content="前置概念Stop-the-World JVM由于要执行GC而停止了应用程序的执行 任何一种GC算法中都会发生 多数GC优化通过减少Stop-the-world发生的时间来提高程序性能  Safepoint 分析过程中对象引用关系不会发生变化的点 产生Safepoint的地方：方法调用；循环跳转；异常跳转 安全点数量得适中  JVM的运行模式 Server:启动较慢,采用的重量级虚拟机，对程序采用了">
+  <meta name="description" content="前置概念  Stop-the-World：  JVM由于要执行GC而停止了应用程序的执行 任何一种GC算法中都会发生 多数GC优化通过减少Stop-the-world发生的时间来提高程序性能    Safepoint 垃圾收集器的安全点  分析过程中对象引用关系不会发生变化的点 产生Safepoint的地方：方法调用；循环跳转；异常跳转 安全点数量得适中   常见的垃圾收集器 JVM的运行模式 S">
 <meta name="keywords" content="新生代垃圾收集器,老年代垃圾收集器">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java垃圾回收之垃圾回收器">
 <meta property="og:url" content="http://yoursite.com/2019/11/02/Java垃圾回收之垃圾回收器/index.html">
 <meta property="og:site_name" content="Contunued Story">
-<meta property="og:description" content="前置概念Stop-the-World JVM由于要执行GC而停止了应用程序的执行 任何一种GC算法中都会发生 多数GC优化通过减少Stop-the-world发生的时间来提高程序性能  Safepoint 分析过程中对象引用关系不会发生变化的点 产生Safepoint的地方：方法调用；循环跳转；异常跳转 安全点数量得适中  JVM的运行模式 Server:启动较慢,采用的重量级虚拟机，对程序采用了">
+<meta property="og:description" content="前置概念  Stop-the-World：  JVM由于要执行GC而停止了应用程序的执行 任何一种GC算法中都会发生 多数GC优化通过减少Stop-the-world发生的时间来提高程序性能    Safepoint 垃圾收集器的安全点  分析过程中对象引用关系不会发生变化的点 产生Safepoint的地方：方法调用；循环跳转；异常跳转 安全点数量得适中   常见的垃圾收集器 JVM的运行模式 S">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/2019/11/02/Java垃圾回收之垃圾回收器/%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E4%B9%8B%E9%97%B4%E7%9A%84%E8%81%94%E7%B3%BB.jpg">
 <meta property="og:image" content="http://yoursite.com/2019/11/02/Java垃圾回收之垃圾回收器/%E5%90%84%E5%BC%95%E7%94%A8%E7%9A%84%E5%AF%B9%E6%AF%94.jpg">
-<meta property="og:updated_time" content="2019-11-05T02:58:10.685Z">
+<meta property="og:updated_time" content="2019-12-10T05:11:42.038Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java垃圾回收之垃圾回收器">
-<meta name="twitter:description" content="前置概念Stop-the-World JVM由于要执行GC而停止了应用程序的执行 任何一种GC算法中都会发生 多数GC优化通过减少Stop-the-world发生的时间来提高程序性能  Safepoint 分析过程中对象引用关系不会发生变化的点 产生Safepoint的地方：方法调用；循环跳转；异常跳转 安全点数量得适中  JVM的运行模式 Server:启动较慢,采用的重量级虚拟机，对程序采用了">
+<meta name="twitter:description" content="前置概念  Stop-the-World：  JVM由于要执行GC而停止了应用程序的执行 任何一种GC算法中都会发生 多数GC优化通过减少Stop-the-world发生的时间来提高程序性能    Safepoint 垃圾收集器的安全点  分析过程中对象引用关系不会发生变化的点 产生Safepoint的地方：方法调用；循环跳转；异常跳转 安全点数量得适中   常见的垃圾收集器 JVM的运行模式 S">
 <meta name="twitter:image" content="http://yoursite.com/2019/11/02/Java垃圾回收之垃圾回收器/%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E4%B9%8B%E9%97%B4%E7%9A%84%E8%81%94%E7%B3%BB.jpg">
   
     <link rel="alternate" href="/atom.xml" title="Contunued Story" type="application/atom+xml">
@@ -164,50 +164,63 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h4 id="前置概念"><a href="#前置概念" class="headerlink" title="前置概念"></a>前置概念</h4><h5 id="Stop-the-World"><a href="#Stop-the-World" class="headerlink" title="Stop-the-World"></a>Stop-the-World</h5><ul>
+        <h3 id="前置概念"><a href="#前置概念" class="headerlink" title="前置概念"></a>前置概念</h3><hr>
+<blockquote>
+<p>Stop-the-World：</p>
+<ul>
 <li>JVM由于要执行GC而停止了应用程序的执行</li>
 <li>任何一种GC算法中都会发生</li>
 <li>多数GC优化通过减少Stop-the-world发生的时间来提高程序性能</li>
 </ul>
-<h5 id="Safepoint"><a href="#Safepoint" class="headerlink" title="Safepoint"></a>Safepoint</h5><ul>
+</blockquote>
+<blockquote>
+<p>Safepoint 垃圾收集器的安全点</p>
+<ul>
 <li>分析过程中对象引用关系不会发生变化的点</li>
 <li>产生Safepoint的地方：方法调用；循环跳转；异常跳转</li>
 <li>安全点数量得适中</li>
 </ul>
-<h5 id="JVM的运行模式"><a href="#JVM的运行模式" class="headerlink" title="JVM的运行模式"></a>JVM的运行模式</h5><ul>
+</blockquote>
+<h3 id="常见的垃圾收集器"><a href="#常见的垃圾收集器" class="headerlink" title="常见的垃圾收集器"></a>常见的垃圾收集器</h3><hr>
+<h4 id="JVM的运行模式"><a href="#JVM的运行模式" class="headerlink" title="JVM的运行模式"></a>JVM的运行模式</h4><ul>
 <li>Server:启动较慢,采用的重量级虚拟机，对程序采用了更多的优化；启动稳定后运行速度比Client快</li>
 <li>Client:启动较快</li>
 </ul>
 <h4 id="垃圾搜集器之间的联系"><a href="#垃圾搜集器之间的联系" class="headerlink" title="垃圾搜集器之间的联系"></a>垃圾搜集器之间的联系</h4><p><img src="/2019/11/02/Java垃圾回收之垃圾回收器/%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E4%B9%8B%E9%97%B4%E7%9A%84%E8%81%94%E7%B3%BB.jpg" alt></p>
-<h5 id="Serial收集器（-XX-UseSerialGC-复制算法）"><a href="#Serial收集器（-XX-UseSerialGC-复制算法）" class="headerlink" title="Serial收集器（-XX:UseSerialGC,复制算法）"></a>Serial收集器（-XX:UseSerialGC,复制算法）</h5><ul>
+<h4 id="年轻代垃圾收集器"><a href="#年轻代垃圾收集器" class="headerlink" title="年轻代垃圾收集器"></a>年轻代垃圾收集器</h4><h5 id="Serial收集器（-XX-UseSerialGC-复制算法）"><a href="#Serial收集器（-XX-UseSerialGC-复制算法）" class="headerlink" title="Serial收集器（-XX:UseSerialGC,复制算法）"></a>Serial收集器（-XX:UseSerialGC,复制算法）</h5><ul>
 <li>单线程收集，进行垃圾收集时必须暂停所有工作线程</li>
-<li>简单高效，Client模式下默认的年轻代收集器</li>
+<li>简单高效，Client模式下默认的年轻代收集器  </li>
+<li>尽可能缩短垃圾收集时用户线程的停顿时间，停顿时间短适合与用户交互的程序，良好的响应速度能提升用户体验</li>
 </ul>
 <h5 id="ParNew收集器（-XX-UseParNewGC-复制算法）"><a href="#ParNew收集器（-XX-UseParNewGC-复制算法）" class="headerlink" title="ParNew收集器（-XX:+UseParNewGC,复制算法）"></a>ParNew收集器（-XX:+UseParNewGC,复制算法）</h5><ul>
-<li>多线程收集，进行垃圾收集时必须暂停所有工作线程</li>
-<li>单核执行效率不如Serial,在多核下执行才有优势</li>
+<li>多线程收集，其余行为、特点和Serial收集器一样</li>
+<li>单核执行效率不如Serial,在多核下执行才有优势；默认开启的收集线程数和CPU数量相同</li>
 </ul>
 <h5 id="Parallel-Scavenge收集器（-XX-UseParallelGC-复制算法）"><a href="#Parallel-Scavenge收集器（-XX-UseParallelGC-复制算法）" class="headerlink" title="Parallel Scavenge收集器（-XX:+UseParallelGC,复制算法）"></a>Parallel Scavenge收集器（-XX:+UseParallelGC,复制算法）</h5><ul>
-<li>比起管住用户线程停顿时间，更关注系统的吞吐量</li>
-<li>在多核模式下执行才有优势，Server模式下默认的年轻代收集器</li>
+<li>比起管住用户线程停顿时间，更关注系统的吞吐量，高吞吐量可以高效的利用cpu时间尽可能快完成任务，适合在后台运算而不需要太多交互任务的情况</li>
+<li>在多核模式下执行才有优势，Server模式下默认的年轻代收集器  配合自适应调节策略 -XX:+UseAdaptiveSizePolicy 把内存管理的调优任务交给虚拟机完成</li>
 </ul>
-<h5 id="Serial-Old收集器（-XX-UseSerialOldGC-标记-整理算法）"><a href="#Serial-Old收集器（-XX-UseSerialOldGC-标记-整理算法）" class="headerlink" title="Serial Old收集器（-XX:UseSerialOldGC,标记-整理算法）"></a>Serial Old收集器（-XX:UseSerialOldGC,标记-整理算法）</h5><ul>
+<blockquote>
+<p>吞吐量 = 运行用户代码时间/(运行用户代码时间+垃圾收集时间)  </p>
+</blockquote>
+<h4 id="老年代垃圾收集器"><a href="#老年代垃圾收集器" class="headerlink" title="老年代垃圾收集器"></a>老年代垃圾收集器</h4><h5 id="Serial-Old收集器（-XX-UseSerialOldGC-标记-整理算法）"><a href="#Serial-Old收集器（-XX-UseSerialOldGC-标记-整理算法）" class="headerlink" title="Serial Old收集器（-XX:UseSerialOldGC,标记-整理算法）"></a>Serial Old收集器（-XX:UseSerialOldGC,标记-整理算法）</h5><ul>
 <li>单线程收集，进行垃圾收集时必须暂停所有工作线程</li>
 <li>简单高效，Client模式下默认的老年代收集器</li>
 </ul>
 <h5 id="Parllel-Old收集器（-XX-UseParallelOldGC-标记-整理算法）"><a href="#Parllel-Old收集器（-XX-UseParallelOldGC-标记-整理算法）" class="headerlink" title="Parllel Old收集器（-XX:+UseParallelOldGC,标记-整理算法）"></a>Parllel Old收集器（-XX:+UseParallelOldGC,标记-整理算法）</h5><ul>
-<li>多线程收集，进行垃圾收集时必须暂停所有工作线程</li>
+<li>多线程收集，吞吐量优先 进行垃圾收集时必须暂停所有工作线程</li>
 <li>单核执行效率不如Serial,在多核下执行才有优势</li>
 </ul>
 <h5 id="CMS收集器（-XX-UseConcMarkSweepGC-标记-清除算法）"><a href="#CMS收集器（-XX-UseConcMarkSweepGC-标记-清除算法）" class="headerlink" title="CMS收集器（-XX:+UseConcMarkSweepGC,标记-清除算法）"></a>CMS收集器（-XX:+UseConcMarkSweepGC,标记-清除算法）</h5><ol>
 <li>初始标记：stop-the-world</li>
 <li>并发标记：并发追溯标记，程序不会停顿</li>
-<li>并发预清理：查找执行并发编辑阶段从年轻代晋升到老年代的对象</li>
+<li>并发预清理：查找执行并发标记阶段从年轻代晋升到老年代的对象</li>
 <li>重新标记：暂停虚拟机，扫描CMS堆中剩余对象</li>
 <li>并发清理：清理垃圾对象，程序不会停顿</li>
-<li>并发重置：重置CMS收集器的数据结构</li>
+<li>并发重置：重置CMS收集器的数据结构  </li>
 </ol>
-<h5 id="G1收集器（-XX-UseG1GC-复制-标记-整理算法）"><a href="#G1收集器（-XX-UseG1GC-复制-标记-整理算法）" class="headerlink" title="G1收集器（-XX:+UseG1GC,复制+标记-整理算法）"></a>G1收集器（-XX:+UseG1GC,复制+标记-整理算法）</h5><p>Garbage Firlst收集器的特点：  </p>
+<p>由于是标记清除算法，会带来内存空间碎片化的问题</p>
+<h4 id="G1收集器（-XX-UseG1GC-复制-标记-整理算法）"><a href="#G1收集器（-XX-UseG1GC-复制-标记-整理算法）" class="headerlink" title="G1收集器（-XX:+UseG1GC,复制+标记-整理算法）"></a>G1收集器（-XX:+UseG1GC,复制+标记-整理算法）</h4><p>Garbage Firlst收集器的特点：  </p>
 <ol>
 <li>并发和并行，使用多个cup缩短stop-the-world的时间，与用户线程并发执行</li>
 <li>分代收集，独立管理整个堆</li>
@@ -219,40 +232,56 @@
 <li>将整个堆内存划分为多个大小相等的Region</li>
 <li>年轻代和老年代不再物理隔离</li>
 </ul>
-<h4 id="问题整理："><a href="#问题整理：" class="headerlink" title="问题整理："></a>问题整理：</h4><h5 id="Object的finalize-方法的作用是否与C-的解析函数作用相同"><a href="#Object的finalize-方法的作用是否与C-的解析函数作用相同" class="headerlink" title="Object的finalize()方法的作用是否与C++的解析函数作用相同"></a>Object的finalize()方法的作用是否与C++的解析函数作用相同</h5><ul>
+<h3 id="问题整理："><a href="#问题整理：" class="headerlink" title="问题整理："></a>问题整理：</h3><p><strong>Object的finalize()方法的作用是否与C++的解析函数作用相同</strong></p>
+<ul>
 <li>与C++的析构函数不同，析构函数调用确定，而它的是不确定的</li>
 <li>将未被引用的对象放置于F-Queue队列</li>
 <li>方法执行随时可能被终止</li>
-<li>给予对象最后一次重生机会<h5 id="Java中的强引用，软引用，弱引用，虚引用有什么用"><a href="#Java中的强引用，软引用，弱引用，虚引用有什么用" class="headerlink" title="Java中的强引用，软引用，弱引用，虚引用有什么用"></a>Java中的强引用，软引用，弱引用，虚引用有什么用</h5></li>
+<li>给予对象最后一次重生机会</li>
 </ul>
-<p><strong>强引用（Strong Reference）</strong></p>
+<p>一个例子：  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">public class Finalization &#123;</span><br><span class="line">    public static Finalization finalization;</span><br><span class="line">    @Override</span><br><span class="line">    protected void finalize()&#123;</span><br><span class="line">        System.out.println(&quot;Finalized&quot;);</span><br><span class="line">        finalization = this;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        Finalization f = new Finalization();</span><br><span class="line">        System.out.println(&quot;First print: &quot; + f);</span><br><span class="line">        f = null;</span><br><span class="line">        System.gc();</span><br><span class="line">        try &#123;// 休息一段时间，让上面的垃圾回收线程执行完成</span><br><span class="line">            Thread.currentThread().sleep(1000);</span><br><span class="line">        &#125; catch (InterruptedException e)&#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(&quot;Second print: &quot; + f);</span><br><span class="line">        System.out.println(f.finalization);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Java中的强引用，软引用，弱引用，虚引用有什么用？</strong></p>
+<blockquote>
+<p>强引用（Strong Reference）</p>
 <ul>
 <li>最普遍的引用：Object obj = new Object()</li>
 <li>抛出OutOfMemoryError终止程序也不会回收具有强引用的对象</li>
 <li>通过将对象设置为null来弱化引用，使其被回收</li>
 </ul>
-<p><strong>软引用（Soft Reference）</strong></p>
+</blockquote>
+<blockquote>
+<p>软引用（Soft Reference）:  </p>
 <ul>
-<li>对象处在有用但非必须的状态</li>
-<li>只有当内存空间不足时，GC会回收该引用的内存</li>
+<li>对象处在有用但非必须的状态  ;</li>
+<li>只有当内存空间不足时，GC会回收该引用的内存  ;</li>
 <li>可以用来实现高速缓存</li>
 </ul>
+</blockquote>
+<p>一个例子：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Stirng str = new String(&quot;abc&quot;);//强引用</span><br><span class="line">SoftRefence&lt;String&gt;softRef = new SoftRefence&lt;String&gt;(str);//弱引用</span><br></pre></td></tr></table></figure>
 
-<p><strong>弱引用（Weak Reference）</strong></p>
+<blockquote>
+<p>弱引用（Weak Reference）</p>
 <ul>
 <li>非必须的对象，比软引用更弱一些</li>
 <li>GC时会被回收</li>
 <li>被回收的概率也不大，因为GC线程优先级比较低</li>
 <li>适用于引用偶尔被使用且不影响垃圾收集的对象</li>
 </ul>
-<p><strong>虚引用（Phantom Reference）</strong></p>
+</blockquote>
+<blockquote>
+<p>虚引用（Phantom Reference）</p>
 <ul>
 <li>不会决定对象的生命周期</li>
 <li>任何时候都可能被垃圾收集器回收</li>
 <li>跟踪对象被垃圾收集器回收的活动，起哨兵作用</li>
-<li>必须和引用队列ReferenceQueue联合使用</li>
+<li>必须和引用队列ReferenceQueue联合使用  </li>
 </ul>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">String str = new String(&quot;abc&quot;);</span><br><span class="line">ReferenceQuence queue = new ReferenceQuence();</span><br><span class="line">PhantomReference ref = new PhantomReference(str,queue)</span><br></pre></td></tr></table></figure>
+
 <p><img src="/2019/11/02/Java垃圾回收之垃圾回收器/%E5%90%84%E5%BC%95%E7%94%A8%E7%9A%84%E5%AF%B9%E6%AF%94.jpg" alt></p>
 <p><strong>引用队列（ReferenceQueue）</strong></p>
 <ul>
@@ -330,7 +359,7 @@
     <div id="toc" class="toc-article">
     <strong class="toc-title">Contents</strong>
     
-      <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#前置概念"><span class="nav-number">1.</span> <span class="nav-text">前置概念</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Stop-the-World"><span class="nav-number">1.1.</span> <span class="nav-text">Stop-the-World</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Safepoint"><span class="nav-number">1.2.</span> <span class="nav-text">Safepoint</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#JVM的运行模式"><span class="nav-number">1.3.</span> <span class="nav-text">JVM的运行模式</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#垃圾搜集器之间的联系"><span class="nav-number">2.</span> <span class="nav-text">垃圾搜集器之间的联系</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Serial收集器（-XX-UseSerialGC-复制算法）"><span class="nav-number">2.1.</span> <span class="nav-text">Serial收集器（-XX:UseSerialGC,复制算法）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ParNew收集器（-XX-UseParNewGC-复制算法）"><span class="nav-number">2.2.</span> <span class="nav-text">ParNew收集器（-XX:+UseParNewGC,复制算法）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Parallel-Scavenge收集器（-XX-UseParallelGC-复制算法）"><span class="nav-number">2.3.</span> <span class="nav-text">Parallel Scavenge收集器（-XX:+UseParallelGC,复制算法）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Serial-Old收集器（-XX-UseSerialOldGC-标记-整理算法）"><span class="nav-number">2.4.</span> <span class="nav-text">Serial Old收集器（-XX:UseSerialOldGC,标记-整理算法）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Parllel-Old收集器（-XX-UseParallelOldGC-标记-整理算法）"><span class="nav-number">2.5.</span> <span class="nav-text">Parllel Old收集器（-XX:+UseParallelOldGC,标记-整理算法）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#CMS收集器（-XX-UseConcMarkSweepGC-标记-清除算法）"><span class="nav-number">2.6.</span> <span class="nav-text">CMS收集器（-XX:+UseConcMarkSweepGC,标记-清除算法）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#G1收集器（-XX-UseG1GC-复制-标记-整理算法）"><span class="nav-number">2.7.</span> <span class="nav-text">G1收集器（-XX:+UseG1GC,复制+标记-整理算法）</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#问题整理："><span class="nav-number">3.</span> <span class="nav-text">问题整理：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Object的finalize-方法的作用是否与C-的解析函数作用相同"><span class="nav-number">3.1.</span> <span class="nav-text">Object的finalize()方法的作用是否与C++的解析函数作用相同</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Java中的强引用，软引用，弱引用，虚引用有什么用"><span class="nav-number">3.2.</span> <span class="nav-text">Java中的强引用，软引用，弱引用，虚引用有什么用</span></a></li></ol></li></ol>
+      <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前置概念"><span class="nav-number">1.</span> <span class="nav-text">前置概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常见的垃圾收集器"><span class="nav-number">2.</span> <span class="nav-text">常见的垃圾收集器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#JVM的运行模式"><span class="nav-number">2.1.</span> <span class="nav-text">JVM的运行模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#垃圾搜集器之间的联系"><span class="nav-number">2.2.</span> <span class="nav-text">垃圾搜集器之间的联系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#年轻代垃圾收集器"><span class="nav-number">2.3.</span> <span class="nav-text">年轻代垃圾收集器</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Serial收集器（-XX-UseSerialGC-复制算法）"><span class="nav-number">2.3.1.</span> <span class="nav-text">Serial收集器（-XX:UseSerialGC,复制算法）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ParNew收集器（-XX-UseParNewGC-复制算法）"><span class="nav-number">2.3.2.</span> <span class="nav-text">ParNew收集器（-XX:+UseParNewGC,复制算法）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Parallel-Scavenge收集器（-XX-UseParallelGC-复制算法）"><span class="nav-number">2.3.3.</span> <span class="nav-text">Parallel Scavenge收集器（-XX:+UseParallelGC,复制算法）</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#老年代垃圾收集器"><span class="nav-number">2.4.</span> <span class="nav-text">老年代垃圾收集器</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Serial-Old收集器（-XX-UseSerialOldGC-标记-整理算法）"><span class="nav-number">2.4.1.</span> <span class="nav-text">Serial Old收集器（-XX:UseSerialOldGC,标记-整理算法）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Parllel-Old收集器（-XX-UseParallelOldGC-标记-整理算法）"><span class="nav-number">2.4.2.</span> <span class="nav-text">Parllel Old收集器（-XX:+UseParallelOldGC,标记-整理算法）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#CMS收集器（-XX-UseConcMarkSweepGC-标记-清除算法）"><span class="nav-number">2.4.3.</span> <span class="nav-text">CMS收集器（-XX:+UseConcMarkSweepGC,标记-清除算法）</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#G1收集器（-XX-UseG1GC-复制-标记-整理算法）"><span class="nav-number">2.5.</span> <span class="nav-text">G1收集器（-XX:+UseG1GC,复制+标记-整理算法）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题整理："><span class="nav-number">3.</span> <span class="nav-text">问题整理：</span></a></li></ol>
     
     </div>
   </aside>

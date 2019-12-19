@@ -11,23 +11,23 @@
   
   
   
-  <meta name="description" content="IOC原理IOC（Inversion of Control）：控制反转Spring Core最核心部分IOC是一种思想，实现手段：依赖注入（Dependency Injection） 依赖注入把底层类作为参数传递给上层类，实现上层对下层的“控制”  依赖注入的方式 Setter Interface Constructor Annotation  依赖倒置原则、IOC、DI、IOC容器的关系 依赖倒">
+  <meta name="description" content="IOC原理IOC（Inversion of Control）：控制反转Spring Core最核心部分IOC是一种思想，实现手段：依赖注入（Dependency Injection） 依赖注入把底层类作为参数传递给上层类，实现上层对下层的“控制”  依赖注入的方式 Setter Setter注入 Interface 接口注入 Constructor 构造器注入 Annotation 注解注入  依">
 <meta name="keywords" content="IOC,AOP">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java框架-Spring">
 <meta property="og:url" content="http://yoursite.com/2019/11/05/Java框架-Spring/index.html">
 <meta property="og:site_name" content="Contunued Story">
-<meta property="og:description" content="IOC原理IOC（Inversion of Control）：控制反转Spring Core最核心部分IOC是一种思想，实现手段：依赖注入（Dependency Injection） 依赖注入把底层类作为参数传递给上层类，实现上层对下层的“控制”  依赖注入的方式 Setter Interface Constructor Annotation  依赖倒置原则、IOC、DI、IOC容器的关系 依赖倒">
+<meta property="og:description" content="IOC原理IOC（Inversion of Control）：控制反转Spring Core最核心部分IOC是一种思想，实现手段：依赖注入（Dependency Injection） 依赖注入把底层类作为参数传递给上层类，实现上层对下层的“控制”  依赖注入的方式 Setter Setter注入 Interface 接口注入 Constructor 构造器注入 Annotation 注解注入  依">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/2019/11/05/Java框架-Spring/%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5.jpg">
 <meta property="og:image" content="http://yoursite.com/2019/11/05/Java框架-Spring/%E4%BE%9D%E8%B5%96%E5%80%92%E7%BD%AE%E5%8E%9F%E5%88%99%E3%80%81IOC%E3%80%81DI%E3%80%81IOC%E5%AE%B9%E5%99%A8%E7%9A%84%E5%85%B3%E7%B3%BB.jpg">
 <meta property="og:image" content="http://yoursite.com/2019/11/05/Java框架-Spring/ioc%E5%AE%B9%E5%99%A8%E7%9A%84%E4%BC%98%E5%8A%BF.jpg">
 <meta property="og:image" content="http://yoursite.com/2019/11/05/Java框架-Spring/IOC%E7%9A%84%E5%AE%9E%E9%99%85%E5%BA%94%E7%94%A8.jpg">
 <meta property="og:image" content="http://yoursite.com/2019/11/05/Java框架-Spring/%E5%88%9B%E5%BB%BABean%E7%9A%84%E8%BF%87%E7%A8%8B.jpg">
-<meta property="og:updated_time" content="2019-11-06T09:11:27.631Z">
+<meta property="og:updated_time" content="2019-12-19T06:24:07.709Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java框架-Spring">
-<meta name="twitter:description" content="IOC原理IOC（Inversion of Control）：控制反转Spring Core最核心部分IOC是一种思想，实现手段：依赖注入（Dependency Injection） 依赖注入把底层类作为参数传递给上层类，实现上层对下层的“控制”  依赖注入的方式 Setter Interface Constructor Annotation  依赖倒置原则、IOC、DI、IOC容器的关系 依赖倒">
+<meta name="twitter:description" content="IOC原理IOC（Inversion of Control）：控制反转Spring Core最核心部分IOC是一种思想，实现手段：依赖注入（Dependency Injection） 依赖注入把底层类作为参数传递给上层类，实现上层对下层的“控制”  依赖注入的方式 Setter Setter注入 Interface 接口注入 Constructor 构造器注入 Annotation 注解注入  依">
 <meta name="twitter:image" content="http://yoursite.com/2019/11/05/Java框架-Spring/%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5.jpg">
   
     <link rel="alternate" href="/atom.xml" title="Contunued Story" type="application/atom+xml">
@@ -171,20 +171,26 @@
 <h5 id="依赖注入"><a href="#依赖注入" class="headerlink" title="依赖注入"></a>依赖注入</h5><p>把底层类作为参数传递给上层类，实现上层对下层的“控制”</p>
 <p><img src="/2019/11/05/Java框架-Spring/%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5.jpg" alt></p>
 <h5 id="依赖注入的方式"><a href="#依赖注入的方式" class="headerlink" title="依赖注入的方式"></a>依赖注入的方式</h5><ul>
-<li>Setter</li>
-<li>Interface</li>
-<li>Constructor</li>
-<li>Annotation</li>
+<li>Setter Setter注入</li>
+<li>Interface 接口注入</li>
+<li>Constructor 构造器注入</li>
+<li>Annotation 注解注入</li>
 </ul>
 <h5 id="依赖倒置原则、IOC、DI、IOC容器的关系"><a href="#依赖倒置原则、IOC、DI、IOC容器的关系" class="headerlink" title="依赖倒置原则、IOC、DI、IOC容器的关系"></a>依赖倒置原则、IOC、DI、IOC容器的关系</h5><p><img src="/2019/11/05/Java框架-Spring/%E4%BE%9D%E8%B5%96%E5%80%92%E7%BD%AE%E5%8E%9F%E5%88%99%E3%80%81IOC%E3%80%81DI%E3%80%81IOC%E5%AE%B9%E5%99%A8%E7%9A%84%E5%85%B3%E7%B3%BB.jpg" alt></p>
 <p>依赖倒置原则是一种思想，高层模块不应该依赖底层模块；<br>有了依赖倒置原则才有了IOC的思路；<br>实现IOC的思路又需要依赖注入的支撑；<br>Spring的框架基于IOC提出了容器的概念，对于IOC来说最重要的就是容器了，容器管理着bean的生命周期，控制着bean的依赖注入。</p>
-<h5 id="IOC容器的优势"><a href="#IOC容器的优势" class="headerlink" title="IOC容器的优势"></a>IOC容器的优势</h5><p>当使用的时候，IOC容器在内部已经完成对象，调用者只需要调用即可！<br>如图蓝色部分全部是由IOC容器完成！</p>
+<h5 id="IOC容器的优势"><a href="#IOC容器的优势" class="headerlink" title="IOC容器的优势"></a>IOC容器的优势</h5><ul>
+<li>避免在各处使用new来创建类，并且可以做到统一维护</li>
+<li>创建实例的时候不需要了解其中的细节<br>当使用的时候，IOC容器在内部已经完成对象，调用者只需要调用即可！<br>如图蓝色部分全部是由IOC容器完成！</li>
+</ul>
 <p><img src="/2019/11/05/Java框架-Spring/ioc%E5%AE%B9%E5%99%A8%E7%9A%84%E4%BC%98%E5%8A%BF.jpg" alt></p>
-<h4 id="IOC的应用"><a href="#IOC的应用" class="headerlink" title="IOC的应用"></a>IOC的应用</h4><h5 id="实际应用"><a href="#实际应用" class="headerlink" title="实际应用"></a>实际应用</h5><ol>
-<li>读取应用程序提供的Bean配置信息，并在Spring容器中生成一份Bean注册表。</li>
-<li>根据生成的Bean注册表通过反射机制实例化Bean，并装配好Bean之间的依赖关系。</li>
-<li>将生成的Bean实例对象放入Spring容器中。<br><img src="/2019/11/05/Java框架-Spring/IOC%E7%9A%84%E5%AE%9E%E9%99%85%E5%BA%94%E7%94%A8.jpg" alt></li>
+<p>因为采用了依赖注入在初始化的过程中就不可避免的写大量的new,这里IOC容器就解决了这个问题，这个容器可以自动对代码初始化，你需要维护一个configuration,可以是xml或者可以是一段代码，而不用每次初始化一个行李箱，写一大堆的初始化代码  </p>
+<p>IOC容器可以隐藏具体创建实例的细节，上图中蓝色部分就像一个工厂，我们只需要向工厂请求一个Luggage实例，然后它就会按照config创建一个Luggage实例，我们不用管Luggage实例是怎么一步一步创建的；实例项目中有些Service是很多年以前写的，有几百个类作为它的底层，假设我们新写了一个API需要实例化这个service,总不可能回头去搞清楚这几百个类的构造函数吧；IOC Container就很完美的解决了这类问题；因为这个架构在要求你写class的时候需要编写响应的config文件，所以你要初始化很久以前的service的时候呢前人都已经写好了config文件了，你直接在用的地方注入这个service就可以了，这大大增加了项目的可维护性降低开发难度</p>
+<h4 id="IOC的应用"><a href="#IOC的应用" class="headerlink" title="IOC的应用"></a>IOC的应用</h4><h5 id="实际应用-如何"><a href="#实际应用-如何" class="headerlink" title="实际应用 如何"></a>实际应用 如何</h5><ol>
+<li>Spring启动时读取应用程序提供的Bean配置信息，并在Spring容器中生成一份相应的Bean注册表。</li>
+<li>根据生成的Bean注册表通过反射机制实例化Bean，并装配好Bean之间的依赖关系，为上层提供准备就绪的运行环境。Spring提供一个配置文件描述bean和bean之间的依关系，利用Java语言的反射功能实例化bean,并建立bean之间的依赖关系</li>
+<li>将生成的Bean实例对象放入Spring容器中。</li>
 </ol>
+<p><img src="/2019/11/05/Java框架-Spring/IOC%E7%9A%84%E5%AE%9E%E9%99%85%E5%BA%94%E7%94%A8.jpg" alt></p>
 <h5 id="Spring-IOC支持的功能："><a href="#Spring-IOC支持的功能：" class="headerlink" title="Spring IOC支持的功能："></a>Spring IOC支持的功能：</h5><ol>
 <li>依赖注入</li>
 <li>依赖检查</li>
@@ -197,6 +203,7 @@
 <li>BeanFactory</li>
 <li>ApplicationContext</li>
 </ol>
+<p>BeanFactory是Spring框架的基础设施，面向Spring,ApplicationContext面向使用Spring框架的开发者</p>
 <p><strong>BeanFactory：Spring框架最核心的接口</strong>  </p>
 <ul>
 <li>提供IOC的配置机制</li>
@@ -206,10 +213,10 @@
 </ul>
 <p><strong>ApplicationContext的功能（继承多个接口）</strong>  </p>
 <ul>
-<li>BeanFactory:能够管理、装配Bean</li>
-<li>ResourcePatternResolver:能够加载资源文件</li>
-<li>MessageSource:能够实现国际化功能</li>
-<li>ApplicationEventPublisher:能够注册监听器，实现监听机制</li>
+<li>继承BeanFactory:能够管理、装配Bean</li>
+<li>继承ResourcePatternResolver:能够加载资源文件</li>
+<li>继承MessageSource:能够实现国际化功能</li>
+<li>继承ApplicationEventPublisher:能够注册监听器，实现监听机制</li>
 </ul>
 <h5 id="Spring里面几个核心的接口和类"><a href="#Spring里面几个核心的接口和类" class="headerlink" title="Spring里面几个核心的接口和类"></a>Spring里面几个核心的接口和类</h5><ul>
 <li>BeanDefinition<br>主要是用来描述Bean的定义</li>
@@ -378,7 +385,7 @@
     <div id="toc" class="toc-article">
     <strong class="toc-title">Contents</strong>
     
-      <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#IOC原理"><span class="nav-number">1.</span> <span class="nav-text">IOC原理</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#IOC（Inversion-of-Control）：控制反转"><span class="nav-number">1.1.</span> <span class="nav-text">IOC（Inversion of Control）：控制反转</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#依赖注入"><span class="nav-number">1.2.</span> <span class="nav-text">依赖注入</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#依赖注入的方式"><span class="nav-number">1.3.</span> <span class="nav-text">依赖注入的方式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#依赖倒置原则、IOC、DI、IOC容器的关系"><span class="nav-number">1.4.</span> <span class="nav-text">依赖倒置原则、IOC、DI、IOC容器的关系</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#IOC容器的优势"><span class="nav-number">1.5.</span> <span class="nav-text">IOC容器的优势</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#IOC的应用"><span class="nav-number">2.</span> <span class="nav-text">IOC的应用</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#实际应用"><span class="nav-number">2.1.</span> <span class="nav-text">实际应用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Spring-IOC支持的功能："><span class="nav-number">2.2.</span> <span class="nav-text">Spring IOC支持的功能：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Spring-IOC容器的核心接口"><span class="nav-number">2.3.</span> <span class="nav-text">Spring IOC容器的核心接口</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Spring里面几个核心的接口和类"><span class="nav-number">2.4.</span> <span class="nav-text">Spring里面几个核心的接口和类</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#refresh-方法"><span class="nav-number">2.5.</span> <span class="nav-text">refresh 方法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#getBean-方法"><span class="nav-number">2.6.</span> <span class="nav-text">getBean 方法</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring-AOP"><span class="nav-number">3.</span> <span class="nav-text">Spring AOP</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#关注点分离：不同的问题交给不同的部分去解决"><span class="nav-number">3.1.</span> <span class="nav-text">关注点分离：不同的问题交给不同的部分去解决</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#AOP的三种织入方式"><span class="nav-number">3.2.</span> <span class="nav-text">AOP的三种织入方式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#AOP主要名词概念"><span class="nav-number">3.3.</span> <span class="nav-text">AOP主要名词概念</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#AOP的实现：JdkProxy和Cglib"><span class="nav-number">3.4.</span> <span class="nav-text">AOP的实现：JdkProxy和Cglib</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#代理模式：接口-真实实现类-代理类"><span class="nav-number">3.5.</span> <span class="nav-text">代理模式：接口+真实实现类+代理类</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Spring里的代理模式的实现"><span class="nav-number">3.6.</span> <span class="nav-text">Spring里的代理模式的实现</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring事务的相关问题"><span class="nav-number">4.</span> <span class="nav-text">Spring事务的相关问题</span></a></li></ol>
+      <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#IOC原理"><span class="nav-number">1.</span> <span class="nav-text">IOC原理</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#IOC（Inversion-of-Control）：控制反转"><span class="nav-number">1.1.</span> <span class="nav-text">IOC（Inversion of Control）：控制反转</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#依赖注入"><span class="nav-number">1.2.</span> <span class="nav-text">依赖注入</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#依赖注入的方式"><span class="nav-number">1.3.</span> <span class="nav-text">依赖注入的方式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#依赖倒置原则、IOC、DI、IOC容器的关系"><span class="nav-number">1.4.</span> <span class="nav-text">依赖倒置原则、IOC、DI、IOC容器的关系</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#IOC容器的优势"><span class="nav-number">1.5.</span> <span class="nav-text">IOC容器的优势</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#IOC的应用"><span class="nav-number">2.</span> <span class="nav-text">IOC的应用</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#实际应用-如何"><span class="nav-number">2.1.</span> <span class="nav-text">实际应用 如何</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Spring-IOC支持的功能："><span class="nav-number">2.2.</span> <span class="nav-text">Spring IOC支持的功能：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Spring-IOC容器的核心接口"><span class="nav-number">2.3.</span> <span class="nav-text">Spring IOC容器的核心接口</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Spring里面几个核心的接口和类"><span class="nav-number">2.4.</span> <span class="nav-text">Spring里面几个核心的接口和类</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#refresh-方法"><span class="nav-number">2.5.</span> <span class="nav-text">refresh 方法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#getBean-方法"><span class="nav-number">2.6.</span> <span class="nav-text">getBean 方法</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring-AOP"><span class="nav-number">3.</span> <span class="nav-text">Spring AOP</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#关注点分离：不同的问题交给不同的部分去解决"><span class="nav-number">3.1.</span> <span class="nav-text">关注点分离：不同的问题交给不同的部分去解决</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#AOP的三种织入方式"><span class="nav-number">3.2.</span> <span class="nav-text">AOP的三种织入方式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#AOP主要名词概念"><span class="nav-number">3.3.</span> <span class="nav-text">AOP主要名词概念</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#AOP的实现：JdkProxy和Cglib"><span class="nav-number">3.4.</span> <span class="nav-text">AOP的实现：JdkProxy和Cglib</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#代理模式：接口-真实实现类-代理类"><span class="nav-number">3.5.</span> <span class="nav-text">代理模式：接口+真实实现类+代理类</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Spring里的代理模式的实现"><span class="nav-number">3.6.</span> <span class="nav-text">Spring里的代理模式的实现</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring事务的相关问题"><span class="nav-number">4.</span> <span class="nav-text">Spring事务的相关问题</span></a></li></ol>
     
     </div>
   </aside>

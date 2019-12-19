@@ -127,6 +127,75 @@
         
           <section id="main">
   
+    <article id="post-J-U-C包的梳理"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/11/10/J-U-C包的梳理/">J.U.C包的梳理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/11/10/J-U-C包的梳理/" class="article-date">
+	  <time datetime="2019-11-10T12:28:36.000Z" itemprop="datePublished">November 10, 2019</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/Java常用类库与技巧/">Java常用类库与技巧</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="J-U-C包的分类"><a href="#J-U-C包的分类" class="headerlink" title="J.U.C包的分类"></a>J.U.C包的分类</h4><ul>
+<li>线程执行器executor</li>
+<li>锁locks</li>
+<li>原子变量类atomic</li>
+<li>开发工具类tools</li>
+<li>并发集合collections</li>
+</ul>
+<p><img src="/2019/11/10/J-U-C包的梳理/JUC%E5%8C%85%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE.jpg" alt></p>
+<h4 id="并发工具类"><a href="#并发工具类" class="headerlink" title="并发工具类"></a>并发工具类</h4><ol>
+<li>闭锁 CountDownLatch</li>
+<li>栅栏 CyclicBarrier</li>
+<li>信号量 Semaphore</li>
+<li>交换器 Exchanger<h5 id="CountDownLatch：让主线程等待一组事件发生后继续执行"><a href="#CountDownLatch：让主线程等待一组事件发生后继续执行" class="headerlink" title="CountDownLatch：让主线程等待一组事件发生后继续执行"></a>CountDownLatch：让主线程等待一组事件发生后继续执行</h5><img src="/2019/11/10/J-U-C包的梳理/CountDownLatch.jpg" alt></li>
+</ol>
+<h5 id="CyclicBarrier-阻塞当前线程，等待其他线程"><a href="#CyclicBarrier-阻塞当前线程，等待其他线程" class="headerlink" title="CyclicBarrier:阻塞当前线程，等待其他线程"></a>CyclicBarrier:阻塞当前线程，等待其他线程</h5><p> <img src="/2019/11/10/J-U-C包的梳理/CyclicBarrier.jpg" alt></p>
+<h5 id="信号量-Semaphore"><a href="#信号量-Semaphore" class="headerlink" title="信号量 Semaphore"></a>信号量 Semaphore</h5><p> <img src="/2019/11/10/J-U-C包的梳理/Semaphore.jpg" alt></p>
+<h5 id="交换器-Exchanger"><a href="#交换器-Exchanger" class="headerlink" title="交换器 Exchanger"></a>交换器 Exchanger</h5><p> <img src="/2019/11/10/J-U-C包的梳理/Exchanger.jpg" alt></p>
+<h4 id="collections"><a href="#collections" class="headerlink" title="collections"></a>collections</h4><h5 id="BlockingQueue-提供可阻塞的入队和出队操作"><a href="#BlockingQueue-提供可阻塞的入队和出队操作" class="headerlink" title="BlockingQueue:提供可阻塞的入队和出队操作"></a>BlockingQueue:提供可阻塞的入队和出队操作</h5><p>主要用于生产者-消费者模式，在多线程场景时生产者线程在队列尾部添加元素，而消费者线程在队列头部消费元素，通过这种方式能够达到将任务的生产和消费进行隔离的目的<br> <img src="/2019/11/10/J-U-C包的梳理/BlockingQueue.jpg" alt></p>
+<p>由以下七个实现类， 都是线程安全<br><img src="/2019/11/10/J-U-C包的梳理/BlockingQueue%E5%AD%90%E7%B1%BB.jpg" alt></p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/Java常用类库与技巧/">Java常用类库与技巧</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/J-U-C包的梳理/">J.U.C包的梳理</a></li></ul>
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-ConcurrentHashMap"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
@@ -1204,20 +1273,26 @@
 <h5 id="依赖注入"><a href="#依赖注入" class="headerlink" title="依赖注入"></a>依赖注入</h5><p>把底层类作为参数传递给上层类，实现上层对下层的“控制”</p>
 <p><img src="/2019/11/05/Java框架-Spring/%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5.jpg" alt></p>
 <h5 id="依赖注入的方式"><a href="#依赖注入的方式" class="headerlink" title="依赖注入的方式"></a>依赖注入的方式</h5><ul>
-<li>Setter</li>
-<li>Interface</li>
-<li>Constructor</li>
-<li>Annotation</li>
+<li>Setter Setter注入</li>
+<li>Interface 接口注入</li>
+<li>Constructor 构造器注入</li>
+<li>Annotation 注解注入</li>
 </ul>
 <h5 id="依赖倒置原则、IOC、DI、IOC容器的关系"><a href="#依赖倒置原则、IOC、DI、IOC容器的关系" class="headerlink" title="依赖倒置原则、IOC、DI、IOC容器的关系"></a>依赖倒置原则、IOC、DI、IOC容器的关系</h5><p><img src="/2019/11/05/Java框架-Spring/%E4%BE%9D%E8%B5%96%E5%80%92%E7%BD%AE%E5%8E%9F%E5%88%99%E3%80%81IOC%E3%80%81DI%E3%80%81IOC%E5%AE%B9%E5%99%A8%E7%9A%84%E5%85%B3%E7%B3%BB.jpg" alt></p>
 <p>依赖倒置原则是一种思想，高层模块不应该依赖底层模块；<br>有了依赖倒置原则才有了IOC的思路；<br>实现IOC的思路又需要依赖注入的支撑；<br>Spring的框架基于IOC提出了容器的概念，对于IOC来说最重要的就是容器了，容器管理着bean的生命周期，控制着bean的依赖注入。</p>
-<h5 id="IOC容器的优势"><a href="#IOC容器的优势" class="headerlink" title="IOC容器的优势"></a>IOC容器的优势</h5><p>当使用的时候，IOC容器在内部已经完成对象，调用者只需要调用即可！<br>如图蓝色部分全部是由IOC容器完成！</p>
+<h5 id="IOC容器的优势"><a href="#IOC容器的优势" class="headerlink" title="IOC容器的优势"></a>IOC容器的优势</h5><ul>
+<li>避免在各处使用new来创建类，并且可以做到统一维护</li>
+<li>创建实例的时候不需要了解其中的细节<br>当使用的时候，IOC容器在内部已经完成对象，调用者只需要调用即可！<br>如图蓝色部分全部是由IOC容器完成！</li>
+</ul>
 <p><img src="/2019/11/05/Java框架-Spring/ioc%E5%AE%B9%E5%99%A8%E7%9A%84%E4%BC%98%E5%8A%BF.jpg" alt></p>
-<h4 id="IOC的应用"><a href="#IOC的应用" class="headerlink" title="IOC的应用"></a>IOC的应用</h4><h5 id="实际应用"><a href="#实际应用" class="headerlink" title="实际应用"></a>实际应用</h5><ol>
-<li>读取应用程序提供的Bean配置信息，并在Spring容器中生成一份Bean注册表。</li>
-<li>根据生成的Bean注册表通过反射机制实例化Bean，并装配好Bean之间的依赖关系。</li>
-<li>将生成的Bean实例对象放入Spring容器中。<br><img src="/2019/11/05/Java框架-Spring/IOC%E7%9A%84%E5%AE%9E%E9%99%85%E5%BA%94%E7%94%A8.jpg" alt></li>
+<p>因为采用了依赖注入在初始化的过程中就不可避免的写大量的new,这里IOC容器就解决了这个问题，这个容器可以自动对代码初始化，你需要维护一个configuration,可以是xml或者可以是一段代码，而不用每次初始化一个行李箱，写一大堆的初始化代码  </p>
+<p>IOC容器可以隐藏具体创建实例的细节，上图中蓝色部分就像一个工厂，我们只需要向工厂请求一个Luggage实例，然后它就会按照config创建一个Luggage实例，我们不用管Luggage实例是怎么一步一步创建的；实例项目中有些Service是很多年以前写的，有几百个类作为它的底层，假设我们新写了一个API需要实例化这个service,总不可能回头去搞清楚这几百个类的构造函数吧；IOC Container就很完美的解决了这类问题；因为这个架构在要求你写class的时候需要编写响应的config文件，所以你要初始化很久以前的service的时候呢前人都已经写好了config文件了，你直接在用的地方注入这个service就可以了，这大大增加了项目的可维护性降低开发难度</p>
+<h4 id="IOC的应用"><a href="#IOC的应用" class="headerlink" title="IOC的应用"></a>IOC的应用</h4><h5 id="实际应用-如何"><a href="#实际应用-如何" class="headerlink" title="实际应用 如何"></a>实际应用 如何</h5><ol>
+<li>Spring启动时读取应用程序提供的Bean配置信息，并在Spring容器中生成一份相应的Bean注册表。</li>
+<li>根据生成的Bean注册表通过反射机制实例化Bean，并装配好Bean之间的依赖关系，为上层提供准备就绪的运行环境。Spring提供一个配置文件描述bean和bean之间的依关系，利用Java语言的反射功能实例化bean,并建立bean之间的依赖关系</li>
+<li>将生成的Bean实例对象放入Spring容器中。</li>
 </ol>
+<p><img src="/2019/11/05/Java框架-Spring/IOC%E7%9A%84%E5%AE%9E%E9%99%85%E5%BA%94%E7%94%A8.jpg" alt></p>
 <h5 id="Spring-IOC支持的功能："><a href="#Spring-IOC支持的功能：" class="headerlink" title="Spring IOC支持的功能："></a>Spring IOC支持的功能：</h5><ol>
 <li>依赖注入</li>
 <li>依赖检查</li>
@@ -1230,6 +1305,7 @@
 <li>BeanFactory</li>
 <li>ApplicationContext</li>
 </ol>
+<p>BeanFactory是Spring框架的基础设施，面向Spring,ApplicationContext面向使用Spring框架的开发者</p>
 <p><strong>BeanFactory：Spring框架最核心的接口</strong>  </p>
 <ul>
 <li>提供IOC的配置机制</li>
@@ -1239,10 +1315,10 @@
 </ul>
 <p><strong>ApplicationContext的功能（继承多个接口）</strong>  </p>
 <ul>
-<li>BeanFactory:能够管理、装配Bean</li>
-<li>ResourcePatternResolver:能够加载资源文件</li>
-<li>MessageSource:能够实现国际化功能</li>
-<li>ApplicationEventPublisher:能够注册监听器，实现监听机制</li>
+<li>继承BeanFactory:能够管理、装配Bean</li>
+<li>继承ResourcePatternResolver:能够加载资源文件</li>
+<li>继承MessageSource:能够实现国际化功能</li>
+<li>继承ApplicationEventPublisher:能够注册监听器，实现监听机制</li>
 </ul>
 <h5 id="Spring里面几个核心的接口和类"><a href="#Spring里面几个核心的接口和类" class="headerlink" title="Spring里面几个核心的接口和类"></a>Spring里面几个核心的接口和类</h5><ul>
 <li>BeanDefinition<br>主要是用来描述Bean的定义</li>
@@ -1362,160 +1438,6 @@
 <!-- Table of Contents -->
 
   
-    <article id="post-Java多线程与并发"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/11/05/Java多线程与并发/">Java多线程与并发</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/11/05/Java多线程与并发/" class="article-date">
-	  <time datetime="2019-11-05T03:19:48.000Z" itemprop="datePublished">November 5, 2019</time>
-	</a>
-
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/Java多线程与并发/">Java多线程与并发</a>
- 
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="进程和线程的区别"><a href="#进程和线程的区别" class="headerlink" title="进程和线程的区别"></a>进程和线程的区别</h4><h5 id="进程和线程的由来"><a href="#进程和线程的由来" class="headerlink" title="进程和线程的由来"></a>进程和线程的由来</h5><ol>
-<li>串行：初期的计算机智能执行任务，并且需要长时间等待用户输入</li>
-<li>批处理：预先将用户的指令集中成清单，批量串行处理用户指令，仍然无法并发执行</li>
-<li>进程：进程独占内存空间，保存各自运行的状态，互不干扰可以相互切换，为并发处理任务提供了可能</li>
-<li>线程：共享进程的内存资源，相互间切换更快速，支持更细粒度的任务控制，使进程内的子任务得以并发执行</li>
-</ol>
-<p><strong>进程是资源分配的最小单位，线程是CPU调度的最小单位</strong></p>
-<ul>
-<li>所有与进程相关的资源都被记录在PCB中</li>
-<li>进程是抢占处理机的调度单位；线程属于某个进程，共享其资源</li>
-<li>线程只由堆栈寄存器、程序计数器和TCB组成</li>
-</ul>
-<h5 id="进程和线程的区别-1"><a href="#进程和线程的区别-1" class="headerlink" title="进程和线程的区别"></a>进程和线程的区别</h5><ul>
-<li>线程不能看做独立应用，而进程可以看做独立应用</li>
-<li>进程有独立的地址空间，相互不影响，线程只是进程不同的执行路径</li>
-<li>线程没有独立的地址空间，多进程的程序比多线程程序健壮</li>
-<li>进程的切换比线程的切换开销大</li>
-</ul>
-<h5 id="进程和线程的关系"><a href="#进程和线程的关系" class="headerlink" title="进程和线程的关系"></a>进程和线程的关系</h5><ul>
-<li>Java对操作系统提供的功能进行封装，包括进程和线程</li>
-<li>运行一个程序会产生一个进程，进程包含至少一个线程</li>
-<li>每个进程对应一个JVM实例，多个线程共享JVM里的堆</li>
-<li>Java采用单线程的编程模型，程序会自动创建主线程</li>
-<li>主线程可以创建子线程，原则上要后于子线程完成执行</li>
-</ul>
-<h4 id="线程start和run方法的区别"><a href="#线程start和run方法的区别" class="headerlink" title="线程start和run方法的区别"></a>线程start和run方法的区别</h4><p>start()方法回去调用JVM的StartThread的方法，去创建一个新的子线程，并通过ThreadRun方法去调用run方法</p>
-<p><img src="/2019/11/05/Java多线程与并发/start%E5%92%8Crun%E6%96%B9%E6%B3%95%E5%85%B3%E7%B3%BB%E5%9B%BE.jpg" alt="关系图"></p>
-<ul>
-<li>调用start方法会创建一个新的子线程</li>
-<li>run方法只是Thread的一个普通方法的调用</li>
-</ul>
-<h4 id="Thread和Runnable是什么关系"><a href="#Thread和Runnable是什么关系" class="headerlink" title="Thread和Runnable是什么关系"></a>Thread和Runnable是什么关系</h4><ul>
-<li>Thread是实现了Runnabela接口的类，使得run支持多线程</li>
-<li>因类的单一继承原则，为了提升系统可扩展性推荐业务类实现Runnable接口，将业务逻辑封装在run()方法里<br>例子<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">//Thread的使用</span><br><span class="line">public class MyThread extends Thread &#123;</span><br><span class="line">    private String name;</span><br><span class="line">    public MyThread(String name)&#123;</span><br><span class="line">        this.name = name;</span><br><span class="line">    &#125;</span><br><span class="line">    @Override</span><br><span class="line">    public void run()&#123;</span><br><span class="line">        for(int i = 0 ; i &lt; 10 ; i ++)&#123;</span><br><span class="line">            System.out.println(&quot;Thread start : &quot; + this.name + &quot;,i= &quot; + i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//测试类</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        MyThread mt1 = new MyThread(&quot;Thread1&quot;);</span><br><span class="line">        MyThread mt2 = new MyThread(&quot;Thread2&quot;);</span><br><span class="line">        MyThread mt3 = new MyThread(&quot;Thread3&quot;);</span><br><span class="line">        mt1.start();</span><br><span class="line">        mt2.start();</span><br><span class="line">        mt3.start();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">//Runable的使用</span><br><span class="line">public class MyRunnable implements Runnable &#123;</span><br><span class="line">    private String name;</span><br><span class="line">    public MyRunnable(String name)&#123;</span><br><span class="line">        this.name = name;</span><br><span class="line">    &#125;</span><br><span class="line">    @Override</span><br><span class="line">    public void run()&#123;</span><br><span class="line">        for(int i = 0 ; i &lt; 10 ; i ++)&#123;</span><br><span class="line">            System.out.println(&quot;Thread start : &quot; + this.name + &quot;,i= &quot; + i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">//测试类</span><br><span class="line">    public static void main(String[] args) throws InterruptedException &#123;</span><br><span class="line">        MyRunnable mr1 = new MyRunnable(&quot;Runnable1&quot;);</span><br><span class="line">        MyRunnable mr2 = new MyRunnable(&quot;Runnable2&quot;);</span><br><span class="line">        MyRunnable mr3 = new MyRunnable(&quot;Runnable3&quot;);</span><br><span class="line">        Thread t1 = new Thread(mr1);</span><br><span class="line">        Thread t2 = new Thread(mr2);</span><br><span class="line">        Thread t3 = new Thread(mr3);</span><br><span class="line">        t1.start();</span><br><span class="line">        t2.start();</span><br><span class="line">        t3.start();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="如何实现处理线程的返回值"><a href="#如何实现处理线程的返回值" class="headerlink" title="如何实现处理线程的返回值"></a>如何实现处理线程的返回值</h4><h5 id="如何给run方法传参"><a href="#如何给run方法传参" class="headerlink" title="如何给run方法传参"></a>如何给run方法传参</h5><ul>
-<li>构造函数传参</li>
-<li>成员变量传参</li>
-<li>回调函数传参</li>
-</ul>
-<h5 id="如何实现处理线程的返回值-1"><a href="#如何实现处理线程的返回值-1" class="headerlink" title="如何实现处理线程的返回值"></a>如何实现处理线程的返回值</h5><ul>
-<li>主线程等待法：让主线程循环等待，直到目标子线程返回值</li>
-<li>使用Thread类的join()阻塞当前线程以等待子线程处理完毕</li>
-<li>通过Callable接口实现：通过FutureTask Or 线程池获取;</li>
-</ul>
-<p>代码实现：FutureTask获取返回值</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">public class MyCallable implements Callable&lt;String&gt; &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public String call() throws Exception&#123;</span><br><span class="line">        String value=&quot;test&quot;;</span><br><span class="line">        System.out.println(&quot;Ready to work&quot;);</span><br><span class="line">        Thread.currentThread().sleep(5000);</span><br><span class="line">        System.out.println(&quot;task done&quot;);</span><br><span class="line">        return  value;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">public class FutureTaskDemo &#123;</span><br><span class="line">    public static void main(String[] args) throws ExecutionException, InterruptedException &#123;</span><br><span class="line">        FutureTask&lt;String&gt; task = new FutureTask&lt;String&gt;(new MyCallable());</span><br><span class="line">        new Thread(task).start();</span><br><span class="line">        if(!task.isDone())&#123;</span><br><span class="line">            System.out.println(&quot;task has not finished, please wait!&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(&quot;task return: &quot; + task.get());</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>代码实现：通过线程池获取返回值</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">//定义一个线程池</span><br><span class="line">ExecutorService newCacheThreadPool = Executors.newCachedThreadPool();</span><br><span class="line">//提交到线程池</span><br><span class="line">Future&lt;String&gt; feture = newCacheThreadPool.submit(new MyCallable());</span><br><span class="line">if(feture.isDone())&#123;</span><br><span class="line">    System.out.println(&quot;task has not finished,wait&quot;);</span><br><span class="line">&#125;</span><br><span class="line">try &#123;</span><br><span class="line">    System.out.println( feture.get() );</span><br><span class="line">&#125; catch (InterruptedException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">&#125; catch (ExecutionException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">&#125;finally &#123;</span><br><span class="line">        //关闭线程池</span><br><span class="line">        newCacheThreadPool.shutdown();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>使用线程池的好处：提交多个实现Callable的类，让线程池并发的执行结果，方便对实现Callable的类做统一管理</p>
-<h4 id="线程的状态"><a href="#线程的状态" class="headerlink" title="线程的状态"></a>线程的状态</h4><p><strong>六个状态</strong><br>线程的六个状态</p>
-<ol>
-<li><p>新建（New）：创建后尚未启动的线程的状态</p>
-</li>
-<li><p>运行（Runnable）：包含Running和Ready，处于Running状态的线程位于可运行线程中，等待被线程调度选中，获取CPU的使用权；处于Ready状态的线程位于线程池中，等待被线程调度选中，获取CPU的使用权，Ready状态的线程在获取CPU时间后，就会变成Running状态的线程</p>
-</li>
-<li><p>无限期等待（Waiting）：不会被分配CPU执行时间，需要显示被唤醒，即：<br> 1）没有设置Timeout参数的Object.wait方法。<br> 2）没有设置Timeout参数的Thread.join方法。<br> 3）LockSupport方法。  </p>
-</li>
-<li><p>限期等待（Timed Waiting）：在一定时间后会由系统自动唤醒。以下情况会造成限期等待：<br> 1）Thread.sleep()方法<br> 2）设置了Timeout参数的Object.wait()方法<br> 3）设置了Timeout参数的Thread.join()方法<br> 4）LockSupport.parkNanos()方法<br> 5）LockSupport.parkUntil()方法</p>
-</li>
-<li><p>阻塞状态（Blocked）：等待获取排它锁,在另外一个线程放弃锁的时候发生</p>
-</li>
-<li><p>结束（Terminated）：已终止线程的状态，线程已经结束执行</p>
-</li>
-</ol>
-<h4 id="sleep-和-wait的区别"><a href="#sleep-和-wait的区别" class="headerlink" title="sleep 和 wait的区别"></a>sleep 和 wait的区别</h4><p><strong>基本的差别</strong><br>sleep是Thread的方法，wait是Object类中定义的方法<br>sleep()方法在任何地方都可以使用<br>wait()方法只能在synchronized方法或synchronized块中使用<br><strong>最本质的区别</strong><br>Thread.sleep只会让出CPU,不会导致锁行为的改变<br>Object.wait不仅让出CPU,也会释放锁已经占有的同步资源锁，所以wait在synchronized中使用才有意义<br>例子：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">public class WaitSleepDemo &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        final Object lock = new Object();</span><br><span class="line">        new Thread(new Runnable() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void run() &#123;</span><br><span class="line">                System.out.println(&quot;thread A is waiting to get lock&quot;);</span><br><span class="line">                synchronized (lock)&#123;</span><br><span class="line">                    try &#123;</span><br><span class="line">                        System.out.println(&quot;thread A get lock&quot;);</span><br><span class="line">                        Thread.sleep(20);</span><br><span class="line">                        System.out.println(&quot;thread A do wait method&quot;);</span><br><span class="line">                        lock.wait();</span><br><span class="line">                        System.out.println(&quot;thread A is done&quot;);</span><br><span class="line">                    &#125; catch (InterruptedException e)&#123;</span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line">        try&#123;</span><br><span class="line">            Thread.sleep(10);</span><br><span class="line">        &#125; catch (InterruptedException e)&#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        new Thread(new Runnable() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void run() &#123;</span><br><span class="line">                System.out.println(&quot;thread B is waiting to get lock&quot;);</span><br><span class="line">                synchronized (lock)&#123;</span><br><span class="line">                    try &#123;</span><br><span class="line">                        System.out.println(&quot;thread B get lock&quot;);</span><br><span class="line">                        System.out.println(&quot;thread B is sleeping 10 ms&quot;);</span><br><span class="line">                        Thread.sleep(10);</span><br><span class="line">                        Thread.sleep(2000);</span><br><span class="line">                        System.out.println(&quot;thread B is done&quot;);</span><br><span class="line">                    &#125; catch (InterruptedException e)&#123;</span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line"></span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="notify和notifyall的区别"><a href="#notify和notifyall的区别" class="headerlink" title="notify和notifyall的区别"></a>notify和notifyall的区别</h4><blockquote>
-<p>锁池 entryList ：</p>
-</blockquote>
-<p>  假设线程A已经拥有了某个对象（不是类）的锁，而其它线程B、C想要调用这个对象的synchronized方法（或者块），由于B、C线程在进入对象的synchronized方法（或者块）之前必须先获得该对象锁的拥有权，而该对象的锁目前被线程A锁占有，此时B、C线程就会被阻塞，进入一个地方去等待锁的释放，这个地方便是该对象的锁池</p>
-<blockquote>
-<p>等待池 WaitList：</p>
-</blockquote>
-<p>  假设线程A调用了某个对象的wait方法，线程A就会释放该对象的锁，同时线程A就进入到了该对象的等待池中，进入到等待池中的线程不会去竞争该对象的锁</p>
-<p>notifyAll 会让所有处于等待池的线程全部进入锁池去竞争获取锁的机会<br>notify 只会随机选取一个处于等待池中的线程进入锁池去竞争获取锁的机会</p>
-<h4 id="yield函数"><a href="#yield函数" class="headerlink" title="yield函数"></a>yield函数</h4><blockquote>
-<p>当调用Thread.yield()函数时，会给线程调度器一个当前线程愿意让出CPU使用的暗示，但是线程调度器可能会忽略这个暗示</p>
-</blockquote>
-<p>关于 Thread.yield() </p>
-<ol>
-<li>提示线程调度器表示当前线程可以让出 CPU， 但是调度器可能选择忽略</li>
-<li>yield 不会改变当前同步锁的状态</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">    Runnable yieldTask = new Runnable() &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public void run() &#123;</span><br><span class="line">            for (int i = 1; i &lt;= 10; i++) &#123;</span><br><span class="line">                System.out.println(Thread.currentThread().getName() + i);</span><br><span class="line">                if (i == 5) &#123;</span><br><span class="line">                    Thread.yield();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    Thread t1 = new Thread(yieldTask, &quot;A&quot;);</span><br><span class="line">    Thread t2 = new Thread(yieldTask, &quot;B&quot;);</span><br><span class="line">    t1.start();</span><br><span class="line">    t2.start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="interrupt-函数"><a href="#interrupt-函数" class="headerlink" title="interrupt 函数"></a>interrupt 函数</h4><h5 id="已经被抛弃的方法"><a href="#已经被抛弃的方法" class="headerlink" title="已经被抛弃的方法"></a>已经被抛弃的方法</h5><ol>
-<li>stop（）</li>
-<li>suspend（）和resunme（）<br>原因：暴力中断线程，如A调用B的stop去终止B线程，由于A不知道B的运行状态，突然停止将可能导致B的一些清理工作无法完成，stop（）方法执行后会马上释放锁，这可能引发数据不同步的问题</li>
-</ol>
-<h5 id="目前使用的方法"><a href="#目前使用的方法" class="headerlink" title="目前使用的方法"></a>目前使用的方法</h5><ol>
-<li><p>调用interrupt（），通知线程应该中断了<br>1）如果线程处于阻塞状态，那么线程将立即退出被阻塞状态，并抛出一个InterruptedException异常<br>2）如果线程处于正常活动状态，那么会将该线程的中断标记设置为true。被设置中断标志的线程将继续正常运行，不受影响</p>
-</li>
-<li><p>需要被调用的线程配合中断<br>1）在正常运行任务时，进程检查本线程的中断标志位，如果被设置了中断标志就自行停止线程<br>2）如果线程处于正常活动状态，那么会将该线程的终端标记设置为true。被设置中断标志的线程将继续正常运行，不受影响</p>
-</li>
-</ol>
-<h4 id="线程状态以及线程状态之间的转换"><a href="#线程状态以及线程状态之间的转换" class="headerlink" title="线程状态以及线程状态之间的转换"></a>线程状态以及线程状态之间的转换</h4><p><img src="/2019/11/05/Java多线程与并发/%E7%BA%BF%E7%A8%8B%E4%BB%A5%E5%8F%8A%E7%BA%BF%E7%A8%8B%E4%B9%8B%E9%97%B4%E7%9A%84%E8%BD%AC%E6%8D%A2.jpg" alt="线程状态之间的转换"></p>
-
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/Java多线程与并发/">Java多线程与并发</a>
-
-      
-  <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Thread和Runnable/">Thread和Runnable</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/interrupt/">interrupt</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/notify和notifyall/">notify和notifyall</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sleep和wait/">sleep和wait</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/start和run/">start和run</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/yield/">yield</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/线程状态/">线程状态</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/进程和线程/">进程和线程</a></li></ul>
-
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
 
 
   <nav id="page-nav">
@@ -1614,6 +1536,18 @@
               <div class="widget-entry-summary" style="margin: 0;">
             
 
+              <h6 style="margin: 0;"><a href="/2019/12/18/设计模式/">设计模式</a></h6>
+              <span>December 18, 2019</span>
+            </div>
+
+          </li>
+        
+          <li class="clearfix">
+
+            
+              <div class="widget-entry-summary" style="margin: 0;">
+            
+
               <h6 style="margin: 0;"><a href="/2019/11/19/容器部署/">容器部署</a></h6>
               <span>November 19, 2019</span>
             </div>
@@ -1668,18 +1602,6 @@
 
           </li>
         
-          <li class="clearfix">
-
-            
-              <div class="widget-entry-summary" style="margin: 0;">
-            
-
-              <h6 style="margin: 0;"><a href="/2019/11/13/统一配置中心/">统一配置中心</a></h6>
-              <span>November 13, 2019</span>
-            </div>
-
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -1719,7 +1641,7 @@
     <h3 class="widget-title">Archives</h3>
 
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">23</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">25</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">23</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">25</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">1</span></li></ul>
     </div>
 
     <div>

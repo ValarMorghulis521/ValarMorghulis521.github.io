@@ -55,32 +55,10 @@
 
 
   
-  
-  <div class="site-header-image">
-    <img id="originBg" width="100%" alt="Hike News" src="">
-  </div>
-
-  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
-    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
-  </div>
-
-  <script>
-        var imgUrls = "css/images/pose01.jpg,https://source.unsplash.com/collection/954550/1920x1080,https://source.unsplash.com/collection/954550/1920x1081".split(",");
-        var random = Math.floor((Math.random() * imgUrls.length ));
-        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
-          document.getElementById("originBg").src=imgUrls[random];
-          document.getElementById("blurBg").src=imgUrls[random];
-        } else {
-          document.getElementById("originBg").src='/' + imgUrls[random];
-          document.getElementById("blurBg").src='/' + imgUrls[random];
-        }
-    </script>
-
-
 
 
 <header id="allheader" class="site-header" role="banner" 
-   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
+   >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -1269,31 +1247,31 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h4 id="IOC原理"><a href="#IOC原理" class="headerlink" title="IOC原理"></a>IOC原理</h4><h5 id="IOC（Inversion-of-Control）：控制反转"><a href="#IOC（Inversion-of-Control）：控制反转" class="headerlink" title="IOC（Inversion of Control）：控制反转"></a>IOC（Inversion of Control）：控制反转</h5><p>Spring Core最核心部分<br>IOC是一种思想，实现手段：依赖注入（Dependency Injection）</p>
-<h5 id="依赖注入"><a href="#依赖注入" class="headerlink" title="依赖注入"></a>依赖注入</h5><p>把底层类作为参数传递给上层类，实现上层对下层的“控制”</p>
+        <h2 id="IOC原理"><a href="#IOC原理" class="headerlink" title="IOC原理"></a>IOC原理</h2><p>IOC（Inversion of Control）：控制反转；Spring Core最核心部分；<br>IOC是一种思想。</p>
+<h3 id="实现手段：依赖注入（Dependency-Injection）"><a href="#实现手段：依赖注入（Dependency-Injection）" class="headerlink" title="实现手段：依赖注入（Dependency Injection）"></a>实现手段：依赖注入（Dependency Injection）</h3><p>把底层类作为参数传递给上层类，实现上层对下层的“控制”</p>
 <p><img src="/2019/11/05/Java框架-Spring/%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5.jpg" alt></p>
-<h5 id="依赖注入的方式"><a href="#依赖注入的方式" class="headerlink" title="依赖注入的方式"></a>依赖注入的方式</h5><ul>
+<h4 id="依赖注入的方式"><a href="#依赖注入的方式" class="headerlink" title="依赖注入的方式"></a>依赖注入的方式</h4><ul>
 <li>Setter Setter注入</li>
 <li>Interface 接口注入</li>
 <li>Constructor 构造器注入</li>
 <li>Annotation 注解注入</li>
 </ul>
-<h5 id="依赖倒置原则、IOC、DI、IOC容器的关系"><a href="#依赖倒置原则、IOC、DI、IOC容器的关系" class="headerlink" title="依赖倒置原则、IOC、DI、IOC容器的关系"></a>依赖倒置原则、IOC、DI、IOC容器的关系</h5><p><img src="/2019/11/05/Java框架-Spring/%E4%BE%9D%E8%B5%96%E5%80%92%E7%BD%AE%E5%8E%9F%E5%88%99%E3%80%81IOC%E3%80%81DI%E3%80%81IOC%E5%AE%B9%E5%99%A8%E7%9A%84%E5%85%B3%E7%B3%BB.jpg" alt></p>
+<h4 id="依赖倒置原则、IOC、DI、IOC容器的关系"><a href="#依赖倒置原则、IOC、DI、IOC容器的关系" class="headerlink" title="依赖倒置原则、IOC、DI、IOC容器的关系"></a>依赖倒置原则、IOC、DI、IOC容器的关系</h4><p><img src="/2019/11/05/Java框架-Spring/%E4%BE%9D%E8%B5%96%E5%80%92%E7%BD%AE%E5%8E%9F%E5%88%99%E3%80%81IOC%E3%80%81DI%E3%80%81IOC%E5%AE%B9%E5%99%A8%E7%9A%84%E5%85%B3%E7%B3%BB.jpg" alt></p>
 <p>依赖倒置原则是一种思想，高层模块不应该依赖底层模块；<br>有了依赖倒置原则才有了IOC的思路；<br>实现IOC的思路又需要依赖注入的支撑；<br>Spring的框架基于IOC提出了容器的概念，对于IOC来说最重要的就是容器了，容器管理着bean的生命周期，控制着bean的依赖注入。</p>
-<h5 id="IOC容器的优势"><a href="#IOC容器的优势" class="headerlink" title="IOC容器的优势"></a>IOC容器的优势</h5><ul>
+<h3 id="IOC容器的优势"><a href="#IOC容器的优势" class="headerlink" title="IOC容器的优势"></a>IOC容器的优势</h3><ul>
 <li>避免在各处使用new来创建类，并且可以做到统一维护</li>
 <li>创建实例的时候不需要了解其中的细节<br>当使用的时候，IOC容器在内部已经完成对象，调用者只需要调用即可！<br>如图蓝色部分全部是由IOC容器完成！</li>
 </ul>
 <p><img src="/2019/11/05/Java框架-Spring/ioc%E5%AE%B9%E5%99%A8%E7%9A%84%E4%BC%98%E5%8A%BF.jpg" alt></p>
 <p>因为采用了依赖注入在初始化的过程中就不可避免的写大量的new,这里IOC容器就解决了这个问题，这个容器可以自动对代码初始化，你需要维护一个configuration,可以是xml或者可以是一段代码，而不用每次初始化一个行李箱，写一大堆的初始化代码  </p>
 <p>IOC容器可以隐藏具体创建实例的细节，上图中蓝色部分就像一个工厂，我们只需要向工厂请求一个Luggage实例，然后它就会按照config创建一个Luggage实例，我们不用管Luggage实例是怎么一步一步创建的；实例项目中有些Service是很多年以前写的，有几百个类作为它的底层，假设我们新写了一个API需要实例化这个service,总不可能回头去搞清楚这几百个类的构造函数吧；IOC Container就很完美的解决了这类问题；因为这个架构在要求你写class的时候需要编写响应的config文件，所以你要初始化很久以前的service的时候呢前人都已经写好了config文件了，你直接在用的地方注入这个service就可以了，这大大增加了项目的可维护性降低开发难度</p>
-<h4 id="IOC的应用"><a href="#IOC的应用" class="headerlink" title="IOC的应用"></a>IOC的应用</h4><h5 id="实际应用-如何"><a href="#实际应用-如何" class="headerlink" title="实际应用 如何"></a>实际应用 如何</h5><ol>
+<h3 id="IOC的应用"><a href="#IOC的应用" class="headerlink" title="IOC的应用"></a>IOC的应用</h3><h5 id="实际应用"><a href="#实际应用" class="headerlink" title="实际应用"></a>实际应用</h5><ol>
 <li>Spring启动时读取应用程序提供的Bean配置信息，并在Spring容器中生成一份相应的Bean注册表。</li>
 <li>根据生成的Bean注册表通过反射机制实例化Bean，并装配好Bean之间的依赖关系，为上层提供准备就绪的运行环境。Spring提供一个配置文件描述bean和bean之间的依关系，利用Java语言的反射功能实例化bean,并建立bean之间的依赖关系</li>
 <li>将生成的Bean实例对象放入Spring容器中。</li>
 </ol>
 <p><img src="/2019/11/05/Java框架-Spring/IOC%E7%9A%84%E5%AE%9E%E9%99%85%E5%BA%94%E7%94%A8.jpg" alt></p>
-<h5 id="Spring-IOC支持的功能："><a href="#Spring-IOC支持的功能：" class="headerlink" title="Spring IOC支持的功能："></a>Spring IOC支持的功能：</h5><ol>
+<h4 id="Spring-IOC支持的功能："><a href="#Spring-IOC支持的功能：" class="headerlink" title="Spring IOC支持的功能："></a>Spring IOC支持的功能：</h4><ol>
 <li>依赖注入</li>
 <li>依赖检查</li>
 <li>自动装配</li>
@@ -1301,12 +1279,7 @@
 <li>指定初始化方法和销毁方法</li>
 <li>支持回调方法</li>
 </ol>
-<h5 id="Spring-IOC容器的核心接口"><a href="#Spring-IOC容器的核心接口" class="headerlink" title="Spring IOC容器的核心接口"></a>Spring IOC容器的核心接口</h5><ol>
-<li>BeanFactory</li>
-<li>ApplicationContext</li>
-</ol>
-<p>BeanFactory是Spring框架的基础设施，面向Spring,ApplicationContext面向使用Spring框架的开发者</p>
-<p><strong>BeanFactory：Spring框架最核心的接口</strong>  </p>
+<h4 id="Spring-IOC容器的核心接口"><a href="#Spring-IOC容器的核心接口" class="headerlink" title="Spring IOC容器的核心接口"></a>Spring IOC容器的核心接口</h4><p><strong>BeanFactory：Spring框架最核心的接口</strong>  </p>
 <ul>
 <li>提供IOC的配置机制</li>
 <li>包含Bean的各种定义，便于实例化Bean</li>
@@ -1320,15 +1293,16 @@
 <li>继承MessageSource:能够实现国际化功能</li>
 <li>继承ApplicationEventPublisher:能够注册监听器，实现监听机制</li>
 </ul>
-<h5 id="Spring里面几个核心的接口和类"><a href="#Spring里面几个核心的接口和类" class="headerlink" title="Spring里面几个核心的接口和类"></a>Spring里面几个核心的接口和类</h5><ul>
-<li>BeanDefinition<br>主要是用来描述Bean的定义</li>
-<li>BeanDefinitionRegistry<br>提供向容器注册BeanDefinition对象的方法</li>
+<h4 id="BeanFactory和ApplicationContext有什么区别？"><a href="#BeanFactory和ApplicationContext有什么区别？" class="headerlink" title="BeanFactory和ApplicationContext有什么区别？"></a>BeanFactory和ApplicationContext有什么区别？</h4><p>BeanFactory是Spring框架的基础设施，面向Spring,ApplicationContext面向使用Spring框架的开发者<br>BeanFactory采用了工厂设计模式，负责读取bean配置文档，管理bean的加载，实例化，维护bean之间的依赖关系，负责bean的声明周期。而ApplicationContext除了提供上述BeanFactory所能提供的功能之外，还提供了更完整的框架功能：国际化支持、aop、事务等。<br>同时BeanFactory在解析配置文件时并不会初始化对象,只有在使用对象getBean()才会对该对象进行初始化，而ApplicationContext在解析配置文件时对配置文件中的所有对象都初始化了,getBean()方法只是获取对象的过程。<br>因此我们一般在使用的时候尽量使用ApplicationContext。</p>
+<h4 id="Spring里面几个核心的接口和类"><a href="#Spring里面几个核心的接口和类" class="headerlink" title="Spring里面几个核心的接口和类"></a>Spring里面几个核心的接口和类</h4><ul>
+<li>BeanDefinition<br>主要是用来描述Bean的定义，Spring容器在启动的时候会将xml或者注解里的bean的定义解析成内部的BeanDefinition</li>
+<li>BeanDefinitionRegistry<br>提供向IOC容器注册BeanDefinition对象的方法</li>
 </ul>
-<h5 id="refresh-方法"><a href="#refresh-方法" class="headerlink" title="refresh 方法"></a>refresh 方法</h5><ol>
+<h4 id="refresh-方法"><a href="#refresh-方法" class="headerlink" title="refresh 方法"></a>refresh 方法</h4><ol>
 <li>为IOC容器以及Bean的生命周期管理提供条件</li>
 <li>刷新Spring上下文信息，定义Spring上下文加载流程</li>
 </ol>
-<h5 id="getBean-方法"><a href="#getBean-方法" class="headerlink" title="getBean 方法"></a>getBean 方法</h5><p><strong>getBean方法的代码逻辑</strong></p>
+<h4 id="getBean-方法"><a href="#getBean-方法" class="headerlink" title="getBean 方法"></a>getBean 方法</h4><p><strong>getBean方法的代码逻辑</strong></p>
 <ul>
 <li>转换beanName</li>
 <li>从缓存中加载实例</li>
@@ -1346,6 +1320,14 @@
 <li>globlaSession:会为每个全局Http Session创建一个Bean实例，该作用域仅对Portlet有效</li>
 </ul>
 <p><strong>创建过程</strong></p>
+<ol>
+<li><p>读取配置文件bean.xml，并根据文件中bean的id,class属性实例化一个BeanDefinition，装入泛型集合中。</p>
+</li>
+<li><p>通过循环+反射，将List&lt; BeanDefinition &gt;中的bean加入到Map&lt; String,Object &gt;中，这里用反射将bean中的className属性转换为一个实例化的bean对象加入到了Map中。</p>
+</li>
+<li><p>提供一个对外的接口，通过传入参数获取该bean。</p>
+</li>
+</ol>
 <p><img src="/2019/11/05/Java框架-Spring/%E5%88%9B%E5%BB%BABean%E7%9A%84%E8%BF%87%E7%A8%8B.jpg" alt></p>
 <p><strong>销毁过程</strong></p>
 <ul>
@@ -1698,9 +1680,6 @@
 
 
     <!-- headerblur min height -->
-    
-      var headerblur = document.getElementById("header-blur");
-      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

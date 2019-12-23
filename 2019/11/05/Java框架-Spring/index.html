@@ -11,23 +11,23 @@
   
   
   
-  <meta name="description" content="IOC原理IOC（Inversion of Control）：控制反转；Spring Core最核心部分；IOC是一种思想。 实现手段：依赖注入（Dependency Injection）把底层类作为参数传递给上层类，实现上层对下层的“控制”  依赖注入的方式 Setter Setter注入 Interface 接口注入 Constructor 构造器注入 Annotation 注解注入  依赖倒">
+  <meta name="description" content="此篇文章帮助自己 从Spring 的源码角度了解Spring的原理  IOC原理IOC（Inversion of Control）：控制反转；Spring Core最核心部分；IOC是一种思想。 实现手段：依赖注入（Dependency Injection）把底层类作为参数传递给上层类，实现上层对下层的“控制”  依赖注入的方式 Setter Setter注入 Interface 接口注入 Con">
 <meta name="keywords" content="IOC,AOP">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java框架-Spring">
 <meta property="og:url" content="http://yoursite.com/2019/11/05/Java框架-Spring/index.html">
 <meta property="og:site_name" content="Contunued Story">
-<meta property="og:description" content="IOC原理IOC（Inversion of Control）：控制反转；Spring Core最核心部分；IOC是一种思想。 实现手段：依赖注入（Dependency Injection）把底层类作为参数传递给上层类，实现上层对下层的“控制”  依赖注入的方式 Setter Setter注入 Interface 接口注入 Constructor 构造器注入 Annotation 注解注入  依赖倒">
+<meta property="og:description" content="此篇文章帮助自己 从Spring 的源码角度了解Spring的原理  IOC原理IOC（Inversion of Control）：控制反转；Spring Core最核心部分；IOC是一种思想。 实现手段：依赖注入（Dependency Injection）把底层类作为参数传递给上层类，实现上层对下层的“控制”  依赖注入的方式 Setter Setter注入 Interface 接口注入 Con">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/2019/11/05/Java框架-Spring/%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5.jpg">
 <meta property="og:image" content="http://yoursite.com/2019/11/05/Java框架-Spring/%E4%BE%9D%E8%B5%96%E5%80%92%E7%BD%AE%E5%8E%9F%E5%88%99%E3%80%81IOC%E3%80%81DI%E3%80%81IOC%E5%AE%B9%E5%99%A8%E7%9A%84%E5%85%B3%E7%B3%BB.jpg">
 <meta property="og:image" content="http://yoursite.com/2019/11/05/Java框架-Spring/ioc%E5%AE%B9%E5%99%A8%E7%9A%84%E4%BC%98%E5%8A%BF.jpg">
 <meta property="og:image" content="http://yoursite.com/2019/11/05/Java框架-Spring/IOC%E7%9A%84%E5%AE%9E%E9%99%85%E5%BA%94%E7%94%A8.jpg">
 <meta property="og:image" content="http://yoursite.com/2019/11/05/Java框架-Spring/%E5%88%9B%E5%BB%BABean%E7%9A%84%E8%BF%87%E7%A8%8B.jpg">
-<meta property="og:updated_time" content="2019-12-20T04:37:41.427Z">
+<meta property="og:updated_time" content="2019-12-23T12:15:17.728Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java框架-Spring">
-<meta name="twitter:description" content="IOC原理IOC（Inversion of Control）：控制反转；Spring Core最核心部分；IOC是一种思想。 实现手段：依赖注入（Dependency Injection）把底层类作为参数传递给上层类，实现上层对下层的“控制”  依赖注入的方式 Setter Setter注入 Interface 接口注入 Constructor 构造器注入 Annotation 注解注入  依赖倒">
+<meta name="twitter:description" content="此篇文章帮助自己 从Spring 的源码角度了解Spring的原理  IOC原理IOC（Inversion of Control）：控制反转；Spring Core最核心部分；IOC是一种思想。 实现手段：依赖注入（Dependency Injection）把底层类作为参数传递给上层类，实现上层对下层的“控制”  依赖注入的方式 Setter Setter注入 Interface 接口注入 Con">
 <meta name="twitter:image" content="http://yoursite.com/2019/11/05/Java框架-Spring/%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5.jpg">
   
     <link rel="alternate" href="/atom.xml" title="Contunued Story" type="application/atom+xml">
@@ -65,10 +65,32 @@
 
 
   
+  
+  <div class="site-header-image">
+    <img id="originBg" width="100%" alt="Hike News" src="">
+  </div>
+
+  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
+    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
+  </div>
+
+  <script>
+        var imgUrls = "css/images/pose01.jpg,https://source.unsplash.com/collection/954550/1920x1080,https://source.unsplash.com/collection/954550/1920x1081".split(",");
+        var random = Math.floor((Math.random() * imgUrls.length ));
+        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+          document.getElementById("originBg").src=imgUrls[random];
+          document.getElementById("blurBg").src=imgUrls[random];
+        } else {
+          document.getElementById("originBg").src='/' + imgUrls[random];
+          document.getElementById("blurBg").src='/' + imgUrls[random];
+        }
+    </script>
+
+
 
 
 <header id="allheader" class="site-header" role="banner" 
-   >
+   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -145,7 +167,9 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="IOC原理"><a href="#IOC原理" class="headerlink" title="IOC原理"></a>IOC原理</h2><p>IOC（Inversion of Control）：控制反转；Spring Core最核心部分；<br>IOC是一种思想。</p>
+        <p>此篇文章帮助自己 从Spring 的源码角度了解Spring的原理</p>
+<hr>
+<h2 id="IOC原理"><a href="#IOC原理" class="headerlink" title="IOC原理"></a>IOC原理</h2><p>IOC（Inversion of Control）：控制反转；Spring Core最核心部分；<br>IOC是一种思想。</p>
 <h3 id="实现手段：依赖注入（Dependency-Injection）"><a href="#实现手段：依赖注入（Dependency-Injection）" class="headerlink" title="实现手段：依赖注入（Dependency Injection）"></a>实现手段：依赖注入（Dependency Injection）</h3><p>把底层类作为参数传递给上层类，实现上层对下层的“控制”</p>
 <p><img src="/2019/11/05/Java框架-Spring/%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5.jpg" alt></p>
 <h4 id="依赖注入的方式"><a href="#依赖注入的方式" class="headerlink" title="依赖注入的方式"></a>依赖注入的方式</h4><ul>
@@ -155,7 +179,12 @@
 <li>Annotation 注解注入</li>
 </ul>
 <h4 id="依赖倒置原则、IOC、DI、IOC容器的关系"><a href="#依赖倒置原则、IOC、DI、IOC容器的关系" class="headerlink" title="依赖倒置原则、IOC、DI、IOC容器的关系"></a>依赖倒置原则、IOC、DI、IOC容器的关系</h4><p><img src="/2019/11/05/Java框架-Spring/%E4%BE%9D%E8%B5%96%E5%80%92%E7%BD%AE%E5%8E%9F%E5%88%99%E3%80%81IOC%E3%80%81DI%E3%80%81IOC%E5%AE%B9%E5%99%A8%E7%9A%84%E5%85%B3%E7%B3%BB.jpg" alt></p>
-<p>依赖倒置原则是一种思想，高层模块不应该依赖底层模块；<br>有了依赖倒置原则才有了IOC的思路；<br>实现IOC的思路又需要依赖注入的支撑；<br>Spring的框架基于IOC提出了容器的概念，对于IOC来说最重要的就是容器了，容器管理着bean的生命周期，控制着bean的依赖注入。</p>
+<ol>
+<li>依赖倒置原则是一种思想，高层模块不应该依赖底层模块；  </li>
+<li>有了依赖倒置原则才有了IOC的思路；  </li>
+<li>实现IOC的思路又需要依赖注入的支撑；  </li>
+<li>Spring的框架基于IOC提出了容器的概念，对于IOC来说最重要的就是容器了，容器管理着bean的生命周期，控制着bean的依赖注入。</li>
+</ol>
 <h3 id="IOC容器的优势"><a href="#IOC容器的优势" class="headerlink" title="IOC容器的优势"></a>IOC容器的优势</h3><ul>
 <li>避免在各处使用new来创建类，并且可以做到统一维护</li>
 <li>创建实例的时候不需要了解其中的细节<br>当使用的时候，IOC容器在内部已经完成对象，调用者只需要调用即可！<br>如图蓝色部分全部是由IOC容器完成！</li>
@@ -163,13 +192,13 @@
 <p><img src="/2019/11/05/Java框架-Spring/ioc%E5%AE%B9%E5%99%A8%E7%9A%84%E4%BC%98%E5%8A%BF.jpg" alt></p>
 <p>因为采用了依赖注入在初始化的过程中就不可避免的写大量的new,这里IOC容器就解决了这个问题，这个容器可以自动对代码初始化，你需要维护一个configuration,可以是xml或者可以是一段代码，而不用每次初始化一个行李箱，写一大堆的初始化代码  </p>
 <p>IOC容器可以隐藏具体创建实例的细节，上图中蓝色部分就像一个工厂，我们只需要向工厂请求一个Luggage实例，然后它就会按照config创建一个Luggage实例，我们不用管Luggage实例是怎么一步一步创建的；实例项目中有些Service是很多年以前写的，有几百个类作为它的底层，假设我们新写了一个API需要实例化这个service,总不可能回头去搞清楚这几百个类的构造函数吧；IOC Container就很完美的解决了这类问题；因为这个架构在要求你写class的时候需要编写响应的config文件，所以你要初始化很久以前的service的时候呢前人都已经写好了config文件了，你直接在用的地方注入这个service就可以了，这大大增加了项目的可维护性降低开发难度</p>
-<h3 id="IOC的应用"><a href="#IOC的应用" class="headerlink" title="IOC的应用"></a>IOC的应用</h3><h5 id="实际应用"><a href="#实际应用" class="headerlink" title="实际应用"></a>实际应用</h5><ol>
+<h2 id="IOC的应用"><a href="#IOC的应用" class="headerlink" title="IOC的应用"></a>IOC的应用</h2><h3 id="Bean生成的简要步骤"><a href="#Bean生成的简要步骤" class="headerlink" title="Bean生成的简要步骤"></a>Bean生成的简要步骤</h3><ol>
 <li>Spring启动时读取应用程序提供的Bean配置信息，并在Spring容器中生成一份相应的Bean注册表。</li>
-<li>根据生成的Bean注册表通过反射机制实例化Bean，并装配好Bean之间的依赖关系，为上层提供准备就绪的运行环境。Spring提供一个配置文件描述bean和bean之间的依关系，利用Java语言的反射功能实例化bean,并建立bean之间的依赖关系</li>
+<li>根据生成的Bean注册表通过反射机制实例化Bean，并装配好Bean之间的依赖关系，为上层提供准备就绪的运行环境。Spring提供一个配置文件描述bean和bean之间的依赖关系，利用Java语言的反射功能实例化bean,并建立bean之间的依赖关系</li>
 <li>将生成的Bean实例对象放入Spring容器中。</li>
 </ol>
 <p><img src="/2019/11/05/Java框架-Spring/IOC%E7%9A%84%E5%AE%9E%E9%99%85%E5%BA%94%E7%94%A8.jpg" alt></p>
-<h4 id="Spring-IOC支持的功能："><a href="#Spring-IOC支持的功能：" class="headerlink" title="Spring IOC支持的功能："></a>Spring IOC支持的功能：</h4><ol>
+<h3 id="Spring-IOC支持的功能："><a href="#Spring-IOC支持的功能：" class="headerlink" title="Spring IOC支持的功能："></a>Spring IOC支持的功能：</h3><ol>
 <li>依赖注入</li>
 <li>依赖检查</li>
 <li>自动装配</li>
@@ -177,14 +206,22 @@
 <li>指定初始化方法和销毁方法</li>
 <li>支持回调方法</li>
 </ol>
-<h4 id="Spring-IOC容器的核心接口"><a href="#Spring-IOC容器的核心接口" class="headerlink" title="Spring IOC容器的核心接口"></a>Spring IOC容器的核心接口</h4><p><strong>BeanFactory：Spring框架最核心的接口</strong>  </p>
+<h3 id="Spring-IOC容器的核心接口"><a href="#Spring-IOC容器的核心接口" class="headerlink" title="Spring IOC容器的核心接口"></a>Spring IOC容器的核心接口</h3><p><strong>BeanDefinition</strong>  </p>
+<p>  主要是用来描述Bean的定义，Spring容器在启动的时候会将xml或者注解里的bean的定义解析成内部的BeanDefinition</p>
+<p><strong>BeanDefinitionRegistry</strong>  </p>
+<p>  提供向IOC容器注册BeanDefinition对象的方法 ；</p>
+<p>  BeanDefinitionRegistry接口提供了 registerBeanDefinition 用来将我们的BeanDefinition注册到BeanFactory 接口的实现类 DefaultListableBeanFactory中的 beanDefinitionMap里，Spring将bean的定义解析成BeanDefinition之后会通过BeanDefinitionRegistry 以BeanName 为key,BeanDefinition为value存储到beanDefinitionMap里，同时还将BeanName存入到beanDefinitionNames里以便后续Bean的实例化</p>
+<p>相关源码：<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public interface BeanDefinitionRegistry extends AliasRegistry &#123;</span><br><span class="line">  void registerBeanDefinition(String var1, BeanDefinition var2) throws BeanDefinitionStoreException;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFactory implements ConfigurableListableBeanFactory, BeanDefinitionRegistry, Serializable &#123;</span><br><span class="line">    private final Map&lt;String, BeanDefinition&gt; beanDefinitionMap = new ConcurrentHashMap(256);</span><br><span class="line">    private volatile List&lt;String&gt; beanDefinitionNames = new ArrayList(256);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>BeanFactory：Spring框架最核心的接口</strong>  </p>
 <ul>
 <li>提供IOC的配置机制</li>
 <li>包含Bean的各种定义，便于实例化Bean</li>
 <li>建立Bean之间的依赖关系</li>
 <li>Bean生命周期的控制</li>
 </ul>
-<p><strong>ApplicationContext的功能（继承多个接口）</strong>  </p>
+<p><strong>ApplicationContext（继承多个接口）</strong>  </p>
 <ul>
 <li>继承BeanFactory:能够管理、装配Bean</li>
 <li>继承ResourcePatternResolver:能够加载资源文件</li>
@@ -192,24 +229,26 @@
 <li>继承ApplicationEventPublisher:能够注册监听器，实现监听机制</li>
 </ul>
 <h4 id="BeanFactory和ApplicationContext有什么区别？"><a href="#BeanFactory和ApplicationContext有什么区别？" class="headerlink" title="BeanFactory和ApplicationContext有什么区别？"></a>BeanFactory和ApplicationContext有什么区别？</h4><p>BeanFactory是Spring框架的基础设施，面向Spring,ApplicationContext面向使用Spring框架的开发者<br>BeanFactory采用了工厂设计模式，负责读取bean配置文档，管理bean的加载，实例化，维护bean之间的依赖关系，负责bean的声明周期。而ApplicationContext除了提供上述BeanFactory所能提供的功能之外，还提供了更完整的框架功能：国际化支持、aop、事务等。<br>同时BeanFactory在解析配置文件时并不会初始化对象,只有在使用对象getBean()才会对该对象进行初始化，而ApplicationContext在解析配置文件时对配置文件中的所有对象都初始化了,getBean()方法只是获取对象的过程。<br>因此我们一般在使用的时候尽量使用ApplicationContext。</p>
-<h4 id="Spring里面几个核心的接口和类"><a href="#Spring里面几个核心的接口和类" class="headerlink" title="Spring里面几个核心的接口和类"></a>Spring里面几个核心的接口和类</h4><ul>
-<li>BeanDefinition<br>主要是用来描述Bean的定义，Spring容器在启动的时候会将xml或者注解里的bean的定义解析成内部的BeanDefinition</li>
-<li>BeanDefinitionRegistry<br>提供向IOC容器注册BeanDefinition对象的方法</li>
-</ul>
-<h4 id="refresh-方法"><a href="#refresh-方法" class="headerlink" title="refresh 方法"></a>refresh 方法</h4><ol>
+<h3 id="Spring中几个重要方法"><a href="#Spring中几个重要方法" class="headerlink" title="Spring中几个重要方法"></a>Spring中几个重要方法</h3><h4 id="refresh-方法"><a href="#refresh-方法" class="headerlink" title="refresh 方法"></a>refresh 方法</h4><p>Spring容器在创建好了之后会调用refresh()方法<br>SpringApplication.class 中 refresh的源码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">protected void refresh(ApplicationContext applicationContext) &#123;</span><br><span class="line">    Assert.isInstanceOf(AbstractApplicationContext.class, applicationContext);</span><br><span class="line">    ((AbstractApplicationContext)applicationContext).refresh();</span><br><span class="line">｝</span><br></pre></td></tr></table></figure>
+
+<p>AbstractApplicationContext.class  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">public void refresh() throws BeansException, IllegalStateException &#123;</span><br><span class="line">        Object var1 = this.startupShutdownMonitor;</span><br><span class="line">        synchronized(this.startupShutdownMonitor) &#123;</span><br><span class="line">            //设置Spring容器的启动时间，开启活跃状态，初始化属性与信息，验证环境信息里面必须存在的属性</span><br><span class="line">            this.prepareRefresh();</span><br><span class="line">            //获取beanFactory</span><br><span class="line">            ConfigurableListableBeanFactory beanFactory = this.obtainFreshBeanFactory();</span><br><span class="line">            //设置beanFactory</span><br><span class="line">            this.prepareBeanFactory(beanFactory);</span><br><span class="line"></span><br><span class="line">            try &#123;</span><br><span class="line">                this.postProcessBeanFactory(beanFactory);</span><br><span class="line">                // 处理bean标签扫描bean文件，解析成一个个的bean</span><br><span class="line">                this.invokeBeanFactoryPostProcessors(beanFactory);</span><br><span class="line">                //bean的后置处理器</span><br><span class="line">                this.registerBeanPostProcessors(beanFactory);</span><br><span class="line">                //初始化一些国际化相关的属性</span><br><span class="line">                this.initMessageSource();</span><br><span class="line">                //初始化事件的广播器，用于事件发布</span><br><span class="line">                this.initApplicationEventMulticaster();</span><br><span class="line">                //模板方法，方法体为空，不同的Spring容器去重写</span><br><span class="line">                this.onRefresh();</span><br><span class="line">                //注册监听器</span><br><span class="line">                this.registerListeners();</span><br><span class="line">                //实例化BeanFactory中已经被注册未被实例化的所有实例</span><br><span class="line">                this.finishBeanFactoryInitialization(beanFactory);</span><br><span class="line">                //初始化生命周期管理器</span><br><span class="line">                this.finishRefresh();</span><br><span class="line">            &#125; catch (BeansException var9) &#123;</span><br><span class="line">                if (this.logger.isWarnEnabled()) &#123;</span><br><span class="line">                    this.logger.warn(&quot;Exception encountered during context initialization - cancelling refresh attempt: &quot; + var9);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                this.destroyBeans();</span><br><span class="line">                this.cancelRefresh(var9);</span><br><span class="line">                throw var9;</span><br><span class="line">            &#125; finally &#123;</span><br><span class="line">                this.resetCommonCaches();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
 <li>为IOC容器以及Bean的生命周期管理提供条件</li>
 <li>刷新Spring上下文信息，定义Spring上下文加载流程</li>
 </ol>
-<h4 id="getBean-方法"><a href="#getBean-方法" class="headerlink" title="getBean 方法"></a>getBean 方法</h4><p><strong>getBean方法的代码逻辑</strong></p>
+<h4 id="getBean-方法"><a href="#getBean-方法" class="headerlink" title="getBean 方法"></a>getBean 方法</h4><p>通过AbstractBeanFactoryFactory.class 实现可以按类型获取bean的，也有按名称获取bean的<br><strong>getBean方法的代码逻辑</strong></p>
 <ul>
 <li>转换beanName</li>
-<li>从缓存中加载实例</li>
+<li>从工厂或者缓存中加载实例</li>
 <li>实例化Bean</li>
 <li>检测parentBeanFactory</li>
-<li>初始化依赖的Bean</li>
+<li>检查初始化Bean的相关的依赖</li>
 <li>创建Bean</li>
 </ul>
-<p><strong>Spring Bean的实例</strong></p>
+<h3 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h3><p><strong>1.Spring的五个作用域</strong></p>
 <ul>
 <li>singleton:Spring的默认作用域，容器里拥有唯一的Bean实例</li>
 <li>prototype:针对每个getBean请求，容器都会创建一个Bean实例</li>
@@ -217,41 +256,81 @@
 <li>session：会为每个session创建一个Bean实例</li>
 <li>globlaSession:会为每个全局Http Session创建一个Bean实例，该作用域仅对Portlet有效</li>
 </ul>
-<p><strong>创建过程</strong></p>
-<ol>
-<li><p>读取配置文件bean.xml，并根据文件中bean的id,class属性实例化一个BeanDefinition，装入泛型集合中。</p>
-</li>
-<li><p>通过循环+反射，将List&lt; BeanDefinition &gt;中的bean加入到Map&lt; String,Object &gt;中，这里用反射将bean中的className属性转换为一个实例化的bean对象加入到了Map中。</p>
-</li>
-<li><p>提供一个对外的接口，通过传入参数获取该bean。</p>
-</li>
-</ol>
-<p><img src="/2019/11/05/Java框架-Spring/%E5%88%9B%E5%BB%BABean%E7%9A%84%E8%BF%87%E7%A8%8B.jpg" alt></p>
-<p><strong>销毁过程</strong></p>
+<p><strong>2.SpringBean的生命周期</strong></p>
+<p>创建过程<br><img src="/2019/11/05/Java框架-Spring/%E5%88%9B%E5%BB%BABean%E7%9A%84%E8%BF%87%E7%A8%8B.jpg" alt></p>
+<p>销毁过程</p>
 <ul>
 <li>若实现了DisposableBean接口，则会调用destroy方法</li>
 <li>若配置了destry-method属性，则会调用其配置的销毁方法</li>
 </ul>
-<h4 id="Spring-AOP"><a href="#Spring-AOP" class="headerlink" title="Spring AOP"></a>Spring AOP</h4><h5 id="关注点分离：不同的问题交给不同的部分去解决"><a href="#关注点分离：不同的问题交给不同的部分去解决" class="headerlink" title="关注点分离：不同的问题交给不同的部分去解决"></a>关注点分离：不同的问题交给不同的部分去解决</h5><ul>
+<h3 id="bean如何装载到IOC容器中和依赖注入的用法"><a href="#bean如何装载到IOC容器中和依赖注入的用法" class="headerlink" title="bean如何装载到IOC容器中和依赖注入的用法"></a>bean如何装载到IOC容器中和依赖注入的用法</h3><p>第一种方式： 手动装配bean,简单粗暴，但是如果bean多的话是一件非常痛苦的事情  </p>
+<ol>
+<li><p>创建一个class Person</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public class person&#123;</span><br><span class="line">    private Long id;</span><br><span class="line">    private String name;</span><br><span class="line">    //get,set省略</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>定义一个Java的配置文件 ApplicationConfig,主要作用是高速IOC容器如何装配这个bean</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@Configuretion</span><br><span class="line">public class ApplicationConfig&#123;</span><br><span class="line">    @Bean(name=&quot;person&quot;)</span><br><span class="line">    public Person initPerson()&#123;</span><br><span class="line">        Person user = new Person();</span><br><span class="line">        user.setId(1L);</span><br><span class="line">        user.setName(&quot;jack&quot;);</span><br><span class="line">        return user;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>通过ApplicationContext来获取bean实例<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ApplicationContext ctx = SpringApplication.run(ProductApplication.class, args);</span><br><span class="line">Person person = ctx.getBean(&quot;Peroson.class&quot;);//通过类型来获取</span><br><span class="line">System.out.println(&quot;Name is &quot;+person.getName);</span><br><span class="line">person.call();</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>第二种方式： 以SpringBoot方式扫描装配Bean到IOC容器中  </p>
+<ol>
+<li><p>对Person进行改动 加入@Component 注解，表明哪个类要被扫描进入到SpringIOC容器中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@Component(&quot;Person&quot;)</span><br><span class="line">public class person&#123;</span><br><span class="line">    @Value(&quot;1&quot;)</span><br><span class="line">    private Long id;</span><br><span class="line">    @Value(&quot;Jack&quot;)</span><br><span class="line">    private String name;</span><br><span class="line">    //get,set省略</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>实现依赖注入 新建 Pet.class</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public inteface Pet&#123;</span><br><span class="line">    void move();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>创建Pet实现类  Dog  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@Component</span><br><span class="line">public class Dog implements Pet&#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void move()&#123;</span><br><span class="line">        System.out.println(&quot;running&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><p>Person中注入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">@Component(&quot;Person&quot;)</span><br><span class="line">public class person&#123;</span><br><span class="line">    @Value(&quot;1&quot;)</span><br><span class="line">    private Long id;</span><br><span class="line">    @Value(&quot;Jack&quot;)</span><br><span class="line">    private String name;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    private Pet pet;</span><br><span class="line">    public void call()&#123;</span><br><span class="line">        pet.move();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如果新增一个再增加一个Pet的实现类 Bird ,person.call()调用会报错，不知道该调用哪个实现方法，可以加@Primary 或 @Qualifier 告诉Spring该选择谁</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@Component</span><br><span class="line">@Primary</span><br><span class="line">public class Bird implements Pet&#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void move()&#123;</span><br><span class="line">        System.out.println(&quot;flying&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>再次调用person.call() 就会正常输出 flying</li>
+</ol>
+<h2 id="Spring-AOP"><a href="#Spring-AOP" class="headerlink" title="Spring AOP"></a>Spring AOP</h2><h3 id="关注点分离：不同的问题交给不同的部分去解决"><a href="#关注点分离：不同的问题交给不同的部分去解决" class="headerlink" title="关注点分离：不同的问题交给不同的部分去解决"></a>关注点分离：不同的问题交给不同的部分去解决</h3><ul>
 <li>面向切面变成AOP正是此种技术的体现</li>
 <li>通用代码的实现，对应的就是所谓的切面（Aspect）</li>
 <li>业务功能代码和切面代码分开后，架构将变得高内聚低耦合</li>
 <li>确保功能的完整性：切面最终需要被合并到业务中（Weave）</li>
 </ul>
-<h5 id="AOP的三种织入方式"><a href="#AOP的三种织入方式" class="headerlink" title="AOP的三种织入方式"></a>AOP的三种织入方式</h5><ul>
+<h3 id="AOP的三种织入方式"><a href="#AOP的三种织入方式" class="headerlink" title="AOP的三种织入方式"></a>AOP的三种织入方式</h3><ul>
 <li>编译时织入：需要特殊的Java编译器，AspectJ</li>
 <li>类加载时织入：需要特殊的Java编译器，如AspectJ和AspectWerkz</li>
 <li>运行时织入：Spring采用的方式，通过动态代理的方式，实现简单</li>
 </ul>
-<h5 id="AOP主要名词概念"><a href="#AOP主要名词概念" class="headerlink" title="AOP主要名词概念"></a>AOP主要名词概念</h5><ul>
-<li>Aspect:通用功能代码的实现，切面</li>
-<li>Target:被织入Aspect的对象</li>
-<li>Join Point：可以作为切入点的机会，所有的方法都可以作为切入点</li>
-<li>Pointcut:Aspect实际被应用在的Join Point，支持正则</li>
-<li>Advice:类里的方法以及这个方法如何织入到目标方法的方式</li>
-<li>Weaving:Aop的实现过程</li>
-</ul>
-<p><strong>Advice的种类</strong></p>
+<p>一个简单的代码实现：记录请求的信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@RestController</span><br><span class="line">public class HelloController &#123;</span><br><span class="line">    @GetMapping(&quot;/hello&quot;)</span><br><span class="line">    public String hello()&#123;</span><br><span class="line">        String sentence = &quot;Hello World&quot;;</span><br><span class="line">        System.out.println(sentence);</span><br><span class="line">        return  sentence;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>新建切面类：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">@Aspect</span><br><span class="line">@Component</span><br><span class="line">public class RequestLogAspect &#123;</span><br><span class="line">    private static final Logger logger = LoggerFactory.getLogger(RequestLogAspect.class);</span><br><span class="line"></span><br><span class="line">    @Pointcut(&quot;execution(public * com.imooc.framework.controller..*.*(..))&quot;)</span><br><span class="line">    public void webLog()&#123;&#125;</span><br><span class="line"></span><br><span class="line">    @Before(&quot;webLog()&quot;)</span><br><span class="line">    public void doBefore(JoinPoint joinPoint)&#123;</span><br><span class="line">        //接收到请求，记录请求内容</span><br><span class="line">        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();</span><br><span class="line">        HttpServletRequest request = attributes.getRequest();</span><br><span class="line">        //记录下请求内容</span><br><span class="line">        logger.info(&quot;URL: &quot;+ request.getRequestURI().toString());</span><br><span class="line">        logger.info(&quot;IP: &quot; + request.getRemoteAddr());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @AfterReturning(returning = &quot;ret&quot; ,pointcut = &quot;webLog()&quot;)</span><br><span class="line">    public void doAfterReturning(Object ret)&#123;</span><br><span class="line">        //处理完请求，返回内容</span><br><span class="line">        logger.info(&quot;RESPONSE: &quot; + ret);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="AOP主要名词概念"><a href="#AOP主要名词概念" class="headerlink" title="AOP主要名词概念"></a>AOP主要名词概念</h3><ul>
+<li><p>Aspect:通用功能代码的实现，切面  普通的java类RequestLogAspect</p>
+</li>
+<li><p>Target:被织入Aspect的对象  HelloController</p>
+</li>
+<li><p>Join Point：可以作为切入点的机会，所有的方法都可以作为切入点  所有方法的执行处，如前面的hello方法</p>
+</li>
+<li><p>Pointcut:Aspect实际被应用在的Join Point，支持正则</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@Pointcut(&quot;execution(public * com.imooc.framework.controller..*.*(..))&quot;)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Advice:类里的方法以及这个方法如何织入到目标方法的方式</p>
 <ul>
 <li>前置通知（Before）</li>
 <li>后置通知（AfterReturning）</li>
@@ -259,43 +338,49 @@
 <li>最终通知（After）</li>
 <li>环绕通知（Around）</li>
 </ul>
-<h5 id="AOP的实现：JdkProxy和Cglib"><a href="#AOP的实现：JdkProxy和Cglib" class="headerlink" title="AOP的实现：JdkProxy和Cglib"></a>AOP的实现：JdkProxy和Cglib</h5><ul>
-<li><p>由AopProxyFactory根据AdvisedSupport对象配置来决定</p>
 </li>
-<li><p>默认策略如果目标是接口，则用JDKProxy来实现，否则用后者</p>
-</li>
-<li><p>JDKProxy的核心：InvocationHandler接口和Proxy类</p>
-</li>
-<li><p>Cglib:以集成的方式动态生成目标类的代理</p>
-</li>
-<li><p>JDKProxy:通过Java的内部反射机制实现</p>
-</li>
-<li><p>Cglib:借助ASM实现</p>
-</li>
-<li><p>反射机制在生成类的过程中比较高效</p>
-</li>
-<li><p>ASM在生成类之后的执行过程中比较高效</p>
+<li><p>Weaving:Aop的实现过程,将切面应用到实际对象从而创建一个新的代理对象的过程</p>
 </li>
 </ul>
-<h5 id="代理模式：接口-真实实现类-代理类"><a href="#代理模式：接口-真实实现类-代理类" class="headerlink" title="代理模式：接口+真实实现类+代理类"></a>代理模式：接口+真实实现类+代理类</h5><p>例子：</p>
+<h3 id="AOP的实现：JdkProxy和Cglib"><a href="#AOP的实现：JdkProxy和Cglib" class="headerlink" title="AOP的实现：JdkProxy和Cglib"></a>AOP的实现：JdkProxy和Cglib</h3><ul>
+<li>由AopProxyFactory根据AdvisedSupport对象配置来决定</li>
+<li>默认策略如果目标是接口，则用JDKProxy来实现，否则用后者</li>
+<li>JDKProxy的核心：InvocationHandler接口和Proxy类</li>
+<li>Cglib:以继承的方式动态生成目标类的代理（如果某个类被标记成final它是无法使用Cglib做动态代理的）</li>
+<li>JDKProxy:通过Java的内部反射机制实现</li>
+<li>Cglib:借助ASM实现，一种能够操作字节码的框架</li>
+<li>反射机制在生成类的过程中比较高效</li>
+<li>ASM在生成类之后的执行过程中比较高效</li>
+</ul>
+<h3 id="代理模式：接口-真实实现类-代理类"><a href="#代理模式：接口-真实实现类-代理类" class="headerlink" title="代理模式：接口+真实实现类+代理类"></a>代理模式：接口+真实实现类+代理类</h3><p>简单代码实现：</p>
+<ol>
+<li>新建一个接口实现pay方法</li>
+<li>真实实现类和代理类都要实现该方法</li>
+<li>在代理类中注入真实实现类，在代理类的实现方法pay()中调用真实实现类的pay()方法，然后增加做自己的业务逻辑</li>
+</ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public interface Payment&#123;</span><br><span class="line">    void pay();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public RealPayment implements Payment&#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void pay()&#123;</span><br><span class="line"></span><br><span class="line">        System.out.println(&quot;作为用户我只关心支付&quot;)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public RealPayment implements Payment&#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void pay()&#123;</span><br><span class="line">        System.out.println(&quot;作为用户我只关心支付&quot;)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public AliPay implements Payment&#123;</span><br><span class="line">    private Payment payment;</span><br><span class="line">    public AliPay(Payment payment)</span><br><span class="line">    public void beforePay()&#123;</span><br><span class="line">        System.out.println(&quot;从招行取款&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">    @Override</span><br><span class="line">    public void pay()&#123;</span><br><span class="line">        beforePay()；</span><br><span class="line">        payment.pay();</span><br><span class="line">        afterPay();</span><br><span class="line">    &#125;</span><br><span class="line">    public void afterPay()&#123;</span><br><span class="line">        System.out.println(&quot;支付给慕课网&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">public AliPay implements Payment&#123;</span><br><span class="line">    private Payment payment;</span><br><span class="line">    public AliPay(Payment payment)</span><br><span class="line"></span><br><span class="line">    public void beforePay()&#123;</span><br><span class="line">        System.out.println(&quot;从招行取款&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">    @Override</span><br><span class="line">    public void pay()&#123;</span><br><span class="line">        beforePay()；</span><br><span class="line">        payment.pay();</span><br><span class="line">        afterPay();</span><br><span class="line">    &#125;</span><br><span class="line">    public void afterPay()&#123;</span><br><span class="line">        System.out.println(&quot;支付给慕课网&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Payment proxy = new AliPay(new RealPayment);</span><br><span class="line">proxy.pay();</span><br></pre></td></tr></table></figure>
 
-<h5 id="Spring里的代理模式的实现"><a href="#Spring里的代理模式的实现" class="headerlink" title="Spring里的代理模式的实现"></a>Spring里的代理模式的实现</h5><ul>
+<h3 id="Spring里的代理模式的实现"><a href="#Spring里的代理模式的实现" class="headerlink" title="Spring里的代理模式的实现"></a>Spring里的代理模式的实现</h3><ul>
 <li>真实实现类的逻辑包含在了getBean方法里</li>
 <li>getBean方法返回的实际上是Proxy实例</li>
 <li>Proxy实例是Spring采用JDK Proxy或CGLIB动态生成的</li>
 </ul>
-<h4 id="Spring事务的相关问题"><a href="#Spring事务的相关问题" class="headerlink" title="Spring事务的相关问题"></a>Spring事务的相关问题</h4><ul>
+<p>底层逻辑代码实现：<br>AbstractAutoProxyCreator.postProcessAfterInitialization() -&gt; wrapIfNecessary() -&gt;createProxy()-&gt;<br>ProxyFactory.getProxy()-&gt;ProxyCreatorSupport.createAopProxy()-&gt;ProxyCreatorSupport.DefaultAopProxyFactory-&gt;DefaultAopProxyFactory.createAopProxy()  </p>
+<p>最终看到生成代理的最底层方法，这里只能说Spring的结构真实太复杂了，层层调用 0.0</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public AopProxy createAopProxy(AdvisedSupport config) throws AopConfigException &#123;</span><br><span class="line">    if (!config.isOptimize() &amp;&amp; !config.isProxyTargetClass() &amp;&amp; !this.hasNoUserSuppliedProxyInterfaces(config)) &#123;</span><br><span class="line">        return new JdkDynamicAopProxy(config);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        Class&lt;?&gt; targetClass = config.getTargetClass();</span><br><span class="line">        if (targetClass == null) &#123;</span><br><span class="line">            throw new AopConfigException(&quot;TargetSource cannot determine target class: Either an interface or a target is required for proxy creation.&quot;);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            return (AopProxy)(!targetClass.isInterface() &amp;&amp; !Proxy.isProxyClass(targetClass) ? new ObjenesisCglibAopProxy(config) : new JdkDynamicAopProxy(config));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Spring事务的相关问题"><a href="#Spring事务的相关问题" class="headerlink" title="Spring事务的相关问题"></a>Spring事务的相关问题</h3><ul>
 <li>ACID</li>
 <li>隔离级别</li>
 <li>事务传播</li>
 </ul>
+<p>可参考 <a href="https://blog.csdn.net/weixin_38070406/article/details/78157603" target="_blank" rel="noopener">spring的4种事务特性，5种隔离级别，7种传播行为</a> </p>
 
       
     </div>
@@ -367,7 +452,7 @@
     <div id="toc" class="toc-article">
     <strong class="toc-title">Contents</strong>
     
-      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#IOC原理"><span class="nav-number">1.</span> <span class="nav-text">IOC原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实现手段：依赖注入（Dependency-Injection）"><span class="nav-number">1.1.</span> <span class="nav-text">实现手段：依赖注入（Dependency Injection）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#依赖注入的方式"><span class="nav-number">1.1.1.</span> <span class="nav-text">依赖注入的方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#依赖倒置原则、IOC、DI、IOC容器的关系"><span class="nav-number">1.1.2.</span> <span class="nav-text">依赖倒置原则、IOC、DI、IOC容器的关系</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IOC容器的优势"><span class="nav-number">1.2.</span> <span class="nav-text">IOC容器的优势</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IOC的应用"><span class="nav-number">1.3.</span> <span class="nav-text">IOC的应用</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#实际应用"><span class="nav-number">1.3.0.1.</span> <span class="nav-text">实际应用</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring-IOC支持的功能："><span class="nav-number">1.3.1.</span> <span class="nav-text">Spring IOC支持的功能：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring-IOC容器的核心接口"><span class="nav-number">1.3.2.</span> <span class="nav-text">Spring IOC容器的核心接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BeanFactory和ApplicationContext有什么区别？"><span class="nav-number">1.3.3.</span> <span class="nav-text">BeanFactory和ApplicationContext有什么区别？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring里面几个核心的接口和类"><span class="nav-number">1.3.4.</span> <span class="nav-text">Spring里面几个核心的接口和类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#refresh-方法"><span class="nav-number">1.3.5.</span> <span class="nav-text">refresh 方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#getBean-方法"><span class="nav-number">1.3.6.</span> <span class="nav-text">getBean 方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring-AOP"><span class="nav-number">1.3.7.</span> <span class="nav-text">Spring AOP</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#关注点分离：不同的问题交给不同的部分去解决"><span class="nav-number">1.3.7.1.</span> <span class="nav-text">关注点分离：不同的问题交给不同的部分去解决</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#AOP的三种织入方式"><span class="nav-number">1.3.7.2.</span> <span class="nav-text">AOP的三种织入方式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#AOP主要名词概念"><span class="nav-number">1.3.7.3.</span> <span class="nav-text">AOP主要名词概念</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#AOP的实现：JdkProxy和Cglib"><span class="nav-number">1.3.7.4.</span> <span class="nav-text">AOP的实现：JdkProxy和Cglib</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#代理模式：接口-真实实现类-代理类"><span class="nav-number">1.3.7.5.</span> <span class="nav-text">代理模式：接口+真实实现类+代理类</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Spring里的代理模式的实现"><span class="nav-number">1.3.7.6.</span> <span class="nav-text">Spring里的代理模式的实现</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring事务的相关问题"><span class="nav-number">1.3.8.</span> <span class="nav-text">Spring事务的相关问题</span></a></li></ol></li></ol></li></ol>
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#IOC原理"><span class="nav-number">1.</span> <span class="nav-text">IOC原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实现手段：依赖注入（Dependency-Injection）"><span class="nav-number">1.1.</span> <span class="nav-text">实现手段：依赖注入（Dependency Injection）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#依赖注入的方式"><span class="nav-number">1.1.1.</span> <span class="nav-text">依赖注入的方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#依赖倒置原则、IOC、DI、IOC容器的关系"><span class="nav-number">1.1.2.</span> <span class="nav-text">依赖倒置原则、IOC、DI、IOC容器的关系</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IOC容器的优势"><span class="nav-number">1.2.</span> <span class="nav-text">IOC容器的优势</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IOC的应用"><span class="nav-number">2.</span> <span class="nav-text">IOC的应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Bean生成的简要步骤"><span class="nav-number">2.1.</span> <span class="nav-text">Bean生成的简要步骤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-IOC支持的功能："><span class="nav-number">2.2.</span> <span class="nav-text">Spring IOC支持的功能：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-IOC容器的核心接口"><span class="nav-number">2.3.</span> <span class="nav-text">Spring IOC容器的核心接口</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#BeanFactory和ApplicationContext有什么区别？"><span class="nav-number">2.3.1.</span> <span class="nav-text">BeanFactory和ApplicationContext有什么区别？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring中几个重要方法"><span class="nav-number">2.4.</span> <span class="nav-text">Spring中几个重要方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#refresh-方法"><span class="nav-number">2.4.1.</span> <span class="nav-text">refresh 方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#getBean-方法"><span class="nav-number">2.4.2.</span> <span class="nav-text">getBean 方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常见问题"><span class="nav-number">2.5.</span> <span class="nav-text">常见问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bean如何装载到IOC容器中和依赖注入的用法"><span class="nav-number">2.6.</span> <span class="nav-text">bean如何装载到IOC容器中和依赖注入的用法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-AOP"><span class="nav-number">3.</span> <span class="nav-text">Spring AOP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#关注点分离：不同的问题交给不同的部分去解决"><span class="nav-number">3.1.</span> <span class="nav-text">关注点分离：不同的问题交给不同的部分去解决</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AOP的三种织入方式"><span class="nav-number">3.2.</span> <span class="nav-text">AOP的三种织入方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AOP主要名词概念"><span class="nav-number">3.3.</span> <span class="nav-text">AOP主要名词概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AOP的实现：JdkProxy和Cglib"><span class="nav-number">3.4.</span> <span class="nav-text">AOP的实现：JdkProxy和Cglib</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代理模式：接口-真实实现类-代理类"><span class="nav-number">3.5.</span> <span class="nav-text">代理模式：接口+真实实现类+代理类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring里的代理模式的实现"><span class="nav-number">3.6.</span> <span class="nav-text">Spring里的代理模式的实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring事务的相关问题"><span class="nav-number">3.7.</span> <span class="nav-text">Spring事务的相关问题</span></a></li></ol></li></ol>
     
     </div>
   </aside>
@@ -420,6 +505,9 @@
 
 
     <!-- headerblur min height -->
+    
+      var headerblur = document.getElementById("header-blur");
+      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

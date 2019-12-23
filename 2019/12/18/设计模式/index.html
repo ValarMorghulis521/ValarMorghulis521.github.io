@@ -6,17 +6,20 @@
   <title>设计模式 | Contunued Story</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
+  <meta name="keywords" content="单例模式工厂模式代理模式">
+  
   
   
   
   <meta name="description" content="总结一下之前的项目中出现的设计模式  单例模式单例模式是Java最简单的模式之一；这种类型的设计模式属于创建型模式，它提供一种创建对象的最佳方式。 注意：    单例类只能有一个实例 单例类必须自己创建自己的唯一实例 单例类给所有其他对象提供这一实例  主要解决：一个全局使用的类频繁的创建与销毁。所以需要控制实例数目，节省系统资源 ；    如何实现：系统判断是否已经有这个单例，如果有则返回，如果">
+<meta name="keywords" content="单例模式,工厂模式,代理模式">
 <meta property="og:type" content="article">
 <meta property="og:title" content="设计模式">
 <meta property="og:url" content="http://yoursite.com/2019/12/18/设计模式/index.html">
 <meta property="og:site_name" content="Contunued Story">
 <meta property="og:description" content="总结一下之前的项目中出现的设计模式  单例模式单例模式是Java最简单的模式之一；这种类型的设计模式属于创建型模式，它提供一种创建对象的最佳方式。 注意：    单例类只能有一个实例 单例类必须自己创建自己的唯一实例 单例类给所有其他对象提供这一实例  主要解决：一个全局使用的类频繁的创建与销毁。所以需要控制实例数目，节省系统资源 ；    如何实现：系统判断是否已经有这个单例，如果有则返回，如果">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-12-18T14:59:29.153Z">
+<meta property="og:updated_time" content="2019-12-20T12:29:42.497Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="设计模式">
 <meta name="twitter:description" content="总结一下之前的项目中出现的设计模式  单例模式单例模式是Java最简单的模式之一；这种类型的设计模式属于创建型模式，它提供一种创建对象的最佳方式。 注意：    单例类只能有一个实例 单例类必须自己创建自己的唯一实例 单例类给所有其他对象提供这一实例  主要解决：一个全局使用的类频繁的创建与销毁。所以需要控制实例数目，节省系统资源 ；    如何实现：系统判断是否已经有这个单例，如果有则返回，如果">
@@ -56,10 +59,32 @@
 
 
   
+  
+  <div class="site-header-image">
+    <img id="originBg" width="100%" alt="Hike News" src="">
+  </div>
+
+  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
+    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
+  </div>
+
+  <script>
+        var imgUrls = "css/images/pose01.jpg,https://source.unsplash.com/collection/954550/1920x1080,https://source.unsplash.com/collection/954550/1920x1081".split(",");
+        var random = Math.floor((Math.random() * imgUrls.length ));
+        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+          document.getElementById("originBg").src=imgUrls[random];
+          document.getElementById("blurBg").src=imgUrls[random];
+        } else {
+          document.getElementById("originBg").src='/' + imgUrls[random];
+          document.getElementById("blurBg").src='/' + imgUrls[random];
+        }
+    </script>
+
+
 
 
 <header id="allheader" class="site-header" role="banner" 
-   >
+   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -124,7 +149,10 @@
 	  <time datetime="2019-12-18T04:30:55.000Z" itemprop="datePublished">December 18, 2019</time>
 	</a>
 
-       
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/设计模式/">设计模式</a>
+ 
       
 	<span id="busuanzi_container_page_pv">
 	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
@@ -222,7 +250,13 @@
     </div>
     <footer class="entry-meta entry-footer">
       
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/设计模式/">设计模式</a>
+
       
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/代理模式/">代理模式</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/单例模式/">单例模式</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/工厂模式/">工厂模式</a></li></ul>
+
       
         
 	<div id="comment">
@@ -255,6 +289,15 @@
   
     
 <nav id="article-nav">
+  
+    <a href="/2019/12/20/一些好句子/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          一些好句子
+        
+      </div>
+    </a>
   
   
     <a href="/2019/11/19/容器部署/" id="article-nav-older" class="article-nav-link-wrap">
@@ -326,6 +369,9 @@
 
 
     <!-- headerblur min height -->
+    
+      var headerblur = document.getElementById("header-blur");
+      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

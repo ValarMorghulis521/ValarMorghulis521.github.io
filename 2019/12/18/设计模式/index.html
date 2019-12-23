@@ -19,7 +19,7 @@
 <meta property="og:site_name" content="Contunued Story">
 <meta property="og:description" content="总结一下之前的项目中出现的设计模式  单例模式单例模式是Java最简单的模式之一；这种类型的设计模式属于创建型模式，它提供一种创建对象的最佳方式。 注意：    单例类只能有一个实例 单例类必须自己创建自己的唯一实例 单例类给所有其他对象提供这一实例  主要解决：一个全局使用的类频繁的创建与销毁。所以需要控制实例数目，节省系统资源 ；    如何实现：系统判断是否已经有这个单例，如果有则返回，如果">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-12-20T12:29:42.497Z">
+<meta property="og:updated_time" content="2019-12-23T12:22:55.656Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="设计模式">
 <meta name="twitter:description" content="总结一下之前的项目中出现的设计模式  单例模式单例模式是Java最简单的模式之一；这种类型的设计模式属于创建型模式，它提供一种创建对象的最佳方式。 注意：    单例类只能有一个实例 单例类必须自己创建自己的唯一实例 单例类给所有其他对象提供这一实例  主要解决：一个全局使用的类频繁的创建与销毁。所以需要控制实例数目，节省系统资源 ；    如何实现：系统判断是否已经有这个单例，如果有则返回，如果">
@@ -185,7 +185,9 @@
 <p>项目中用到的代码例子</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">public class ParseXmlService &#123;</span><br><span class="line"></span><br><span class="line">	private static ParseXmlService instance;</span><br><span class="line"></span><br><span class="line">	private IParseXmlManager mgr;</span><br><span class="line"></span><br><span class="line">	/**</span><br><span class="line">	 * 通过实现xml2sheets业务方法,解析xml</span><br><span class="line">	 * </span><br><span class="line">	 * @param cls</span><br><span class="line">	 *            类</span><br><span class="line">	 * @param key</span><br><span class="line">	 *            xml mapping配置文件的key值</span><br><span class="line">	 * @param filePath</span><br><span class="line">	 *            xml配置文件路径,包含文件名</span><br><span class="line">	 * @return 解析的对象</span><br><span class="line">	 * @see ParseXmlManagerImpl#xml2object(Class, String, String)</span><br><span class="line">	 * @throws ParseXMLException</span><br><span class="line">	 *             解析出错抛异常</span><br><span class="line">	 */</span><br><span class="line">	public Object xml2object(Class cls, String key, String filePath)</span><br><span class="line">			throws ParseXMLException &#123;</span><br><span class="line">		return this.mgr.xml2object(cls, key, filePath);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	private ParseXmlService() &#123;</span><br><span class="line">		mgr = (IParseXmlManager) ApplicationContextHolder.getInstance()</span><br><span class="line">				.getBean(&quot;ParseXmlManagerImpl&quot;);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public static ParseXmlService create() &#123;</span><br><span class="line">		if (instance == null) &#123;</span><br><span class="line">			instance = new ParseXmlService();</span><br><span class="line">		&#125;</span><br><span class="line">		return instance;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="工厂模式"><a href="#工厂模式" class="headerlink" title="工厂模式"></a>工厂模式</h2><h2 id="工厂模式（Factory-Pattern）是-Java-中最常用的设计模式之一。这种类型的设计模式属于创建型模式"><a href="#工厂模式（Factory-Pattern）是-Java-中最常用的设计模式之一。这种类型的设计模式属于创建型模式" class="headerlink" title="工厂模式（Factory Pattern）是 Java 中最常用的设计模式之一。这种类型的设计模式属于创建型模式"></a>工厂模式（Factory Pattern）是 Java 中最常用的设计模式之一。这种类型的设计模式属于创建型模式</h2><p>主要解决：解决接口选择的问题 ，明确地计划不同条件下创建不同实例时</p>
+<h2 id="工厂模式"><a href="#工厂模式" class="headerlink" title="工厂模式"></a>工厂模式</h2><p>工厂模式（Factory Pattern）是 Java 中最常用的设计模式之一。这种类型的设计模式属于创建型模式</p>
+<hr>
+<p>主要解决：解决接口选择的问题 ，明确地计划不同条件下创建不同实例时</p>
 <p>如何实现：让其子类实现工厂接口，返回的也是一个抽象的产品，创建过程在其子类执行。</p>
 <p>使用场景：  </p>
 <ol>
@@ -244,7 +246,23 @@
 <p>创建工厂时，由戴尔工厂创建。</p>
 <p>后续工厂.生产鼠标()则生产戴尔鼠标，工厂.生产键盘()则生产戴尔键盘。  </p>
 <h2 id="代理模式"><a href="#代理模式" class="headerlink" title="代理模式"></a>代理模式</h2><p>在代理模式（Proxy Pattern）中，一个类代表另一个类的功能。这种类型的设计模式属于结构型模式。<br>在代理模式中，我们创建具有现有对象的对象，以便向外界提供功能接口。</p>
-<p>– </p>
+<hr>
+<p>主要解决：直接访问会给使用者或者系统结构带来很多麻烦，我们可以在访问此对象时加上一个对此对象的访问层。想在访问一个类时做一些控制</p>
+<p>如何实现：增加中间层；实现与被代理类组合。</p>
+<p>简单例子代码实现：</p>
+<ol>
+<li>新建一个接口实现pay方法</li>
+<li>真实实现类和代理类都要实现该方法</li>
+<li>在代理类中注入真实实现类，在代理类的实现方法pay()中调用真实实现类的pay()方法，然后增加做自己的业务逻辑</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public interface Payment&#123;</span><br><span class="line">    void pay();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public RealPayment implements Payment&#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void pay()&#123;</span><br><span class="line">        System.out.println(&quot;作为用户我只关心支付&quot;)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">public AliPay implements Payment&#123;</span><br><span class="line">    private Payment payment;</span><br><span class="line">    public AliPay(Payment payment)</span><br><span class="line"></span><br><span class="line">    public void beforePay()&#123;</span><br><span class="line">        System.out.println(&quot;从招行取款&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">    @Override</span><br><span class="line">    public void pay()&#123;</span><br><span class="line">        beforePay()；</span><br><span class="line">        payment.pay();</span><br><span class="line">        afterPay();</span><br><span class="line">    &#125;</span><br><span class="line">    public void afterPay()&#123;</span><br><span class="line">        System.out.println(&quot;支付给慕课网&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Payment proxy = new AliPay(new RealPayment);</span><br><span class="line">proxy.pay();</span><br></pre></td></tr></table></figure>
+
 
       
     </div>
@@ -316,7 +334,7 @@
     <div id="toc" class="toc-article">
     <strong class="toc-title">Contents</strong>
     
-      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#单例模式"><span class="nav-number">1.</span> <span class="nav-text">单例模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#代码实现"><span class="nav-number">1.1.</span> <span class="nav-text">代码实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#工厂模式"><span class="nav-number">2.</span> <span class="nav-text">工厂模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#工厂模式（Factory-Pattern）是-Java-中最常用的设计模式之一。这种类型的设计模式属于创建型模式"><span class="nav-number">3.</span> <span class="nav-text">工厂模式（Factory Pattern）是 Java 中最常用的设计模式之一。这种类型的设计模式属于创建型模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#代码实现-1"><span class="nav-number">3.1.</span> <span class="nav-text">代码实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#抽象工厂模式"><span class="nav-number">4.</span> <span class="nav-text">抽象工厂模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代理模式"><span class="nav-number">5.</span> <span class="nav-text">代理模式</span></a></li></ol>
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#单例模式"><span class="nav-number">1.</span> <span class="nav-text">单例模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#代码实现"><span class="nav-number">1.1.</span> <span class="nav-text">代码实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#工厂模式"><span class="nav-number">2.</span> <span class="nav-text">工厂模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#代码实现-1"><span class="nav-number">2.1.</span> <span class="nav-text">代码实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#抽象工厂模式"><span class="nav-number">3.</span> <span class="nav-text">抽象工厂模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代理模式"><span class="nav-number">4.</span> <span class="nav-text">代理模式</span></a></li></ol>
     
     </div>
   </aside>

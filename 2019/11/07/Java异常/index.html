@@ -21,7 +21,7 @@
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/2019/11/07/Java异常/Java%E7%9A%84%E5%BC%82%E5%B8%B8%E4%BD%93%E7%B3%BB.jpg">
 <meta property="og:image" content="http://yoursite.com/2019/11/07/Java异常/%E9%AB%98%E6%95%88%E4%B8%BB%E6%B5%81%E7%9A%84%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E6%A1%86%E6%9E%B6.jpg">
-<meta property="og:updated_time" content="2019-11-10T08:17:54.782Z">
+<meta property="og:updated_time" content="2019-12-24T07:58:17.095Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java异常">
 <meta name="twitter:description" content="异常机制主要回答了三个问题 what：异常类型回答了什么被抛出 where：异常堆栈跟踪回答了在哪抛出 why：异常信息回答了为什么被抛出  Java的异常体系  RuntimeException：不可预知的，程序应当自行避免（NullPointerException，IndexOutOfBoundsException ….. ） 非RuntimeExceptin：可预知的，从编译器校验的异常（I">
@@ -185,6 +185,8 @@
 <li>RuntimeException是程序应该承当的责任</li>
 <li>Checked Exception可检查异常是Java编译器应该负担的责</li>
 </ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public class ErrorAndException&#123;</span><br><span class="line">    private void throwError()&#123;</span><br><span class="line">        throw new StackOverflowError();</span><br><span class="line">    &#125;</span><br><span class="line">    private void throwRuntimeException()&#123;</span><br><span class="line">        throw new RuntimeExeption</span><br><span class="line">    &#125;</span><br><span class="line">    private void throwCheckedException () throws FileNotFoundExcpetion&#123;</span><br><span class="line">        //此处编译器会报错，checkedException是必须要追踪处理的异常，要么此处加try()catch&#123;&#125;在catch中增加处理逻辑，理解这种Exception的成因结合实际业务去处理</span><br><span class="line">        //最好通过throw方式把异常抛出去，让调用模块去处理</span><br><span class="line">        throw new FileNotFoundExcpetion();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <h4 id="常见Error以及Exception"><a href="#常见Error以及Exception" class="headerlink" title="常见Error以及Exception"></a>常见Error以及Exception</h4><h5 id="RuntimeException"><a href="#RuntimeException" class="headerlink" title="RuntimeException"></a>RuntimeException</h5><ol>
 <li>NullPointerException-空指针异常</li>
 <li>ClassCastException-类型强制转换异常</li>

@@ -6,13 +6,13 @@
   <title>Java多线程与并发 | Contunued Story</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta name="keywords" content="进程和线程start和runThread和Runnable线程状态sleep和waitnotify和notifyallyieldinterrupt">
+  <meta name="keywords" content="进程和线程start和runThread和Runnableyieldinterruptnotify">
   
   
   
   
   <meta name="description" content="进程和线程的区别进程和线程的由来 串行：初期的计算机智能执行任务，并且需要长时间等待用户输入 批处理：预先将用户的指令集中成清单，批量串行处理用户指令，仍然无法并发执行 进程：进程独占内存空间，保存各自运行的状态，互不干扰可以相互切换，为并发处理任务提供了可能 线程：共享进程的内存资源，相互间切换更快速，支持更细粒度的任务控制，使进程内的子任务得以并发执行  进程是资源分配的最小单位，线程是CPU">
-<meta name="keywords" content="进程和线程,start和run,Thread和Runnable,线程状态,sleep和wait,notify和notifyall,yield,interrupt">
+<meta name="keywords" content="进程和线程,start和run,Thread和Runnable,yield,interrupt,notify">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java多线程与并发">
 <meta property="og:url" content="http://yoursite.com/2019/11/05/Java多线程与并发/index.html">
@@ -21,7 +21,7 @@
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/2019/11/05/Java多线程与并发/start%E5%92%8Crun%E6%96%B9%E6%B3%95%E5%85%B3%E7%B3%BB%E5%9B%BE.jpg">
 <meta property="og:image" content="http://yoursite.com/2019/11/05/Java多线程与并发/%E7%BA%BF%E7%A8%8B%E4%BB%A5%E5%8F%8A%E7%BA%BF%E7%A8%8B%E4%B9%8B%E9%97%B4%E7%9A%84%E8%BD%AC%E6%8D%A2.jpg">
-<meta property="og:updated_time" content="2019-12-10T08:58:17.066Z">
+<meta property="og:updated_time" content="2019-12-23T14:11:13.672Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java多线程与并发">
 <meta name="twitter:description" content="进程和线程的区别进程和线程的由来 串行：初期的计算机智能执行任务，并且需要长时间等待用户输入 批处理：预先将用户的指令集中成清单，批量串行处理用户指令，仍然无法并发执行 进程：进程独占内存空间，保存各自运行的状态，互不干扰可以相互切换，为并发处理任务提供了可能 线程：共享进程的内存资源，相互间切换更快速，支持更细粒度的任务控制，使进程内的子任务得以并发执行  进程是资源分配的最小单位，线程是CPU">
@@ -278,7 +278,7 @@
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Thread和Runnable/">Thread和Runnable</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/interrupt/">interrupt</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/notify和notifyall/">notify和notifyall</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sleep和wait/">sleep和wait</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/start和run/">start和run</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/yield/">yield</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/线程状态/">线程状态</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/进程和线程/">进程和线程</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Thread和Runnable/">Thread和Runnable</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/interrupt/">interrupt</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/notify/">notify</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/start和run/">start和run</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/yield/">yield</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/进程和线程/">进程和线程</a></li></ul>
 
       
         

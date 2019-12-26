@@ -127,179 +127,6 @@
         
           <section id="main">
   
-    <article id="post-谈谈我对Java的理解"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/10/25/谈谈我对Java的理解/">谈谈我对Java的理解</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/10/25/谈谈我对Java的理解/" class="article-date">
-	  <time datetime="2019-10-25T08:23:12.000Z" itemprop="datePublished">October 25, 2019</time>
-	</a>
-
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/JVM/">JVM</a>
- 
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="谈谈我对Java的理解"><a href="#谈谈我对Java的理解" class="headerlink" title="谈谈我对Java的理解"></a>谈谈我对Java的理解</h4><p>从以下几个点进行扩展  </p>
-<p>平台无关性：一次编译到处运行<br>GC垃圾回收：不用手动释放内存<br>语言特性：泛型、lamda、反射<br>面向对象：封装、继承、多态<br>类库：自带的集合和并发库<br>异常处理  </p>
-<h4 id="Compile-Once-Run-Anywhere如何实现（如何实现平台无关的）？"><a href="#Compile-Once-Run-Anywhere如何实现（如何实现平台无关的）？" class="headerlink" title="Compile Once,Run Anywhere如何实现（如何实现平台无关的）？"></a>Compile Once,Run Anywhere如何实现（如何实现平台无关的）？</h4><p>编译时：javac   (查看字节码 javac -p)<br>运行时：java<br>.java文件首先经过javac编译生成字节码。将字节码保存在.class文件中。.class文件是跨平台的基础。再由不同平台的JVM进行解析，java语言在不同的平台上运行时不需要进行重新编译，java虚拟机在执行字节码的时候，把字节码转换成具体平台上的机器指令。</p>
-<p><img src="/2019/10/25/谈谈我对Java的理解/%E4%B8%80%E6%AC%A1%E7%BC%96%E8%AF%91%E5%88%B0%E5%A4%84%E8%BF%90%E8%A1%8C.png" alt></p>
-<h4 id="为什么jvm不直接执行源码，而是将字节码解析成机器码才去执行"><a href="#为什么jvm不直接执行源码，而是将字节码解析成机器码才去执行" class="headerlink" title="为什么jvm不直接执行源码，而是将字节码解析成机器码才去执行"></a>为什么jvm不直接执行源码，而是将字节码解析成机器码才去执行</h4><ol>
-<li>每次执行都需要各种检查（语法，句法，语义的检查，每次执行的时候，这些语义分析结果不会被保留下来。因此引入字节码，在每次执行程序是不需要各种校验和补全的）</li>
-<li>兼容性，可以将别的语言（groovy,scala）解析成字节码</li>
-</ol>
-
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/JVM/">JVM</a>
-
-      
-  <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java特性/">Java特性</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/平台无关性/">平台无关性</a></li></ul>
-
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-Linux体系结构"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/10/21/Linux体系结构/">Linux体系结构</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/10/21/Linux体系结构/" class="article-date">
-	  <time datetime="2019-10-21T14:29:34.000Z" itemprop="datePublished">October 21, 2019</time>
-	</a>
-
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/Linux/">Linux</a>
- 
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="Linux-体系结构"><a href="#Linux-体系结构" class="headerlink" title="Linux 体系结构"></a>Linux 体系结构</h4><ul>
-<li>体系结构主要分为用户态（用户上层活动）和内核态</li>
-<li>内核：本质是一段管理计算机硬件设备的程序</li>
-<li>系统调用：内核的访问接口，是一种不能再简化的操作</li>
-<li>公用函数库：系统调用的组合拳</li>
-<li>Shell：命令解释器，可编程</li>
-</ul>
-<h4 id="远程登录"><a href="#远程登录" class="headerlink" title="远程登录"></a>远程登录</h4><p><strong>终端利用ssh登录远程服务器</strong></p>
-<p>安装ssh：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install ssh</span><br></pre></td></tr></table></figure>
-
-<p>启动ssh：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service sshd start</span><br></pre></td></tr></table></figure>
-
-<p>登录远程服务器：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ssh -p 50022 my@127.0.0.1</span><br><span class="line">输入密码：</span><br><span class="line">my@127.0.0.1:</span><br></pre></td></tr></table></figure>
-
-<p>-p 后面是端口</p>
-<p>my 是服务器用户名</p>
-<p>127.0.0.1 是服务器 ip</p>
-<p>回车输入密码即可登录</p>
-<h4 id="如何查找特定的文件"><a href="#如何查找特定的文件" class="headerlink" title="如何查找特定的文件"></a>如何查找特定的文件</h4><h5 id="find"><a href="#find" class="headerlink" title="find"></a>find</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">语法：find path 【options】 params</span><br></pre></td></tr></table></figure>
-
-<p>作用：在指定目录下查找文件  </p>
-<h5 id="常用的方式"><a href="#常用的方式" class="headerlink" title="常用的方式"></a>常用的方式</h5><p>~表示当前用户的目录  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> find ~ -name &quot;target1.java&quot; :查找精确文件  </span><br><span class="line"> find ~ -name &quot;target*&quot; :查找精确文件  </span><br><span class="line"> find ~ -iname &quot;target*&quot; :不区分文件名大小写去查找文件  </span><br><span class="line">man find : 更多关于find指令的使用说明</span><br></pre></td></tr></table></figure>
-
-<h4 id="检索文件内容"><a href="#检索文件内容" class="headerlink" title="检索文件内容"></a>检索文件内容</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">语法：grep 【options】 pattern file</span><br></pre></td></tr></table></figure>
-
-<p>全称：Global Regular Expression Print<br>作用：在指定目录下查找文件  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">例如：查找包含内容&quot;moo&quot; 以target开头的文件</span><br><span class="line">grep &quot;moo&quot; target*</span><br></pre></td></tr></table></figure>
-
-<h5 id="管道操作符"><a href="#管道操作符" class="headerlink" title="管道操作符|"></a>管道操作符|</h5><p>可将指令连接起来，前一个指令的输出作为后一个指令的输入  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">例如：查找当前用户下以target开头的文件</span><br><span class="line">find ~ | grep &quot;target*&quot;</span><br></pre></td></tr></table></figure>
-
-<h5 id="常用的方式-1"><a href="#常用的方式-1" class="headerlink" title="常用的方式"></a>常用的方式</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">1.在内容（文件）里面查找包含某字段的文件，并展示出对应行内容</span><br><span class="line">grep &apos;partial\[true\]&apos; bac-plat-al-data.info.log </span><br><span class="line"></span><br><span class="line">2.-o 筛选出符合正则表达式的内容</span><br><span class="line">grep -o &apos;engine\[[0-9a-z]*\]&apos;  </span><br><span class="line"></span><br><span class="line">3.-v 过滤掉包含相关字符串的内容</span><br><span class="line">grep -v &apos;grep&apos;</span><br></pre></td></tr></table></figure>
-
-<h4 id="对文件内容做统计"><a href="#对文件内容做统计" class="headerlink" title="对文件内容做统计"></a>对文件内容做统计</h4><p>场景：我想筛选出 partial为true的引擎，并统计日志里出现的次数。当我们发现某个检索引擎的partial为true超过一定次数后，说明该引擎需要从集群中摘掉进行修复；  </p>
-<h5 id="awk"><a href="#awk" class="headerlink" title="awk"></a>awk</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">语法：awk [options] &apos;cmd&apos; file</span><br></pre></td></tr></table></figure>
-
-<ol>
-<li>一次读取一行文本，按输入分隔符进行切片，切成多个组成部分</li>
-<li>将切片直接保存在内建的变量中，$1,$2,..($0表示行的全部)</li>
-<li>支持对单个切片的判断，支持循环判断，默认分隔符为空格</li>
-</ol>
-<h5 id="常用的方式-2"><a href="#常用的方式-2" class="headerlink" title="常用的方式"></a>常用的方式</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">打印出第一列和第四列的内容：</span><br><span class="line">awk &apos;&#123;print $1,$4&#125;&apos; 文件名</span><br><span class="line">筛选出列指定字符的行：</span><br><span class="line">awk &apos;$1==&quot;tcp&quot; &amp;&amp; $2==1&#123;print $0&#125;&apos; 文件名</span><br><span class="line">打印出表头：</span><br><span class="line">awk &apos;($1==&quot;tcp&quot; &amp;&amp; $2==1) || NR==1 &#123;print $0&#125;&apos; 文件名</span><br><span class="line">以指定分隔符分割内容：</span><br><span class="line">awk -F &quot;,&quot; &apos;&#123;print $2&#125;&apos; 文件名</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2019/10/21/Linux体系结构/awk.jpg" alt></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Linux 命令 awk 统计：</span><br><span class="line">awk &apos;&#123;enginearr[$1]++&#125;END&#123;for (i in enginearr) print i &quot;\t&quot; enginearr[i]&#125;&apos;</span><br></pre></td></tr></table></figure>
-
-<p>enginearr ：自定义的数组，如果第一列$1出现重复就自增1<br>END ：扫描统计结束<br>{for(i in enginearr)}：循环自定义的数组，定义变量 i<br>print i : 打印 i<br>“\t” 拼接回车符<br>enginearr[i] : 指定自定义数组  </p>
-<h4 id="批量替换文本内容"><a href="#批量替换文本内容" class="headerlink" title="批量替换文本内容"></a>批量替换文本内容</h4><h5 id="sed"><a href="#sed" class="headerlink" title="sed"></a>sed</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">语法：sed [option] &apos;sed command&apos; filenae</span><br></pre></td></tr></table></figure>
-
-<p>全名stream editor,流编辑器<br>适合用于对文本的行内容进行处理</p>
-<h5 id="常用的方式-3"><a href="#常用的方式-3" class="headerlink" title="常用的方式"></a>常用的方式</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">1.将文件中以Str开头的字符串替换成 String：</span><br><span class="line">sed -i &apos;s/^Str/String/&apos; replace.txt</span><br><span class="line"></span><br><span class="line">2.将末尾的点号转为分号：</span><br><span class="line">sed -i &apos;s/\.$/\;/&apos; replace.txt</span><br><span class="line"></span><br><span class="line">3.将所有的&quot;Jack&quot;替换成&quot;me&quot;</span><br><span class="line">sed -i &apos;s/Jack/me/g&apos; replace.txt</span><br><span class="line"></span><br><span class="line">4.删除空行命令</span><br><span class="line">sed -i &apos;/^ *$/d&apos; replace.txt</span><br><span class="line"></span><br><span class="line">5.删除包含特定字符的行：</span><br><span class="line">sed -i &apos;/Integer/d&apos; replace.txt</span><br></pre></td></tr></table></figure>
-
-<p><strong>特别指出：</strong></p>
-<ol>
-<li>指令中加入 -i 表示修改保存到文件中</li>
-<li>替换语法后加入 /g 表示将文件中所有符合条件的内容全部替换，否则只替换一行中第一次匹配到的字符</li>
-</ol>
-<h4 id="总结：经常用到的Shell命令"><a href="#总结：经常用到的Shell命令" class="headerlink" title="总结：经常用到的Shell命令"></a>总结：经常用到的Shell命令</h4><ul>
-<li>find</li>
-<li>grep</li>
-<li>管道操作符|</li>
-<li>awk</li>
-<li>sed</li>
-</ul>
-
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/Linux/">Linux</a>
-
-      
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
     <article id="post-Redis集群"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
@@ -785,6 +612,175 @@
 <!-- Table of Contents -->
 
   
+    <article id="post-锁模块之当前读和快照读"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/10/16/锁模块之当前读和快照读/">锁模块之当前读和快照读</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/10/16/锁模块之当前读和快照读/" class="article-date">
+	  <time datetime="2019-10-16T06:37:29.000Z" itemprop="datePublished">October 16, 2019</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/数据库/">数据库</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="当前读和快照读"><a href="#当前读和快照读" class="headerlink" title="当前读和快照读"></a>当前读和快照读</h4><ol>
+<li><p>当前读：就是加了锁的增删改查语句。<br>读取的是记录的最新版本。读取的时候保证其他事务不能对数据进行修改。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select ... lock in share mode ,select ... for update  </span><br><span class="line">update,delete,insert</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>快照读：不加锁的非阻塞读 ，select</p>
+</li>
+</ol>
+<h4 id="RC、RR级别下的InnoDB的非堵塞读（快照读）如何实现"><a href="#RC、RR级别下的InnoDB的非堵塞读（快照读）如何实现" class="headerlink" title="RC、RR级别下的InnoDB的非堵塞读（快照读）如何实现"></a>RC、RR级别下的InnoDB的非堵塞读（快照读）如何实现</h4><ol>
+<li>数据行里的DB_TRX_ID、DB_ROLL_PTR、DB_ROW_ID字段<br>  DB_TRX_ID：事务ID，标识对本行数据最近一次的更新(增删改)<br>  DB_ROLL_PTR：回滚指针， 指向回滚日志undo log的一条记录，一次更新对应一条undo log记录<br>  DB_ROW_ID：新行插入，产生一个自增ID</li>
+<li>undo日志<br>undo log：回滚日志，存储各个老版本的数据，由undo链串起来 <pre><code>含insert undo log和 update undo log</code></pre></li>
+<li>read view：决定当前数据看到的是哪个版本。<br>用来做可见性判断,即我们做快照读select的时候，会针对我们查询的数据，创建出一个read view来决定当前事务能看到那个版本的数据，可能当前最新，也可能是undo log 中某个版本的数据。它遵循一个可见性算法，主要是将要修该的数据的DB_TRX_ID取出来与系统其他活跃事务id作对比，如果大于或等于就通过DB_ROLL_PTR指针取出undo log 上一层的的DB_TRX_ID直到小于这些活跃事务为止。这样保证了我们获取的数据版本是当前可见的最稳定版本。</li>
+</ol>
+<p><img src="/2019/10/16/锁模块之当前读和快照读/%E4%BA%8B%E5%8A%A1%E5%AF%B9%E8%A1%8C%E6%95%B0%E6%8D%AE%E7%9A%84%E6%9B%B4%E6%96%B0%E8%BF%87%E7%A8%8B.jpg" alt="事务对行数据的更新过程"></p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/数据库/">数据库</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/当前读/">当前读</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/快照读/">快照读</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/锁模块/">锁模块</a></li></ul>
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-锁模块之数据事务"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/10/12/锁模块之数据事务/">锁模块之数据事务</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/10/12/锁模块之数据事务/" class="article-date">
+	  <time datetime="2019-10-12T08:25:36.000Z" itemprop="datePublished">October 12, 2019</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/数据库/">数据库</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="数据库事务的四大特性"><a href="#数据库事务的四大特性" class="headerlink" title="数据库事务的四大特性"></a>数据库事务的四大特性</h4><h5 id="ACID"><a href="#ACID" class="headerlink" title="ACID"></a>ACID</h5><ul>
+<li>原子性(Athomic) : 事务包含的全部操作要么全部执行，要么全部失败回滚</li>
+<li>一致性(Consistency) : 事务应确保数据库的状态从一个一致状态到另一个一致状态(eg:转账问题，A和B一共2000，无论来回怎么转总和还是2000)</li>
+<li><strong>隔离性(Isolaton)：</strong>一个事务的执行不应该影响其它事务的执行</li>
+<li>持久性(Durability)：一个事务的提交代表了它对数据库的修改永久保存在数据库中，当系统发生故障时确保已提交事务的更新不能丢失，确保已提交事务的更新能恢复</li>
+</ul>
+<h4 id="事务隔离级别以及各级别下的并发访问问题"><a href="#事务隔离级别以及各级别下的并发访问问题" class="headerlink" title="事务隔离级别以及各级别下的并发访问问题"></a>事务隔离级别以及各级别下的并发访问问题</h4><p>更新丢失<br>（MySQL所有事务隔离级别在数据库层面上均可避免）<br>事务A对数据进行操作时，事务B也在对同一数据更新操作并完成了提交，然后事务A遇到异常进行回滚导致事务B的更新丢失。</p>
+<p>脏读<br>一个事务读到另一个事务未提交的数据。</p>
+<p>不可重复读<br>事务A在多次读取同一数据的过程中，事务B对数据进行更新并提交，导致事务A多次读取同一数据时结果不一致。</p>
+<p>幻读<br>事务A读取若干行数据，事务B以插入或删除行的方式来修改事务A的结果集。</p>
+<p>其中不可重复读与幻读比较相似，不可重复读侧重对同一数据的修改，幻读侧重插入增加或删除数据。<br>事务隔离级别越高，对性能的影响也越大。</p>
+<h5 id="事务并发访问引起的问题以及如何避免"><a href="#事务并发访问引起的问题以及如何避免" class="headerlink" title="事务并发访问引起的问题以及如何避免"></a>事务并发访问引起的问题以及如何避免</h5><ul>
+<li>更新丢失——mysql所有事务隔离级别在数据库层面上均可避免</li>
+<li>脏读——READ-COMMITTED事务隔离级别以上避免</li>
+<li>不可重复读——REPEATABLE-READ事务隔离级别以上可避免</li>
+<li>幻读——SERIALIZABLE事务隔离级别避免</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>事务隔离级别</th>
+<th align="left">更新丢失</th>
+<th align="right">脏读</th>
+<th align="center">不可重复度</th>
+<th align="center">幻读</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>未提交读</td>
+<td align="left">避免</td>
+<td align="right">发生</td>
+<td align="center">发生</td>
+<td align="center">发生</td>
+</tr>
+<tr>
+<td>已提交读</td>
+<td align="left">避免</td>
+<td align="right">避免</td>
+<td align="center">发生</td>
+<td align="center">发生</td>
+</tr>
+<tr>
+<td>可重复读</td>
+<td align="left">避免</td>
+<td align="right">避免</td>
+<td align="center">避免</td>
+<td align="center">发生</td>
+</tr>
+<tr>
+<td>串行化</td>
+<td align="left">避免</td>
+<td align="right">避免</td>
+<td align="center">避免</td>
+<td align="center">避免</td>
+</tr>
+</tbody></table>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/数据库/">数据库</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ACID/">ACID</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数据库事务/">数据库事务</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/锁模块/">锁模块</a></li></ul>
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
 
 
   <nav id="page-nav">
@@ -883,30 +879,6 @@
               <div class="widget-entry-summary" style="margin: 0;">
             
 
-              <h6 style="margin: 0;"><a href="/2019/12/25/数据结构/">数据结构</a></h6>
-              <span>December 25, 2019</span>
-            </div>
-
-          </li>
-        
-          <li class="clearfix">
-
-            
-              <div class="widget-entry-summary" style="margin: 0;">
-            
-
-              <h6 style="margin: 0;"><a href="/2019/12/20/一些好句子/">一些好句子</a></h6>
-              <span>December 20, 2019</span>
-            </div>
-
-          </li>
-        
-          <li class="clearfix">
-
-            
-              <div class="widget-entry-summary" style="margin: 0;">
-            
-
               <h6 style="margin: 0;"><a href="/2019/12/18/设计模式/">设计模式</a></h6>
               <span>December 18, 2019</span>
             </div>
@@ -949,6 +921,30 @@
 
           </li>
         
+          <li class="clearfix">
+
+            
+              <div class="widget-entry-summary" style="margin: 0;">
+            
+
+              <h6 style="margin: 0;"><a href="/2019/11/16/Zuul/">Zuul</a></h6>
+              <span>November 16, 2019</span>
+            </div>
+
+          </li>
+        
+          <li class="clearfix">
+
+            
+              <div class="widget-entry-summary" style="margin: 0;">
+            
+
+              <h6 style="margin: 0;"><a href="/2019/11/13/docker的使用/">Docker的使用</a></h6>
+              <span>November 13, 2019</span>
+            </div>
+
+          </li>
+        
       </ul>
     </div>
   </div>
@@ -958,7 +954,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/GC相关/">GC相关</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java多线程与并发/">Java多线程与并发</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java常用类库与技巧/">Java常用类库与技巧</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Redis/">Redis</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot-实战/">Spring Boot 实战</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务实战/">微服务实战</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/">数据结构</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/设计模式/">设计模式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/随笔/">随笔</a><span class="category-list-count">1</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/GC相关/">GC相关</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java多线程与并发/">Java多线程与并发</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java常用类库与技巧/">Java常用类库与技巧</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Redis/">Redis</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot-实战/">Spring Boot 实战</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务实战/">微服务实战</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/设计模式/">设计模式</a><span class="category-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -988,7 +984,7 @@
     <h3 class="widget-title">Archives</h3>
 
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">23</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">25</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">23</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">25</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">1</span></li></ul>
     </div>
 
     <div>

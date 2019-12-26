@@ -28,7 +28,7 @@
 <meta property="og:image" content="http://yoursite.com/2019/11/06/Java多线程与并发-原理/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8E%E5%B9%B6%E5%8F%91-%E5%8E%9F%E7%90%86%5CThreadPoolExecutor%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86.jpg">
 <meta property="og:image" content="http://yoursite.com/2019/11/06/Java多线程与并发-原理/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8E%E5%B9%B6%E5%8F%91-%E5%8E%9F%E7%90%86%5C%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E7%8A%B6%E6%80%81%E8%BD%AC%E6%8D%A2%E5%9B%BE.jpg">
 <meta property="og:image" content="http://yoursite.com/2019/11/06/Java多线程与并发-原理/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8E%E5%B9%B6%E5%8F%91-%E5%8E%9F%E7%90%86%5C%E5%B7%A5%E4%BD%9C%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.jpg">
-<meta property="og:updated_time" content="2019-12-23T14:41:01.360Z">
+<meta property="og:updated_time" content="2019-12-26T05:20:41.904Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java多线程与并发-原理">
 <meta name="twitter:description" content="synchronized线程安全问题的主要诱因 存在共享数据（也称临界资源） 存在多条线程共同操作这些共享数据    解决问题的根本方法  同一时刻有且只有一个线程在操作共享数据，其他线程必须等到该线程处理完数据后再对共享数据进行操作 互斥锁的特性 互斥性：即在同一时间只允许一个线程持有某个对象锁，通过这种特性来实现多线程的协调机制，这样在同一时间只有一个线程对需要同步的代码块（复合操作）进行访问">
@@ -296,6 +296,12 @@
 <p><strong>公平锁和非公平锁的例子</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">public class ReentrantLockDemo implements  Runnable&#123;</span><br><span class="line">    private static ReentrantLock lock = new ReentrantLock(true);</span><br><span class="line">    @Override</span><br><span class="line">    public void run()&#123;</span><br><span class="line">        while (true)&#123;</span><br><span class="line">            try&#123;</span><br><span class="line">                lock.lock();</span><br><span class="line">                System.out.println(Thread.currentThread().getName() + &quot; get lock&quot;);</span><br><span class="line">                Thread.sleep(1000);</span><br><span class="line">            &#125; catch (Exception e)&#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125; finally &#123;</span><br><span class="line">                lock.unlock();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        ReentrantLockDemo rtld = new ReentrantLockDemo();</span><br><span class="line">        Thread thread1 = new Thread(rtld);</span><br><span class="line">        Thread thread2 = new Thread(rtld);</span><br><span class="line">        thread1.start();</span><br><span class="line">        thread2.start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<p><strong>公平锁和非公平锁的性能差异，差别在哪里？</strong><br>ReentrantLock的内部类Sync继承了AQS，分为公平锁FairSync和非公平锁NonfairSync  </p>
+<ol>
+<li>非公平锁：线程获取锁的顺序和调用lock的顺序无关，全凭运气。    </li>
+<li>公平锁要维护一个队列，线程获取锁的顺序和调用lock的顺序一样 ，后来的线程要加锁，即使锁空闲，也要先检查有没有其他线程在 wait，如果有自己要挂起，加到队列后面，然后唤醒队列最前面的线程。这种情况下相比较非公平锁多了一次挂起和唤醒  </li>
+<li>因此线程切换的开销，其实就是非公平锁效率高于公平锁的原因，因为非公平锁减少了线程挂起的几率，后来的线程有一定几率逃离被挂起的开销。  </li>
+</ol>
 <h3 id="ReentrantLock将锁对象化"><a href="#ReentrantLock将锁对象化" class="headerlink" title="ReentrantLock将锁对象化"></a>ReentrantLock将锁对象化</h3><ul>
 <li>判断是否有线程，或者某个特定线程，在排队等待获取锁</li>
 <li>带超时的获取锁的尝试</li>
@@ -422,7 +428,7 @@
 <li>volatile标记的变量不会被编译器优化；synchronnized标记的变量可以被编译器优化</li>
 </ol>
 <h2 id="CAS-Compare-and-Swap"><a href="#CAS-Compare-and-Swap" class="headerlink" title="CAS(Compare and Swap)"></a>CAS(Compare and Swap)</h2><hr>
-<p>CAS思想：包含三个操作数——内存位置(V)、预期原值(A)和新值(B);执行CAS操作的时候将内存位置的值与预期原值进行比较，如果相匹配则将该位置的值更新成新值</p>
+<p>CAS思想：包含三个操作数——内存位置(V)、预期原值(A)和新值(B);执行CAS操作的时候将内存位置的值与预期原值进行比较，如果相匹配则将该位置的值更新成新值,否则处理器不做任何操作</p>
 <h3 id="一种高效实现线程安全性的方法"><a href="#一种高效实现线程安全性的方法" class="headerlink" title="一种高效实现线程安全性的方法"></a>一种高效实现线程安全性的方法</h3><ul>
 <li>支持原子更新操作，适用于计算器，序列发生器等场景</li>
 <li>属于乐观锁机制，号称 lock-free</li>
@@ -453,6 +459,7 @@
 <li>newSingleThreadScheduledExecutor()与newScheduledThreadPool(int corePoolSize)<br>定时或周期性的工作调度，两者区别在于单一工作线程还是多个线程</li>
 <li>newWorkStealingPool()<br>内部会构建ForkJoinPool,利用working-stealing算法，并行地处理任务，不保证处理顺序<ul>
 <li>Fork/Join框架：把大任务分割成若干小任务并行执行，最终汇总每个小任务结果后得到大任务结果的框架</li>
+<li>Work-Stealing算法：某个线程从其他队列里窃取任务来执行</li>
 </ul>
 </li>
 </ol>

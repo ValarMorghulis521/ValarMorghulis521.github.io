@@ -155,63 +155,13 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h4 id="进程和线程的区别"><a href="#进程和线程的区别" class="headerlink" title="进程和线程的区别"></a>进程和线程的区别</h4><h5 id="进程和线程的由来"><a href="#进程和线程的由来" class="headerlink" title="进程和线程的由来"></a>进程和线程的由来</h5><ol>
-<li>串行：初期的计算机智能执行任务，并且需要长时间等待用户输入</li>
-<li>批处理：预先将用户的指令集中成清单，批量串行处理用户指令，仍然无法并发执行</li>
-<li>进程：进程独占内存空间，保存各自运行的状态，互不干扰可以相互切换，为并发处理任务提供了可能</li>
-<li>线程：共享进程的内存资源，相互间切换更快速，支持更细粒度的任务控制，使进程内的子任务得以并发执行</li>
-</ol>
-<p><strong>进程是资源分配的最小单位，线程是CPU调度的最小单位</strong></p>
-<ul>
-<li>所有与进程相关的资源都被记录在PCB中</li>
-<li>进程是抢占处理机的调度单位；线程属于某个进程，共享其资源</li>
-<li>线程只由堆栈寄存器、程序计数器和TCB组成</li>
-</ul>
-<h5 id="进程和线程的区别-1"><a href="#进程和线程的区别-1" class="headerlink" title="进程和线程的区别"></a>进程和线程的区别</h5><ul>
-<li>线程不能看做独立应用，而进程可以看做独立应用</li>
-<li>进程有独立的地址空间，相互不影响，线程只是进程不同的执行路径</li>
-<li>线程没有独立的地址空间，多进程的程序比多线程程序健壮</li>
-<li>进程的切换比线程的切换开销大</li>
-</ul>
-<h5 id="进程和线程的关系"><a href="#进程和线程的关系" class="headerlink" title="进程和线程的关系"></a>进程和线程的关系</h5><ul>
-<li>Java对操作系统提供的功能进行封装，包括进程和线程</li>
-<li>运行一个程序会产生一个进程，进程包含至少一个线程</li>
-<li>每个进程对应一个JVM实例，多个线程共享JVM里的堆</li>
-<li>Java采用单线程的编程模型，程序会自动创建主线程</li>
-<li>主线程可以创建子线程，原则上要后于子线程完成执行</li>
-</ul>
-<h4 id="线程start和run方法的区别"><a href="#线程start和run方法的区别" class="headerlink" title="线程start和run方法的区别"></a>线程start和run方法的区别</h4><p>start()方法回去调用JVM的StartThread的方法，去创建一个新的子线程，并通过ThreadRun方法去调用run方法</p>
-<p><img src="/2019/11/05/Java多线程与并发/start%E5%92%8Crun%E6%96%B9%E6%B3%95%E5%85%B3%E7%B3%BB%E5%9B%BE.jpg" alt="关系图"></p>
-<ul>
-<li>调用start方法会创建一个新的子线程</li>
-<li>run方法只是Thread的一个普通方法的调用</li>
-</ul>
-<h4 id="Thread和Runnable是什么关系"><a href="#Thread和Runnable是什么关系" class="headerlink" title="Thread和Runnable是什么关系"></a>Thread和Runnable是什么关系</h4><ul>
-<li>Thread是实现了Runnabela接口的类，使得run支持多线程</li>
-<li>因类的单一继承原则，为了提升系统可扩展性推荐业务类实现Runnable接口，将业务逻辑封装在run()方法里<br>例子<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">//Thread的使用</span><br><span class="line">public class MyThread extends Thread &#123;</span><br><span class="line">    private String name;</span><br><span class="line">    public MyThread(String name)&#123;</span><br><span class="line">        this.name = name;</span><br><span class="line">    &#125;</span><br><span class="line">    @Override</span><br><span class="line">    public void run()&#123;</span><br><span class="line">        for(int i = 0 ; i &lt; 10 ; i ++)&#123;</span><br><span class="line">            System.out.println(&quot;Thread start : &quot; + this.name + &quot;,i= &quot; + i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//测试类</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        MyThread mt1 = new MyThread(&quot;Thread1&quot;);</span><br><span class="line">        MyThread mt2 = new MyThread(&quot;Thread2&quot;);</span><br><span class="line">        MyThread mt3 = new MyThread(&quot;Thread3&quot;);</span><br><span class="line">        mt1.start();</span><br><span class="line">        mt2.start();</span><br><span class="line">        mt3.start();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">//Runable的使用</span><br><span class="line">public class MyRunnable implements Runnable &#123;</span><br><span class="line">    private String name;</span><br><span class="line">    public MyRunnable(String name)&#123;</span><br><span class="line">        this.name = name;</span><br><span class="line">    &#125;</span><br><span class="line">    @Override</span><br><span class="line">    public void run()&#123;</span><br><span class="line">        for(int i = 0 ; i &lt; 10 ; i ++)&#123;</span><br><span class="line">            System.out.println(&quot;Thread start : &quot; + this.name + &quot;,i= &quot; + i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">//测试类</span><br><span class="line">    public static void main(String[] args) throws InterruptedException &#123;</span><br><span class="line">        MyRunnable mr1 = new MyRunnable(&quot;Runnable1&quot;);</span><br><span class="line">        MyRunnable mr2 = new MyRunnable(&quot;Runnable2&quot;);</span><br><span class="line">        MyRunnable mr3 = new MyRunnable(&quot;Runnable3&quot;);</span><br><span class="line">        Thread t1 = new Thread(mr1);</span><br><span class="line">        Thread t2 = new Thread(mr2);</span><br><span class="line">        Thread t3 = new Thread(mr3);</span><br><span class="line">        t1.start();</span><br><span class="line">        t2.start();</span><br><span class="line">        t3.start();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="如何实现处理线程的返回值"><a href="#如何实现处理线程的返回值" class="headerlink" title="如何实现处理线程的返回值"></a>如何实现处理线程的返回值</h4><h5 id="如何给run方法传参"><a href="#如何给run方法传参" class="headerlink" title="如何给run方法传参"></a>如何给run方法传参</h5><ul>
-<li>构造函数传参</li>
-<li>成员变量传参</li>
-<li>回调函数传参</li>
-</ul>
-<h5 id="如何实现处理线程的返回值-1"><a href="#如何实现处理线程的返回值-1" class="headerlink" title="如何实现处理线程的返回值"></a>如何实现处理线程的返回值</h5><ul>
-<li>主线程等待法：让主线程循环等待，直到目标子线程返回值</li>
-<li>使用Thread类的join()阻塞当前线程以等待子线程处理完毕</li>
-<li>通过Callable接口实现：通过FutureTask Or 线程池获取;</li>
-</ul>
-<p>代码实现：FutureTask获取返回值</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">public class MyCallable implements Callable&lt;String&gt; &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public String call() throws Exception&#123;</span><br><span class="line">        String value=&quot;test&quot;;</span><br><span class="line">        System.out.println(&quot;Ready to work&quot;);</span><br><span class="line">        Thread.currentThread().sleep(5000);</span><br><span class="line">        System.out.println(&quot;task done&quot;);</span><br><span class="line">        return  value;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">public class FutureTaskDemo &#123;</span><br><span class="line">    public static void main(String[] args) throws ExecutionException, InterruptedException &#123;</span><br><span class="line">        FutureTask&lt;String&gt; task = new FutureTask&lt;String&gt;(new MyCallable());</span><br><span class="line">        new Thread(task).start();</span><br><span class="line">        if(!task.isDone())&#123;</span><br><span class="line">            System.out.println(&quot;task has not finished, please wait!&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(&quot;task return: &quot; + task.get());</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>代码实现：通过线程池获取返回值</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">//定义一个线程池</span><br><span class="line">ExecutorService newCacheThreadPool = Executors.newCachedThreadPool();</span><br><span class="line">//提交到线程池</span><br><span class="line">Future&lt;String&gt; feture = newCacheThreadPool.submit(new MyCallable());</span><br><span class="line">if(feture.isDone())&#123;</span><br><span class="line">    System.out.println(&quot;task has not finished,wait&quot;);</span><br><span class="line">&#125;</span><br><span class="line">try &#123;</span><br><span class="line">    System.out.println( feture.get() );</span><br><span class="line">&#125; catch (InterruptedException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">&#125; catch (ExecutionException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">&#125;finally &#123;</span><br><span class="line">        //关闭线程池</span><br><span class="line">        newCacheThreadPool.shutdown();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>使用线程池的好处：提交多个实现Callable的类，让线程池并发的执行结果，方便对实现Callable的类做统一管理</p>
-<h4 id="线程的状态"><a href="#线程的状态" class="headerlink" title="线程的状态"></a>线程的状态</h4><p><strong>六个状态</strong><br>线程的六个状态</p>
+        <h2 id="什么是线程和进程"><a href="#什么是线程和进程" class="headerlink" title="什么是线程和进程?"></a>什么是线程和进程?</h2><hr>
+<h3 id="何为进程"><a href="#何为进程" class="headerlink" title="何为进程?"></a>何为进程?</h3><p>进程是程序的一次执行过程，是系统运行程序的基本单位，因此进程是动态的。系统运行一个程序即是一个进程从创建，运行到消亡的过程。<br>在 Java 中，当我们启动 main 函数时其实就是启动了一个 JVM 的进程，而 main 函数所在的线程就是这个进程中的一个线程，也称主线程。</p>
+<h3 id="何为线程"><a href="#何为线程" class="headerlink" title="何为线程?"></a>何为线程?</h3><p>线程是一个比进程更小的执行单位。一个进程在其执行的过程中可以产生多个线程。与进程不同的是同类的多个线程共享进程的堆和方法区资源，但<strong>每个线程有自己的程序计数器、虚拟机栈和本地方法栈</strong>，所以系统在产生一个线程，或是在各个线程之间作切换工作时，负担要比进程小得多，也正因为如此，线程也被称为轻量级进程。</p>
+<h3 id="请简要描述线程与进程的关系-区别？"><a href="#请简要描述线程与进程的关系-区别？" class="headerlink" title="请简要描述线程与进程的关系,区别？"></a>请简要描述线程与进程的关系,区别？</h3><p>一个进程中可以有多个线程，多个线程共享进程的堆和方法区 (JDK1.8 之后的元空间)资源，但是每个线程有自己的程序计数器、虚拟机栈 和 本地方法栈 </p>
+<p><strong>进程是资源分配的最小单位，线程是CPU调度的最小单位</strong><br>线程不能看做独立应用，而进程可以看做独立应用， 进程有独立的地址空间，相互不影响，线程只是进程不同的执行路径，线程没有独立的地址空间，线程执行开销小，但不利于资源的管理和保护；而进程正相反；</p>
+<h2 id="线程的状态"><a href="#线程的状态" class="headerlink" title="线程的状态"></a>线程的状态</h2><hr>
+<p><strong>六个状态</strong></p>
 <ol>
 <li><p>新建（New）：创建后尚未启动的线程的状态</p>
 </li>
@@ -226,10 +176,53 @@
 <li><p>结束（Terminated）：已终止线程的状态，线程已经结束执行</p>
 </li>
 </ol>
-<h4 id="sleep-和-wait的区别"><a href="#sleep-和-wait的区别" class="headerlink" title="sleep 和 wait的区别"></a>sleep 和 wait的区别</h4><p><strong>基本的差别</strong><br>sleep是Thread的方法，wait是Object类中定义的方法<br>sleep()方法在任何地方都可以使用<br>wait()方法只能在synchronized方法或synchronized块中使用<br><strong>最本质的区别</strong><br>Thread.sleep只会让出CPU,不会导致锁行为的改变<br>Object.wait不仅让出CPU,也会释放锁已经占有的同步资源锁，所以wait在synchronized中使用才有意义<br>例子：</p>
+<p><img src="/2019/11/05/Java多线程与并发/%E7%BA%BF%E7%A8%8B%E4%BB%A5%E5%8F%8A%E7%BA%BF%E7%A8%8B%E4%B9%8B%E9%97%B4%E7%9A%84%E8%BD%AC%E6%8D%A2.jpg" alt="线程状态之间的转换"></p>
+<p>由上图可以看出：线程创建之后它将处于 <strong>NEW（新建）</strong> 状态，调用 start() 方法后开始运行，线程这时候处于 <strong>READY（可运行）</strong> 状态。可运行状态的线程获得了 CPU 时间片（timeslice）后就处于 <strong>RUNNING（运行）</strong> 状态。</p>
+<p>当线程执行 wait()方法之后，线程进入 <strong>WAITING（等待） 状态</strong>。进入等待状态的线程需要依靠其他线程的通知才能够返回到运行状态，而 <strong>TIME_WAITING(超时等待)</strong> 状态相当于在等待状态的基础上增加了超时限制，比如通过 sleep（long millis）方法或 wait（long millis）方法可以将 Java 线程置于 TIMED WAITING 状态。当超时时间到达后 Java 线程将会返回到 RUNNABLE 状态。当线程调用同步方法时，在没有获取到锁的情况下，线程将会进入到 <strong>BLOCKED（阻塞）</strong> 状态。线程在执行 Runnable 的run()方法之后将会进入到 <strong>TERMINATED（终止）</strong> 状态。</p>
+<h2 id="什么是线程死锁-如何避免死锁"><a href="#什么是线程死锁-如何避免死锁" class="headerlink" title="什么是线程死锁?如何避免死锁?"></a>什么是线程死锁?如何避免死锁?</h2><hr>
+<h3 id="认识线程死锁"><a href="#认识线程死锁" class="headerlink" title="认识线程死锁"></a>认识线程死锁</h3><p>多个线程同时被阻塞，它们中的一个或者全部都在等待某个资源被释放。由于线程被无限期地阻塞，因此程序不可能正常终止。</p>
+<p>如下图所示，线程 A 持有资源 2，线程 B 持有资源 1，他们同时都想申请对方的资源，所以这两个线程就会互相等待而进入死锁状态。</p>
+<p><img src="/2019/11/05/Java多线程与并发/%E6%AD%BB%E9%94%81.png" alt="死锁"></p>
+<p>下面通过一个例子来说明线程死锁,代码模拟了上图的死锁的情况 (代码来源于《并发编程之美》)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">public class DeadLockDemo &#123;</span><br><span class="line">    private static Object resource1 = new Object();//资源 1</span><br><span class="line">    private static Object resource2 = new Object();//资源 2</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        new Thread(() -&gt; &#123;</span><br><span class="line">            synchronized (resource1) &#123;</span><br><span class="line">                System.out.println(Thread.currentThread() + &quot;get resource1&quot;);</span><br><span class="line">                try &#123;</span><br><span class="line">                    Thread.sleep(1000);</span><br><span class="line">                &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">                System.out.println(Thread.currentThread() + &quot;waiting get resource2&quot;);</span><br><span class="line">                synchronized (resource2) &#123;</span><br><span class="line">                    System.out.println(Thread.currentThread() + &quot;get resource2&quot;);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;, &quot;线程 1&quot;).start();</span><br><span class="line"></span><br><span class="line">        new Thread(() -&gt; &#123;</span><br><span class="line">            synchronized (resource2) &#123;</span><br><span class="line">                System.out.println(Thread.currentThread() + &quot;get resource2&quot;);</span><br><span class="line">                try &#123;</span><br><span class="line">                    Thread.sleep(1000);</span><br><span class="line">                &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">                System.out.println(Thread.currentThread() + &quot;waiting get resource1&quot;);</span><br><span class="line">                synchronized (resource1) &#123;</span><br><span class="line">                    System.out.println(Thread.currentThread() + &quot;get resource1&quot;);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;, &quot;线程 2&quot;).start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Output</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Thread[线程 1,5,main]get resource1</span><br><span class="line">Thread[线程 2,5,main]get resource2</span><br><span class="line">Thread[线程 1,5,main]waiting get resource2</span><br><span class="line">Thread[线程 2,5,main]waiting get resource1</span><br></pre></td></tr></table></figure>
+
+<p>线程 A 通过 synchronized (resource1) 获得 resource1 的监视器锁，然后通过Thread.sleep(1000);让线程 A 休眠 1s 为的是让线程 B 得到执行然后获取到 resource2 的监视器锁。线程 A 和线程 B 休眠结束了都开始企图请求获取对方的资源，然后这两个线程就会陷入互相等待的状态，这也就产生了死锁。上面的例子符合产生死锁的四个必要条件。</p>
+<p>产生死锁必须具备以下四个条件：</p>
+<ol>
+<li>互斥条件：该资源任意一个时刻只由一个线程占用。</li>
+<li>请求与保持条件：一个进程因请求资源而阻塞时，对已获得的资源保持不放。</li>
+<li>不剥夺条件:线程已获得的资源在末使用完之前不能被其他线程强行剥夺，只有自己使用完毕后才释放资源。</li>
+<li>循环等待条件:若干进程之间形成一种头尾相接的循环等待资源关系。</li>
+</ol>
+<h3 id="如何避免线程死锁"><a href="#如何避免线程死锁" class="headerlink" title="如何避免线程死锁?"></a>如何避免线程死锁?</h3><p><strong>破坏请求与保持条件</strong></p>
+<p>一次性申请所有的资源。</p>
+<p><strong>破坏不剥夺条件</strong></p>
+<p>占用部分资源的线程进一步申请其他资源时，如果申请不到，可以主动释放它占有的资源。</p>
+<h2 id="线程start和run方法的区别"><a href="#线程start和run方法的区别" class="headerlink" title="线程start和run方法的区别"></a>线程start和run方法的区别</h2><hr>
+<p>new 一个 Thread，线程进入了新建状态;调用 start() 方法，会启动一个线程并使线程进入了就绪状态，当分配到时间片后就可以开始运行了。 start() 会执行线程的相应准备工作，然后自动执行 run() 方法的内容，这是真正的多线程工作。 而直接执行 run() 方法，会把 run 方法当成一个 main 线程下的普通方法去执行，并不会在某个线程中执行它，所以这并不是多线程工作。</p>
+<p><strong>总结： 调用start方法会创建一个新的子线程，启动线程并使线程进入就绪状态， run方法只是Thread的一个普通方法的调用</strong></p>
+<h2 id="Thread和Runnable是什么关系"><a href="#Thread和Runnable是什么关系" class="headerlink" title="Thread和Runnable是什么关系"></a>Thread和Runnable是什么关系</h2><ul>
+<li>Thread是实现了Runnabela接口的类，使得run支持多线程</li>
+<li>因类的单一继承原则，为了提升系统可扩展性推荐业务类实现Runnable接口，将业务逻辑封装在run()方法里<br>例子<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">//Thread的使用</span><br><span class="line">public class MyThread extends Thread &#123;</span><br><span class="line">    private String name;</span><br><span class="line">    public MyThread(String name)&#123;</span><br><span class="line">        this.name = name;</span><br><span class="line">    &#125;</span><br><span class="line">    @Override</span><br><span class="line">    public void run()&#123;</span><br><span class="line">        for(int i = 0 ; i &lt; 10 ; i ++)&#123;</span><br><span class="line">            System.out.println(&quot;Thread start : &quot; + this.name + &quot;,i= &quot; + i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//测试类</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        MyThread mt1 = new MyThread(&quot;Thread1&quot;);</span><br><span class="line">        MyThread mt2 = new MyThread(&quot;Thread2&quot;);</span><br><span class="line">        MyThread mt3 = new MyThread(&quot;Thread3&quot;);</span><br><span class="line">        mt1.start();</span><br><span class="line">        mt2.start();</span><br><span class="line">        mt3.start();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">//Runable的使用</span><br><span class="line">public class MyRunnable implements Runnable &#123;</span><br><span class="line">    private String name;</span><br><span class="line">    public MyRunnable(String name)&#123;</span><br><span class="line">        this.name = name;</span><br><span class="line">    &#125;</span><br><span class="line">    @Override</span><br><span class="line">    public void run()&#123;</span><br><span class="line">        for(int i = 0 ; i &lt; 10 ; i ++)&#123;</span><br><span class="line">            System.out.println(&quot;Thread start : &quot; + this.name + &quot;,i= &quot; + i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">//测试类</span><br><span class="line">    public static void main(String[] args) throws InterruptedException &#123;</span><br><span class="line">        MyRunnable mr1 = new MyRunnable(&quot;Runnable1&quot;);</span><br><span class="line">        MyRunnable mr2 = new MyRunnable(&quot;Runnable2&quot;);</span><br><span class="line">        MyRunnable mr3 = new MyRunnable(&quot;Runnable3&quot;);</span><br><span class="line">        Thread t1 = new Thread(mr1);</span><br><span class="line">        Thread t2 = new Thread(mr2);</span><br><span class="line">        Thread t3 = new Thread(mr3);</span><br><span class="line">        t1.start();</span><br><span class="line">        t2.start();</span><br><span class="line">        t3.start();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="sleep-和-wait的区别"><a href="#sleep-和-wait的区别" class="headerlink" title="sleep 和 wait的区别"></a>sleep 和 wait的区别</h2><p><strong>基本的差别</strong>  </p>
+<ul>
+<li>sleep是Thread的方法，wait是Object类中定义的方法  </li>
+<li>sleep()方法在任何地方都可以使用 ，wait()方法只能在synchronized方法或synchronized块中使用</li>
+<li>wait() 方法被调用后，线程不会自动苏醒，需要别的线程调用同一个对象上的 notify() 或者 notifyAll() 方法。sleep() 方法执行完成后，线程会自动苏醒。或者可以使用 wait(long timeout)超时后线程会自动苏醒。</li>
+</ul>
+<p><strong>最本质的区别</strong><br>Thread.sleep不会释放锁，只会让出CPU，Object.wait不仅让出CPU,也释放锁已经占有的同步资源锁，所以wait在synchronized中使用才有意义</p>
+<p>例子：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">public class WaitSleepDemo &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        final Object lock = new Object();</span><br><span class="line">        new Thread(new Runnable() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void run() &#123;</span><br><span class="line">                System.out.println(&quot;thread A is waiting to get lock&quot;);</span><br><span class="line">                synchronized (lock)&#123;</span><br><span class="line">                    try &#123;</span><br><span class="line">                        System.out.println(&quot;thread A get lock&quot;);</span><br><span class="line">                        Thread.sleep(20);</span><br><span class="line">                        System.out.println(&quot;thread A do wait method&quot;);</span><br><span class="line">                        lock.wait();</span><br><span class="line">                        System.out.println(&quot;thread A is done&quot;);</span><br><span class="line">                    &#125; catch (InterruptedException e)&#123;</span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line">        try&#123;</span><br><span class="line">            Thread.sleep(10);</span><br><span class="line">        &#125; catch (InterruptedException e)&#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        new Thread(new Runnable() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void run() &#123;</span><br><span class="line">                System.out.println(&quot;thread B is waiting to get lock&quot;);</span><br><span class="line">                synchronized (lock)&#123;</span><br><span class="line">                    try &#123;</span><br><span class="line">                        System.out.println(&quot;thread B get lock&quot;);</span><br><span class="line">                        System.out.println(&quot;thread B is sleeping 10 ms&quot;);</span><br><span class="line">                        Thread.sleep(10);</span><br><span class="line">                        Thread.sleep(2000);</span><br><span class="line">                        System.out.println(&quot;thread B is done&quot;);</span><br><span class="line">                    &#125; catch (InterruptedException e)&#123;</span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line"></span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h4 id="notify和notifyall的区别"><a href="#notify和notifyall的区别" class="headerlink" title="notify和notifyall的区别"></a>notify和notifyall的区别</h4><blockquote>
+<h2 id="notify和notifyall的区别"><a href="#notify和notifyall的区别" class="headerlink" title="notify和notifyall的区别"></a>notify和notifyall的区别</h2><blockquote>
 <p>锁池 entryList ：</p>
 </blockquote>
 <p>  假设线程A已经拥有了某个对象（不是类）的锁，而其它线程B、C想要调用这个对象的synchronized方法（或者块），由于B、C线程在进入对象的synchronized方法（或者块）之前必须先获得该对象锁的拥有权，而该对象的锁目前被线程A锁占有，此时B、C线程就会被阻塞，进入一个地方去等待锁的释放，这个地方便是该对象的锁池</p>
@@ -238,7 +231,7 @@
 </blockquote>
 <p>  假设线程A调用了某个对象的wait方法，线程A就会释放该对象的锁，同时线程A就进入到了该对象的等待池中，进入到等待池中的线程不会去竞争该对象的锁</p>
 <p>notifyAll 会让所有处于等待池的线程全部进入锁池去竞争获取锁的机会<br>notify 只会随机选取一个处于等待池中的线程进入锁池去竞争获取锁的机会</p>
-<h4 id="yield函数"><a href="#yield函数" class="headerlink" title="yield函数"></a>yield函数</h4><blockquote>
+<h2 id="yield函数"><a href="#yield函数" class="headerlink" title="yield函数"></a>yield函数</h2><blockquote>
 <p>当调用Thread.yield()函数时，会给线程调度器一个当前线程愿意让出CPU使用的暗示，但是线程调度器可能会忽略这个暗示</p>
 </blockquote>
 <p>关于 Thread.yield() </p>
@@ -248,17 +241,33 @@
 </ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">    Runnable yieldTask = new Runnable() &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public void run() &#123;</span><br><span class="line">            for (int i = 1; i &lt;= 10; i++) &#123;</span><br><span class="line">                System.out.println(Thread.currentThread().getName() + i);</span><br><span class="line">                if (i == 5) &#123;</span><br><span class="line">                    Thread.yield();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    Thread t1 = new Thread(yieldTask, &quot;A&quot;);</span><br><span class="line">    Thread t2 = new Thread(yieldTask, &quot;B&quot;);</span><br><span class="line">    t1.start();</span><br><span class="line">    t2.start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h4 id="interrupt-函数"><a href="#interrupt-函数" class="headerlink" title="interrupt 函数"></a>interrupt 函数</h4><h5 id="已经被抛弃的方法"><a href="#已经被抛弃的方法" class="headerlink" title="已经被抛弃的方法"></a>已经被抛弃的方法</h5><ol>
+<h2 id="如何实现处理线程的返回值"><a href="#如何实现处理线程的返回值" class="headerlink" title="如何实现处理线程的返回值"></a>如何实现处理线程的返回值</h2><h3 id="如何给run方法传参"><a href="#如何给run方法传参" class="headerlink" title="如何给run方法传参"></a>如何给run方法传参</h3><ul>
+<li>构造函数传参</li>
+<li>成员变量传参</li>
+<li>回调函数传参</li>
+</ul>
+<h3 id="如何实现处理线程的返回值-1"><a href="#如何实现处理线程的返回值-1" class="headerlink" title="如何实现处理线程的返回值"></a>如何实现处理线程的返回值</h3><ul>
+<li>主线程等待法：让主线程循环等待，直到目标子线程返回值</li>
+<li>使用Thread类的join()阻塞当前线程以等待子线程处理完毕</li>
+<li>通过Callable接口实现：通过FutureTask Or 线程池获取;</li>
+</ul>
+<p>代码实现：FutureTask获取返回值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">public class MyCallable implements Callable&lt;String&gt; &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public String call() throws Exception&#123;</span><br><span class="line">        String value=&quot;test&quot;;</span><br><span class="line">        System.out.println(&quot;Ready to work&quot;);</span><br><span class="line">        Thread.currentThread().sleep(5000);</span><br><span class="line">        System.out.println(&quot;task done&quot;);</span><br><span class="line">        return  value;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">public class FutureTaskDemo &#123;</span><br><span class="line">    public static void main(String[] args) throws ExecutionException, InterruptedException &#123;</span><br><span class="line">        FutureTask&lt;String&gt; task = new FutureTask&lt;String&gt;(new MyCallable());</span><br><span class="line">        new Thread(task).start();</span><br><span class="line">        if(!task.isDone())&#123;</span><br><span class="line">            System.out.println(&quot;task has not finished, please wait!&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(&quot;task return: &quot; + task.get());</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>代码实现：通过线程池获取返回值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">//定义一个线程池</span><br><span class="line">ExecutorService newCacheThreadPool = Executors.newCachedThreadPool();</span><br><span class="line">//提交到线程池</span><br><span class="line">Future&lt;String&gt; feture = newCacheThreadPool.submit(new MyCallable());</span><br><span class="line">if(feture.isDone())&#123;</span><br><span class="line">    System.out.println(&quot;task has not finished,wait&quot;);</span><br><span class="line">&#125;</span><br><span class="line">try &#123;</span><br><span class="line">    System.out.println( feture.get() );</span><br><span class="line">&#125; catch (InterruptedException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">&#125; catch (ExecutionException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">&#125;finally &#123;</span><br><span class="line">        //关闭线程池</span><br><span class="line">        newCacheThreadPool.shutdown();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用线程池的好处：提交多个实现Callable的类，让线程池并发的执行结果，方便对实现Callable的类做统一管理</p>
+<h2 id="interrupt-函数"><a href="#interrupt-函数" class="headerlink" title="interrupt 函数"></a>interrupt 函数</h2><h3 id="已经被抛弃的方法"><a href="#已经被抛弃的方法" class="headerlink" title="已经被抛弃的方法"></a>已经被抛弃的方法</h3><ol>
 <li>stop（）</li>
 <li>suspend（）和resunme（）<br>原因：暴力中断线程，如A调用B的stop去终止B线程，由于A不知道B的运行状态，突然停止将可能导致B的一些清理工作无法完成，stop（）方法执行后会马上释放锁，这可能引发数据不同步的问题</li>
 </ol>
-<h5 id="目前使用的方法"><a href="#目前使用的方法" class="headerlink" title="目前使用的方法"></a>目前使用的方法</h5><ol>
+<h3 id="目前使用的方法"><a href="#目前使用的方法" class="headerlink" title="目前使用的方法"></a>目前使用的方法</h3><ol>
 <li><p>调用interrupt（），通知线程应该中断了<br>1）如果线程处于阻塞状态，那么线程将立即退出被阻塞状态，并抛出一个InterruptedException异常<br>2）如果线程处于正常活动状态，那么会将该线程的中断标记设置为true。被设置中断标志的线程将继续正常运行，不受影响</p>
 </li>
 <li><p>需要被调用的线程配合中断<br>1）在正常运行任务时，进程检查本线程的中断标志位，如果被设置了中断标志就自行停止线程<br>2）如果线程处于正常活动状态，那么会将该线程的终端标记设置为true。被设置中断标志的线程将继续正常运行，不受影响</p>
 </li>
 </ol>
-<h4 id="线程状态以及线程状态之间的转换"><a href="#线程状态以及线程状态之间的转换" class="headerlink" title="线程状态以及线程状态之间的转换"></a>线程状态以及线程状态之间的转换</h4><p><img src="/2019/11/05/Java多线程与并发/%E7%BA%BF%E7%A8%8B%E4%BB%A5%E5%8F%8A%E7%BA%BF%E7%A8%8B%E4%B9%8B%E9%97%B4%E7%9A%84%E8%BD%AC%E6%8D%A2.jpg" alt="线程状态之间的转换"></p>
 
       
     </div>
@@ -309,7 +318,8 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="前置概念"><a href="#前置概念" class="headerlink" title="前置概念"></a>前置概念</h3><hr>
+        <p>如果说收集算法是内存回收的方法论，那么垃圾收集器就是内存回收的具体实现</p>
+<h3 id="前置概念"><a href="#前置概念" class="headerlink" title="前置概念"></a>前置概念</h3><hr>
 <blockquote>
 <p>Stop-the-World：</p>
 <ul>
@@ -341,6 +351,7 @@
 <li>多线程收集，其余行为、特点和Serial收集器一样</li>
 <li>单核执行效率不如Serial,在多核下执行才有优势；默认开启的收集线程数和CPU数量相同</li>
 </ul>
+<p>它是许多运行在 Server 模式下的虚拟机的首要选择，除了 Serial 收集器外，只有它能与 CMS 收集器（真正意义上的并发收集器，后面会介绍到）配合工作。</p>
 <h5 id="Parallel-Scavenge收集器（-XX-UseParallelGC-复制算法）"><a href="#Parallel-Scavenge收集器（-XX-UseParallelGC-复制算法）" class="headerlink" title="Parallel Scavenge收集器（-XX:+UseParallelGC,复制算法）"></a>Parallel Scavenge收集器（-XX:+UseParallelGC,复制算法）</h5><ul>
 <li>比起管住用户线程停顿时间，更关注系统的吞吐量，高吞吐量可以高效的利用cpu时间尽可能快完成任务，适合在后台运算而不需要太多交互任务的情况</li>
 <li>在多核模式下执行才有优势，Server模式下默认的年轻代收集器  配合自适应调节策略 -XX:+UseAdaptiveSizePolicy 把内存管理的调优任务交给虚拟机完成</li>
@@ -356,20 +367,23 @@
 <li>多线程收集，吞吐量优先 进行垃圾收集时必须暂停所有工作线程</li>
 <li>单核执行效率不如Serial,在多核下执行才有优势</li>
 </ul>
-<h5 id="CMS收集器（-XX-UseConcMarkSweepGC-标记-清除算法）"><a href="#CMS收集器（-XX-UseConcMarkSweepGC-标记-清除算法）" class="headerlink" title="CMS收集器（-XX:+UseConcMarkSweepGC,标记-清除算法）"></a>CMS收集器（-XX:+UseConcMarkSweepGC,标记-清除算法）</h5><ol>
+<h5 id="CMS收集器（-XX-UseConcMarkSweepGC-标记-清除算法）"><a href="#CMS收集器（-XX-UseConcMarkSweepGC-标记-清除算法）" class="headerlink" title="CMS收集器（-XX:+UseConcMarkSweepGC,标记-清除算法）"></a>CMS收集器（-XX:+UseConcMarkSweepGC,标记-清除算法）</h5><p>CMS（Concurrent Mark Sweep）收集器是一种以获取最短回收停顿时间为目标的收集器。它非常符合在注重用户体验的应用上使用。</p>
+<p>CMS（Concurrent Mark Sweep）收集器是 HotSpot 虚拟机第一款真正意义上的并发收集器，它第一次实现了让垃圾收集线程与用户线程（基本上）同时工作。</p>
+<ol>
 <li>初始标记：stop-the-world</li>
-<li>并发标记：并发追溯标记，程序不会停顿</li>
+<li>并发标记： 同时开启 GC 和用户线程 并发追溯标记，程序不会停顿</li>
 <li>并发预清理：查找执行并发标记阶段从年轻代晋升到老年代的对象</li>
 <li>重新标记：暂停虚拟机，扫描CMS堆中剩余对象</li>
 <li>并发清理：清理垃圾对象，程序不会停顿</li>
 <li>并发重置：重置CMS收集器的数据结构  </li>
 </ol>
 <p>由于是标记清除算法，会带来内存空间碎片化的问题</p>
-<h4 id="G1收集器（-XX-UseG1GC-复制-标记-整理算法）"><a href="#G1收集器（-XX-UseG1GC-复制-标记-整理算法）" class="headerlink" title="G1收集器（-XX:+UseG1GC,复制+标记-整理算法）"></a>G1收集器（-XX:+UseG1GC,复制+标记-整理算法）</h4><p>Garbage Firlst收集器的特点：  </p>
+<h4 id="G1收集器（-XX-UseG1GC-复制-标记-整理算法）"><a href="#G1收集器（-XX-UseG1GC-复制-标记-整理算法）" class="headerlink" title="G1收集器（-XX:+UseG1GC,复制+标记-整理算法）"></a>G1收集器（-XX:+UseG1GC,复制+标记-整理算法）</h4><p><strong>G1 (Garbage-First) 是一款面向服务器的垃圾收集器,主要针对配备多颗处理器及大容量内存的机器. 以极高概率满足 GC 停顿时间要求的同时,还具备高吞吐量性能特征.</strong></p>
+<p>Garbage Firlst收集器的特点：  </p>
 <ol>
 <li>并发和并行，使用多个cup缩短stop-the-world的时间，与用户线程并发执行</li>
-<li>分代收集，独立管理整个堆</li>
-<li>空间整合，解决内存碎片</li>
+<li>分代收集，虽然 G1 可以不需要其他收集器配合就能独立管理整个 GC 堆，但是还是保留了分代的概念。</li>
+<li>空间整合，G1 从整体来看是基于“标记整理”算法实现的收集器；从局部上来看是基于“复制”算法实现的。</li>
 <li>可预测的停顿</li>
 </ol>
 <p>Garbage First收集器：  </p>
@@ -536,13 +550,15 @@
 <ol>
 <li>经历一定Minor次数依然存活的对象</li>
 <li>Survivor区中或Eden区中存放不下的对象，对象优先在Eden区中分配</li>
-<li>新生成的大对象（-XX:+PretenuerSizeThreshold）</li>
+<li>新生成的大对象 比如：字符串、数组（-XX:+PretenuerSizeThreshold）</li>
 </ol>
+<p><strong>动态对象年龄判定</strong> </p>
+<p>为了更好的适应不同程序的内存情况，虚拟机不是永远要求对象年龄必须达到了某个值才能进入老年代，如果 Survivor 空间中相同年龄所有对象大小的总和大于 Survivor 空间的一半，年龄大于或等于该年龄的对象就可以直接进入老年代，无需达到要求的年龄。</p>
 <p><strong>常用的调优参数</strong> </p>
 <ul>
 <li>XX:SurvivorRatio:Eden和Survivor的比值，默认8：1</li>
 <li>XX:NewRatio:老年代和年轻代大小的比例</li>
-<li>MaxTenuringThreshold:对象从年轻代晋升到老年代经过GC次数的最大阈值</li>
+<li>XX:MaxTenuringThreshold:对象从年轻代晋升到老年代经过GC次数的最大阈值</li>
 </ul>
 <h5 id="老年代-存放生命周期较长的对象"><a href="#老年代-存放生命周期较长的对象" class="headerlink" title="老年代:存放生命周期较长的对象"></a>老年代:存放生命周期较长的对象</h5><ul>
 <li>标记-清理算法</li>
@@ -612,20 +628,14 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h4 id="对象被判定为垃圾的标准"><a href="#对象被判定为垃圾的标准" class="headerlink" title="对象被判定为垃圾的标准"></a>对象被判定为垃圾的标准</h4><ul>
-<li>没有被其他对象引用</li>
-</ul>
-<h4 id="如何判断一个对象不被引用？"><a href="#如何判断一个对象不被引用？" class="headerlink" title="如何判断一个对象不被引用？"></a>如何判断一个对象不被引用？</h4><ul>
-<li>引用计数算法</li>
-<li>可达性分析算法</li>
-</ul>
-<h5 id="引用计数算法：判断对象的引用数量"><a href="#引用计数算法：判断对象的引用数量" class="headerlink" title="引用计数算法：判断对象的引用数量"></a>引用计数算法：判断对象的引用数量</h5><ul>
-<li>通过判断对象的引用数量来决定对象是否可以被回收</li>
-<li>每个对象实例都有一个引用计数器，被引用则+1，完成引用则-1</li>
-<li>任何引用计数为0的对象实例可以被当做垃圾收集</li>
-</ul>
-<p>优点：执行效率高，程序执行受影响较小<br>缺点：无法检测出循环引用的情况，导致内存泄漏</p>
-<h5 id="可达性分析算法"><a href="#可达性分析算法" class="headerlink" title="可达性分析算法"></a>可达性分析算法</h5><p>通过判断对象的引用链是否可达来决定对象是否可以被回收<br><img src="/2019/11/02/Java垃圾回收之标记算法/%E5%BC%95%E7%94%A8%E9%93%BE.jpg" alt></p>
+        <p>堆中几乎放着所有的对象实例，对堆垃圾回收前的第一步就是要判断那些对象已经死亡（即不能再被任何途径使用的对象）。</p>
+<h2 id="引用计数算法：判断对象的引用数量"><a href="#引用计数算法：判断对象的引用数量" class="headerlink" title="引用计数算法：判断对象的引用数量"></a>引用计数算法：判断对象的引用数量</h2><p>通过判断对象的引用数量来决定对象是否可以被回收,每个对象实例都有一个引用计数器，每当有一个地方引用它，计数器就加 1；当引用失效，计数器就减 1, 任何引用计数为0的对象实例可以被当做垃圾收集</p>
+<p>优点：执行效率高，程序执行受影响较小<br>缺点：但是目前主流的虚拟机中并没有选择这个算法来管理内存，其最主要的原因是它很难解决对象之间相互循环引用的问题</p>
+<p>所谓对象之间的相互引用问题，如下面代码所示：除了对象 objA 和 objB 相互引用着对方之外，这两个对象之间再无任何引用。但是他们因为互相引用对方，导致它们的引用计数器都不为 0，于是引用计数算法无法通知 GC 回收器回收他们。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public class ReferenceCountingGc &#123;</span><br><span class="line">    Object instance = null;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		ReferenceCountingGc objA = new ReferenceCountingGc();</span><br><span class="line">		ReferenceCountingGc objB = new ReferenceCountingGc();</span><br><span class="line">		objA.instance = objB;</span><br><span class="line">		objB.instance = objA;</span><br><span class="line">		objA = null;</span><br><span class="line">		objB = null;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="可达性分析算法"><a href="#可达性分析算法" class="headerlink" title="可达性分析算法"></a>可达性分析算法</h2><p>这个算法的基本思想就是通过一系列的称为 “GC Roots” 的对象作为起点，从这些节点开始向下搜索，节点所走过的路径称为引用链，当一个对象到 GC Roots 没有任何引用链相连的话，则证明此对象是不可用的。</p>
+<p><img src="/2019/11/02/Java垃圾回收之标记算法/%E5%BC%95%E7%94%A8%E9%93%BE.jpg" alt></p>
 <p>比如方法区中的类静态属性引用的对象，是可以作为GC Root的，</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public class House &#123;</span><br><span class="line">    public static Area area = new Area(new Street());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -633,7 +643,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public class Area &#123;</span><br><span class="line">        private Street street;</span><br><span class="line">    public Area(Street street)&#123;</span><br><span class="line">        this.street = street;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>那么area 这个静态变量实例就是GC Roots，而Street就类似于Object1 2这些，所以通过Area能找到Street那么它就是可达的。</p>
-<h5 id="可作为GC-Root的对象"><a href="#可作为GC-Root的对象" class="headerlink" title="可作为GC Root的对象"></a>可作为GC Root的对象</h5><ul>
+<h3 id="可作为GC-Root的对象"><a href="#可作为GC-Root的对象" class="headerlink" title="可作为GC Root的对象"></a>可作为GC Root的对象</h3><ul>
 <li>虚拟机栈中引用的对象（栈帧中的本地变量表）</li>
 <li>方法区中的常量引用的对象</li>
 <li>方法区中的类静态属性引用的对象</li>

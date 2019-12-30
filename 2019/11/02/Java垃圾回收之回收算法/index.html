@@ -11,21 +11,21 @@
   
   
   
-  <meta name="description" content="标记-清除算法（Mark and Sweep） 标记：从根集合进行扫描，对存活的对象进行标记 清除：对堆内存从头到尾进行线性遍历，回收不可达对象内存   缺点：由于标记清除不需要进行对象的移动，并且仅对不存活的对象进行处理。会产生大量不连续的内存碎片。 复制算法（Copying） 分为对象面和空闲面 对象在对象面上创建 对象面上的内存不足时，存活的对象被从对象面复制到空闲面 将对象面所有对象内存清">
+  <meta name="description" content="复制算法（Copying） 分为对象面和空闲面 对象在对象面上创建 对象面上的内存不足时，存活的对象被从对象面复制到空闲面 将对象面所有对象内存清除  标记-清除算法（Mark and Sweep） 标记：从根集合进行扫描，对存活的对象进行标记 清除：对堆内存从头到尾进行线性遍历，回收不可达对象内存   缺点：由于标记清除不需要进行对象的移动，并且仅对不存活的对象进行处理。会产生大量不连续的内存碎">
 <meta name="keywords" content="回收算法">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java垃圾回收之回收算法">
 <meta property="og:url" content="http://yoursite.com/2019/11/02/Java垃圾回收之回收算法/index.html">
 <meta property="og:site_name" content="Contunued Story">
-<meta property="og:description" content="标记-清除算法（Mark and Sweep） 标记：从根集合进行扫描，对存活的对象进行标记 清除：对堆内存从头到尾进行线性遍历，回收不可达对象内存   缺点：由于标记清除不需要进行对象的移动，并且仅对不存活的对象进行处理。会产生大量不连续的内存碎片。 复制算法（Copying） 分为对象面和空闲面 对象在对象面上创建 对象面上的内存不足时，存活的对象被从对象面复制到空闲面 将对象面所有对象内存清">
+<meta property="og:description" content="复制算法（Copying） 分为对象面和空闲面 对象在对象面上创建 对象面上的内存不足时，存活的对象被从对象面复制到空闲面 将对象面所有对象内存清除  标记-清除算法（Mark and Sweep） 标记：从根集合进行扫描，对存活的对象进行标记 清除：对堆内存从头到尾进行线性遍历，回收不可达对象内存   缺点：由于标记清除不需要进行对象的移动，并且仅对不存活的对象进行处理。会产生大量不连续的内存碎">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/2019/11/02/Java垃圾回收之回收算法/%E6%A0%87%E8%AE%B0-%E6%B8%85%E9%99%A4%E7%AE%97%E6%B3%95.jpg">
 <meta property="og:image" content="http://yoursite.com/2019/11/02/Java垃圾回收之回收算法/%E5%B9%B4%E8%BD%BB%E4%BB%A3%E5%92%8C%E8%80%81%E5%B9%B4%E4%BB%A3%E7%9A%84%E5%88%86%E5%8C%BA.jpg">
 <meta property="og:image" content="http://yoursite.com/2019/11/02/Java垃圾回收之回收算法/%E5%B9%B4%E8%BD%BB%E4%BB%A3%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E8%BF%87%E7%A8%8B.jpg">
-<meta property="og:updated_time" content="2019-12-10T03:30:00.798Z">
+<meta property="og:updated_time" content="2019-12-30T09:47:04.332Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java垃圾回收之回收算法">
-<meta name="twitter:description" content="标记-清除算法（Mark and Sweep） 标记：从根集合进行扫描，对存活的对象进行标记 清除：对堆内存从头到尾进行线性遍历，回收不可达对象内存   缺点：由于标记清除不需要进行对象的移动，并且仅对不存活的对象进行处理。会产生大量不连续的内存碎片。 复制算法（Copying） 分为对象面和空闲面 对象在对象面上创建 对象面上的内存不足时，存活的对象被从对象面复制到空闲面 将对象面所有对象内存清">
+<meta name="twitter:description" content="复制算法（Copying） 分为对象面和空闲面 对象在对象面上创建 对象面上的内存不足时，存活的对象被从对象面复制到空闲面 将对象面所有对象内存清除  标记-清除算法（Mark and Sweep） 标记：从根集合进行扫描，对存活的对象进行标记 清除：对堆内存从头到尾进行线性遍历，回收不可达对象内存   缺点：由于标记清除不需要进行对象的移动，并且仅对不存活的对象进行处理。会产生大量不连续的内存碎">
 <meta name="twitter:image" content="http://yoursite.com/2019/11/02/Java垃圾回收之回收算法/%E6%A0%87%E8%AE%B0-%E6%B8%85%E9%99%A4%E7%AE%97%E6%B3%95.jpg">
   
     <link rel="alternate" href="/atom.xml" title="Contunued Story" type="application/atom+xml">
@@ -165,18 +165,18 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h4 id="标记-清除算法（Mark-and-Sweep）"><a href="#标记-清除算法（Mark-and-Sweep）" class="headerlink" title="标记-清除算法（Mark and Sweep）"></a>标记-清除算法（Mark and Sweep）</h4><ul>
-<li>标记：从根集合进行扫描，对存活的对象进行标记</li>
-<li>清除：对堆内存从头到尾进行线性遍历，回收不可达对象内存</li>
-</ul>
-<p><img src="/2019/11/02/Java垃圾回收之回收算法/%E6%A0%87%E8%AE%B0-%E6%B8%85%E9%99%A4%E7%AE%97%E6%B3%95.jpg" alt="标记-清除算法.jpg"></p>
-<p>缺点：由于标记清除不需要进行对象的移动，并且仅对不存活的对象进行处理。会产生大量不连续的内存碎片。</p>
-<h4 id="复制算法（Copying）"><a href="#复制算法（Copying）" class="headerlink" title="复制算法（Copying）"></a>复制算法（Copying）</h4><ol>
+        <h4 id="复制算法（Copying）"><a href="#复制算法（Copying）" class="headerlink" title="复制算法（Copying）"></a>复制算法（Copying）</h4><ol>
 <li>分为对象面和空闲面</li>
 <li>对象在对象面上创建</li>
 <li>对象面上的内存不足时，存活的对象被从对象面复制到空闲面</li>
 <li>将对象面所有对象内存清除</li>
 </ol>
+<h4 id="标记-清除算法（Mark-and-Sweep）"><a href="#标记-清除算法（Mark-and-Sweep）" class="headerlink" title="标记-清除算法（Mark and Sweep）"></a>标记-清除算法（Mark and Sweep）</h4><ul>
+<li>标记：从根集合进行扫描，对存活的对象进行标记</li>
+<li>清除：对堆内存从头到尾进行线性遍历，回收不可达对象内存</li>
+</ul>
+<p><img src="/2019/11/02/Java垃圾回收之回收算法/%E6%A0%87%E8%AE%B0-%E6%B8%85%E9%99%A4%E7%AE%97%E6%B3%95.jpg" alt="标记-清除算法.jpg"></p>
+<p>缺点：由于标记清除不需要进行对象的移动，并且仅对不存活的对象进行处理。会产生大量不连续的内存碎片。</p>
 <p><strong>优点</strong></p>
 <ul>
 <li>解决碎片化问题</li>
@@ -184,7 +184,7 @@
 <li>适用于对象存活率低的场景（年轻代）</li>
 </ul>
 <h4 id="标记-整理算法（Compacting）"><a href="#标记-整理算法（Compacting）" class="headerlink" title="标记-整理算法（Compacting）"></a>标记-整理算法（Compacting）</h4><ul>
-<li>标记：从根集合进行扫描，对存货的对象进行标记</li>
+<li>标记：从根集合进行扫描，对存活的对象进行标记</li>
 <li>清除：移动所有存活的对象，切按照内存地址次序依次排列，然后将末端内存地址以后的内存全部回收</li>
 </ul>
 <p><strong>优点</strong></p>
@@ -205,7 +205,7 @@
 <p><img src="/2019/11/02/Java垃圾回收之回收算法/%E5%B9%B4%E8%BD%BB%E4%BB%A3%E5%92%8C%E8%80%81%E5%B9%B4%E4%BB%A3%E7%9A%84%E5%88%86%E5%8C%BA.jpg" alt></p>
 <h5 id="年轻代：尽可能快速地收集掉那些生命周期短的对象"><a href="#年轻代：尽可能快速地收集掉那些生命周期短的对象" class="headerlink" title="年轻代：尽可能快速地收集掉那些生命周期短的对象"></a>年轻代：尽可能快速地收集掉那些生命周期短的对象</h5><ul>
 <li>Eden区（刚创建的对象）</li>
-<li>两个Survivor区（幸存者区）<br>新生代占用1/3堆空间，其中Eden 8/10, from1/10 ,to 1/10<br>老年代 2/3堆空间</li>
+<li>两个Survivor区（为了区分，这两个 Survivor 区域按照顺序被命名为 from 和 to）<br>新生代占用1/3堆空间，其中Eden 8/10, from1/10 ,to 1/10<br>老年代 2/3堆空间</li>
 </ul>
 <p>年轻代垃圾回收的过程：</p>
 <p><img src="/2019/11/02/Java垃圾回收之回收算法/%E5%B9%B4%E8%BD%BB%E4%BB%A3%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E8%BF%87%E7%A8%8B.jpg" alt></p>
@@ -315,7 +315,7 @@
     <div id="toc" class="toc-article">
     <strong class="toc-title">Contents</strong>
     
-      <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#标记-清除算法（Mark-and-Sweep）"><span class="nav-number">1.</span> <span class="nav-text">标记-清除算法（Mark and Sweep）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#复制算法（Copying）"><span class="nav-number">2.</span> <span class="nav-text">复制算法（Copying）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#标记-整理算法（Compacting）"><span class="nav-number">3.</span> <span class="nav-text">标记-整理算法（Compacting）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分代收集算法（Generational-Collector）"><span class="nav-number">4.</span> <span class="nav-text">分代收集算法（Generational Collector）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GC的分类"><span class="nav-number">5.</span> <span class="nav-text">GC的分类</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#年轻代：尽可能快速地收集掉那些生命周期短的对象"><span class="nav-number">5.1.</span> <span class="nav-text">年轻代：尽可能快速地收集掉那些生命周期短的对象</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#老年代-存放生命周期较长的对象"><span class="nav-number">5.2.</span> <span class="nav-text">老年代:存放生命周期较长的对象</span></a></li></ol></li></ol>
+      <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#复制算法（Copying）"><span class="nav-number">1.</span> <span class="nav-text">复制算法（Copying）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#标记-清除算法（Mark-and-Sweep）"><span class="nav-number">2.</span> <span class="nav-text">标记-清除算法（Mark and Sweep）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#标记-整理算法（Compacting）"><span class="nav-number">3.</span> <span class="nav-text">标记-整理算法（Compacting）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分代收集算法（Generational-Collector）"><span class="nav-number">4.</span> <span class="nav-text">分代收集算法（Generational Collector）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GC的分类"><span class="nav-number">5.</span> <span class="nav-text">GC的分类</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#年轻代：尽可能快速地收集掉那些生命周期短的对象"><span class="nav-number">5.1.</span> <span class="nav-text">年轻代：尽可能快速地收集掉那些生命周期短的对象</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#老年代-存放生命周期较长的对象"><span class="nav-number">5.2.</span> <span class="nav-text">老年代:存放生命周期较长的对象</span></a></li></ol></li></ol>
     
     </div>
   </aside>

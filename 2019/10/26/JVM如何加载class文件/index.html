@@ -11,19 +11,19 @@
   
   
   
-  <meta name="description" content="Java虚拟机Java虚拟机：抽象化的计算机，通过在实际的计算机上个仿真模拟计算机功能来实现的，有自己完善的硬件架构：处理器，堆栈，寄存器等，还具有相应的指令系统，jvm 屏蔽了与具体操作系统平台相关的信息，使得java程序只需要生成在java虚拟机上运行的字节码，就可以在不同平台上不加修改的运行。其中最重要的两点：JVM内存结构模型，GC   jvm是内存中的虚拟机，jvm的存储就是内存，所有写">
+  <meta name="description" content="Java虚拟机Java虚拟机：抽象化的计算机，通过在实际的计算机上个仿真模拟计算机功能来实现的，有自己完善的硬件架构：处理器，堆栈，寄存器等，还具有相应的指令系统，jvm 屏蔽了与具体操作系统平台相关的信息，使得java程序只需要生成在java虚拟机上运行的字节码，就可以在不同平台上不加修改的运行。其中最重要的两点：JVM内存结构模型，GC   JVM是内存中的虚拟机，JVM的存储就是内存，所有写">
 <meta name="keywords" content="JVM内存结构模型,反射">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JVM如何加载class文件">
 <meta property="og:url" content="http://yoursite.com/2019/10/26/JVM如何加载class文件/index.html">
 <meta property="og:site_name" content="Contunued Story">
-<meta property="og:description" content="Java虚拟机Java虚拟机：抽象化的计算机，通过在实际的计算机上个仿真模拟计算机功能来实现的，有自己完善的硬件架构：处理器，堆栈，寄存器等，还具有相应的指令系统，jvm 屏蔽了与具体操作系统平台相关的信息，使得java程序只需要生成在java虚拟机上运行的字节码，就可以在不同平台上不加修改的运行。其中最重要的两点：JVM内存结构模型，GC   jvm是内存中的虚拟机，jvm的存储就是内存，所有写">
+<meta property="og:description" content="Java虚拟机Java虚拟机：抽象化的计算机，通过在实际的计算机上个仿真模拟计算机功能来实现的，有自己完善的硬件架构：处理器，堆栈，寄存器等，还具有相应的指令系统，jvm 屏蔽了与具体操作系统平台相关的信息，使得java程序只需要生成在java虚拟机上运行的字节码，就可以在不同平台上不加修改的运行。其中最重要的两点：JVM内存结构模型，GC   JVM是内存中的虚拟机，JVM的存储就是内存，所有写">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/2019/10/26/JVM如何加载class文件/Java%E8%99%9A%E6%8B%9F%E6%9C%BA.jpg">
-<meta property="og:updated_time" content="2019-10-26T03:29:53.900Z">
+<meta property="og:updated_time" content="2019-12-30T04:58:18.111Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JVM如何加载class文件">
-<meta name="twitter:description" content="Java虚拟机Java虚拟机：抽象化的计算机，通过在实际的计算机上个仿真模拟计算机功能来实现的，有自己完善的硬件架构：处理器，堆栈，寄存器等，还具有相应的指令系统，jvm 屏蔽了与具体操作系统平台相关的信息，使得java程序只需要生成在java虚拟机上运行的字节码，就可以在不同平台上不加修改的运行。其中最重要的两点：JVM内存结构模型，GC   jvm是内存中的虚拟机，jvm的存储就是内存，所有写">
+<meta name="twitter:description" content="Java虚拟机Java虚拟机：抽象化的计算机，通过在实际的计算机上个仿真模拟计算机功能来实现的，有自己完善的硬件架构：处理器，堆栈，寄存器等，还具有相应的指令系统，jvm 屏蔽了与具体操作系统平台相关的信息，使得java程序只需要生成在java虚拟机上运行的字节码，就可以在不同平台上不加修改的运行。其中最重要的两点：JVM内存结构模型，GC   JVM是内存中的虚拟机，JVM的存储就是内存，所有写">
 <meta name="twitter:image" content="http://yoursite.com/2019/10/26/JVM如何加载class文件/Java%E8%99%9A%E6%8B%9F%E6%9C%BA.jpg">
   
     <link rel="alternate" href="/atom.xml" title="Contunued Story" type="application/atom+xml">
@@ -164,7 +164,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h4 id="Java虚拟机"><a href="#Java虚拟机" class="headerlink" title="Java虚拟机"></a>Java虚拟机</h4><p>Java虚拟机：抽象化的计算机，通过在实际的计算机上个仿真模拟计算机功能来实现的，有自己完善的硬件架构：处理器，堆栈，寄存器等，还具有相应的指令系统，jvm 屏蔽了与具体操作系统平台相关的信息，使得java程序只需要生成在java虚拟机上运行的字节码，就可以在不同平台上不加修改的运行。其中最重要的两点：JVM内存结构模型，GC  </p>
-<p><em>jvm是内存中的虚拟机，jvm的存储就是内存，所有写的 类，常量，变量，方法都在内存中这决定着程序的健壮和高效</em></p>
+<p><em>JVM是内存中的虚拟机，JVM的存储就是内存，所有写的 类，常量，变量，方法都在内存中这决定着程序的健壮和高效</em></p>
 <p><img src="/2019/10/26/JVM如何加载class文件/Java%E8%99%9A%E6%8B%9F%E6%9C%BA.jpg" alt></p>
 <ol>
 <li>Class Loader ： 依据特定格式，加载class文件到内存  </li>
@@ -174,7 +174,7 @@
 </ol>
 <p>JVM结构：  Class Loader, Runtime Data Area, Execution Engine, Native Interface</p>
 <hr>
-<h4 id="Java反射机制"><a href="#Java反射机制" class="headerlink" title="Java反射机制"></a>Java反射机制</h4><p>JAVA 反射机制是在运行状态中，对于任意一个类，都能够知道这个类的所有属性和方法；对于任意一个对象，都能够调用它的任意方法和属性；这种动态获取信息以及动态调用对象方法的功能称为java语言的反射机制。  </p>
+<h4 id="Java反射机制"><a href="#Java反射机制" class="headerlink" title="Java反射机制"></a>Java反射机制</h4><p>JAVA 反射机制是在运行状态中，对于任意一个类，都能够知道这个类的所有属性和方法；对于任意一个对象，都能够调用它的任意方法和属性；这种动态获取信息以及动态调用对象方法的功能称为Java语言的反射机制。  </p>
 <h5 id="写一个反射的例子"><a href="#写一个反射的例子" class="headerlink" title="写一个反射的例子"></a>写一个反射的例子</h5><p>Robot.java</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">package com.interview.javabasic.reflect</span><br><span class="line"></span><br><span class="line">public class Robot&#123;</span><br><span class="line">    private String name;</span><br><span class="line">    public void sayHi(String helloSentence)&#123;</span><br><span class="line">        System.out.println(helloSentence + &quot;&quot; + name)</span><br><span class="line">    &#125;</span><br><span class="line">    private String throwHello(String tag)&#123;</span><br><span class="line">        return &quot;Hello&quot; + tag;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 

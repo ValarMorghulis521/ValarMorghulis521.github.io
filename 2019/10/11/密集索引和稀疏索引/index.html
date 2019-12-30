@@ -11,19 +11,19 @@
   
   
   
-  <meta name="description" content="密集索引和稀疏索引的区别 密集索引文件中的每个搜索码值都对应一个索引值  稀疏索引文件只为索引码的某些值建立索引项 InnoDB 和 MyISAM InnoDB 采用密集索引+稀疏索引,主键索引可以直接找到叶子节点中的数据,辅助键索引需要先找到主键再通过主键B+树找到数据 ,即InnoDB数据和索引是存放在一个文件里的  MyISam 全部采用稀疏索引,根据主键和辅助键的索引都只能找到一个地址信息">
+  <meta name="description" content="密集索引和稀疏索引的区别 索引的key是数据表的主键，因此InnoDB表数据文件本身就是主索引。这被称为“聚簇索引（或聚集索引）”。 在索引检索的时候，首先按照B+Tree搜索算法搜索索引，如果指定的Key存在，则取出其 data 域的值，然后以 data 域的值为地址读取相应的数据记录。这被称为“非聚簇索引”。  InnoDB 和 MyISAM InnoDB 采用密集索引+稀疏索引,根据主键索引">
 <meta name="keywords" content="索引,密集索引,稀疏索引,InnoDB,MyISAM">
 <meta property="og:type" content="article">
 <meta property="og:title" content="密集索引和稀疏索引">
 <meta property="og:url" content="http://yoursite.com/2019/10/11/密集索引和稀疏索引/index.html">
 <meta property="og:site_name" content="Contunued Story">
-<meta property="og:description" content="密集索引和稀疏索引的区别 密集索引文件中的每个搜索码值都对应一个索引值  稀疏索引文件只为索引码的某些值建立索引项 InnoDB 和 MyISAM InnoDB 采用密集索引+稀疏索引,主键索引可以直接找到叶子节点中的数据,辅助键索引需要先找到主键再通过主键B+树找到数据 ,即InnoDB数据和索引是存放在一个文件里的  MyISam 全部采用稀疏索引,根据主键和辅助键的索引都只能找到一个地址信息">
+<meta property="og:description" content="密集索引和稀疏索引的区别 索引的key是数据表的主键，因此InnoDB表数据文件本身就是主索引。这被称为“聚簇索引（或聚集索引）”。 在索引检索的时候，首先按照B+Tree搜索算法搜索索引，如果指定的Key存在，则取出其 data 域的值，然后以 data 域的值为地址读取相应的数据记录。这被称为“非聚簇索引”。  InnoDB 和 MyISAM InnoDB 采用密集索引+稀疏索引,根据主键索引">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/2019/10/11/密集索引和稀疏索引/%E5%AF%86%E9%9B%86%E7%B4%A2%E5%BC%95%E5%92%8C%E7%A8%80%E7%96%8F%E7%B4%A2%E5%BC%95.jpg">
-<meta property="og:updated_time" content="2019-11-03T07:40:26.718Z">
+<meta property="og:updated_time" content="2019-12-29T05:50:24.687Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="密集索引和稀疏索引">
-<meta name="twitter:description" content="密集索引和稀疏索引的区别 密集索引文件中的每个搜索码值都对应一个索引值  稀疏索引文件只为索引码的某些值建立索引项 InnoDB 和 MyISAM InnoDB 采用密集索引+稀疏索引,主键索引可以直接找到叶子节点中的数据,辅助键索引需要先找到主键再通过主键B+树找到数据 ,即InnoDB数据和索引是存放在一个文件里的  MyISam 全部采用稀疏索引,根据主键和辅助键的索引都只能找到一个地址信息">
+<meta name="twitter:description" content="密集索引和稀疏索引的区别 索引的key是数据表的主键，因此InnoDB表数据文件本身就是主索引。这被称为“聚簇索引（或聚集索引）”。 在索引检索的时候，首先按照B+Tree搜索算法搜索索引，如果指定的Key存在，则取出其 data 域的值，然后以 data 域的值为地址读取相应的数据记录。这被称为“非聚簇索引”。  InnoDB 和 MyISAM InnoDB 采用密集索引+稀疏索引,根据主键索引">
 <meta name="twitter:image" content="http://yoursite.com/2019/10/11/密集索引和稀疏索引/%E5%AF%86%E9%9B%86%E7%B4%A2%E5%BC%95%E5%92%8C%E7%A8%80%E7%96%8F%E7%B4%A2%E5%BC%95.jpg">
   
     <link rel="alternate" href="/atom.xml" title="Contunued Story" type="application/atom+xml">
@@ -164,13 +164,13 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h4 id="密集索引和稀疏索引的区别"><a href="#密集索引和稀疏索引的区别" class="headerlink" title="密集索引和稀疏索引的区别"></a>密集索引和稀疏索引的区别</h4><ul>
-<li><p>密集索引文件中的每个搜索码值都对应一个索引值</p>
+<li>索引的key是数据表的主键，因此InnoDB表数据文件本身就是主索引。这被称为“聚簇索引（或聚集索引）”。</li>
+<li>在索引检索的时候，首先按照B+Tree搜索算法搜索索引，如果指定的Key存在，则取出其 data 域的值，然后以 data 域的值为地址读取相应的数据记录。这被称为“非聚簇索引”。</li>
+</ul>
+<h4 id="InnoDB-和-MyISAM"><a href="#InnoDB-和-MyISAM" class="headerlink" title="InnoDB 和 MyISAM"></a>InnoDB 和 MyISAM</h4><ul>
+<li><p>InnoDB 采用密集索引+稀疏索引,根据主键索引搜索时可以直接找到key所在的叶子节点取出数据,辅助键索引需要先找到主键的值再通过主键B+树找到数据 ,即InnoDB数据和索引是存放在一个文件里的</p>
 </li>
-<li><p>稀疏索引文件只为索引码的某些值建立索引项</p>
-<h4 id="InnoDB-和-MyISAM"><a href="#InnoDB-和-MyISAM" class="headerlink" title="InnoDB 和 MyISAM"></a>InnoDB 和 MyISAM</h4></li>
-<li><p>InnoDB 采用密集索引+稀疏索引,主键索引可以直接找到叶子节点中的数据,辅助键索引需要先找到主键再通过主键B+树找到数据 ,即InnoDB数据和索引是存放在一个文件里的</p>
-</li>
-<li><p>MyISam 全部采用稀疏索引,根据主键和辅助键的索引都只能找到一个地址信息,要再根据这个地址信息去另外一个文件中寻找数据,即MyISam的索引和数据是分开存放的</p>
+<li><p>MyISam 全部采用稀疏索引(“非聚簇索引”),根据主键和辅助键的索引都只能找到一个地址信息,要再根据这个地址信息去另外一个文件中寻找数据,即MyISam的索引和数据是分开存放的</p>
 </li>
 <li><p>表结构都存储在*.frm中<br>MyISAM索引和数据是分开存储的<br>.MYI存储索引<br>.MYD存储数据<br>InnoDB索引和数据是存在一起的.ibd<br><img src="/2019/10/11/密集索引和稀疏索引/%E5%AF%86%E9%9B%86%E7%B4%A2%E5%BC%95%E5%92%8C%E7%A8%80%E7%96%8F%E7%B4%A2%E5%BC%95.jpg" alt="密集索引和稀疏索引"></p>
 </li>

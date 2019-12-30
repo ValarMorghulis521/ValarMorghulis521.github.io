@@ -11,18 +11,18 @@
   
   
   
-  <meta name="description" content="UDP简介 面向非连接 不维护连接状态，支持同时向多个客户端传输相同消息 数据包报头只有8个字节，额外开销较小 吞吐量只受限于数据生成速率，传输速率及机器性能 尽最大努力交付，不保证可靠交付，不需要维护复杂链接状态表 面向报文，不对应用程序提交的报文信息进行拆分或合并  TCP和UDP的区别 面向连接 VS 无连接 可靠性 有序性 速度 量级">
+  <meta name="description" content="UDP简介 面向非连接 不维护连接状态，支持同时向多个客户端传输相同消息 数据包报头只有8个字节，额外开销较小 吞吐量只受限于数据生成速率，传输速率及机器性能 尽最大努力交付，不保证可靠交付，不需要维护复杂链接状态表 面向报文，不对应用程序提交的报文信息进行拆分或合并  TCP和UDP的区别 面向连接 VS 无连接 TCP有三次握手的连接过程，UDP适合消息的多播发布 可靠性：TCP比较可靠，利用">
 <meta name="keywords" content="UDP">
 <meta property="og:type" content="article">
 <meta property="og:title" content="TCP和UDP的区别">
 <meta property="og:url" content="http://yoursite.com/2019/10/06/TCP和UDP的区别/index.html">
 <meta property="og:site_name" content="Contunued Story">
-<meta property="og:description" content="UDP简介 面向非连接 不维护连接状态，支持同时向多个客户端传输相同消息 数据包报头只有8个字节，额外开销较小 吞吐量只受限于数据生成速率，传输速率及机器性能 尽最大努力交付，不保证可靠交付，不需要维护复杂链接状态表 面向报文，不对应用程序提交的报文信息进行拆分或合并  TCP和UDP的区别 面向连接 VS 无连接 可靠性 有序性 速度 量级">
+<meta property="og:description" content="UDP简介 面向非连接 不维护连接状态，支持同时向多个客户端传输相同消息 数据包报头只有8个字节，额外开销较小 吞吐量只受限于数据生成速率，传输速率及机器性能 尽最大努力交付，不保证可靠交付，不需要维护复杂链接状态表 面向报文，不对应用程序提交的报文信息进行拆分或合并  TCP和UDP的区别 面向连接 VS 无连接 TCP有三次握手的连接过程，UDP适合消息的多播发布 可靠性：TCP比较可靠，利用">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-10-06T09:02:12.625Z">
+<meta property="og:updated_time" content="2019-12-27T12:27:09.721Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="TCP和UDP的区别">
-<meta name="twitter:description" content="UDP简介 面向非连接 不维护连接状态，支持同时向多个客户端传输相同消息 数据包报头只有8个字节，额外开销较小 吞吐量只受限于数据生成速率，传输速率及机器性能 尽最大努力交付，不保证可靠交付，不需要维护复杂链接状态表 面向报文，不对应用程序提交的报文信息进行拆分或合并  TCP和UDP的区别 面向连接 VS 无连接 可靠性 有序性 速度 量级">
+<meta name="twitter:description" content="UDP简介 面向非连接 不维护连接状态，支持同时向多个客户端传输相同消息 数据包报头只有8个字节，额外开销较小 吞吐量只受限于数据生成速率，传输速率及机器性能 尽最大努力交付，不保证可靠交付，不需要维护复杂链接状态表 面向报文，不对应用程序提交的报文信息进行拆分或合并  TCP和UDP的区别 面向连接 VS 无连接 TCP有三次握手的连接过程，UDP适合消息的多播发布 可靠性：TCP比较可靠，利用">
   
     <link rel="alternate" href="/atom.xml" title="Contunued Story" type="application/atom+xml">
   
@@ -170,11 +170,11 @@
 <li>面向报文，不对应用程序提交的报文信息进行拆分或合并</li>
 </ul>
 <h4 id="TCP和UDP的区别"><a href="#TCP和UDP的区别" class="headerlink" title="TCP和UDP的区别"></a>TCP和UDP的区别</h4><ul>
-<li>面向连接 VS 无连接</li>
-<li>可靠性</li>
-<li>有序性</li>
-<li>速度</li>
-<li>量级</li>
+<li>面向连接 VS 无连接 TCP有三次握手的连接过程，UDP适合消息的多播发布</li>
+<li>可靠性：TCP比较可靠，利用握手确认和重传机制提供了可靠性保证，UDP可能会丢失</li>
+<li>有序性：TCP利用序列号保证了消息报文顺序交互到达可能无序，但最终会排序，UDP不具备有序性</li>
+<li>速度：TCP速度较慢，因为要创建连接保证消息的可靠性和有序性需要做额外的很多事情，UDP更合适对速度比较敏感的应用比如在线视频媒体，广播，多人在线游戏</li>
+<li>量级：TCP属于重量级的，UDP属于轻量级的；体现在源数据的头部大小；TCP20个字节，UDP8个字节</li>
 </ul>
 
       

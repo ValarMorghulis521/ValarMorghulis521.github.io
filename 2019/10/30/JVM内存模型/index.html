@@ -23,7 +23,7 @@
 <meta property="og:image" content="http://yoursite.com/2019/10/30/JVM内存模型/Stack.jpg">
 <meta property="og:image" content="http://yoursite.com/2019/10/30/JVM内存模型/%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F%E8%A1%A8%E5%92%8C%E6%93%8D%E4%BD%9C%E6%A0%91%E6%A0%88%E7%9A%84%E4%BA%A4%E4%BA%92%E8%BF%87%E7%A8%8B.jpg">
 <meta property="og:image" content="http://yoursite.com/2019/10/30/JVM内存模型/%E5%B9%B4%E8%BD%BB%E4%BB%A3%E5%92%8C%E8%80%81%E5%B9%B4%E4%BB%A3%E7%9A%84%E5%88%86%E5%8C%BA.jpg">
-<meta property="og:updated_time" content="2019-12-30T10:27:33.845Z">
+<meta property="og:updated_time" content="2020-01-01T13:19:49.771Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JVM内存模型">
 <meta name="twitter:description" content="Java 内存区域详解 如果没有特殊说明，都是针对的是 HotSpot 虚拟机。 常见面试题基本问题 介绍下 Java 内存区域（运行时数据区） Java 对象的创建过程（五步，建议能默写出来并且要知道每一步虚拟机做了什么） 对象的访问定位的两种方式（句柄和直接指针两种方式）  一 运行时数据区域(JVM内存模型) Java 虚拟机在执行 Java 程序的过程中会把它管理的内存划分成若干个不同的数">
@@ -64,32 +64,10 @@
 
 
   
-  
-  <div class="site-header-image">
-    <img id="originBg" width="100%" alt="Hike News" src="">
-  </div>
-
-  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
-    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
-  </div>
-
-  <script>
-        var imgUrls = "css/images/pose01.jpg,https://source.unsplash.com/collection/954550/1920x1080,https://source.unsplash.com/collection/954550/1920x1081".split(",");
-        var random = Math.floor((Math.random() * imgUrls.length ));
-        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
-          document.getElementById("originBg").src=imgUrls[random];
-          document.getElementById("blurBg").src=imgUrls[random];
-        } else {
-          document.getElementById("originBg").src='/' + imgUrls[random];
-          document.getElementById("blurBg").src='/' + imgUrls[random];
-        }
-    </script>
-
-
 
 
 <header id="allheader" class="site-header" role="banner" 
-   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
+   >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -255,7 +233,11 @@
 <h4 id="初始化零值"><a href="#初始化零值" class="headerlink" title="初始化零值"></a>初始化零值</h4><p>内存分配完成后，虚拟机需要将分配到的内存空间都初始化为零值（不包括对象头），这一步操作保证了对象的实例字段在 Java 代码中可以不赋初始值就直接使用，程序能访问到这些字段的数据类型所对应的零值。</p>
 <h4 id="执行-init-方法"><a href="#执行-init-方法" class="headerlink" title="执行 init 方法"></a>执行 init 方法</h4><p>在上面工作都完成之后，从虚拟机的视角来看，一个新的对象已经产生了，但从 Java 程序的视角来看，对象创建才刚开始，&lt; init &gt; 方法还没有执行，所有的字段都还为零。所以一般来说，执行 new 指令之后会接着执行 &lt; init &gt; 方法，把对象按照程序员的意愿进行初始化，这样一个真正可用的对象才算完全产生出来。</p>
 <h3 id="对象的内存布局"><a href="#对象的内存布局" class="headerlink" title="对象的内存布局"></a>对象的内存布局</h3><p>在 Hotspot 虚拟机中，对象在内存中的布局可以分为 3 块区域：<strong>对象头、实例数据和对齐填充。</strong></p>
-<p><strong>Hotspot 虚拟机的对象头包括两部分信息，第一部分用于存储对象自身的自身运行时数据</strong>（哈希码、GC 分代年龄、锁状态标志等等），<strong>另一部分是类型指针</strong>，即对象指向它的类元数据的指针，虚拟机通过这个指针来确定这个对象是那个类的实例。</p>
+<p><strong>Hotspot 虚拟机的对象头包括两部分信息:</strong>  </p>
+<ol>
+<li><strong>用于存储对象自身的自身运行时数据</strong>（Mark Work：默认存储对象的hashCode,分代年龄，锁类型，锁标志位等信息 非固定的数据结构，以便效率），</li>
+<li><strong>另一部分是类型指针</strong>，Class Metadata Address：类型指针指向对象的类元数据，JVM通过这个指针确定该对象是哪个类的数据 </li>
+</ol>
 <p><strong>实例数据部分是对象真正存储的有效信息</strong>，也是在程序中所定义的各种类型的字段内容。</p>
 <p><strong>对齐填充部分不是必然存在的，也没有什么特别的含义，仅仅起占位作用。</strong> 因为 Hotspot 虚拟机的自动内存管理系统要求对象起始地址必须是 8 字节的整数倍，换句话说就是对象的大小必须是 8 字节的整数倍。而对象头部分正好是 8 字节的倍数（1 倍或 2 倍），因此，当对象实例数据部分没有对齐时，就需要通过对齐填充来补全。</p>
 
@@ -359,7 +341,7 @@
 
   <div class="clearfix container">
       <div class="site-info">
-	      &copy; 2019 Contunued Story All Rights Reserved.
+	      &copy; 2020 Contunued Story All Rights Reserved.
         
             <span id="busuanzi_container_site_uv">
               本站访客数<span id="busuanzi_value_site_uv"></span>人次  
@@ -382,9 +364,6 @@
 
 
     <!-- headerblur min height -->
-    
-      var headerblur = document.getElementById("header-blur");
-      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

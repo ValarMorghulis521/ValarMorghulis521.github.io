@@ -20,7 +20,7 @@
 <meta property="og:description" content="Hashtable 早期Java类提供的哈希表的实现 线程安全：涉及到修改Hashtable的方法，使用synchronized修饰 串行化的方式运行，性能较差  如何优化Hashtable? 通过锁细粒度化，将整锁拆解成多个锁进行优化  早期的ConcurrentHashMap：通过分段锁Segment来实现  当前的ConcurrentHashMap:CAS+synchronized使锁更细化">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/2019/11/10/ConcurrentHashMap/ConcurrentHashMap.jpg">
-<meta property="og:updated_time" content="2019-11-10T12:27:33.115Z">
+<meta property="og:updated_time" content="2020-01-02T13:50:34.123Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ConcurrentHashMap">
 <meta name="twitter:description" content="Hashtable 早期Java类提供的哈希表的实现 线程安全：涉及到修改Hashtable的方法，使用synchronized修饰 串行化的方式运行，性能较差  如何优化Hashtable? 通过锁细粒度化，将整锁拆解成多个锁进行优化  早期的ConcurrentHashMap：通过分段锁Segment来实现  当前的ConcurrentHashMap:CAS+synchronized使锁更细化">
@@ -61,10 +61,32 @@
 
 
   
+  
+  <div class="site-header-image">
+    <img id="originBg" width="100%" alt="Hike News" src="">
+  </div>
+
+  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
+    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
+  </div>
+
+  <script>
+        var imgUrls = "css/images/pose01.jpg,https://source.unsplash.com/collection/954550/1920x1080,https://source.unsplash.com/collection/954550/1920x1081".split(",");
+        var random = Math.floor((Math.random() * imgUrls.length ));
+        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+          document.getElementById("originBg").src=imgUrls[random];
+          document.getElementById("blurBg").src=imgUrls[random];
+        } else {
+          document.getElementById("originBg").src='/' + imgUrls[random];
+          document.getElementById("blurBg").src='/' + imgUrls[random];
+        }
+    </script>
+
+
 
 
 <header id="allheader" class="site-header" role="banner" 
-   >
+   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -131,7 +153,7 @@
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/Java常用类库与技巧/">Java常用类库与技巧</a>
+    <a class="article-category-link" href="/categories/Java多线程与并发/">Java多线程与并发</a>
  
       
 	<span id="busuanzi_container_page_pv">
@@ -141,31 +163,32 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h4 id="Hashtable"><a href="#Hashtable" class="headerlink" title="Hashtable"></a>Hashtable</h4><ul>
+        <h2 id="Hashtable"><a href="#Hashtable" class="headerlink" title="Hashtable"></a>Hashtable</h2><ul>
 <li>早期Java类提供的哈希表的实现</li>
 <li>线程安全：涉及到修改Hashtable的方法，使用synchronized修饰</li>
 <li>串行化的方式运行，性能较差</li>
 </ul>
-<h4 id="如何优化Hashtable"><a href="#如何优化Hashtable" class="headerlink" title="如何优化Hashtable?"></a>如何优化Hashtable?</h4><ol>
+<h2 id="如何优化Hashtable"><a href="#如何优化Hashtable" class="headerlink" title="如何优化Hashtable?"></a>如何优化Hashtable?</h2><ol>
 <li><p>通过锁细粒度化，将整锁拆解成多个锁进行优化</p>
 <ul>
 <li><p>早期的ConcurrentHashMap：通过分段锁Segment来实现</p>
 </li>
 <li><p>当前的ConcurrentHashMap:CAS+synchronized使锁更细化</p>
-<p><img src="/2019/11/10/ConcurrentHashMap/ConcurrentHashMap.jpg" alt><br>只是锁住每个 table 的首节点，所以只要 Hash 不冲突，就不会产生并发。</p>
+<p><img src="/2019/11/10/ConcurrentHashMap/ConcurrentHashMap.jpg" alt></p>
+<p>只是锁住每个 table 的首节点，所以只要 Hash 不冲突，就不会产生并发。</p>
 </li>
 </ul>
 </li>
-<li><p>使用Collections.synchronizedMap(hashMap);将HashMap包装成线程安全的。</p>
+<li><p>使用Collections.synchronizedMap(hashMap);将HashMap包装成线程安全的。但这是通过使用一个全局的锁来同步不同线程间的并发访问，因此会带来不可忽视的性能问题。</p>
 </li>
 </ol>
-<h4 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h4><ol>
+<h2 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h2><ol>
 <li>出自JUC包</li>
 <li>成员变量与HashMap相似；sizeCtl 是 ConcurrentHashMap 特有的成员变量<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//用来初始化或扩容的控制位标示量</span><br><span class="line"> private transient volatile int sizeCtl;</span><br></pre></td></tr></table></figure>
 
 </li>
 </ol>
-<h5 id="put方法"><a href="#put方法" class="headerlink" title="put方法"></a>put方法</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line">public V put(K key, V value) &#123;</span><br><span class="line">    return putVal(key, value, false);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  final V putVal(K key, V value, boolean onlyIfAbsent) &#123;</span><br><span class="line">    //不能放入为null的key</span><br><span class="line">    if (key == null || value == null) throw new NullPointerException();</span><br><span class="line">    //去计算key的hash值</span><br><span class="line">    int hash = spread(key.hashCode());</span><br><span class="line">    int binCount = 0;</span><br><span class="line">    //多数组的元素更新是使用CAS机制，需要不断的去做失败重试</span><br><span class="line">    for (Node&lt;K,V&gt;[] tab = table;;) &#123;</span><br><span class="line">        Node&lt;K,V&gt; f; int n, i, fh;</span><br><span class="line">        //数组为空初始化</span><br><span class="line">        if (tab == null || (n = tab.length) == 0)</span><br><span class="line">            tab = initTable();</span><br><span class="line">        //不等于0我们就通过hash值来找到f(头结点),根据定位到的元素检查是否存在</span><br><span class="line">        else if ((f = tabAt(tab, i = (n - 1) &amp; hash)) == null) &#123;</span><br><span class="line">            //如果没有则尝试使用CAS进行添加，添加失败则break，进入下一次循环</span><br><span class="line">            if (casTabAt(tab, i, null,</span><br><span class="line">                         new Node&lt;K,V&gt;(hash, key, value, null)))</span><br><span class="line">                break;                   // no lock when adding to empty bin</span><br><span class="line">        &#125;</span><br><span class="line">        //如果被别的线程正在移动，我们就协助其扩容</span><br><span class="line">        else if ((fh = f.hash) == MOVED)</span><br><span class="line">            tab = helpTransfer(tab, f);</span><br><span class="line">        else &#123;</span><br><span class="line">            V oldVal = null;</span><br><span class="line">            synchronized (f) &#123;</span><br><span class="line">                //判断f是否是链表的头结点，fh代表的是头结点的hash值</span><br><span class="line">                if (tabAt(tab, i) == f) &#123;</span><br><span class="line">                    //如果是链表的头结点，初始化计数器binCount，</span><br><span class="line">                    遍历链表。如果存在我们就去更新value，如果不存在就在链表尾部添加新的结点</span><br><span class="line">                    if (fh &gt;= 0) &#123;</span><br><span class="line">                        binCount = 1;</span><br><span class="line">                        for (Node&lt;K,V&gt; e = f;; ++binCount) &#123;</span><br><span class="line">                            K ek;</span><br><span class="line">                            if (e.hash == hash &amp;&amp;</span><br><span class="line">                                ((ek = e.key) == key ||</span><br><span class="line">                                 (ek != null &amp;&amp; key.equals(ek)))) &#123;</span><br><span class="line">                                oldVal = e.val;</span><br><span class="line">                                if (!onlyIfAbsent)</span><br><span class="line">                                    e.val = value;</span><br><span class="line">                                break;</span><br><span class="line">                            &#125;</span><br><span class="line">                            Node&lt;K,V&gt; pred = e;</span><br><span class="line">                            if ((e = e.next) == null) &#123;</span><br><span class="line">                                pred.next = new Node&lt;K,V&gt;(hash, key,</span><br><span class="line">                                                          value, null);</span><br><span class="line">                                break;</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                    else if (f instanceof TreeBin) &#123;</span><br><span class="line">                        Node&lt;K,V&gt; p;</span><br><span class="line">                        binCount = 2;</span><br><span class="line">                        if ((p = ((TreeBin&lt;K,V&gt;)f).putTreeVal(hash, key,</span><br><span class="line">                                                       value)) != null) &#123;</span><br><span class="line">                            oldVal = p.val;</span><br><span class="line">                            if (!onlyIfAbsent)</span><br><span class="line">                                p.val = value;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            if (binCount != 0) &#123;</span><br><span class="line">                if (binCount &gt;= TREEIFY_THRESHOLD)</span><br><span class="line">                    treeifyBin(tab, i);</span><br><span class="line">                if (oldVal != null)</span><br><span class="line">                    return oldVal;</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    addCount(1L, binCount);</span><br><span class="line">    return null;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="put方法"><a href="#put方法" class="headerlink" title="put方法"></a>put方法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line">public V put(K key, V value) &#123;</span><br><span class="line">    return putVal(key, value, false);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  final V putVal(K key, V value, boolean onlyIfAbsent) &#123;</span><br><span class="line">    //不能放入为null的key</span><br><span class="line">    if (key == null || value == null) throw new NullPointerException();</span><br><span class="line">    //去计算key的hash值</span><br><span class="line">    int hash = spread(key.hashCode());</span><br><span class="line">    int binCount = 0;</span><br><span class="line">    //多数组的元素更新是使用CAS机制，需要不断的去做失败重试</span><br><span class="line">    for (Node&lt;K,V&gt;[] tab = table;;) &#123;</span><br><span class="line">        Node&lt;K,V&gt; f; int n, i, fh;</span><br><span class="line">        //数组为空初始化</span><br><span class="line">        if (tab == null || (n = tab.length) == 0)</span><br><span class="line">            tab = initTable();</span><br><span class="line">        //不等于0我们就通过hash值来找到f(头结点),根据定位到的元素检查是否存在</span><br><span class="line">        else if ((f = tabAt(tab, i = (n - 1) &amp; hash)) == null) &#123;</span><br><span class="line">            //如果没有则尝试使用CAS进行添加，添加失败则break，进入下一次循环</span><br><span class="line">            if (casTabAt(tab, i, null,</span><br><span class="line">                         new Node&lt;K,V&gt;(hash, key, value, null)))</span><br><span class="line">                break;                   // no lock when adding to empty bin</span><br><span class="line">        &#125;</span><br><span class="line">        //如果被别的线程正在移动，我们就协助其扩容</span><br><span class="line">        else if ((fh = f.hash) == MOVED)</span><br><span class="line">            tab = helpTransfer(tab, f);</span><br><span class="line">        else &#123;</span><br><span class="line">            V oldVal = null;</span><br><span class="line">            synchronized (f) &#123;</span><br><span class="line">                //判断f是否是链表的头结点，fh代表的是头结点的hash值</span><br><span class="line">                if (tabAt(tab, i) == f) &#123;</span><br><span class="line">                    //如果是链表的头结点，初始化计数器binCount，</span><br><span class="line">                    遍历链表。如果存在我们就去更新value，如果不存在就在链表尾部添加新的结点</span><br><span class="line">                    if (fh &gt;= 0) &#123;</span><br><span class="line">                        binCount = 1;</span><br><span class="line">                        for (Node&lt;K,V&gt; e = f;; ++binCount) &#123;</span><br><span class="line">                            K ek;</span><br><span class="line">                            if (e.hash == hash &amp;&amp;</span><br><span class="line">                                ((ek = e.key) == key ||</span><br><span class="line">                                 (ek != null &amp;&amp; key.equals(ek)))) &#123;</span><br><span class="line">                                oldVal = e.val;</span><br><span class="line">                                if (!onlyIfAbsent)</span><br><span class="line">                                    e.val = value;</span><br><span class="line">                                break;</span><br><span class="line">                            &#125;</span><br><span class="line">                            Node&lt;K,V&gt; pred = e;</span><br><span class="line">                            if ((e = e.next) == null) &#123;</span><br><span class="line">                                pred.next = new Node&lt;K,V&gt;(hash, key,</span><br><span class="line">                                                          value, null);</span><br><span class="line">                                break;</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                    else if (f instanceof TreeBin) &#123;</span><br><span class="line">                        Node&lt;K,V&gt; p;</span><br><span class="line">                        binCount = 2;</span><br><span class="line">                        if ((p = ((TreeBin&lt;K,V&gt;)f).putTreeVal(hash, key,</span><br><span class="line">                                                       value)) != null) &#123;</span><br><span class="line">                            oldVal = p.val;</span><br><span class="line">                            if (!onlyIfAbsent)</span><br><span class="line">                                p.val = value;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            if (binCount != 0) &#123;</span><br><span class="line">                if (binCount &gt;= TREEIFY_THRESHOLD)</span><br><span class="line">                    treeifyBin(tab, i);</span><br><span class="line">                if (oldVal != null)</span><br><span class="line">                    return oldVal;</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    addCount(1L, binCount);</span><br><span class="line">    return null;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p><strong>ConcurrentHashMap：put逻辑</strong>  </p>
 <ol>
@@ -180,7 +203,7 @@
 <li>首先使用无锁操作CAS插入头结点，失败则循环重试</li>
 <li>若头结点已存在，则尝试获取头结点的同步锁，再进行操作  </li>
 </ul>
-<h4 id="Hashap、Hashtable、ConcurrentHashMap三者的区别"><a href="#Hashap、Hashtable、ConcurrentHashMap三者的区别" class="headerlink" title="Hashap、Hashtable、ConcurrentHashMap三者的区别"></a>Hashap、Hashtable、ConcurrentHashMap三者的区别</h4><ul>
+<h2 id="HashMap、Hashtable、ConcurrentHashMap三者的区别"><a href="#HashMap、Hashtable、ConcurrentHashMap三者的区别" class="headerlink" title="HashMap、Hashtable、ConcurrentHashMap三者的区别"></a>HashMap、Hashtable、ConcurrentHashMap三者的区别</h2><ul>
 <li>HashMap线程不安全，数组+链表+红黑树</li>
 <li>Hashtable线程安全，锁住整个对象，效率低，数组+链表</li>
 <li>ConcurrentHashMap线程安全，CAS+同步锁，数组+链表+红黑树</li>
@@ -192,7 +215,7 @@
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/Java常用类库与技巧/">Java常用类库与技巧</a>
+    <a class="article-category-link" href="/categories/Java多线程与并发/">Java多线程与并发</a>
 
       
   <span class="ico-tags"></span>
@@ -257,7 +280,7 @@
     <div id="toc" class="toc-article">
     <strong class="toc-title">Contents</strong>
     
-      <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Hashtable"><span class="nav-number">1.</span> <span class="nav-text">Hashtable</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何优化Hashtable"><span class="nav-number">2.</span> <span class="nav-text">如何优化Hashtable?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#源码分析"><span class="nav-number">3.</span> <span class="nav-text">源码分析</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#put方法"><span class="nav-number">3.1.</span> <span class="nav-text">put方法</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Hashap、Hashtable、ConcurrentHashMap三者的区别"><span class="nav-number">4.</span> <span class="nav-text">Hashap、Hashtable、ConcurrentHashMap三者的区别</span></a></li></ol>
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Hashtable"><span class="nav-number">1.</span> <span class="nav-text">Hashtable</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何优化Hashtable"><span class="nav-number">2.</span> <span class="nav-text">如何优化Hashtable?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#源码分析"><span class="nav-number">3.</span> <span class="nav-text">源码分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#put方法"><span class="nav-number">3.1.</span> <span class="nav-text">put方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap、Hashtable、ConcurrentHashMap三者的区别"><span class="nav-number">4.</span> <span class="nav-text">HashMap、Hashtable、ConcurrentHashMap三者的区别</span></a></li></ol>
     
     </div>
   </aside>
@@ -310,6 +333,9 @@
 
 
     <!-- headerblur min height -->
+    
+      var headerblur = document.getElementById("header-blur");
+      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

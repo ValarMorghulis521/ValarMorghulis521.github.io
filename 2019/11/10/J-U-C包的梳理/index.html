@@ -6,30 +6,31 @@
   <title>J.U.C包的梳理 | Contunued Story</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta name="keywords" content="J.U.C包的梳理">
+  <meta name="keywords" content="JUC包的梳理Executor并发容器">
   
   
   
   
-  <meta name="description" content="java.util.concurrent：提供了并发编程的解决方案：CAS 是java.util.concurrent.atomic包的基础AQS 是java.util.concurrent.locks包以及一些常用类比如：Semophore,ReentrantLock类的基础  J.U.C包的分类 线程执行器executor 锁locks 原子变量类atomic 开发工具类tools 并发集合c">
-<meta name="keywords" content="J.U.C包的梳理">
+  <meta name="description" content="JUC包(java.util.concurrent)：提供了并发编程的解决方案，主要分为以下5类：  线程执行器executor 锁locks 原子变量类atomic 并发工具类tools 并发容器   Executor  J.U.C的三个Executor接口  Executor:运行新任务的简单接口，将任务提交和任务执行细节解耦   123456//直接启动线程Thread t = new Th">
+<meta name="keywords" content="JUC包的梳理,Executor,并发容器">
 <meta property="og:type" content="article">
 <meta property="og:title" content="J.U.C包的梳理">
 <meta property="og:url" content="http://yoursite.com/2019/11/10/J-U-C包的梳理/index.html">
 <meta property="og:site_name" content="Contunued Story">
-<meta property="og:description" content="java.util.concurrent：提供了并发编程的解决方案：CAS 是java.util.concurrent.atomic包的基础AQS 是java.util.concurrent.locks包以及一些常用类比如：Semophore,ReentrantLock类的基础  J.U.C包的分类 线程执行器executor 锁locks 原子变量类atomic 开发工具类tools 并发集合c">
+<meta property="og:description" content="JUC包(java.util.concurrent)：提供了并发编程的解决方案，主要分为以下5类：  线程执行器executor 锁locks 原子变量类atomic 并发工具类tools 并发容器   Executor  J.U.C的三个Executor接口  Executor:运行新任务的简单接口，将任务提交和任务执行细节解耦   123456//直接启动线程Thread t = new Th">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/2019/11/10/J-U-C包的梳理/JUC%E5%8C%85%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE.jpg">
+<meta property="og:image" content="http://yoursite.com/2019/11/10/J-U-C包的梳理/J-U-C%E5%8C%85%E7%9A%84%E6%A2%B3%E7%90%86%5CExecutor%E6%A1%86%E6%9E%B6.jpg">
+<meta property="og:image" content="http://yoursite.com/2019/11/10/J-U-C包的梳理/Semaphore.jpg">
 <meta property="og:image" content="http://yoursite.com/2019/11/10/J-U-C包的梳理/CountDownLatch.jpg">
 <meta property="og:image" content="http://yoursite.com/2019/11/10/J-U-C包的梳理/CyclicBarrier.jpg">
-<meta property="og:image" content="http://yoursite.com/2019/11/10/J-U-C包的梳理/Semaphore.jpg">
 <meta property="og:image" content="http://yoursite.com/2019/11/10/J-U-C包的梳理/Exchanger.jpg">
 <meta property="og:image" content="http://yoursite.com/2019/11/10/J-U-C包的梳理/BlockingQueue.jpg">
 <meta property="og:image" content="http://yoursite.com/2019/11/10/J-U-C包的梳理/BlockingQueue%E5%AD%90%E7%B1%BB.jpg">
-<meta property="og:updated_time" content="2019-12-26T09:53:48.213Z">
+<meta property="og:updated_time" content="2020-01-02T12:36:39.117Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="J.U.C包的梳理">
-<meta name="twitter:description" content="java.util.concurrent：提供了并发编程的解决方案：CAS 是java.util.concurrent.atomic包的基础AQS 是java.util.concurrent.locks包以及一些常用类比如：Semophore,ReentrantLock类的基础  J.U.C包的分类 线程执行器executor 锁locks 原子变量类atomic 开发工具类tools 并发集合c">
+<meta name="twitter:description" content="JUC包(java.util.concurrent)：提供了并发编程的解决方案，主要分为以下5类：  线程执行器executor 锁locks 原子变量类atomic 并发工具类tools 并发容器   Executor  J.U.C的三个Executor接口  Executor:运行新任务的简单接口，将任务提交和任务执行细节解耦   123456//直接启动线程Thread t = new Th">
 <meta name="twitter:image" content="http://yoursite.com/2019/11/10/J-U-C包的梳理/JUC%E5%8C%85%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE.jpg">
   
     <link rel="alternate" href="/atom.xml" title="Contunued Story" type="application/atom+xml">
@@ -67,10 +68,32 @@
 
 
   
+  
+  <div class="site-header-image">
+    <img id="originBg" width="100%" alt="Hike News" src="">
+  </div>
+
+  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
+    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
+  </div>
+
+  <script>
+        var imgUrls = "css/images/pose01.jpg,https://source.unsplash.com/collection/954550/1920x1080,https://source.unsplash.com/collection/954550/1920x1081".split(",");
+        var random = Math.floor((Math.random() * imgUrls.length ));
+        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+          document.getElementById("originBg").src=imgUrls[random];
+          document.getElementById("blurBg").src=imgUrls[random];
+        } else {
+          document.getElementById("originBg").src='/' + imgUrls[random];
+          document.getElementById("blurBg").src='/' + imgUrls[random];
+        }
+    </script>
+
+
 
 
 <header id="allheader" class="site-header" role="banner" 
-   >
+   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -137,7 +160,7 @@
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/Java常用类库与技巧/">Java常用类库与技巧</a>
+    <a class="article-category-link" href="/categories/Java多线程与并发/">Java多线程与并发</a>
  
       
 	<span id="busuanzi_container_page_pv">
@@ -147,38 +170,128 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p>java.util.concurrent：提供了并发编程的解决方案：<br>CAS 是java.util.concurrent.atomic包的基础<br>AQS 是java.util.concurrent.locks包以及一些常用类比如：Semophore,ReentrantLock类的基础</p>
-<hr>
-<h4 id="J-U-C包的分类"><a href="#J-U-C包的分类" class="headerlink" title="J.U.C包的分类"></a>J.U.C包的分类</h4><ul>
+        <p>JUC包(java.util.concurrent)：提供了并发编程的解决方案，主要分为以下5类：</p>
+<ul>
 <li>线程执行器executor</li>
 <li>锁locks</li>
 <li>原子变量类atomic</li>
-<li>开发工具类tools</li>
-<li>并发集合collections</li>
+<li>并发工具类tools</li>
+<li>并发容器</li>
 </ul>
 <p><img src="/2019/11/10/J-U-C包的梳理/JUC%E5%8C%85%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE.jpg" alt></p>
-<h4 id="并发工具类"><a href="#并发工具类" class="headerlink" title="并发工具类"></a>并发工具类</h4><ol>
-<li>闭锁 CountDownLatch</li>
-<li>栅栏 CyclicBarrier</li>
-<li>信号量 Semaphore</li>
-<li>交换器 Exchanger<h5 id="CountDownLatch：让主线程等待一组事件发生后继续执行"><a href="#CountDownLatch：让主线程等待一组事件发生后继续执行" class="headerlink" title="CountDownLatch：让主线程等待一组事件发生后继续执行"></a>CountDownLatch：让主线程等待一组事件发生后继续执行</h5><img src="/2019/11/10/J-U-C包的梳理/CountDownLatch.jpg" alt></li>
-</ol>
-<h5 id="CyclicBarrier-阻塞当前线程，等待其他线程"><a href="#CyclicBarrier-阻塞当前线程，等待其他线程" class="headerlink" title="CyclicBarrier:阻塞当前线程，等待其他线程"></a>CyclicBarrier:阻塞当前线程，等待其他线程</h5><p> <img src="/2019/11/10/J-U-C包的梳理/CyclicBarrier.jpg" alt></p>
-<h5 id="信号量-Semaphore"><a href="#信号量-Semaphore" class="headerlink" title="信号量 Semaphore"></a>信号量 Semaphore</h5><p> <img src="/2019/11/10/J-U-C包的梳理/Semaphore.jpg" alt></p>
-<h5 id="交换器-Exchanger"><a href="#交换器-Exchanger" class="headerlink" title="交换器 Exchanger"></a>交换器 Exchanger</h5><p> <img src="/2019/11/10/J-U-C包的梳理/Exchanger.jpg" alt></p>
-<h4 id="collections"><a href="#collections" class="headerlink" title="collections"></a>collections</h4><h5 id="BlockingQueue-提供可阻塞的入队和出队操作"><a href="#BlockingQueue-提供可阻塞的入队和出队操作" class="headerlink" title="BlockingQueue:提供可阻塞的入队和出队操作"></a>BlockingQueue:提供可阻塞的入队和出队操作</h5><p>主要用于生产者-消费者模式，在多线程场景时生产者线程在队列尾部添加元素，而消费者线程在队列头部消费元素，通过这种方式能够达到将任务的生产和消费进行隔离的目的<br> <img src="/2019/11/10/J-U-C包的梳理/BlockingQueue.jpg" alt></p>
-<p>由以下七个实现类， 都是线程安全<br><img src="/2019/11/10/J-U-C包的梳理/BlockingQueue%E5%AD%90%E7%B1%BB.jpg" alt></p>
+<h2 id="Executor"><a href="#Executor" class="headerlink" title="Executor"></a>Executor</h2><hr>
+<p><img src="/2019/11/10/J-U-C包的梳理/J-U-C%E5%8C%85%E7%9A%84%E6%A2%B3%E7%90%86%5CExecutor%E6%A1%86%E6%9E%B6.jpg" alt></p>
+<p><strong>J.U.C的三个Executor接口</strong></p>
+<ul>
+<li><p><strong>Executor</strong>:运行新任务的简单接口，将任务提交和任务执行细节解耦</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//直接启动线程</span><br><span class="line">Thread t = new Thread();</span><br><span class="line">t.start();</span><br><span class="line">//交给execute</span><br><span class="line">Thread t = new Thread();</span><br><span class="line">execute.execute(t);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>ExecutorService</strong>:具备管理执行器和任务生命周期的方法，提交任务机制更完善<br>例如，其中submit方法传入了Callable,弥补了Runnable无法返回结果的短板，因此较Executor提供了更加完善的提交机制</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;T&gt; Future&lt;T&gt; submit(Callable&lt;T&gt; task);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>ScheduledExecutorService</strong>:扩展了ExecutorService，同时支持Future和定期执行任务</p>
+</li>
+</ul>
+<h2 id="Atomic-原子类"><a href="#Atomic-原子类" class="headerlink" title="Atomic 原子类"></a>Atomic 原子类</h2><hr>
+<p>其中 CAS 是java.util.concurrent.atomic包的基础</p>
+<p><strong>基本类型</strong></p>
+<p>使用原子的方式更新基本类型</p>
+<ul>
+<li>AtomicInteger：整形原子类</li>
+<li>AtomicLong：长整型原子类</li>
+<li>AtomicBoolean：布尔型原子类</li>
+</ul>
+<p><strong>数组类型</strong></p>
+<p>使用原子的方式更新数组里的某个元素</p>
+<ul>
+<li>AtomicIntegerArray：整形数组原子类</li>
+<li>AtomicLongArray：长整形数组原子类</li>
+<li>AtomicReferenceArray：引用类型数组原子类</li>
+</ul>
+<p><strong>引用类型</strong></p>
+<p>使用原子的方式更新数组里的某个元素</p>
+<ul>
+<li>AtomicReference：引用类型原子类</li>
+<li>AtomicStampedReference：原子更新引用类型里的字段原子类</li>
+<li>AtomicMarkableReference ：原子更新带有标记位的引用类型</li>
+</ul>
+<p><strong>对象的属性修改类型</strong></p>
+<ul>
+<li>AtomicIntegerFieldUpdater：原子更新整形字段的更新器</li>
+<li>AtomicLongFieldUpdater：原子更新长整形字段的更新器</li>
+<li>AtomicStampedReference：原子更新带有版本号的引用类型。该类将整数值与引用关联起来，可用于解决原子的更新数据和数据的版本号，可以解决使用 CAS 进行原子更新时可能出现的 ABA 问题。</li>
+</ul>
+<h3 id="AtomicInteger-的使用"><a href="#AtomicInteger-的使用" class="headerlink" title="AtomicInteger 的使用"></a>AtomicInteger 的使用</h3><p><strong>AtomicInteger 类常用方法</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public final int get() //获取当前的值</span><br><span class="line">public final int getAndSet(int newValue)//获取当前的值，并设置新的值</span><br><span class="line">public final int getAndIncrement()//获取当前的值，并自增</span><br><span class="line">public final int getAndDecrement() //获取当前的值，并自减</span><br><span class="line">public final int getAndAdd(int delta) //获取当前的值，并加上预期的值</span><br><span class="line">boolean compareAndSet(int expect, int update) //如果输入的数值等于预期值，则以原子方式将该值设置为输入值（update）</span><br><span class="line">public final void lazySet(int newValue)//最终设置为newValue,使用 lazySet 设置之后可能导致其他线程在之后的一小段时间内还是可以读到旧的值。</span><br></pre></td></tr></table></figure>
+
+<p><strong>AtomicInteger 类的使用示例</strong><br>使用 AtomicInteger 之后，不用对 increment() 方法加锁也可以保证线程安全。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class AtomicIntegerTest &#123;</span><br><span class="line">        private AtomicInteger count = new AtomicInteger();</span><br><span class="line">      //使用AtomicInteger之后，不需要对该方法加锁，也可以实现线程安全。</span><br><span class="line">        public void increment() &#123;</span><br><span class="line">                  count.incrementAndGet();</span><br><span class="line">        &#125;</span><br><span class="line">     </span><br><span class="line">       public int getCount() &#123;</span><br><span class="line">                return count.get();</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="AtomicInteger-类的原理"><a href="#AtomicInteger-类的原理" class="headerlink" title="AtomicInteger 类的原理"></a>AtomicInteger 类的原理</h3><p>AtomicInteger 线程安全原理简单分析</p>
+<p>AtomicInteger 类的部分源码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">// setup to use Unsafe.compareAndSwapInt for updates（更新操作时提供“比较并替换”的作用）</span><br><span class="line">   private static final Unsafe unsafe = Unsafe.getUnsafe();</span><br><span class="line">   private static final long valueOffset;</span><br><span class="line"></span><br><span class="line">   static &#123;</span><br><span class="line">       try &#123;</span><br><span class="line">           valueOffset = unsafe.objectFieldOffset</span><br><span class="line">               (AtomicInteger.class.getDeclaredField(&quot;value&quot;));</span><br><span class="line">       &#125; catch (Exception ex) &#123; throw new Error(ex); &#125;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   private volatile int value;</span><br></pre></td></tr></table></figure>
+
+<p>AtomicInteger 类主要利用 CAS (compare and swap) + volatile 和 native 方法来保证原子操作，从而避免 synchronized 的高开销，执行效率大为提升。</p>
+<p>CAS的原理是拿期望的值和原本的一个值作比较，如果相同则更新成新的值。UnSafe 类的 objectFieldOffset() 方法是一个本地方法，这个方法是用来拿到“原来的值”的内存地址，返回值是 valueOffset。另外 value 是一个volatile变量，在内存中可见，因此 JVM 可以保证任何时刻任何线程总能拿到该变量的最新值。</p>
+<h2 id="并发工具类"><a href="#并发工具类" class="headerlink" title="并发工具类"></a>并发工具类</h2><hr>
+<p>AQS 是java.util.concurrent.locks包以及一些常用类比如：Semophore,ReentrantLock类的基础</p>
+<ul>
+<li><p>Semaphore(信号量)-允许多个线程同时访问： synchronized 和 ReentrantLock 都是一次只允许一个线程访问某个资源，Semaphore(信号量)可以指定多个线程同时访问某个资源。</p>
+<p><img src="/2019/11/10/J-U-C包的梳理/Semaphore.jpg" alt></p>
+</li>
+<li><p>CountDownLatch （倒计时器）： CountDownLatch是一个同步工具类，用来协调多个线程之间的同步。这个工具通常用来控制线程等待，它可以让某一个线程等待直到倒计时结束，再开始执行。</p>
+</li>
+</ul>
+<p><img src="/2019/11/10/J-U-C包的梳理/CountDownLatch.jpg" alt></p>
+<ul>
+<li><p>CyclicBarrier(循环栅栏)： CyclicBarrier 和 CountDownLatch 非常类似，它也可以实现线程间的技术等待，但是它的功能比 CountDownLatch 更加复杂和强大。主要应用场景和 CountDownLatch 类似。CyclicBarrier 的字面意思是可循环使用（Cyclic）的屏障（Barrier）。它要做的事情是，让一组线程到达一个屏障（也可以叫同步点）时被阻塞，直到最后一个线程到达屏障时，屏障才会开门，所有被屏障拦截的线程才会继续干活。</p>
+<p><img src="/2019/11/10/J-U-C包的梳理/CyclicBarrier.jpg" alt></p>
+</li>
+<li><p>CyclicBarrier默认的构造方法是 CyclicBarrier(int parties)，其参数表示屏障拦截的线程数量，每个线程调用await()方法告诉 CyclicBarrier 我已经到达了屏障，然后当前线程被阻塞。</p>
+</li>
+<li><p>交换器 Exchanger</p>
+<p><img src="/2019/11/10/J-U-C包的梳理/Exchanger.jpg" alt></p>
+</li>
+</ul>
+<h2 id="并发容器"><a href="#并发容器" class="headerlink" title="并发容器"></a>并发容器</h2><hr>
+<p>JDK提供的这些容器大部分在 java.util.concurrent 包中。</p>
+<ul>
+<li>ConcurrentHashMap: 线程安全的HashMap</li>
+<li>CopyOnWriteArrayList: 线程安全的List，在读多写少的场合性能非常好，远远好于Vector.</li>
+<li>ConcurrentLinkedQueue: 高效的并发队列，使用链表实现。可以看做一个线程安全的 LinkedList，这是一个非阻塞队列。</li>
+<li>BlockingQueue: 这是一个接口，JDK内部通过链表、数组等方式实现了这个接口。表示阻塞队列，非常适合用于作为数据共享的通道。</li>
+<li>ConcurrentSkipListMap: 跳表的实现。这是一个Map，使用跳表的数据结构进行快速查找</li>
+</ul>
+<h3 id="ConcurrentHashMap"><a href="#ConcurrentHashMap" class="headerlink" title="ConcurrentHashMap"></a>ConcurrentHashMap</h3><p>ConcurrentHashMap 的诞生。在ConcurrentHashMap中，无论是读操作还是写操作都能保证很高的性能：在进行读操作时(几乎)不需要加锁，而在写操作时通过锁分段技术只对所操作的段加锁而不影响客户端对其它段的访问。</p>
+<p>以下两各问题在 ConcurrentHashMap 有专门的讲解</p>
+<ul>
+<li>ConcurrentHashMap 和 Hashtable 的区别</li>
+<li>ConcurrentHashMap线程安全的具体实现方式/底层具体实现</li>
+</ul>
+<h3 id="BlockingQueue"><a href="#BlockingQueue" class="headerlink" title="BlockingQueue"></a>BlockingQueue</h3><p>提供可阻塞的入队和出队操作</p>
+<p>主要用于生产者-消费者问题中，其原因是BlockingQueue提供了可阻塞的插入和移除的方法。当队列容器已满，生产者线程会被阻塞，直到队列未满；当队列容器为空时，消费者线程会被阻塞，直至队列非空时为止。</p>
+<p>在多线程场景时生产者线程在队列尾部添加元素，而消费者线程在队列头部消费元素，通过这种方式能够达到将任务的生产和消费进行隔离的目的</p>
+<p> <img src="/2019/11/10/J-U-C包的梳理/BlockingQueue.jpg" alt></p>
+<p>由以下七个实现类， 都是线程安全</p>
+<p><img src="/2019/11/10/J-U-C包的梳理/BlockingQueue%E5%AD%90%E7%B1%BB.jpg" alt></p>
+<p><strong>下面主要介绍一下:ArrayBlockingQueue、LinkedBlockingQueue、PriorityBlockingQueue，这三个 BlockingQueue 的实现类。</strong></p>
+<h4 id="ArrayBlockingQueue"><a href="#ArrayBlockingQueue" class="headerlink" title="ArrayBlockingQueue"></a>ArrayBlockingQueue</h4><p><strong>ArrayBlockingQueue</strong> 是 BlockingQueue 接口的有界队列实现类，底层采用<strong>数组</strong>来实现。ArrayBlockingQueue一旦创建，容量不能改变。其并发控制采用可重入锁来控制，不管是插入操作还是读取操作，都需要获取到锁才能进行操作。当队列容量满时，尝试将元素放入队列将导致操作阻塞;尝试从一个空队列中取一个元素也会同样阻塞。</p>
+<p>ArrayBlockingQueue 默认情况下不能保证线程访问队列的公平性，所谓公平性是指严格按照线程等待的绝对时间顺序，即最先等待的线程能够最先访问到 ArrayBlockingQueue。而非公平性则是指访问 ArrayBlockingQueue 的顺序不是遵守严格的时间顺序，有可能存在，当 ArrayBlockingQueue 可以被访问时，长时间阻塞的线程依然无法访问到 ArrayBlockingQueue。如果保证公平性，通常会降低吞吐量。如果需要获得公平性的 ArrayBlockingQueue，可采用如下代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">private static ArrayBlockingQueue&lt;Integer&gt; blockingQueue = new ArrayBlockingQueue&lt;Integer&gt;(10,true);</span><br></pre></td></tr></table></figure>
+
+<h4 id="LinkedBlockingQueue"><a href="#LinkedBlockingQueue" class="headerlink" title="LinkedBlockingQueue"></a>LinkedBlockingQueue</h4><p><strong>LinkedBlockingQueue</strong> 底层基于<strong>单向链表</strong>实现的阻塞队列，可以当做无界队列也可以当做有界队列来使用，同样满足FIFO的特性，与ArrayBlockingQueue 相比起来具有更高的吞吐量，为了防止 LinkedBlockingQueue 容量迅速增，损耗大量内存。通常在创建LinkedBlockingQueue 对象时，会指定其大小，如果未指定，容量等于Integer.MAX_VALUE。</p>
+<h4 id="PriorityBlockingQueue"><a href="#PriorityBlockingQueue" class="headerlink" title="PriorityBlockingQueue"></a>PriorityBlockingQueue</h4><p><strong>PriorityBlockingQueue</strong> 是一个支持优先级的无界阻塞队列。默认情况下元素采用自然顺序进行排序，也可以通过自定义类实现 compareTo() 方法来指定元素排序规则，或者初始化时通过构造器参数 Comparator 来指定排序规则。</p>
 
       
     </div>
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/Java常用类库与技巧/">Java常用类库与技巧</a>
+    <a class="article-category-link" href="/categories/Java多线程与并发/">Java多线程与并发</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/J-U-C包的梳理/">J.U.C包的梳理</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Executor/">Executor</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JUC包的梳理/">JUC包的梳理</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/并发容器/">并发容器</a></li></ul>
 
       
         
@@ -239,7 +352,7 @@
     <div id="toc" class="toc-article">
     <strong class="toc-title">Contents</strong>
     
-      <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#J-U-C包的分类"><span class="nav-number">1.</span> <span class="nav-text">J.U.C包的分类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#并发工具类"><span class="nav-number">2.</span> <span class="nav-text">并发工具类</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#CountDownLatch：让主线程等待一组事件发生后继续执行"><span class="nav-number">2.1.</span> <span class="nav-text">CountDownLatch：让主线程等待一组事件发生后继续执行</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#CyclicBarrier-阻塞当前线程，等待其他线程"><span class="nav-number">2.2.</span> <span class="nav-text">CyclicBarrier:阻塞当前线程，等待其他线程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#信号量-Semaphore"><span class="nav-number">2.3.</span> <span class="nav-text">信号量 Semaphore</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#交换器-Exchanger"><span class="nav-number">2.4.</span> <span class="nav-text">交换器 Exchanger</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#collections"><span class="nav-number">3.</span> <span class="nav-text">collections</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#BlockingQueue-提供可阻塞的入队和出队操作"><span class="nav-number">3.1.</span> <span class="nav-text">BlockingQueue:提供可阻塞的入队和出队操作</span></a></li></ol></li></ol>
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Executor"><span class="nav-number">1.</span> <span class="nav-text">Executor</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Atomic-原子类"><span class="nav-number">2.</span> <span class="nav-text">Atomic 原子类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#AtomicInteger-的使用"><span class="nav-number">2.1.</span> <span class="nav-text">AtomicInteger 的使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AtomicInteger-类的原理"><span class="nav-number">2.2.</span> <span class="nav-text">AtomicInteger 类的原理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#并发工具类"><span class="nav-number">3.</span> <span class="nav-text">并发工具类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#并发容器"><span class="nav-number">4.</span> <span class="nav-text">并发容器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ConcurrentHashMap"><span class="nav-number">4.1.</span> <span class="nav-text">ConcurrentHashMap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BlockingQueue"><span class="nav-number">4.2.</span> <span class="nav-text">BlockingQueue</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ArrayBlockingQueue"><span class="nav-number">4.2.1.</span> <span class="nav-text">ArrayBlockingQueue</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LinkedBlockingQueue"><span class="nav-number">4.2.2.</span> <span class="nav-text">LinkedBlockingQueue</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PriorityBlockingQueue"><span class="nav-number">4.2.3.</span> <span class="nav-text">PriorityBlockingQueue</span></a></li></ol></li></ol></li></ol>
     
     </div>
   </aside>
@@ -292,6 +405,9 @@
 
 
     <!-- headerblur min height -->
+    
+      var headerblur = document.getElementById("header-blur");
+      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

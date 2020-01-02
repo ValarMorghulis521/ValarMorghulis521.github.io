@@ -55,10 +55,32 @@
 
 
   
+  
+  <div class="site-header-image">
+    <img id="originBg" width="100%" alt="Hike News" src="">
+  </div>
+
+  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
+    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
+  </div>
+
+  <script>
+        var imgUrls = "css/images/pose01.jpg,https://source.unsplash.com/collection/954550/1920x1080,https://source.unsplash.com/collection/954550/1920x1081".split(",");
+        var random = Math.floor((Math.random() * imgUrls.length ));
+        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+          document.getElementById("originBg").src=imgUrls[random];
+          document.getElementById("blurBg").src=imgUrls[random];
+        } else {
+          document.getElementById("originBg").src='/' + imgUrls[random];
+          document.getElementById("blurBg").src='/' + imgUrls[random];
+        }
+    </script>
+
+
 
 
 <header id="allheader" class="site-header" role="banner" 
-   >
+   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -104,6 +126,633 @@
       <div id="content" class="outer">
         
           <section id="main">
+  
+    <article id="post-Java多线程与并发-原理"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/11/06/Java多线程与并发-原理/">Java多线程与并发-原理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/11/06/Java多线程与并发-原理/" class="article-date">
+	  <time datetime="2019-11-06T09:26:44.000Z" itemprop="datePublished">November 6, 2019</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/Java多线程与并发/">Java多线程与并发</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="synchronized-关键字"><a href="#synchronized-关键字" class="headerlink" title="synchronized 关键字"></a>synchronized 关键字</h2><hr>
+<h3 id="说一说自己对于-synchronized-关键字的了解"><a href="#说一说自己对于-synchronized-关键字的了解" class="headerlink" title="说一说自己对于 synchronized 关键字的了解"></a>说一说自己对于 synchronized 关键字的了解</h3><p>synchronized关键字解决的是多个线程之间访问资源的同步性，synchronized关键字可以保证被它修饰的方法或者代码块在任意时刻只能有一个线程执行。</p>
+<p>另外，在 Java 早期版本中，synchronized属于重量级锁，效率低下，因为监视器锁（monitor）是依赖于底层的操作系统的 Mutex Lock 来实现的，Java 的线程是映射到操作系统的原生线程之上的。如果要挂起或者唤醒一个线程，都需要操作系统帮忙完成，而操作系统实现线程之间的切换时需要从用户态转换到内核态，这个状态之间的转换需要相对比较长的时间，时间成本相对较高，这也是为什么早期的 synchronized 效率低的原因。庆幸的是在 Java 6 之后 Java 官方对从 JVM 层面对synchronized 较大优化，所以现在的 synchronized 锁效率也优化得很不错了。JDK1.6对锁的实现引入了大量的优化，如自旋锁、适应性自旋锁、锁消除、锁粗化、偏向锁、轻量级锁等技术来减少锁操作的开销。</p>
+<h3 id="互斥锁的特性"><a href="#互斥锁的特性" class="headerlink" title="互斥锁的特性"></a>互斥锁的特性</h3><ul>
+<li><p>互斥性：即在同一时间只允许一个线程持有某个对象锁，通过这种特性来实现多线程的协调机制，这样在同一时间只有一个线程对需要同步的代码块（复合操作）进行访问。互斥性也称为操作的原子性。  </p>
+</li>
+<li><p>可见性：必须确保在锁被释放之前，对共享变量所做的修改，对于随后获得该锁的另一个线程是可见的（即在获得锁时应获得最新共享变量的值），否则另一个线程可能是在本地缓存的某个副本上继续操作，从而引起不一致</p>
+</li>
+</ul>
+<h3 id="怎么使用-synchronized-关键字？"><a href="#怎么使用-synchronized-关键字？" class="headerlink" title="怎么使用 synchronized 关键字？"></a>怎么使用 synchronized 关键字？</h3><p><strong>获取对象锁</strong></p>
+<ol>
+<li>同步代码块(synchronized(this)，synchronized(类实例对象))，锁是小括号()中的实例对象</li>
+<li>同步非静态方法(synchronized method)，锁的是当前对象的实例对象</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> *方法中有 synchronized(this|object) &#123;&#125; 同步代码块</span><br><span class="line"> */</span><br><span class="line">private void syncObjectBlock1() &#123;</span><br><span class="line">        System.out.println(Thread.currentThread().getName() + &quot;_SyncObjectBlock1: &quot; + new SimpleDateFormat(&quot;HH:mm:ss&quot;).format(new Date()));</span><br><span class="line">        synchronized (this) &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                System.out.println(Thread.currentThread().getName() + &quot;_SyncObjectBlock1_Start: &quot; + new SimpleDateFormat(&quot;HH:mm:ss&quot;).format(new Date()));</span><br><span class="line">                Thread.sleep(1000);</span><br><span class="line">                System.out.println(Thread.currentThread().getName() + &quot;_SyncObjectBlock1_End: &quot; + new SimpleDateFormat(&quot;HH:mm:ss&quot;).format(new Date()));</span><br><span class="line">            &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> *synchronized 修饰非静态方法</span><br><span class="line"> */</span><br><span class="line">private synchronized void syncObjectMethod1() &#123;</span><br><span class="line">        System.out.println(Thread.currentThread().getName() + &quot;_SyncObjectMethod1: &quot; + new SimpleDateFormat(&quot;HH:mm:ss&quot;).format(new Date()));</span><br><span class="line">        try &#123;</span><br><span class="line">            System.out.println(Thread.currentThread().getName() + &quot;_SyncObjectMethod1_Start: &quot; + new SimpleDateFormat(&quot;HH:mm:ss&quot;).format(new Date()));</span><br><span class="line">            Thread.sleep(1000);</span><br><span class="line">            System.out.println(Thread.currentThread().getName() + &quot;_SyncObjectMethod1_End: &quot; + new SimpleDateFormat(&quot;HH:mm:ss&quot;).format(new Date()));</span><br><span class="line">        &#125; catch (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>获取类锁的两种用法 ，给Class类上锁</strong></p>
+<ol>
+<li>同步代码块（synchronized（类.class），锁是小括号（）中的类对象（Class对象）</li>
+<li>同步静态方法（synchronized static method），锁是当前对象的类对象（Class对象）</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">private void syncClassBlock1() &#123;</span><br><span class="line">        System.out.println(Thread.currentThread().getName() + &quot;_SyncClassBlock1: &quot; + new SimpleDateFormat(&quot;HH:mm:ss&quot;).format(new Date()));</span><br><span class="line">        synchronized (SyncThread.class) &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                System.out.println(Thread.currentThread().getName() + &quot;_SyncClassBlock1_Start: &quot; + new SimpleDateFormat(&quot;HH:mm:ss&quot;).format(new Date()));</span><br><span class="line">                Thread.sleep(1000);</span><br><span class="line">                System.out.println(Thread.currentThread().getName() + &quot;_SyncClassBlock1_End: &quot; + new SimpleDateFormat(&quot;HH:mm:ss&quot;).format(new Date()));</span><br><span class="line">            &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">//同步静态方法</span><br><span class="line">private synchronized static void syncClassMethod1() &#123;</span><br><span class="line">        System.out.println(Thread.currentThread().getName() + &quot;_SyncClassMethod1: &quot; + new SimpleDateFormat(&quot;HH:mm:ss&quot;).format(new Date()));</span><br><span class="line">        try &#123;</span><br><span class="line">            System.out.println(Thread.currentThread().getName() + &quot;_SyncClassMethod1_Start: &quot; + new SimpleDateFormat(&quot;HH:mm:ss&quot;).format(new Date()));</span><br><span class="line">            Thread.sleep(1000);</span><br><span class="line">            System.out.println(Thread.currentThread().getName() + &quot;_SyncClassMethod1_End: &quot; + new SimpleDateFormat(&quot;HH:mm:ss&quot;).format(new Date()));</span><br><span class="line">        &#125; catch (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="类锁和对象锁的总结"><a href="#类锁和对象锁的总结" class="headerlink" title="类锁和对象锁的总结"></a>类锁和对象锁的总结</h3><ol>
+<li>有线程访问对象的同步代码块时，另外的线程可以访问该对象的非同步代码块；</li>
+<li>若锁住的是同一个对象，一个线程在访问对象的同步代码块时，另一个访问对象的同步代码块的线程会被阻塞；</li>
+<li>若锁住的是同一个对象，一个线程在访问对象的同步方法时，另一个访问对象同步方法的线程会被阻塞；</li>
+<li>若锁住的是同一个对象，一个线程在访问对象的同步代码块时，另一个访问对象同步方法的线程会被阻塞，反之亦然</li>
+<li>同一个类的不同对象的对象锁互不干扰</li>
+<li>类锁由于也是一种特殊的对象锁，因此表现和上述1，2，3，4一致，而由于一个类只有一把对象锁，所以同一个类的不同对象使用类锁将会是同步的</li>
+<li>类锁和对象锁互不干扰</li>
+</ol>
+<h2 id="synchronized底层实现原理"><a href="#synchronized底层实现原理" class="headerlink" title="synchronized底层实现原理"></a>synchronized底层实现原理</h2><hr>
+<p><strong>synchronized 关键字底层原理属于 JVM 层面。</strong>  </p>
+<p><strong>① synchronized 同步语句块的情况</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public class SynchronizedDemo &#123;</span><br><span class="line">	public void method() &#123;</span><br><span class="line">		synchronized (this) &#123;</span><br><span class="line">			System.out.println(&quot;synchronized 代码块&quot;);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过 JDK 自带的 javap 命令查看 SynchronizedDemo 类的相关字节码信息：首先切换到类的对应目录执行 javac SynchronizedDemo.java 命令生成编译后的 .class 文件，然后执行javap -verbose SynchronizedDemo.class。</p>
+<p><img src="/2019/11/06/Java多线程与并发-原理/synchronized%E6%96%B9%E6%B3%95%E5%9D%97.png" alt="synchronized方法块.png"></p>
+<p>从上面我们可以看出：</p>
+<p><strong>synchronized 同步语句块的实现使用的是 monitorenter 和 monitorexit 指令，其中 monitorenter 指令指向同步代码块的开始位置</strong>，monitorexit 指令则指明同步代码块的结束位置。 当执行 monitorenter 指令时，线程试图获取锁也就是获取 monitor(<strong>monitor对象存在于每个Java对象的对象头中，synchronized 锁便是通过这种方式获取锁的，也是为什么Java中任意对象可以作为锁的原因</strong>) 的持有权。当计数器为0则可以成功获取，获取后将锁计数器设为1也就是加1。相应的在执行 monitorexit 指令后，将锁计数器设为0，表明锁被释放。如果获取对象锁失败，那当前线程就要阻塞等待，直到锁被另外一个线程释放为止。</p>
+<p><strong>② synchronized 修饰方法的的情况</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public class SynchronizedDemo2 &#123;</span><br><span class="line">	public synchronized void method() &#123;</span><br><span class="line">		System.out.println(&quot;synchronized 方法&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2019/11/06/Java多线程与并发-原理/synchronized%E6%96%B9%E6%B3%95.png" alt="synchronized方法.png"></p>
+<p>synchronized 修饰的方法并没有 monitorenter 指令和 monitorexit 指令，取得代之的确实是 ACC_SYNCHRONIZED 标识，该标识指明了该方法是一个同步方法，JVM 通过该 ACC_SYNCHRONIZED 访问标志来辨别一个方法是否声明为同步方法，从而执行相应的同步调用。</p>
+<p><strong>Monitor：在java的设计中每一个对象天生自带一把看不见的锁</strong><br>它叫做内部锁，或者Monitor锁，Monitor也叫做管程或者监视器锁，可以把它理解为一个同步工具，也可以描述为一种同步机制。通常他被描述为一个对象。每个对象都存在着一个Monitor与之关联</p>
+<p><strong>ObjectMonitor源码</strong><br><img src="/2019/11/06/Java多线程与并发-原理/ObjectMonitor%E6%BA%90%E7%A0%81.jpg" alt></p>
+<p>Monitor是由ObjectMonitor实现的，位于jvm源码即ObjectMonitor.hpp文件里面，它是通过c++来实现的，EntryList(锁池)，waitSet（等待池）。他们就是用来保存Objectwaiter的对象列表，每个对象锁的线程都会被封装成Objectwaiter来保存到里面，owner是指向指向持有ObjectMonitor的线程，当多个线程同时访问同一段同步代码的时候，首先会进如到EntryList集合里面，当线程获取到对象的Monitor后进入_Owner区域并把monitor中的_owner变量设置为当前线程，同时monitor中的计数器_count加1。即获得对象锁。若持有monitor的线程调用wait()方法，将释放当前持有的monitor，_owner变量恢复为null，_count自减1，同时该线程进入_WaitSet集合中等待被唤醒。若当前线程执行完毕也将释放monitor(锁)并复位变量的值，以便其他线程进入获取monitor(锁)。<br>monitor对象存在于每个java对象的对象头中，monitor也是class,其实例会存储在堆中,MarkWord中保存的是它的指针</p>
+<p><a href="https://blog.csdn.net/uftjtt/article/details/80250182" target="_blank" rel="noopener">https://blog.csdn.net/uftjtt/article/details/80250182</a> 有类似的讲解  </p>
+<p>在上面的源码我们可以看到ObjectMonitor中有几个关键属性：</p>
+<ul>
+<li>_owner：指向持有ObjectMonitor对象的线程</li>
+<li>_WaitSet：存放处于wait状态的线程队列</li>
+<li>_EntryList：存放处于等待锁block状态的线程队列<br><img src="/2019/11/06/Java多线程与并发-原理/Monitor%E9%94%81%E7%9A%84%E7%AB%9E%E4%BA%89%E3%80%81%E8%8E%B7%E5%8F%96%E4%B8%8E%E9%87%8A%E6%94%BE.jpg" alt></li>
+</ul>
+<h2 id="JDK1-6-之后的synchronized-关键字底层做了哪些优化，可以详细介绍一下这些优化吗"><a href="#JDK1-6-之后的synchronized-关键字底层做了哪些优化，可以详细介绍一下这些优化吗" class="headerlink" title="JDK1.6 之后的synchronized 关键字底层做了哪些优化，可以详细介绍一下这些优化吗"></a>JDK1.6 之后的synchronized 关键字底层做了哪些优化，可以详细介绍一下这些优化吗</h2><hr>
+<p>JDK1.6 对锁的实现引入了大量的优化，如偏向锁、轻量级锁、自旋锁、适应性自旋锁、锁消除、锁粗化等技术来减少锁操作的开销。</p>
+<p>锁主要存在四中状态，依次是：无锁状态&gt;偏向锁状态&gt;轻量级锁状态&gt;重量级锁状态，他们会随着竞争的激烈而逐渐升级。注意锁可以升级不可降级，这种策略是为了提高获得锁和释放锁的效率。</p>
+<p><strong>①偏向锁</strong></p>
+<p><strong>引入偏向锁的目的和引入轻量级锁的目的很像，他们都是为了没有多线程竞争的前提下，减少传统的重量级锁使用操作系统互斥量产生的性能消耗。但是不同是：轻量级锁在无竞争的情况下使用 CAS 操作去代替使用互斥量。而偏向锁在无竞争的情况下会把整个同步都消除掉。</strong></p>
+<p>核心思想：如果一个线程获得了锁，那么锁就进入偏向模式，此时Mark Word的结构也变成了偏向锁结构，如果在接下来的执行中，该锁没有被其他线程获取，那么持有偏向锁的线程就不需要进行同步，即获取锁的过程只需要检查Mark Word的锁标记为偏向锁，以及当前线程Id等于Mark Word的ThreadID即可，这样就省去了大量有关锁申请的操作  </p>
+<p>但是对于锁竞争比较激烈的场合，偏向锁就失效了，因为这样场合极有可能每次申请锁的线程都是不相同的，因此这种场合下不应该使用偏向锁，否则会得不偿失，需要注意的是，偏向锁失败后，而是先升级为轻量级锁。</p>
+<p><strong>② 轻量级锁</strong><br>倘若偏向锁失败，虚拟机并不会立即升级为重量级锁，它还会尝试使用一种称为轻量级锁的优化手段 ;<strong>轻量级锁的加锁和解锁都用到了CAS操作。</strong><br>轻量级锁是由偏向锁升级来的，偏向锁运行在一个线程进入同步块的情况下，当第二个线程加入锁争用的时候，偏向锁会升级为轻量级锁<br>适应的场景：线程交替执行同步块<br><strong>如果锁竞争激烈，那么轻量级将很快膨胀为重量级锁！</strong></p>
+<p><img src="/2019/11/06/Java多线程与并发-原理/%E8%BD%BB%E9%87%8F%E7%BA%A7%E9%94%81%E5%8A%A0%E9%94%81%E8%BF%87%E7%A8%8B.jpg" alt></p>
+<p><img src="/2019/11/06/Java多线程与并发-原理/%E8%BD%BB%E9%87%8F%E7%BA%A7%E9%94%81%E5%8A%A0%E9%94%81%E8%BF%87%E7%A8%8B2.jpg" alt></p>
+<p><strong>③ 自旋锁与自适应自旋锁</strong></p>
+<p>轻量级锁失败后，虚拟机为了避免线程真实地在操作系统层面挂起，还会进<strong>自旋锁</strong>的优化手段。  </p>
+<p>一般线程持有锁的时间都不是太长，切换线程不值得,通过让线程执行忙循环等待锁的释放，不让出CPU,这项技术就叫做自旋。<br>缺点：若锁被其他线程长时间占用，会带来许多性能上的开销</p>
+<p>需要注意的是：自旋等待不能完全替代阻塞，因为它还是要占用处理器时间。如果锁被占用的时间短，那么效果当然就很好了！反之，相反！自旋等待的时间必须要有限度。如果自旋超过了限定次数任然没有获得锁，就应该挂起线程</p>
+<p>在 JDK1.6 中引入了<strong>自适应的自旋锁</strong>。自适应的自旋锁带来的改进就是：自旋的时间不在固定了，而是和前一次同一个锁上的自旋时间以及锁的拥有者的状态来决定，虚拟机变得越来越“聪明”了。 （如果在同一个锁对象上自旋等待刚刚成功获取过锁，并且持有锁的线程正在运行中，JVM会认位该锁自旋获取到锁的可能性很大，会自动增加等待时间，相反，如果对于某个锁 ，自旋很少成功获取到锁，那在以后要获取这个锁时，可能会省略掉自旋过程，以避免浪费处理器资源）</p>
+<p><strong>④ 锁消除</strong><br>如果检测到那些共享数据不可能存在竞争，那么就执行锁消除。锁消除可以节省毫无意义的请求锁的时间。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public void add(String str1, String str2) &#123;</span><br><span class="line">    //StringBuffer是线程安全,由于sb只会在append方法中使用,不可能被其他线程引用</span><br><span class="line">    //因此sb属于不可能共享的资源,JVM会自动消除内部的锁</span><br><span class="line">    StringBuffer sb = new StringBuffer();</span><br><span class="line">    sb.append(str1).append(str2);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>⑤ 锁粗化</strong></p>
+<p>如果一系列的连续操作都对同一个对象反复加锁和解锁，那么会带来很多不必要的性能消耗。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public static String copyString100Times(String target)&#123;</span><br><span class="line">    int i = 0;</span><br><span class="line">    StringBuffer sb = new StringBuffer();</span><br><span class="line">    while (i&lt;100)&#123;</span><br><span class="line">        sb.append(target);</span><br><span class="line">    &#125;</span><br><span class="line">    return sb.toString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>锁的内存语义</strong><br><img src="/2019/11/06/Java多线程与并发-原理/%E9%94%81%E7%9A%84%E5%86%85%E5%AD%98%E8%AF%AD%E4%B9%89.jpg" alt></p>
+<p><strong>偏向锁、轻量级锁、重量级锁的汇总</strong><br><img src="/2019/11/06/Java多线程与并发-原理/%E5%87%A0%E7%A7%8D%E9%94%81%E7%9A%84%E6%B1%87%E6%80%BB.jpg" alt></p>
+<hr>
+<h2 id="synchronized和ReentrantLock的对比"><a href="#synchronized和ReentrantLock的对比" class="headerlink" title="synchronized和ReentrantLock的对比"></a>synchronized和ReentrantLock的对比</h2><p> synchronized是关键字，ReentrantLock是类</p>
+<p><strong>① 两者都是可重入锁</strong></p>
+<blockquote>
+<p>重入:<br>从互斥的设计上来说，当一个线程试图操作一个由其他线程持有的对象锁临界资源时，将会处于阻塞状态，但当一个线程再次请求自己持有对象锁的临界资源时，这种情况属于重入</p>
+</blockquote>
+<p><strong>② synchronized 依赖于 JVM 而 ReenTrantLock 依赖于 API</strong> </p>
+<p>synchronized 是依赖于 JVM 实现的，前面我们也讲到了 虚拟机团队在 JDK1.6 为 synchronized 关键字进行了很多优化，但是这些优化都是在虚拟机层面实现的，并没有直接暴露给我们。ReenTrantLock 是 JDK 层面实现的（也就是 API 层面，需要 lock() 和 unlock 方法配合 try/finally 语句块来完成）</p>
+<p><strong>③ ReenTrantLock 比 synchronized 增加了一些高级功能</strong></p>
+<p>主要来说主要有三点：<strong>①等待可中断；②可实现公平锁；③可实现选择性通知（锁可以绑定多个条件）</strong></p>
+<ul>
+<li><p>ReenTrantLock提供了一种能够中断等待锁的线程的机制，通过lock.lockInterruptibly()来实现这个机制。也就是说正在等待的线程可以选择放弃等待，改为处理其他事情。</p>
+</li>
+<li><p>ReenTrantLock可以指定是公平锁还是非公平锁。而synchronized只能是非公平锁。所谓的公平锁就是先等待的线程先获得锁。 ReenTrantLock默认情况是非公平的，可以通过 ReenTrantLock类的ReentrantLock(boolean fair)构造方法来制定是否是公平的。</p>
+</li>
+<li><p>synchronized关键字与wait()和notify()/notifyAll()方法相结合可以实现等待/通知机制，ReentrantLock类当然也可以实现，但是需要借助于Condition接口与newCondition() 方法。Condition是JDK1.5之后才有的，它具有很好的灵活性，比如可以实现多路通知功能也就是在一个Lock对象中可以创建多个Condition实例（即对象监视器），<strong>线程对象可以注册在指定的Condition中，从而可以有选择性的进行线程通知，在调度线程上更加灵活。 在使用notify()/notifyAll()方法进行通知时，被通知的线程是由 JVM 选择的，用ReentrantLock类结合Condition实例可以实现“选择性通知”</strong>，这个功能非常重要，而且是Condition接口默认提供的。而synchronized关键字就相当于整个Lock对象中只有一个Condition实例，所有的线程都注册在它一个身上。如果执行notifyAll()方法的话就会通知所有处于等待状态的线程这样会造成很大的效率问题，而Condition实例的signalAll()方法 只会唤醒注册在该Condition实例中的所有等待线程。</p>
+</li>
+</ul>
+<p><strong>公平锁和非公平锁的代码实现</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">public class ReentrantLockDemo implements  Runnable&#123;</span><br><span class="line">    //参数为true时，倾向于将锁赋予等待时间最久的线程</span><br><span class="line">    private static ReentrantLock lock = new ReentrantLock(true);</span><br><span class="line">    @Override</span><br><span class="line">    public void run()&#123;</span><br><span class="line">        while (true)&#123;</span><br><span class="line">            try&#123;</span><br><span class="line">                lock.lock();</span><br><span class="line">                System.out.println(Thread.currentThread().getName() + &quot; get lock&quot;);</span><br><span class="line">                Thread.sleep(1000);</span><br><span class="line">            &#125; catch (Exception e)&#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125; finally &#123;</span><br><span class="line">                lock.unlock();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        ReentrantLockDemo rtld = new ReentrantLockDemo();</span><br><span class="line">        Thread thread1 = new Thread(rtld);</span><br><span class="line">        Thread thread2 = new Thread(rtld);</span><br><span class="line">        thread1.start();</span><br><span class="line">        thread2.start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>公平锁和非公平锁的性能差异，差别在哪里？</strong><br>ReentrantLock的内部类Sync继承了AQS，分为公平锁FairSync和非公平锁NonfairSync  </p>
+<ol>
+<li>非公平锁：线程获取锁的顺序和调用lock的顺序无关，全凭运气。    </li>
+<li>公平锁要维护一个队列，线程获取锁的顺序和调用lock的顺序一样 ，后来的线程要加锁，即使锁空闲也要先检查有没有其他线程在 wait，如果有自己要挂起，加到队列后面，然后唤醒队列最前面的线程。这种情况下相比较非公平锁多了一次挂起和唤醒  </li>
+<li>因此线程切换的开销，其实就是非公平锁效率高于公平锁的原因，因为非公平锁减少了线程挂起的几率，后来的线程有一定几率逃离被挂起的开销。  </li>
+</ol>
+<h2 id="volatile-关键字"><a href="#volatile-关键字" class="headerlink" title="volatile  关键字"></a>volatile  关键字</h2><hr>
+<h3 id="讲一下Java内存模型"><a href="#讲一下Java内存模型" class="headerlink" title="讲一下Java内存模型"></a>讲一下Java内存模型</h3><blockquote>
+<p>Java内存模型JMM  （Java Memory Model,简称JMM）是一种抽象的概念，并不真实存在，它描述的是一组规则或规范，通过这组规范定义了程序中各个变量（实例字段、静态字段、构成数组对象的元素）的访问方式</p>
+</blockquote>
+<p><img src="/2019/11/06/Java多线程与并发-原理/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8E%E5%B9%B6%E5%8F%91-%E5%8E%9F%E7%90%86%5CJava%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8BJMM.jpg" alt="Java内存模型JMM"></p>
+<ol>
+<li>由于JVM运行程序的实体是线程，而每个线程创建时JVM都会为其创建一个工作内存（有些地方称为栈空间），用于存储线程私有的数据，而Java内存模型中规定所有变量都存储在主内存中，主内存是共享内存区域所有线程都可以访问，但线程对变量的操作（读取、赋值等）必须在工作内存中进行。</li>
+<li>首先将变量从主内存copy到自己的工作内存空间当中，然后对变量进行操作，操作完成后，再将变量写回主内存，不能直接操作主内存中的变量；</li>
+<li>工作内存中存储着主内存中变量的副本拷贝，工作内存是每个线程的私有区域，因此不同的线程间无法访问对方的工作内存，线程间的通信传值必须通过主内存完成</li>
+</ol>
+<p><strong>JMM中的主内存</strong> </p>
+<ul>
+<li>存储Java实例对象</li>
+<li>包括成员变量、类变量、常量、静态变量等</li>
+<li>属于数据共享的区域，多线程并发操作时会引发线程安全问题</li>
+</ul>
+<p><strong>JMM中的工作内存</strong></p>
+<ul>
+<li>存储当前方法的所有本地变量信息，本地变量对其他线程不可见</li>
+<li>字节码行号指示器、Native方法信息</li>
+<li>属于线程私有数据区域，不存在线程安全问题</li>
+</ul>
+<p><strong>JMM与JVM内存区域划分是不同的层次概念</strong> </p>
+<ul>
+<li>JMM描述的是一组规则，围绕原子性，有序性，可见性展开</li>
+<li>相似点：存在共享区域和私有区域</li>
+</ul>
+<p><strong>主内存与工作内存的数据存储类型以及操作方式归纳</strong> </p>
+<ol>
+<li>方法里的基本数据类型本地变量将直接存储在工作内存的栈帧结构中</li>
+<li>引用类型的本地变量：引用存储在工作内存中，实例存储在主内存中</li>
+<li>成员变量，static变量、类信息均会被存储在主内存中</li>
+<li>主内存共享的方式是线程各拷贝一份数据到工作内存，操作完成后刷新到主内存中</li>
+</ol>
+<h3 id="JMM如何解决可见性问题"><a href="#JMM如何解决可见性问题" class="headerlink" title="JMM如何解决可见性问题"></a>JMM如何解决可见性问题</h3><p><strong>指令重排序需要满足的条件</strong></p>
+<ul>
+<li>在单线程环境下不能改变程序运行的结果</li>
+<li>存在数据依赖关系的不允许重排序</li>
+<li>无法通过happends-before原则推导出来的，才能进行指令的重排序  </li>
+</ul>
+<p><strong>A操作的结果需要对B操作可见，则A与B存在happends-before关系</strong><br>是判断数据是否存在竞争，线程是否安全的主要依据；依靠这个原则我们便能解决在并发环境下两个操作之间存在冲突的问题。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">i = 1；//线程A执行</span><br><span class="line">j = i; //线程B执行</span><br></pre></td></tr></table></figure>
+
+<p><strong>happends-before的八大原则</strong>  </p>
+<ol>
+<li>单线程happen-before原则：在同一个线程中，书写在前面的操作happen-before后面的操作。</li>
+<li>锁的happen-before原则：同一个锁的unlock操作happen-before此锁的lock操作。</li>
+<li>volatile的happen-before原则：对一个volatile变量的写操作happen-before对此变量的任意操作(当然也包括写操作了)。</li>
+<li>happen-before的传递性原则：如果A操作 happen-before B操作，B操作happen-before C操作，那么A操作happen-before C操作。</li>
+<li>线程启动的happen-before原则：同一个线程的start方法happen-before此线程的其它方法。</li>
+<li>线程中断的happen-before原则：对线程interrupt方法的调用happen-before被中断线程的检测到中断发送的代码。</li>
+<li>线程终结的happen-before原则：线程中的所有操作都happen-before线程的终止检测。</li>
+<li>对象创建的happen-before原则：一个对象的初始化完成先于他的finalize方法调用</li>
+</ol>
+<p><strong>happends-before的概念</strong></p>
+<ul>
+<li>如果两个操作不满足上述任意一个happends-before规则，那么这两个操作就没有顺序的保障，JVM可以对这两个操作进行重排序</li>
+<li>如果操作A happends-before操作B,那么操作A在内存上所做的操作对操作B都是可见的</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">private int value = 0</span><br><span class="line">public void write(int input)&#123;</span><br><span class="line">    value = input;</span><br><span class="line">&#125;</span><br><span class="line">public int read()&#123;</span><br><span class="line">    return value;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>假设线程A执行write方法，线程B执行read方法，此代码块块不满足happends-before的八大原则，所以这段代码不是线程安全的；解决办法：</p>
+<ul>
+<li>加入synchronized锁</li>
+<li>对value加入volatile修饰符即可</li>
+</ul>
+<h3 id="volatile-JVM提供的轻量级同步机制"><a href="#volatile-JVM提供的轻量级同步机制" class="headerlink" title="volatile:JVM提供的轻量级同步机制"></a>volatile:JVM提供的轻量级同步机制</h3><p>把变量声明为volatile，这就指示 JVM，这个变量是不稳定的，每次使用它都到主存中进行读取。</p>
+<p>说白了， volatile 关键字的主要作用就是<strong>保证变量的可见性</strong>然后还有一个作用是<strong>防止指令重排序</strong>。</p>
+<p><strong>volatile变量为何立即可见？</strong>  </p>
+<ul>
+<li>当写一个volatile变量时，JMM会把该线程对应的工作内存中的共享变量刷新到主内存中；  </li>
+<li>当读取一个volatile变量时，JMM会把该线程对应的工作内存置为无效</li>
+</ul>
+<p><strong>volatile如何禁止重排优化</strong>  </p>
+<ul>
+<li>通过插入内存屏障指令在内存屏障指令执行重排序优化</li>
+<li>强制刷出各种cpu的缓存数据，因此任何cpu上的线程都能读取到这些数据的最新版本</li>
+</ul>
+<blockquote>
+<p>内存屏障（Memory Barrier）<br>1：保证特定操作的执行顺序<br>2：保证某些变量的内存可见性</p>
+</blockquote>
+<p><strong>volatile的可见性</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public class VolatileViasibility&#123;</span><br><span class="line">    public static volatile int value =0;</span><br><span class="line"></span><br><span class="line">    public static void increase()&#123;</span><br><span class="line">        value++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>此段代码中 value变量的任何变化都会反映到线程中，如果多个线程同时调用increase()会出现线程安全问题，因为value++操作不具备原子性（先读再写两步操作）</li>
+<li>解决办法：incarease()使用synchronized修饰保证线程安全，synchronized解决的是执行控制的问题，阻止其他线程获取当前对象的监控锁，当前被synchronized修饰的代码块无法被其他线程访问  </li>
+</ul>
+<p>代码修改后：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public class VolatileViasibility&#123;</span><br><span class="line">    public static  int value =0;</span><br><span class="line"></span><br><span class="line">    public synchronized static void increase()&#123;</span><br><span class="line">        value++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>synchronized 会创建一个内存屏障，保证所有cpu结果都会刷到主存中，从而保证操作的内存可见性。</p>
+<p><em>另外一种使volatile达到线程安全的场景</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">//对shutdown值的修改属于原子性操作</span><br><span class="line">public class VolatileSage(</span><br><span class="line">    volatile boolean shutdown;</span><br><span class="line">    </span><br><span class="line">    public void close()&#123;</span><br><span class="line">        shutdown=true;</span><br><span class="line">    &#125;</span><br><span class="line">    public void doWork()&#123;</span><br><span class="line">        while(!shutdown)&#123;</span><br><span class="line">            System.out.println(&quot;sage...&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="单例的双重检测实现（线程安全）"><a href="#单例的双重检测实现（线程安全）" class="headerlink" title="单例的双重检测实现（线程安全）"></a>单例的双重检测实现（线程安全）</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">public class Singleton&#123;</span><br><span class="line">    //禁止指令重排优化</span><br><span class="line">    private volatile static Singleton instance;</span><br><span class="line"></span><br><span class="line">    private Singleton()&#123;&#125;</span><br><span class="line"></span><br><span class="line">    public static Singleton getIntance()&#123;</span><br><span class="line">        //先判断对象是否已经实例过，没有实例化过才进入加锁代码</span><br><span class="line">        if(instance==null)&#123;</span><br><span class="line">            //类对象加锁</span><br><span class="line">            synchronized(Singleton.class)&#123;</span><br><span class="line">                if (instance == null)&#123;</span><br><span class="line">                    //多线程环境下可能会出现问题的地方</span><br><span class="line">                    instance = new Singleton();</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>需要注意 instance 采用 volatile 关键字修饰也是很有必要。</p>
+<p>instance 采用 volatile 关键字修饰也是很有必要的， instance = new Singleton(); 这段代码其实是分为三步执行：</p>
+<ol>
+<li>为instance分配内存空间</li>
+<li>初始化对象</li>
+<li>设置instance指向刚分配的内存地址，此时instance!=null</li>
+</ol>
+<p>但是由于 JVM 具有指令重排的特性，执行顺序有可能变成 1-&gt;3-&gt;2。指令重排在单线程环境下不会出现问题，但是在多线程环境下会导致一个线程获得还没有初始化的实例。例如，线程 T1 执行了 1 和 3，此时 T2 调用 getIntance() 后发现 为instance分配内存空间 不为空，因此返回 为instance分配内存空间，但此时 为instance分配内存空间 还未被初始化</p>
+<h3 id="volatile和synchronized的区别"><a href="#volatile和synchronized的区别" class="headerlink" title="volatile和synchronized的区别"></a>volatile和synchronized的区别</h3><ul>
+<li><strong>volatile关键字</strong>是线程同步的<strong>轻量级实现</strong>，所以volatile<strong>性能肯定比synchronized关键字要好</strong>。但是<strong>volatile关键字只能用于变量而synchronized关键字可以修饰方法以及代码块</strong>。synchronized关键字在JavaSE1.6之后进行了主要包括为了减少获得锁和释放锁带来的性能消耗而引入的偏向锁和轻量级锁以及其它各种优化之后执行效率有了显著提升，<strong>实际开发中使用 synchronized 关键字的场景还是更多一些。</strong></li>
+<li><strong>volatile不会造成线程的阻塞；synchronized可能会造成线程的阻塞</strong></li>
+<li><strong>volatile关键字能保证数据的可见性，但不能保证数据的原子性。synchronized关键字两者都能保证。</strong></li>
+<li><strong>volatile关键字主要用于解决变量在多个线程之间的可见性，而 synchronized关键字解决的是多个线程之间访问资源的同步性。</strong></li>
+<li>volatile标记的变量不会被编译器优化；synchronnized标记的变量可以被编译器优化</li>
+</ul>
+<h2 id="Java线程池"><a href="#Java线程池" class="headerlink" title="Java线程池"></a>Java线程池</h2><hr>
+<p>前言：在web开发中，服务器需要接受并处理请求，所以会为一个请求来分配一个线程进行处理，如果并发的请求数量非常多，但每个线程执行的时间很短，这样就会频繁的创建和销毁线程，如此一来会大大降低系统的效率，可能出现服务器在为每个请求创建新线程和销毁线程上花费的时间和消耗的系统资源要比处理实际的用户请求的时间和资源更多。</p>
+<h3 id="为什么要用线程池-gt"><a href="#为什么要用线程池-gt" class="headerlink" title="为什么要用线程池&gt;"></a>为什么要用线程池&gt;</h3><p>《Java并发编程的艺术》提到使用线程池的好处：</p>
+<ul>
+<li><strong>降低资源消耗。</strong> 通过重复利用已创建的线程降低线程创建和销毁造成的消耗。</li>
+<li><strong>提高响应速度。</strong> 当任务到达时，任务可以不需要的等到线程创建就能立即执行。</li>
+<li><strong>提高线程的可管理性。</strong> 线程是稀缺资源，如果无限制的创建，不仅会消耗系统资源，还会降低系统的稳定性，使用线程池可以进行统一的分配，调优和监控。</li>
+</ul>
+<h3 id="实现Runnable接口和Callable接口的区别"><a href="#实现Runnable接口和Callable接口的区别" class="headerlink" title="实现Runnable接口和Callable接口的区别"></a>实现Runnable接口和Callable接口的区别</h3><p>如果想让线程池执行任务的话需要实现的Runnable接口或Callable接口。 Runnable接口或Callable接口实现类都可以被ThreadPoolExecutor或ScheduledThreadPoolExecutor执行。两者的区别在于 Runnable 接口不会返回结果但是 Callable 接口可以返回结果。</p>
+<h3 id="执行execute-方法和submit-方法的区别是什么呢？"><a href="#执行execute-方法和submit-方法的区别是什么呢？" class="headerlink" title="执行execute()方法和submit()方法的区别是什么呢？"></a>执行execute()方法和submit()方法的区别是什么呢？</h3><ol>
+<li><p><strong>execute() 方法用于提交不需要返回值的任务，所以无法判断任务是否被线程池执行成功与否；</strong></p>
+</li>
+<li><p><strong>submit() 方法用于提交需要返回值的任务。线程池会返回一个Future类型的对象，通过这个Future对象可以判断任务是否执行成功，</strong>并且可以通过future的get()方法来获取返回值，get()方法会阻塞当前线程直到任务完成</p>
+</li>
+</ol>
+<h3 id="如何创建线程池"><a href="#如何创建线程池" class="headerlink" title="如何创建线程池"></a>如何创建线程池</h3><p>《阿里巴巴Java开发手册》中强制线程池不允许使用 Executors 去创建，而是通过 ThreadPoolExecutor 的方式，这样的处理方式让写的同学更加明确线程池的运行规则，规避资源耗尽的风险</p>
+<blockquote>
+<p>Executors 返回线程池对象的弊端如下：</p>
+<ul>
+<li>FixedThreadPool 和 SingleThreadExecutor ： 允许请求的队列长度为 Integer.MAX_VALUE ，可能堆积大量的请求，从而导致OOM。</li>
+<li>CachedThreadPool 和 ScheduledThreadPool ： 允许创建的线程数量为 Integer.MAX_VALUE ，可能会创建大量线程，从而导致OOM。</li>
+</ul>
+</blockquote>
+<p><strong>方式一：通过构造方法实现</strong></p>
+<p><img src="/2019/11/06/Java多线程与并发-原理/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8E%E5%B9%B6%E5%8F%91-%E5%8E%9F%E7%90%86%5CThreadPoolExecutor.jpg" alt> </p>
+<p><strong>线程池的工作原理：</strong></p>
+<p><img src="/2019/11/06/Java多线程与并发-原理/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8E%E5%B9%B6%E5%8F%91-%E5%8E%9F%E7%90%86%5CThreadPoolExecutor%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86.jpg" alt></p>
+<ol>
+<li>线程池会有一个工作队列WorkQueue接客，存储用户提交的各个任务</li>
+<li>队列接到任务后就会排队交给线程池 即工作线程的集合WorkerThread，该集合需要在运行的过程中管理线程的创建和销毁。线程池的线程被抽象为Worker静态内部类，ThreadPool其实维护的就是一组Worker对象。</li>
+<li>ThreadPoolExecutor的构造函数：<ul>
+<li>corePoolSize:核心线程数量；</li>
+<li>maximumPoolSize:线程不够用的时候能够创建最大线程数</li>
+<li>workQueue:任务等待队列：当任务提交时如果线程池中的线程数量&gt;=corePoolSize的时候，把该任务封装成一个worker对象放入到等待队列中；</li>
+<li>keepAliveTime:线程池允许线程维护的空闲时间；</li>
+<li>threadFactory:创建新线程，默认使用的是Executors.defaultThreadFactory()</li>
+<li>handler:线程池的饱和策略：<br>  AborPolicy:直接抛出异常，这是默认策略；<br>  CallerRUnsPolicy:用调用者所在的线程来执行任务；<br>  DiscardOldersPolicy:丢弃队列中靠最前的任务，并执行当前任务；<br>  DiscardPolicy:直接丢弃任务；<br>  实现RejectedExecutionHander接口的自定义hander</li>
+</ul>
+</li>
+</ol>
+<p><strong>新任务提交execute执行后的判断</strong></p>
+<ul>
+<li>如果运行的线程少于 corePoolSize,则创建新线程来处理任务，即使线程池中的其他线程是空闲的；</li>
+<li>如果线程池中的线程数量大于等于 corePoolSize切小于maximumPoolSize,则只有当workQueue满时才创建新的线程去处理任务；</li>
+<li>如果设置的corePoolSize 和 maximumPoolSize相同，则创建线程池的大小是固定的，这使如果有新任务提交，若workQueue未满，则将请求放入workQueue中，等待有空闲的线程去从workQueue中取任务并处理;</li>
+<li>如果运行的线程数量大于等于maximumPoolSize，这时如果workQueue已经满了，则通过handler所指定的策略来处理任务；</li>
+</ul>
+<p><strong>方式一：通过Executors创建不同的线程池满足不同场景的需求</strong></p>
+<p>位于JUC包下Executors.java</p>
+<ol>
+<li><p>newFixedThreadPool(int nThreads):该方法返回一个固定线程数量的线程池。该线程池中的线程数量始终不变。当有一个新的任务提交时，线程池中若有空闲线程，则立即执行。若没有，则新的任务会被暂存在一个任务队列中，待有线程空闲时，便处理在任务队列中的任务。</p>
+</li>
+<li><p>newSingleThreadExecutor()：方法返回一个只有一个线程的线程池。若多余一个任务被提交到该线程池，任务会被保存在一个任务队列中，待线程空闲，按先入先出的顺序执行队列中的任务。</p>
+</li>
+<li><p>newCachedThreadPool()处理大量短时间工作任务的线程池</p>
+<ul>
+<li>试图缓存线程并重用，当无缓存线程可用时，就会创建新的工作线程</li>
+<li>如果线程闲置的时候超过阈值，则会被终止并移出缓存</li>
+<li>系统长时间闲置的时候，不会消耗什么资源</li>
+</ul>
+</li>
+<li><p>newSingleThreadScheduledExecutor() 与 newScheduledThreadPool(int corePoolSize)<br>定时或周期性的工作调度，两者区别在于单一工作线程还是多个线程</p>
+</li>
+<li><p>newWorkStealingPool()<br>内部会构建ForkJoinPool,利用working-stealing算法，并行地处理任务，不保证处理顺序</p>
+<ul>
+<li>Fork/Join框架：把大任务分割成若干小任务并行执行，最终汇总每个小任务结果后得到大任务结果的框架</li>
+<li>Work-Stealing算法：某个线程从其他队列里窃取任务来执行</li>
+</ul>
+</li>
+</ol>
+<p><img src="/2019/11/06/Java多线程与并发-原理/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8E%E5%B9%B6%E5%8F%91-%E5%8E%9F%E7%90%86%5CExecutors%E6%96%B9%E6%B3%95.jpg" alt> </p>
+<p><strong>线程池的状态</strong></p>
+<ul>
+<li>RUNNING:能接受新提交的任务，并且也能处理阻塞队列中的任务</li>
+<li>SHUTDOWN:不再接受新提交的任务，但可以处理存量任务</li>
+<li>STOP:不再接受新提交的任务，也不处理存量任务</li>
+<li>TIDYING:所有的任务都已经终止</li>
+<li>TERMINATED:terminated()方法执行完后进入该状态</li>
+</ul>
+<p><strong>状态转换图</strong></p>
+<p><img src="/2019/11/06/Java多线程与并发-原理/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8E%E5%B9%B6%E5%8F%91-%E5%8E%9F%E7%90%86%5C%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E7%8A%B6%E6%80%81%E8%BD%AC%E6%8D%A2%E5%9B%BE.jpg" alt="线程池的状态转换图"></p>
+<ol>
+<li>shutdown 会关闭提交任务到队列 但是队列中的任务还是会执行完</li>
+<li>shutsownnow 会关闭提交任务到队列 且 不会执行队列中的任务 并且正在执行任务的线程也会被interrupt</li>
+</ol>
+<p><strong>工作线程的生命周期</strong></p>
+<p><img src="/2019/11/06/Java多线程与并发-原理/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8E%E5%B9%B6%E5%8F%91-%E5%8E%9F%E7%90%86%5C%E5%B7%A5%E4%BD%9C%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.jpg" alt="工作线程的生命周期"></p>
+<p><strong>线程池的大小如何选定</strong></p>
+<ul>
+<li>CPU密集型：线程数=按照核数或者核数+1设定</li>
+<li>I/0密集型：线程数=CPU核数*(1+平均等待时间/平均工作时间)</li>
+</ul>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/Java多线程与并发/">Java多线程与并发</a>
+
+      
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-Java框架-Spring"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/11/05/Java框架-Spring/">Java框架-Spring</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/11/05/Java框架-Spring/" class="article-date">
+	  <time datetime="2019-11-05T14:46:40.000Z" itemprop="datePublished">November 5, 2019</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/Spring/">Spring</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>此篇文章帮助自己 从Spring 的源码角度了解Spring的原理</p>
+<hr>
+<h2 id="IOC原理"><a href="#IOC原理" class="headerlink" title="IOC原理"></a>IOC原理</h2><p>IOC（Inversion of Control）：控制反转；Spring Core最核心部分；<br>IOC是一种思想。</p>
+<h3 id="实现手段：依赖注入（Dependency-Injection）"><a href="#实现手段：依赖注入（Dependency-Injection）" class="headerlink" title="实现手段：依赖注入（Dependency Injection）"></a>实现手段：依赖注入（Dependency Injection）</h3><p>把底层类作为参数传递给上层类，实现上层对下层的“控制”</p>
+<p><img src="/2019/11/05/Java框架-Spring/%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5.jpg" alt></p>
+<h4 id="依赖注入的方式"><a href="#依赖注入的方式" class="headerlink" title="依赖注入的方式"></a>依赖注入的方式</h4><ul>
+<li>Setter Setter注入</li>
+<li>Interface 接口注入</li>
+<li>Constructor 构造器注入</li>
+<li>Annotation 注解注入</li>
+</ul>
+<h4 id="依赖倒置原则、IOC、DI、IOC容器的关系"><a href="#依赖倒置原则、IOC、DI、IOC容器的关系" class="headerlink" title="依赖倒置原则、IOC、DI、IOC容器的关系"></a>依赖倒置原则、IOC、DI、IOC容器的关系</h4><p><img src="/2019/11/05/Java框架-Spring/%E4%BE%9D%E8%B5%96%E5%80%92%E7%BD%AE%E5%8E%9F%E5%88%99%E3%80%81IOC%E3%80%81DI%E3%80%81IOC%E5%AE%B9%E5%99%A8%E7%9A%84%E5%85%B3%E7%B3%BB.jpg" alt></p>
+<ol>
+<li>依赖倒置原则是一种思想，高层模块不应该依赖底层模块；  </li>
+<li>有了依赖倒置原则才有了IOC的思路；  </li>
+<li>实现IOC的思路又需要依赖注入的支撑；  </li>
+<li>Spring的框架基于IOC提出了容器的概念，对于IOC来说最重要的就是容器了，容器管理着bean的生命周期，控制着bean的依赖注入。</li>
+</ol>
+<h3 id="IOC容器的优势"><a href="#IOC容器的优势" class="headerlink" title="IOC容器的优势"></a>IOC容器的优势</h3><ul>
+<li>避免在各处使用new来创建类，并且可以做到统一维护</li>
+<li>创建实例的时候不需要了解其中的细节<br>当使用的时候，IOC容器在内部已经完成对象，调用者只需要调用即可！<br>如图蓝色部分全部是由IOC容器完成！</li>
+</ul>
+<p><img src="/2019/11/05/Java框架-Spring/ioc%E5%AE%B9%E5%99%A8%E7%9A%84%E4%BC%98%E5%8A%BF.jpg" alt></p>
+<p>因为采用了依赖注入在初始化的过程中就不可避免的写大量的new,这里IOC容器就解决了这个问题，这个容器可以自动对代码初始化，你需要维护一个configuration,可以是xml或者可以是一段代码，而不用每次初始化一个行李箱，写一大堆的初始化代码  </p>
+<p>IOC容器可以隐藏具体创建实例的细节，上图中蓝色部分就像一个工厂，我们只需要向工厂请求一个Luggage实例，然后它就会按照config创建一个Luggage实例，我们不用管Luggage实例是怎么一步一步创建的；实例项目中有些Service是很多年以前写的，有几百个类作为它的底层，假设我们新写了一个API需要实例化这个service,总不可能回头去搞清楚这几百个类的构造函数吧；IOC Container就很完美的解决了这类问题；因为这个架构在要求你写class的时候需要编写响应的config文件，所以你要初始化很久以前的service的时候呢前人都已经写好了config文件了，你直接在用的地方注入这个service就可以了，这大大增加了项目的可维护性降低开发难度</p>
+<h2 id="IOC的应用"><a href="#IOC的应用" class="headerlink" title="IOC的应用"></a>IOC的应用</h2><h3 id="Bean生成的简要步骤"><a href="#Bean生成的简要步骤" class="headerlink" title="Bean生成的简要步骤"></a>Bean生成的简要步骤</h3><ol>
+<li>Spring启动时读取应用程序提供的Bean配置信息，并在Spring容器中生成一份相应的Bean注册表。</li>
+<li>根据生成的Bean注册表通过反射机制实例化Bean，并装配好Bean之间的依赖关系，为上层提供准备就绪的运行环境。Spring提供一个配置文件描述bean和bean之间的依赖关系，利用Java语言的反射功能实例化bean,并建立bean之间的依赖关系</li>
+<li>将生成的Bean实例对象放入Spring容器中。</li>
+</ol>
+<p><img src="/2019/11/05/Java框架-Spring/IOC%E7%9A%84%E5%AE%9E%E9%99%85%E5%BA%94%E7%94%A8.jpg" alt></p>
+<h3 id="Spring-IOC支持的功能："><a href="#Spring-IOC支持的功能：" class="headerlink" title="Spring IOC支持的功能："></a>Spring IOC支持的功能：</h3><ol>
+<li>依赖注入</li>
+<li>依赖检查</li>
+<li>自动装配</li>
+<li>支持集合</li>
+<li>指定初始化方法和销毁方法</li>
+<li>支持回调方法</li>
+</ol>
+<h3 id="Spring-IOC容器的核心接口"><a href="#Spring-IOC容器的核心接口" class="headerlink" title="Spring IOC容器的核心接口"></a>Spring IOC容器的核心接口</h3><p><strong>BeanDefinition</strong>  </p>
+<p>  主要是用来描述Bean的定义，Spring容器在启动的时候会将xml或者注解里的bean的定义解析成内部的BeanDefinition</p>
+<p><strong>BeanDefinitionRegistry</strong>  </p>
+<p>  提供向IOC容器注册BeanDefinition对象的方法 ；</p>
+<p>  BeanDefinitionRegistry接口提供了 registerBeanDefinition 用来将我们的BeanDefinition注册到BeanFactory 接口的实现类 DefaultListableBeanFactory中的 beanDefinitionMap里，Spring将bean的定义解析成BeanDefinition之后会通过BeanDefinitionRegistry 以BeanName 为key,BeanDefinition为value存储到beanDefinitionMap里，同时还将BeanName存入到beanDefinitionNames里以便后续Bean的实例化</p>
+<p>相关源码：<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public interface BeanDefinitionRegistry extends AliasRegistry &#123;</span><br><span class="line">  void registerBeanDefinition(String var1, BeanDefinition var2) throws BeanDefinitionStoreException;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFactory implements ConfigurableListableBeanFactory, BeanDefinitionRegistry, Serializable &#123;</span><br><span class="line">    private final Map&lt;String, BeanDefinition&gt; beanDefinitionMap = new ConcurrentHashMap(256);</span><br><span class="line">    private volatile List&lt;String&gt; beanDefinitionNames = new ArrayList(256);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>BeanFactory：Spring框架最核心的接口</strong>  </p>
+<ul>
+<li>提供IOC的配置机制</li>
+<li>包含Bean的各种定义，便于实例化Bean</li>
+<li>建立Bean之间的依赖关系</li>
+<li>Bean生命周期的控制</li>
+</ul>
+<p><strong>ApplicationContext（继承多个接口）</strong>  </p>
+<ul>
+<li>继承BeanFactory:能够管理、装配Bean</li>
+<li>继承ResourcePatternResolver:能够加载资源文件</li>
+<li>继承MessageSource:能够实现国际化功能</li>
+<li>继承ApplicationEventPublisher:能够注册监听器，实现监听机制</li>
+</ul>
+<h4 id="BeanFactory和ApplicationContext有什么区别？"><a href="#BeanFactory和ApplicationContext有什么区别？" class="headerlink" title="BeanFactory和ApplicationContext有什么区别？"></a>BeanFactory和ApplicationContext有什么区别？</h4><p>BeanFactory是Spring框架的基础设施，面向Spring,ApplicationContext面向使用Spring框架的开发者<br>BeanFactory采用了工厂设计模式，负责读取bean配置文档，管理bean的加载，实例化，维护bean之间的依赖关系，负责bean的声明周期。而ApplicationContext除了提供上述BeanFactory所能提供的功能之外，还提供了更完整的框架功能：国际化支持、aop、事务等。<br>同时BeanFactory在解析配置文件时并不会初始化对象,只有在使用对象getBean()才会对该对象进行初始化，而ApplicationContext在解析配置文件时对配置文件中的所有对象都初始化了,getBean()方法只是获取对象的过程。<br>因此我们一般在使用的时候尽量使用ApplicationContext。</p>
+<h3 id="Spring中几个重要方法"><a href="#Spring中几个重要方法" class="headerlink" title="Spring中几个重要方法"></a>Spring中几个重要方法</h3><h4 id="refresh-方法"><a href="#refresh-方法" class="headerlink" title="refresh 方法"></a>refresh 方法</h4><p>Spring容器在创建好了之后会调用refresh()方法<br>SpringApplication.class 中 refresh的源码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">protected void refresh(ApplicationContext applicationContext) &#123;</span><br><span class="line">    Assert.isInstanceOf(AbstractApplicationContext.class, applicationContext);</span><br><span class="line">    ((AbstractApplicationContext)applicationContext).refresh();</span><br><span class="line">｝</span><br></pre></td></tr></table></figure>
+
+<p>AbstractApplicationContext.class  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">public void refresh() throws BeansException, IllegalStateException &#123;</span><br><span class="line">        Object var1 = this.startupShutdownMonitor;</span><br><span class="line">        synchronized(this.startupShutdownMonitor) &#123;</span><br><span class="line">            //设置Spring容器的启动时间，开启活跃状态，初始化属性与信息，验证环境信息里面必须存在的属性</span><br><span class="line">            this.prepareRefresh();</span><br><span class="line">            //获取beanFactory</span><br><span class="line">            ConfigurableListableBeanFactory beanFactory = this.obtainFreshBeanFactory();</span><br><span class="line">            //设置beanFactory</span><br><span class="line">            this.prepareBeanFactory(beanFactory);</span><br><span class="line"></span><br><span class="line">            try &#123;</span><br><span class="line">                this.postProcessBeanFactory(beanFactory);</span><br><span class="line">                // 处理bean标签扫描bean文件，解析成一个个的bean</span><br><span class="line">                this.invokeBeanFactoryPostProcessors(beanFactory);</span><br><span class="line">                //bean的后置处理器</span><br><span class="line">                this.registerBeanPostProcessors(beanFactory);</span><br><span class="line">                //初始化一些国际化相关的属性</span><br><span class="line">                this.initMessageSource();</span><br><span class="line">                //初始化事件的广播器，用于事件发布</span><br><span class="line">                this.initApplicationEventMulticaster();</span><br><span class="line">                //模板方法，方法体为空，不同的Spring容器去重写</span><br><span class="line">                this.onRefresh();</span><br><span class="line">                //注册监听器</span><br><span class="line">                this.registerListeners();</span><br><span class="line">                //实例化BeanFactory中已经被注册未被实例化的所有实例</span><br><span class="line">                this.finishBeanFactoryInitialization(beanFactory);</span><br><span class="line">                //初始化生命周期管理器</span><br><span class="line">                this.finishRefresh();</span><br><span class="line">            &#125; catch (BeansException var9) &#123;</span><br><span class="line">                if (this.logger.isWarnEnabled()) &#123;</span><br><span class="line">                    this.logger.warn(&quot;Exception encountered during context initialization - cancelling refresh attempt: &quot; + var9);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                this.destroyBeans();</span><br><span class="line">                this.cancelRefresh(var9);</span><br><span class="line">                throw var9;</span><br><span class="line">            &#125; finally &#123;</span><br><span class="line">                this.resetCommonCaches();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>为IOC容器以及Bean的生命周期管理提供条件</li>
+<li>刷新Spring上下文信息，定义Spring上下文加载流程</li>
+</ol>
+<h4 id="getBean-方法"><a href="#getBean-方法" class="headerlink" title="getBean 方法"></a>getBean 方法</h4><p>通过AbstractBeanFactoryFactory.class 实现可以按类型获取bean的，也有按名称获取bean的<br><strong>getBean方法的代码逻辑</strong></p>
+<ul>
+<li>转换beanName</li>
+<li>从工厂或者缓存中加载实例</li>
+<li>实例化Bean</li>
+<li>检测parentBeanFactory</li>
+<li>检查初始化Bean的相关的依赖</li>
+<li>创建Bean</li>
+</ul>
+<h3 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h3><p><strong>1.Spring的五个作用域</strong></p>
+<ul>
+<li>singleton:Spring的默认作用域，容器里拥有唯一的Bean实例</li>
+<li>prototype:针对每个getBean请求，容器都会创建一个Bean实例</li>
+<li>request:为每个Httpp请求创建一个Bean实例</li>
+<li>session：会为每个session创建一个Bean实例</li>
+<li>globlaSession:会为每个全局Http Session创建一个Bean实例，该作用域仅对Portlet有效</li>
+</ul>
+<p><strong>2.SpringBean的生命周期</strong></p>
+<p>创建过程<br><img src="/2019/11/05/Java框架-Spring/%E5%88%9B%E5%BB%BABean%E7%9A%84%E8%BF%87%E7%A8%8B.jpg" alt></p>
+<p>销毁过程</p>
+<ul>
+<li>若实现了DisposableBean接口，则会调用destroy方法</li>
+<li>若配置了destry-method属性，则会调用其配置的销毁方法</li>
+</ul>
+<h3 id="bean如何装载到IOC容器中和依赖注入的用法"><a href="#bean如何装载到IOC容器中和依赖注入的用法" class="headerlink" title="bean如何装载到IOC容器中和依赖注入的用法"></a>bean如何装载到IOC容器中和依赖注入的用法</h3><p>第一种方式： 手动装配bean,简单粗暴，但是如果bean多的话是一件非常痛苦的事情  </p>
+<ol>
+<li><p>创建一个class Person</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public class person&#123;</span><br><span class="line">    private Long id;</span><br><span class="line">    private String name;</span><br><span class="line">    //get,set省略</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>定义一个Java的配置文件 ApplicationConfig,主要作用是高速IOC容器如何装配这个bean</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@Configuretion</span><br><span class="line">public class ApplicationConfig&#123;</span><br><span class="line">    @Bean(name=&quot;person&quot;)</span><br><span class="line">    public Person initPerson()&#123;</span><br><span class="line">        Person user = new Person();</span><br><span class="line">        user.setId(1L);</span><br><span class="line">        user.setName(&quot;jack&quot;);</span><br><span class="line">        return user;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>通过ApplicationContext来获取bean实例<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ApplicationContext ctx = SpringApplication.run(ProductApplication.class, args);</span><br><span class="line">Person person = ctx.getBean(&quot;Peroson.class&quot;);//通过类型来获取</span><br><span class="line">System.out.println(&quot;Name is &quot;+person.getName);</span><br><span class="line">person.call();</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>第二种方式： 以SpringBoot方式扫描装配Bean到IOC容器中  </p>
+<ol>
+<li><p>对Person进行改动 加入@Component 注解，表明哪个类要被扫描进入到SpringIOC容器中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@Component(&quot;Person&quot;)</span><br><span class="line">public class person&#123;</span><br><span class="line">    @Value(&quot;1&quot;)</span><br><span class="line">    private Long id;</span><br><span class="line">    @Value(&quot;Jack&quot;)</span><br><span class="line">    private String name;</span><br><span class="line">    //get,set省略</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>实现依赖注入 新建 Pet.class</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public inteface Pet&#123;</span><br><span class="line">    void move();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>创建Pet实现类  Dog  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@Component</span><br><span class="line">public class Dog implements Pet&#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void move()&#123;</span><br><span class="line">        System.out.println(&quot;running&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><p>Person中注入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">@Component(&quot;Person&quot;)</span><br><span class="line">public class person&#123;</span><br><span class="line">    @Value(&quot;1&quot;)</span><br><span class="line">    private Long id;</span><br><span class="line">    @Value(&quot;Jack&quot;)</span><br><span class="line">    private String name;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    private Pet pet;</span><br><span class="line">    public void call()&#123;</span><br><span class="line">        pet.move();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如果新增一个再增加一个Pet的实现类 Bird ,person.call()调用会报错，不知道该调用哪个实现方法，可以加@Primary 或 @Qualifier 告诉Spring该选择谁</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@Component</span><br><span class="line">@Primary</span><br><span class="line">public class Bird implements Pet&#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void move()&#123;</span><br><span class="line">        System.out.println(&quot;flying&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>再次调用person.call() 就会正常输出 flying</li>
+</ol>
+<h2 id="Spring-AOP"><a href="#Spring-AOP" class="headerlink" title="Spring AOP"></a>Spring AOP</h2><h3 id="关注点分离：不同的问题交给不同的部分去解决"><a href="#关注点分离：不同的问题交给不同的部分去解决" class="headerlink" title="关注点分离：不同的问题交给不同的部分去解决"></a>关注点分离：不同的问题交给不同的部分去解决</h3><ul>
+<li>面向切面变成AOP正是此种技术的体现</li>
+<li>通用代码的实现，对应的就是所谓的切面（Aspect）</li>
+<li>业务功能代码和切面代码分开后，架构将变得高内聚低耦合</li>
+<li>确保功能的完整性：切面最终需要被合并到业务中（Weave）</li>
+</ul>
+<h3 id="AOP的三种织入方式"><a href="#AOP的三种织入方式" class="headerlink" title="AOP的三种织入方式"></a>AOP的三种织入方式</h3><ul>
+<li>编译时织入：需要特殊的Java编译器，AspectJ</li>
+<li>类加载时织入：需要特殊的Java编译器，如AspectJ和AspectWerkz</li>
+<li>运行时织入：Spring采用的方式，通过动态代理的方式，实现简单</li>
+</ul>
+<p>一个简单的代码实现：记录请求的信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@RestController</span><br><span class="line">public class HelloController &#123;</span><br><span class="line">    @GetMapping(&quot;/hello&quot;)</span><br><span class="line">    public String hello()&#123;</span><br><span class="line">        String sentence = &quot;Hello World&quot;;</span><br><span class="line">        System.out.println(sentence);</span><br><span class="line">        return  sentence;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>新建切面类：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">@Aspect</span><br><span class="line">@Component</span><br><span class="line">public class RequestLogAspect &#123;</span><br><span class="line">    private static final Logger logger = LoggerFactory.getLogger(RequestLogAspect.class);</span><br><span class="line"></span><br><span class="line">    @Pointcut(&quot;execution(public * com.imooc.framework.controller..*.*(..))&quot;)</span><br><span class="line">    public void webLog()&#123;&#125;</span><br><span class="line"></span><br><span class="line">    @Before(&quot;webLog()&quot;)</span><br><span class="line">    public void doBefore(JoinPoint joinPoint)&#123;</span><br><span class="line">        //接收到请求，记录请求内容</span><br><span class="line">        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();</span><br><span class="line">        HttpServletRequest request = attributes.getRequest();</span><br><span class="line">        //记录下请求内容</span><br><span class="line">        logger.info(&quot;URL: &quot;+ request.getRequestURI().toString());</span><br><span class="line">        logger.info(&quot;IP: &quot; + request.getRemoteAddr());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @AfterReturning(returning = &quot;ret&quot; ,pointcut = &quot;webLog()&quot;)</span><br><span class="line">    public void doAfterReturning(Object ret)&#123;</span><br><span class="line">        //处理完请求，返回内容</span><br><span class="line">        logger.info(&quot;RESPONSE: &quot; + ret);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="AOP主要名词概念"><a href="#AOP主要名词概念" class="headerlink" title="AOP主要名词概念"></a>AOP主要名词概念</h3><ul>
+<li><p>Aspect:通用功能代码的实现，切面  普通的java类RequestLogAspect</p>
+</li>
+<li><p>Target:被织入Aspect的对象  HelloController</p>
+</li>
+<li><p>Join Point：可以作为切入点的机会，所有的方法都可以作为切入点  所有方法的执行处，如前面的hello方法</p>
+</li>
+<li><p>Pointcut:Aspect实际被应用在的Join Point，支持正则</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@Pointcut(&quot;execution(public * com.imooc.framework.controller..*.*(..))&quot;)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Advice:类里的方法以及这个方法如何织入到目标方法的方式</p>
+<ul>
+<li>前置通知（Before）</li>
+<li>后置通知（AfterReturning）</li>
+<li>异常通知（AfterThrowing）</li>
+<li>最终通知（After）</li>
+<li>环绕通知（Around）</li>
+</ul>
+</li>
+<li><p>Weaving:Aop的实现过程,将切面应用到实际对象从而创建一个新的代理对象的过程</p>
+</li>
+</ul>
+<h3 id="AOP的实现：JdkProxy和Cglib"><a href="#AOP的实现：JdkProxy和Cglib" class="headerlink" title="AOP的实现：JdkProxy和Cglib"></a>AOP的实现：JdkProxy和Cglib</h3><ul>
+<li>由AopProxyFactory根据AdvisedSupport对象配置来决定</li>
+<li>默认策略如果目标是接口，则用JDKProxy来实现，否则用后者</li>
+<li>JDKProxy的核心：InvocationHandler接口和Proxy类</li>
+<li>Cglib:以继承的方式动态生成目标类的代理（如果某个类被标记成final它是无法使用Cglib做动态代理的）</li>
+<li>JDKProxy:通过Java的内部反射机制实现</li>
+<li>Cglib:借助ASM实现，一种能够操作字节码的框架</li>
+<li>反射机制在生成类的过程中比较高效</li>
+<li>ASM在生成类之后的执行过程中比较高效</li>
+</ul>
+<h3 id="代理模式：接口-真实实现类-代理类"><a href="#代理模式：接口-真实实现类-代理类" class="headerlink" title="代理模式：接口+真实实现类+代理类"></a>代理模式：接口+真实实现类+代理类</h3><p>简单代码实现：</p>
+<ol>
+<li>新建一个接口实现pay方法</li>
+<li>真实实现类和代理类都要实现该方法</li>
+<li>在代理类中注入真实实现类，在代理类的实现方法pay()中调用真实实现类的pay()方法，然后增加做自己的业务逻辑</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public interface Payment&#123;</span><br><span class="line">    void pay();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public RealPayment implements Payment&#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void pay()&#123;</span><br><span class="line">        System.out.println(&quot;作为用户我只关心支付&quot;)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">public AliPay implements Payment&#123;</span><br><span class="line">    private Payment payment;</span><br><span class="line">    public AliPay(Payment payment)</span><br><span class="line"></span><br><span class="line">    public void beforePay()&#123;</span><br><span class="line">        System.out.println(&quot;从招行取款&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">    @Override</span><br><span class="line">    public void pay()&#123;</span><br><span class="line">        beforePay()；</span><br><span class="line">        payment.pay();</span><br><span class="line">        afterPay();</span><br><span class="line">    &#125;</span><br><span class="line">    public void afterPay()&#123;</span><br><span class="line">        System.out.println(&quot;支付给慕课网&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Payment proxy = new AliPay(new RealPayment);</span><br><span class="line">proxy.pay();</span><br></pre></td></tr></table></figure>
+
+<h3 id="Spring里的代理模式的实现"><a href="#Spring里的代理模式的实现" class="headerlink" title="Spring里的代理模式的实现"></a>Spring里的代理模式的实现</h3><ul>
+<li>真实实现类的逻辑包含在了getBean方法里</li>
+<li>getBean方法返回的实际上是Proxy实例</li>
+<li>Proxy实例是Spring采用JDK Proxy或CGLIB动态生成的</li>
+</ul>
+<p>底层逻辑代码实现：<br>AbstractAutoProxyCreator.postProcessAfterInitialization() -&gt; wrapIfNecessary() -&gt;createProxy()-&gt;<br>ProxyFactory.getProxy()-&gt;ProxyCreatorSupport.createAopProxy()-&gt;ProxyCreatorSupport.DefaultAopProxyFactory-&gt;DefaultAopProxyFactory.createAopProxy()  </p>
+<p>最终看到生成代理的最底层方法，这里只能说Spring的结构真实太复杂了，层层调用 0.0</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public AopProxy createAopProxy(AdvisedSupport config) throws AopConfigException &#123;</span><br><span class="line">    if (!config.isOptimize() &amp;&amp; !config.isProxyTargetClass() &amp;&amp; !this.hasNoUserSuppliedProxyInterfaces(config)) &#123;</span><br><span class="line">        return new JdkDynamicAopProxy(config);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        Class&lt;?&gt; targetClass = config.getTargetClass();</span><br><span class="line">        if (targetClass == null) &#123;</span><br><span class="line">            throw new AopConfigException(&quot;TargetSource cannot determine target class: Either an interface or a target is required for proxy creation.&quot;);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            return (AopProxy)(!targetClass.isInterface() &amp;&amp; !Proxy.isProxyClass(targetClass) ? new ObjenesisCglibAopProxy(config) : new JdkDynamicAopProxy(config));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Spring事务的相关问题"><a href="#Spring事务的相关问题" class="headerlink" title="Spring事务的相关问题"></a>Spring事务的相关问题</h3><ul>
+<li>ACID</li>
+<li>隔离级别</li>
+<li>事务传播</li>
+</ul>
+<p>可参考 <a href="https://blog.csdn.net/weixin_39625809/article/details/80707695" target="_blank" rel="noopener">什么是事务传播行为</a> </p>
+<p>可参考 <a href="https://blog.csdn.net/weixin_38070406/article/details/78157603" target="_blank" rel="noopener">spring的4种事务特性，5种隔离级别，7种传播行为</a> </p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/Spring/">Spring</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AOP/">AOP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IOC/">IOC</a></li></ul>
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
   
     <article id="post-Java多线程与并发"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
@@ -1005,184 +1654,6 @@
 <!-- Table of Contents -->
 
   
-    <article id="post-谈谈我对Java的理解"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/10/25/谈谈我对Java的理解/">谈谈我对Java的理解</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/10/25/谈谈我对Java的理解/" class="article-date">
-	  <time datetime="2019-10-25T08:23:12.000Z" itemprop="datePublished">October 25, 2019</time>
-	</a>
-
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/JVM/">JVM</a>
- 
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="谈谈我对Java的理解"><a href="#谈谈我对Java的理解" class="headerlink" title="谈谈我对Java的理解"></a>谈谈我对Java的理解</h4><p>从以下几个点进行扩展  </p>
-<p>平台无关性：一次编译到处运行<br>GC垃圾回收：不用手动释放内存<br>语言特性：泛型、lamda、反射<br>面向对象：封装、继承、多态<br>类库：自带的集合和并发库<br>异常处理  </p>
-<h4 id="Compile-Once-Run-Anywhere如何实现（如何实现平台无关的）？"><a href="#Compile-Once-Run-Anywhere如何实现（如何实现平台无关的）？" class="headerlink" title="Compile Once,Run Anywhere如何实现（如何实现平台无关的）？"></a>Compile Once,Run Anywhere如何实现（如何实现平台无关的）？</h4><p>编译时：javac   (查看字节码 javac -p)<br>运行时：java<br>.java文件首先经过javac编译生成字节码。将字节码保存在.class文件中。.class文件是跨平台的基础。再由不同平台的JVM进行解析，java语言在不同的平台上运行时不需要进行重新编译，java虚拟机在执行字节码的时候，把字节码转换成具体平台上的机器指令。</p>
-<p><img src="/2019/10/25/谈谈我对Java的理解/%E4%B8%80%E6%AC%A1%E7%BC%96%E8%AF%91%E5%88%B0%E5%A4%84%E8%BF%90%E8%A1%8C.png" alt></p>
-<h4 id="为什么jvm不直接执行源码，而是将字节码解析成机器码才去执行"><a href="#为什么jvm不直接执行源码，而是将字节码解析成机器码才去执行" class="headerlink" title="为什么jvm不直接执行源码，而是将字节码解析成机器码才去执行"></a>为什么jvm不直接执行源码，而是将字节码解析成机器码才去执行</h4><ol>
-<li>每次执行都需要各种检查（语法，句法，语义的检查，每次执行的时候，这些语义分析结果不会被保留下来。因此引入字节码，在每次执行程序是不需要各种校验和补全的）</li>
-<li>兼容性，可以将别的语言（groovy,scala）解析成字节码</li>
-</ol>
-
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/JVM/">JVM</a>
-
-      
-  <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java特性/">Java特性</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/平台无关性/">平台无关性</a></li></ul>
-
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-Linux体系结构"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/10/21/Linux体系结构/">Linux体系结构</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/10/21/Linux体系结构/" class="article-date">
-	  <time datetime="2019-10-21T14:29:34.000Z" itemprop="datePublished">October 21, 2019</time>
-	</a>
-
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/Linux/">Linux</a>
- 
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="Linux-体系结构"><a href="#Linux-体系结构" class="headerlink" title="Linux 体系结构"></a>Linux 体系结构</h4><ul>
-<li>体系结构主要分为用户态（用户上层活动）和内核态</li>
-<li>内核：本质是一段管理计算机硬件设备的程序</li>
-<li>系统调用：内核的访问接口，是一种不能再简化的操作</li>
-<li>公用函数库：系统调用的组合拳</li>
-<li>Shell：命令解释器，可编程</li>
-</ul>
-<h4 id="查看指定端口是否被占用"><a href="#查看指定端口是否被占用" class="headerlink" title="查看指定端口是否被占用"></a>查看指定端口是否被占用</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat  -anp  |grep  3306</span><br></pre></td></tr></table></figure>
-
-<p>-a，显示所有</p>
-<p>-n，不用别名显示，只用数字显示</p>
-<p>-p，显示进程号和进程名</p>
-<h4 id="远程登录"><a href="#远程登录" class="headerlink" title="远程登录"></a>远程登录</h4><p><strong>终端利用ssh登录远程服务器</strong></p>
-<p>安装ssh：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install ssh</span><br></pre></td></tr></table></figure>
-
-<p>启动ssh：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service sshd start</span><br></pre></td></tr></table></figure>
-
-<p>登录远程服务器：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ssh -p 50022 my@127.0.0.1</span><br><span class="line">输入密码：</span><br><span class="line">my@127.0.0.1:</span><br></pre></td></tr></table></figure>
-
-<p>-p 后面是端口</p>
-<p>my 是服务器用户名</p>
-<p>127.0.0.1 是服务器 ip</p>
-<p>回车输入密码即可登录</p>
-<h4 id="如何查找特定的文件"><a href="#如何查找特定的文件" class="headerlink" title="如何查找特定的文件"></a>如何查找特定的文件</h4><h5 id="find"><a href="#find" class="headerlink" title="find"></a>find</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">语法：find path 【options】 params</span><br></pre></td></tr></table></figure>
-
-<p>作用：在指定目录下查找文件  </p>
-<h5 id="常用的方式"><a href="#常用的方式" class="headerlink" title="常用的方式"></a>常用的方式</h5><p>~表示当前用户的目录  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> find ~ -name &quot;target1.java&quot; :查找精确文件  </span><br><span class="line"> find ~ -name &quot;target*&quot; :查找精确文件  </span><br><span class="line"> find ~ -iname &quot;target*&quot; :不区分文件名大小写去查找文件  </span><br><span class="line">man find : 更多关于find指令的使用说明</span><br></pre></td></tr></table></figure>
-
-<h4 id="检索文件内容"><a href="#检索文件内容" class="headerlink" title="检索文件内容"></a>检索文件内容</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">语法：grep 【options】 pattern file</span><br></pre></td></tr></table></figure>
-
-<p>全称：Global Regular Expression Print<br>作用：在指定目录下查找文件  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">例如：查找包含内容&quot;moo&quot; 以target开头的文件</span><br><span class="line">grep &quot;moo&quot; target*</span><br></pre></td></tr></table></figure>
-
-<h5 id="管道操作符"><a href="#管道操作符" class="headerlink" title="管道操作符|"></a>管道操作符|</h5><p>可将指令连接起来，前一个指令的输出作为后一个指令的输入  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">例如：查找当前用户下以target开头的文件</span><br><span class="line">find ~ | grep &quot;target*&quot;</span><br></pre></td></tr></table></figure>
-
-<h5 id="常用的方式-1"><a href="#常用的方式-1" class="headerlink" title="常用的方式"></a>常用的方式</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">1.在内容（文件）里面查找包含某字段的文件，并展示出对应行内容</span><br><span class="line">grep &apos;partial\[true\]&apos; bac-plat-al-data.info.log </span><br><span class="line"></span><br><span class="line">2.-o 筛选出符合正则表达式的内容</span><br><span class="line">grep -o &apos;engine\[[0-9a-z]*\]&apos;  </span><br><span class="line"></span><br><span class="line">3.-v 过滤掉包含相关字符串的内容</span><br><span class="line">grep -v &apos;grep&apos;</span><br></pre></td></tr></table></figure>
-
-<h4 id="对文件内容做统计"><a href="#对文件内容做统计" class="headerlink" title="对文件内容做统计"></a>对文件内容做统计</h4><p>场景：我想筛选出 partial为true的引擎，并统计日志里出现的次数。当我们发现某个检索引擎的partial为true超过一定次数后，说明该引擎需要从集群中摘掉进行修复；  </p>
-<h5 id="awk"><a href="#awk" class="headerlink" title="awk"></a>awk</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">语法：awk [options] &apos;cmd&apos; file</span><br></pre></td></tr></table></figure>
-
-<ol>
-<li>一次读取一行文本，按输入分隔符进行切片，切成多个组成部分</li>
-<li>将切片直接保存在内建的变量中，$1,$2,..($0表示行的全部)</li>
-<li>支持对单个切片的判断，支持循环判断，默认分隔符为空格</li>
-</ol>
-<h5 id="常用的方式-2"><a href="#常用的方式-2" class="headerlink" title="常用的方式"></a>常用的方式</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">打印出第一列和第四列的内容：</span><br><span class="line">awk &apos;&#123;print $1,$4&#125;&apos; 文件名</span><br><span class="line">筛选出列指定字符的行：</span><br><span class="line">awk &apos;$1==&quot;tcp&quot; &amp;&amp; $2==1&#123;print $0&#125;&apos; 文件名</span><br><span class="line">打印出表头：</span><br><span class="line">awk &apos;($1==&quot;tcp&quot; &amp;&amp; $2==1) || NR==1 &#123;print $0&#125;&apos; 文件名</span><br><span class="line">以指定分隔符分割内容：</span><br><span class="line">awk -F &quot;,&quot; &apos;&#123;print $2&#125;&apos; 文件名</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2019/10/21/Linux体系结构/awk.jpg" alt></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Linux 命令 awk 统计：</span><br><span class="line">awk &apos;&#123;enginearr[$1]++&#125;END&#123;for (i in enginearr) print i &quot;\t&quot; enginearr[i]&#125;&apos;</span><br></pre></td></tr></table></figure>
-
-<p>enginearr ：自定义的数组，如果第一列$1出现重复就自增1<br>END ：扫描统计结束<br>{for(i in enginearr)}：循环自定义的数组，定义变量 i<br>print i : 打印 i<br>“\t” 拼接回车符<br>enginearr[i] : 指定自定义数组  </p>
-<h4 id="批量替换文本内容"><a href="#批量替换文本内容" class="headerlink" title="批量替换文本内容"></a>批量替换文本内容</h4><h5 id="sed"><a href="#sed" class="headerlink" title="sed"></a>sed</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">语法：sed [option] &apos;sed command&apos; filenae</span><br></pre></td></tr></table></figure>
-
-<p>全名stream editor,流编辑器<br>适合用于对文本的行内容进行处理</p>
-<h5 id="常用的方式-3"><a href="#常用的方式-3" class="headerlink" title="常用的方式"></a>常用的方式</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">1.将文件中以Str开头的字符串替换成 String：</span><br><span class="line">sed -i &apos;s/^Str/String/&apos; replace.txt</span><br><span class="line"></span><br><span class="line">2.将末尾的点号转为分号：</span><br><span class="line">sed -i &apos;s/\.$/\;/&apos; replace.txt</span><br><span class="line"></span><br><span class="line">3.将所有的&quot;Jack&quot;替换成&quot;me&quot;</span><br><span class="line">sed -i &apos;s/Jack/me/g&apos; replace.txt</span><br><span class="line"></span><br><span class="line">4.删除空行命令</span><br><span class="line">sed -i &apos;/^ *$/d&apos; replace.txt</span><br><span class="line"></span><br><span class="line">5.删除包含特定字符的行：</span><br><span class="line">sed -i &apos;/Integer/d&apos; replace.txt</span><br></pre></td></tr></table></figure>
-
-<p><strong>特别指出：</strong></p>
-<ol>
-<li>指令中加入 -i 表示修改保存到文件中</li>
-<li>替换语法后加入 /g 表示将文件中所有符合条件的内容全部替换，否则只替换一行中第一次匹配到的字符</li>
-</ol>
-<h4 id="总结：经常用到的Shell命令"><a href="#总结：经常用到的Shell命令" class="headerlink" title="总结：经常用到的Shell命令"></a>总结：经常用到的Shell命令</h4><ul>
-<li>find</li>
-<li>grep</li>
-<li>管道操作符|</li>
-<li>awk</li>
-<li>sed</li>
-</ul>
-
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/Linux/">Linux</a>
-
-      
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
 
 
   <nav id="page-nav">
@@ -1281,6 +1752,30 @@
               <div class="widget-entry-summary" style="margin: 0;">
             
 
+              <h6 style="margin: 0;"><a href="/2020/01/02/AQS原理以及AQS同步组件/">AQS原理以及AQS同步组件</a></h6>
+              <span>January 2, 2020</span>
+            </div>
+
+          </li>
+        
+          <li class="clearfix">
+
+            
+              <div class="widget-entry-summary" style="margin: 0;">
+            
+
+              <h6 style="margin: 0;"><a href="/2020/01/02/乐观锁和悲观锁/">乐观锁和悲观锁</a></h6>
+              <span>January 2, 2020</span>
+            </div>
+
+          </li>
+        
+          <li class="clearfix">
+
+            
+              <div class="widget-entry-summary" style="margin: 0;">
+            
+
               <h6 style="margin: 0;"><a href="/2019/12/18/设计模式/">设计模式</a></h6>
               <span>December 18, 2019</span>
             </div>
@@ -1323,30 +1818,6 @@
 
           </li>
         
-          <li class="clearfix">
-
-            
-              <div class="widget-entry-summary" style="margin: 0;">
-            
-
-              <h6 style="margin: 0;"><a href="/2019/11/16/Zuul/">Zuul</a></h6>
-              <span>November 16, 2019</span>
-            </div>
-
-          </li>
-        
-          <li class="clearfix">
-
-            
-              <div class="widget-entry-summary" style="margin: 0;">
-            
-
-              <h6 style="margin: 0;"><a href="/2019/11/13/docker的使用/">Docker的使用</a></h6>
-              <span>November 13, 2019</span>
-            </div>
-
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -1356,7 +1827,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/GC相关/">GC相关</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java多线程与并发/">Java多线程与并发</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java常用类库与技巧/">Java常用类库与技巧</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Redis/">Redis</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot-实战/">Spring Boot 实战</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务实战/">微服务实战</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/设计模式/">设计模式</a><span class="category-list-count">1</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/GC相关/">GC相关</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java多线程与并发/">Java多线程与并发</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java常用类库与技巧/">Java常用类库与技巧</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Redis/">Redis</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot-实战/">Spring Boot 实战</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务实战/">微服务实战</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/设计模式/">设计模式</a><span class="category-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -1366,7 +1837,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ACID/">ACID</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AOF/">AOF</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AOP/">AOP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ClassLoader/">ClassLoader</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ConcurrentHashMap/">ConcurrentHashMap</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Config-Clent/">Config Clent</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Config-Server/">Config Server</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cookie和动态路由/">Cookie和动态路由</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Eureka/">Eureka</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/">HTTP</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HashMap/">HashMap</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hashtable/">Hashtable</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hystrix/">Hystrix</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IOC/">IOC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO机制/">IO机制</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/InnoDB/">InnoDB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/J-U-C包的梳理/">J.U.C包的梳理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM内存结构模型/">JVM内存结构模型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java特性/">Java特性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/List/">List</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyISAM/">MyISAM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OSI七层模型/">OSI七层模型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RDB/">RDB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTO/">RTO</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTT/">RTT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RabbitMQ/">RabbitMQ</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Set/">Set</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cliud-Stream/">Spring Cliud Stream</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cloud-Bus/">Spring Cloud Bus</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cloud-Sleuth/">Spring Cloud Sleuth</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP的三次握手/">TCP的三次握手</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP的四次挥手/">TCP的四次挥手</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Thread和Runnable/">Thread和Runnable</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UDP/">UDP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Zipkin/">Zipkin</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Zuul/">Zuul</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interrupt/">interrupt</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lombok/">lombok</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/notify/">notify</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql调优/">sql调优</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/start和run/">start和run</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/yield/">yield</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/代理模式/">代理模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式锁/">分布式锁</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/单例模式/">单例模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/反射/">反射</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/回收算法/">回收算法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多路I-O复用模型/">多路I/O复用模型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密集索引/">密集索引</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工厂模式/">工厂模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/平台无关性/">平台无关性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异常/">异常</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异步队列/">异步队列</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/当前读/">当前读</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/快照读/">快照读</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库事务/">数据库事务</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库架构/">数据库架构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/新生代垃圾收集器/">新生代垃圾收集器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/日志框架/">日志框架</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/服务容错/">服务容错</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/服务网关/">服务网关</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/标记算法/">标记算法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/滑动窗口/">滑动窗口</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/稀疏索引/">稀疏索引</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/类的装载/">类的装载</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/索引/">索引</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/索引数据结构/">索引数据结构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线程共享/">线程共享</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线程独占/">线程独占</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/老年代垃圾收集器/">老年代垃圾收集器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/语法/">语法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/跨域/">跨域</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/进程和线程/">进程和线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/鉴权/">鉴权</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/链路监控/">链路监控</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/锁模块/">锁模块</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/限流/">限流</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ACID/">ACID</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AOF/">AOF</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AOP/">AOP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ClassLoader/">ClassLoader</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ConcurrentHashMap/">ConcurrentHashMap</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Config-Clent/">Config Clent</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Config-Server/">Config Server</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cookie和动态路由/">Cookie和动态路由</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Eureka/">Eureka</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Executor/">Executor</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/">HTTP</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HashMap/">HashMap</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hashtable/">Hashtable</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hystrix/">Hystrix</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IOC/">IOC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO机制/">IO机制</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/InnoDB/">InnoDB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JUC包的梳理/">JUC包的梳理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM内存结构模型/">JVM内存结构模型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java特性/">Java特性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/List/">List</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyISAM/">MyISAM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OSI七层模型/">OSI七层模型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RDB/">RDB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTO/">RTO</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTT/">RTT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RabbitMQ/">RabbitMQ</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Set/">Set</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cliud-Stream/">Spring Cliud Stream</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cloud-Bus/">Spring Cloud Bus</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cloud-Sleuth/">Spring Cloud Sleuth</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP的三次握手/">TCP的三次握手</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP的四次挥手/">TCP的四次挥手</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Thread和Runnable/">Thread和Runnable</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UDP/">UDP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Zipkin/">Zipkin</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Zuul/">Zuul</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interrupt/">interrupt</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lombok/">lombok</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/notify/">notify</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql调优/">sql调优</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/start和run/">start和run</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/yield/">yield</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/代理模式/">代理模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式锁/">分布式锁</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/单例模式/">单例模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/反射/">反射</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/回收算法/">回收算法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多路I-O复用模型/">多路I/O复用模型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密集索引/">密集索引</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工厂模式/">工厂模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/平台无关性/">平台无关性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/并发容器/">并发容器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异常/">异常</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异步队列/">异步队列</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/当前读/">当前读</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/快照读/">快照读</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库事务/">数据库事务</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库架构/">数据库架构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/新生代垃圾收集器/">新生代垃圾收集器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/日志框架/">日志框架</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/服务容错/">服务容错</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/服务网关/">服务网关</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/标记算法/">标记算法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/滑动窗口/">滑动窗口</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/稀疏索引/">稀疏索引</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/类的装载/">类的装载</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/索引/">索引</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/索引数据结构/">索引数据结构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线程共享/">线程共享</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线程独占/">线程独占</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/老年代垃圾收集器/">老年代垃圾收集器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/语法/">语法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/跨域/">跨域</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/进程和线程/">进程和线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/鉴权/">鉴权</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/链路监控/">链路监控</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/锁模块/">锁模块</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/限流/">限流</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -1376,7 +1847,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/ACID/" style="font-size: 10px;">ACID</a> <a href="/tags/AOF/" style="font-size: 10px;">AOF</a> <a href="/tags/AOP/" style="font-size: 10px;">AOP</a> <a href="/tags/ClassLoader/" style="font-size: 10px;">ClassLoader</a> <a href="/tags/ConcurrentHashMap/" style="font-size: 10px;">ConcurrentHashMap</a> <a href="/tags/Config-Clent/" style="font-size: 10px;">Config Clent</a> <a href="/tags/Config-Server/" style="font-size: 10px;">Config Server</a> <a href="/tags/Cookie和动态路由/" style="font-size: 10px;">Cookie和动态路由</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Eureka/" style="font-size: 10px;">Eureka</a> <a href="/tags/HTTP/" style="font-size: 15px;">HTTP</a> <a href="/tags/HashMap/" style="font-size: 10px;">HashMap</a> <a href="/tags/Hashtable/" style="font-size: 10px;">Hashtable</a> <a href="/tags/Hystrix/" style="font-size: 10px;">Hystrix</a> <a href="/tags/IOC/" style="font-size: 10px;">IOC</a> <a href="/tags/IO机制/" style="font-size: 10px;">IO机制</a> <a href="/tags/InnoDB/" style="font-size: 10px;">InnoDB</a> <a href="/tags/J-U-C包的梳理/" style="font-size: 10px;">J.U.C包的梳理</a> <a href="/tags/JVM内存结构模型/" style="font-size: 10px;">JVM内存结构模型</a> <a href="/tags/Java特性/" style="font-size: 10px;">Java特性</a> <a href="/tags/List/" style="font-size: 10px;">List</a> <a href="/tags/MyISAM/" style="font-size: 10px;">MyISAM</a> <a href="/tags/OSI七层模型/" style="font-size: 10px;">OSI七层模型</a> <a href="/tags/RDB/" style="font-size: 10px;">RDB</a> <a href="/tags/RTO/" style="font-size: 10px;">RTO</a> <a href="/tags/RTT/" style="font-size: 10px;">RTT</a> <a href="/tags/RabbitMQ/" style="font-size: 10px;">RabbitMQ</a> <a href="/tags/Set/" style="font-size: 10px;">Set</a> <a href="/tags/Spring-Cliud-Stream/" style="font-size: 10px;">Spring Cliud Stream</a> <a href="/tags/Spring-Cloud-Bus/" style="font-size: 10px;">Spring Cloud Bus</a> <a href="/tags/Spring-Cloud-Sleuth/" style="font-size: 10px;">Spring Cloud Sleuth</a> <a href="/tags/TCP的三次握手/" style="font-size: 10px;">TCP的三次握手</a> <a href="/tags/TCP的四次挥手/" style="font-size: 10px;">TCP的四次挥手</a> <a href="/tags/Thread和Runnable/" style="font-size: 10px;">Thread和Runnable</a> <a href="/tags/UDP/" style="font-size: 10px;">UDP</a> <a href="/tags/Zipkin/" style="font-size: 10px;">Zipkin</a> <a href="/tags/Zuul/" style="font-size: 10px;">Zuul</a> <a href="/tags/interrupt/" style="font-size: 10px;">interrupt</a> <a href="/tags/lombok/" style="font-size: 10px;">lombok</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/notify/" style="font-size: 10px;">notify</a> <a href="/tags/sql调优/" style="font-size: 10px;">sql调优</a> <a href="/tags/start和run/" style="font-size: 10px;">start和run</a> <a href="/tags/yield/" style="font-size: 10px;">yield</a> <a href="/tags/代理模式/" style="font-size: 10px;">代理模式</a> <a href="/tags/分布式锁/" style="font-size: 10px;">分布式锁</a> <a href="/tags/单例模式/" style="font-size: 10px;">单例模式</a> <a href="/tags/反射/" style="font-size: 10px;">反射</a> <a href="/tags/回收算法/" style="font-size: 10px;">回收算法</a> <a href="/tags/多路I-O复用模型/" style="font-size: 10px;">多路I/O复用模型</a> <a href="/tags/密集索引/" style="font-size: 10px;">密集索引</a> <a href="/tags/工厂模式/" style="font-size: 10px;">工厂模式</a> <a href="/tags/平台无关性/" style="font-size: 10px;">平台无关性</a> <a href="/tags/异常/" style="font-size: 10px;">异常</a> <a href="/tags/异步队列/" style="font-size: 10px;">异步队列</a> <a href="/tags/当前读/" style="font-size: 10px;">当前读</a> <a href="/tags/快照读/" style="font-size: 10px;">快照读</a> <a href="/tags/数据库事务/" style="font-size: 10px;">数据库事务</a> <a href="/tags/数据库架构/" style="font-size: 10px;">数据库架构</a> <a href="/tags/新生代垃圾收集器/" style="font-size: 10px;">新生代垃圾收集器</a> <a href="/tags/日志框架/" style="font-size: 10px;">日志框架</a> <a href="/tags/服务容错/" style="font-size: 10px;">服务容错</a> <a href="/tags/服务网关/" style="font-size: 10px;">服务网关</a> <a href="/tags/标记算法/" style="font-size: 10px;">标记算法</a> <a href="/tags/滑动窗口/" style="font-size: 10px;">滑动窗口</a> <a href="/tags/稀疏索引/" style="font-size: 10px;">稀疏索引</a> <a href="/tags/类的装载/" style="font-size: 10px;">类的装载</a> <a href="/tags/索引/" style="font-size: 15px;">索引</a> <a href="/tags/索引数据结构/" style="font-size: 10px;">索引数据结构</a> <a href="/tags/线程共享/" style="font-size: 10px;">线程共享</a> <a href="/tags/线程独占/" style="font-size: 10px;">线程独占</a> <a href="/tags/老年代垃圾收集器/" style="font-size: 10px;">老年代垃圾收集器</a> <a href="/tags/语法/" style="font-size: 10px;">语法</a> <a href="/tags/跨域/" style="font-size: 10px;">跨域</a> <a href="/tags/进程和线程/" style="font-size: 10px;">进程和线程</a> <a href="/tags/鉴权/" style="font-size: 10px;">鉴权</a> <a href="/tags/链路监控/" style="font-size: 10px;">链路监控</a> <a href="/tags/锁模块/" style="font-size: 20px;">锁模块</a> <a href="/tags/限流/" style="font-size: 10px;">限流</a>
+      <a href="/tags/ACID/" style="font-size: 10px;">ACID</a> <a href="/tags/AOF/" style="font-size: 10px;">AOF</a> <a href="/tags/AOP/" style="font-size: 10px;">AOP</a> <a href="/tags/ClassLoader/" style="font-size: 10px;">ClassLoader</a> <a href="/tags/ConcurrentHashMap/" style="font-size: 10px;">ConcurrentHashMap</a> <a href="/tags/Config-Clent/" style="font-size: 10px;">Config Clent</a> <a href="/tags/Config-Server/" style="font-size: 10px;">Config Server</a> <a href="/tags/Cookie和动态路由/" style="font-size: 10px;">Cookie和动态路由</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Eureka/" style="font-size: 10px;">Eureka</a> <a href="/tags/Executor/" style="font-size: 10px;">Executor</a> <a href="/tags/HTTP/" style="font-size: 15px;">HTTP</a> <a href="/tags/HashMap/" style="font-size: 10px;">HashMap</a> <a href="/tags/Hashtable/" style="font-size: 10px;">Hashtable</a> <a href="/tags/Hystrix/" style="font-size: 10px;">Hystrix</a> <a href="/tags/IOC/" style="font-size: 10px;">IOC</a> <a href="/tags/IO机制/" style="font-size: 10px;">IO机制</a> <a href="/tags/InnoDB/" style="font-size: 10px;">InnoDB</a> <a href="/tags/JUC包的梳理/" style="font-size: 10px;">JUC包的梳理</a> <a href="/tags/JVM内存结构模型/" style="font-size: 10px;">JVM内存结构模型</a> <a href="/tags/Java特性/" style="font-size: 10px;">Java特性</a> <a href="/tags/List/" style="font-size: 10px;">List</a> <a href="/tags/MyISAM/" style="font-size: 10px;">MyISAM</a> <a href="/tags/OSI七层模型/" style="font-size: 10px;">OSI七层模型</a> <a href="/tags/RDB/" style="font-size: 10px;">RDB</a> <a href="/tags/RTO/" style="font-size: 10px;">RTO</a> <a href="/tags/RTT/" style="font-size: 10px;">RTT</a> <a href="/tags/RabbitMQ/" style="font-size: 10px;">RabbitMQ</a> <a href="/tags/Set/" style="font-size: 10px;">Set</a> <a href="/tags/Spring-Cliud-Stream/" style="font-size: 10px;">Spring Cliud Stream</a> <a href="/tags/Spring-Cloud-Bus/" style="font-size: 10px;">Spring Cloud Bus</a> <a href="/tags/Spring-Cloud-Sleuth/" style="font-size: 10px;">Spring Cloud Sleuth</a> <a href="/tags/TCP的三次握手/" style="font-size: 10px;">TCP的三次握手</a> <a href="/tags/TCP的四次挥手/" style="font-size: 10px;">TCP的四次挥手</a> <a href="/tags/Thread和Runnable/" style="font-size: 10px;">Thread和Runnable</a> <a href="/tags/UDP/" style="font-size: 10px;">UDP</a> <a href="/tags/Zipkin/" style="font-size: 10px;">Zipkin</a> <a href="/tags/Zuul/" style="font-size: 10px;">Zuul</a> <a href="/tags/interrupt/" style="font-size: 10px;">interrupt</a> <a href="/tags/lombok/" style="font-size: 10px;">lombok</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/notify/" style="font-size: 10px;">notify</a> <a href="/tags/sql调优/" style="font-size: 10px;">sql调优</a> <a href="/tags/start和run/" style="font-size: 10px;">start和run</a> <a href="/tags/yield/" style="font-size: 10px;">yield</a> <a href="/tags/代理模式/" style="font-size: 10px;">代理模式</a> <a href="/tags/分布式锁/" style="font-size: 10px;">分布式锁</a> <a href="/tags/单例模式/" style="font-size: 10px;">单例模式</a> <a href="/tags/反射/" style="font-size: 10px;">反射</a> <a href="/tags/回收算法/" style="font-size: 10px;">回收算法</a> <a href="/tags/多路I-O复用模型/" style="font-size: 10px;">多路I/O复用模型</a> <a href="/tags/密集索引/" style="font-size: 10px;">密集索引</a> <a href="/tags/工厂模式/" style="font-size: 10px;">工厂模式</a> <a href="/tags/平台无关性/" style="font-size: 10px;">平台无关性</a> <a href="/tags/并发容器/" style="font-size: 10px;">并发容器</a> <a href="/tags/异常/" style="font-size: 10px;">异常</a> <a href="/tags/异步队列/" style="font-size: 10px;">异步队列</a> <a href="/tags/当前读/" style="font-size: 10px;">当前读</a> <a href="/tags/快照读/" style="font-size: 10px;">快照读</a> <a href="/tags/数据库事务/" style="font-size: 10px;">数据库事务</a> <a href="/tags/数据库架构/" style="font-size: 10px;">数据库架构</a> <a href="/tags/新生代垃圾收集器/" style="font-size: 10px;">新生代垃圾收集器</a> <a href="/tags/日志框架/" style="font-size: 10px;">日志框架</a> <a href="/tags/服务容错/" style="font-size: 10px;">服务容错</a> <a href="/tags/服务网关/" style="font-size: 10px;">服务网关</a> <a href="/tags/标记算法/" style="font-size: 10px;">标记算法</a> <a href="/tags/滑动窗口/" style="font-size: 10px;">滑动窗口</a> <a href="/tags/稀疏索引/" style="font-size: 10px;">稀疏索引</a> <a href="/tags/类的装载/" style="font-size: 10px;">类的装载</a> <a href="/tags/索引/" style="font-size: 15px;">索引</a> <a href="/tags/索引数据结构/" style="font-size: 10px;">索引数据结构</a> <a href="/tags/线程共享/" style="font-size: 10px;">线程共享</a> <a href="/tags/线程独占/" style="font-size: 10px;">线程独占</a> <a href="/tags/老年代垃圾收集器/" style="font-size: 10px;">老年代垃圾收集器</a> <a href="/tags/语法/" style="font-size: 10px;">语法</a> <a href="/tags/跨域/" style="font-size: 10px;">跨域</a> <a href="/tags/进程和线程/" style="font-size: 10px;">进程和线程</a> <a href="/tags/鉴权/" style="font-size: 10px;">鉴权</a> <a href="/tags/链路监控/" style="font-size: 10px;">链路监控</a> <a href="/tags/锁模块/" style="font-size: 20px;">锁模块</a> <a href="/tags/限流/" style="font-size: 10px;">限流</a>
     </div>
   </div>
 
@@ -1386,7 +1857,7 @@
     <h3 class="widget-title">Archives</h3>
 
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">23</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">25</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">23</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">25</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">1</span></li></ul>
     </div>
 
     <div>
@@ -1443,6 +1914,9 @@
 
 
     <!-- headerblur min height -->
+    
+      var headerblur = document.getElementById("header-blur");
+      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

@@ -127,6 +127,323 @@
         
           <section id="main">
   
+    <article id="post-统一配置中心"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/11/13/统一配置中心/">统一配置中心</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/11/13/统一配置中心/" class="article-date">
+	  <time datetime="2019-11-13T06:09:51.000Z" itemprop="datePublished">November 13, 2019</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/微服务实战/">微服务实战</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="什么是统一配置中心？"><a href="#什么是统一配置中心？" class="headerlink" title="什么是统一配置中心？"></a>什么是统一配置中心？</h2><ol>
+<li>多人改一个配置不方便维护</li>
+<li>配置中涉及到内容安全与权限，比如说数据库密码;这里可以把配置文件进行隔离不放进项目代码</li>
+<li>每改一次配置都需要项目重启</li>
+</ol>
+<h2 id="Config的配置"><a href="#Config的配置" class="headerlink" title="Config的配置"></a>Config的配置</h2><h3 id="配置Config-Server端"><a href="#配置Config-Server端" class="headerlink" title="配置Config Server端"></a>配置Config Server端</h3><ol>
+<li><p>新建项目 选中Eureka Discovery Client和 Config Server</p>
+</li>
+<li><p>引入依赖</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">			&lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;</span><br><span class="line">			&lt;artifactId&gt;spring-cloud-config-server&lt;/artifactId&gt;</span><br><span class="line">		&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启动类加注解</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@SpringBootApplication</span><br><span class="line">@EnableDiscoveryClient</span><br><span class="line">@EnableConfigServer</span><br><span class="line">public class ConfigApplication &#123;</span><br><span class="line"></span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		SpringApplication.run(ConfigApplication.class, args);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>github上创建config-repo的仓库，在仓库中新增一个 order.yml</p>
+</li>
+<li><p>在config服务的application.yml增加github的配置信息如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">cloud:</span><br><span class="line">  config:</span><br><span class="line">    server:</span><br><span class="line">      git:</span><br><span class="line">        uri: https://github.com/ValarMorghulis521/config-repo.git</span><br><span class="line">        username: ValarMorghulis521</span><br><span class="line">        password: ********</span><br><span class="line">        basedir: github的本地仓库地址</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>本地访问github上的yml配置信息 <a href="http://localhost:8080/release/order-dev.yml" target="_blank" rel="noopener">http://localhost:8080/release/order-dev.yml</a></p>
+</li>
+</ol>
+<h4 id="配置命名的约定规则："><a href="#配置命名的约定规则：" class="headerlink" title="配置命名的约定规则："></a>配置命名的约定规则：</h4><ul>
+<li>/{name}-{profiles}.yml   （/文件名-环境名.文件后缀）  </li>
+<li>/{label}/{name}-{profiles}.yml  （/分支名/文件名-环境名.文件后缀）</li>
+</ul>
+<ol>
+<li>name 代表服务名  profile 代表 环境名  label 代表分支 branch       </li>
+<li>如我要访问dev的配置（默认是master分支）<br><a href="http://localhost:8080/order-dev.yml" target="_blank" rel="noopener">http://localhost:8080/order-dev.yml</a><br>如我要访问dev分支下dev的配置 <a href="http://localhost:8080/dev/order-dev.yml" target="_blank" rel="noopener">http://localhost:8080/dev/order-dev.yml</a>  </li>
+</ol>
+<h3 id="配置Config-Client端"><a href="#配置Config-Client端" class="headerlink" title="配置Config Client端"></a>配置Config Client端</h3><ol>
+<li><p>在需要用到Config Client的服务上新增config-client依赖</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">          &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;</span><br><span class="line">          &lt;artifactId&gt;spring-cloud-config-client&lt;/artifactId&gt;</span><br><span class="line">      &lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>application.yml文件中新增config的配置,删除数据库其他配置信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">spring:</span><br><span class="line">  application:</span><br><span class="line">    name: order</span><br><span class="line">  cloud:</span><br><span class="line">    config:</span><br><span class="line">      discovery:</span><br><span class="line">        enabled: true</span><br><span class="line">        service-id: CONFIG</span><br><span class="line">      profile: dev</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>tips：当我们访问<a href="http://localhost:8080/dev/order-dev.yml" target="_blank" rel="noopener">http://localhost:8080/dev/order-dev.yml</a> 时是如何找到对应的配置？<br> appliction.name+profile.yml对应到github的配置</p>
+<ol start="3">
+<li><p>application.yml更名为bootstrap.yml，作为引导先启动；config-client会先去eureka上找配置的service-id,这里配置的是CONFIG，所以会去找名为“CONFIG”的服务，如果找不到会把127.0.0.01：8888当成config-server ;然后再从configServ上获取 order-deb.yml相关配置信息</p>
+</li>
+<li><p>只需要创建多个Config Server实例即可实现高可用，不需要相互注册</p>
+</li>
+<li><p>order.yml (不管选择哪个环境，这个是一定会加载访问的，所以可以把公共配置放这，用不上则注释掉吧)</p>
+</li>
+</ol>
+<h2 id="Spring-Cloud-Bus"><a href="#Spring-Cloud-Bus" class="headerlink" title="Spring Cloud Bus"></a>Spring Cloud Bus</h2><h3 id="如何实现配置自动刷新"><a href="#如何实现配置自动刷新" class="headerlink" title="如何实现配置自动刷新"></a>如何实现配置自动刷新</h3><ol>
+<li>config-server用了Bus之后会提供一个/bus-refresh接口，访问这个接口，config-server便会将更新配置信息发送到消息队列里面（RabbitMA）</li>
+<li>把bus-refresh接口地址配置到git上，通过webhook访问 每次git上配置文件有了变更，便通知config-server<br><img src="/2019/11/13/统一配置中心/Bus.jpg" alt></li>
+</ol>
+<h3 id="Spring-Cloud-Bus实操"><a href="#Spring-Cloud-Bus实操" class="headerlink" title="Spring Cloud Bus实操"></a>Spring Cloud Bus实操</h3><ol>
+<li>修改Spring Cloud 和Spring Boot的版本</li>
+<li>配置rabbitmq连接地址：<br>为什么没有配置rabbitmq却可以连上  ,没用配置则使用默认<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public class RabbitProperties &#123;</span><br><span class="line">    private String host = &quot;localhost&quot;;</span><br><span class="line">    private int port = 5672;</span><br><span class="line">    private String username = &quot;guest&quot;;</span><br><span class="line">    private String password = &quot;guest&quot;;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>如果你的mq不是搭建在本地，配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">spring:</span><br><span class="line">  rabbitmq:</span><br><span class="line">    host: </span><br><span class="line">    port: </span><br><span class="line">    username: </span><br><span class="line">    password:</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>feign组件升级为openfeign</li>
+<li>配置Bus接口暴露出来：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">management:</span><br><span class="line">  endpoins:</span><br><span class="line">    web:</span><br><span class="line">      expose: &quot;*&quot;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>在需要刷新配置的类上加 @RefreshScope 注解</p>
+<ol start="5">
+<li><p>远程git修改之后对bus-refresh发送post请求刷新内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -v -X POST “http://~~/actuator/bus-refresh”</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置git 的webhook<br>URL:http:***/monitor<br>Content type 选择application/json<br><img src="/2019/11/13/统一配置中心/Webhook%E9%85%8D%E7%BD%AE.png" alt="Webhook配置"><br>url需要外网地址，使用netapp.cn工具映射外网地址  </p>
+</li>
+</ol>
+<h4 id="使用配置的前缀来映射一个配置类："><a href="#使用配置的前缀来映射一个配置类：" class="headerlink" title="使用配置的前缀来映射一个配置类："></a>使用配置的前缀来映射一个配置类：</h4><ol>
+<li><p>配置文件：  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">girl:</span><br><span class="line">  name: lili</span><br><span class="line">  age: 18</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建一个对应的类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@Data</span><br><span class="line">@Component</span><br><span class="line">@ConfigurationProperties(&quot;girl&quot;)</span><br><span class="line">@RefreshScope</span><br><span class="line">public class GirlConfig&#123;</span><br><span class="line">  private String name;</span><br><span class="line">  private Integer age;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/微服务实战/">微服务实战</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Config-Clent/">Config Clent</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Config-Server/">Config Server</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Spring-Cloud-Bus/">Spring Cloud Bus</a></li></ul>
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-消息和异步"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/11/13/消息和异步/">消息和异步</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/11/13/消息和异步/" class="article-date">
+	  <time datetime="2019-11-13T06:09:24.000Z" itemprop="datePublished">November 13, 2019</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/微服务实战/">微服务实战</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="异步和消息"><a href="#异步和消息" class="headerlink" title="异步和消息"></a>异步和消息</h2><h3 id="什么是异步"><a href="#什么是异步" class="headerlink" title="什么是异步"></a>什么是异步</h3><p>客户端请求不会阻塞进程，服务端的响应可以是非即时的</p>
+<h3 id="异步的常见形态"><a href="#异步的常见形态" class="headerlink" title="异步的常见形态"></a>异步的常见形态</h3><ul>
+<li>通知</li>
+<li>请求/异步响应</li>
+<li>消息 </li>
+</ul>
+<h3 id="微服务和容器是天生一对"><a href="#微服务和容器是天生一对" class="headerlink" title="微服务和容器是天生一对"></a>微服务和容器是天生一对</h3><ol>
+<li>通过docker的镜像部署超快速实现水平扩展副本克隆</li>
+<li>docker的隔离性实现了不同的应用服务打包成不同的</li>
+</ol>
+<h3 id="MQ应用场景"><a href="#MQ应用场景" class="headerlink" title="MQ应用场景"></a>MQ应用场景</h3><ul>
+<li>异步处理：用户注册之后需要发短信，加积分；用户注册成功后通过异步消息让短信服务和积分服务去做他们的事</li>
+<li>流量削峰：秒杀活动会因为流量暴增，在应用前端加入消息队列，控制活动的人数，消息队列超过最大长度，直接抛弃请求跳转到错误页面。</li>
+<li>日志处理:kafuka 用于日志处理，通过日志采集定时写入kafuka队列，然后kafuka消息队列对日志进行接收储存转发</li>
+<li>引用解耦：如用户下单后订单服务通知商品服务</li>
+</ul>
+<hr>
+<h2 id="RabbitMQ"><a href="#RabbitMQ" class="headerlink" title="RabbitMQ"></a>RabbitMQ</h2><h2 id="RabbitMQ在docker下的安装"><a href="#RabbitMQ在docker下的安装" class="headerlink" title="RabbitMQ在docker下的安装"></a>RabbitMQ在docker下的安装</h2><ol>
+<li><p>下载镜像地址</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull hub.c.163.com/library/rabbitmq:3.7.3-management</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装启动RabbitMQ</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --hostname my-rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.7.3-management</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>15672端口是rabbitmq的界面管理地址</p>
+<ol start="3">
+<li>访问，因为是安装在了虚拟机上，所以本机访问虚拟机的地址 <a href="http://192.168.1.105:15672" target="_blank" rel="noopener">http://192.168.1.105:15672</a> </li>
+<li>ok!默认账号密码 guest，成功访问！</li>
+</ol>
+<h2 id="RabbitMQ的基本使用"><a href="#RabbitMQ的基本使用" class="headerlink" title="RabbitMQ的基本使用"></a>RabbitMQ的基本使用</h2><ol>
+<li><p>添加RabbitMQ的pom.xml的依赖配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-starter-amqp&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在yml文件中新增连接RabbitMQ的配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">spring:</span><br><span class="line">  rabbitmq:</span><br><span class="line">    host: </span><br><span class="line">    port: </span><br><span class="line">    username: </span><br><span class="line">    password:</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建一个接收端的类用来接收mq消息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 接收mq消息</span><br><span class="line"> */</span><br><span class="line">@Slf4j</span><br><span class="line">@Component</span><br><span class="line">public class MaReceiver &#123;</span><br><span class="line">//  1. @RabbitListener(queues = &quot;myQueue&quot;)</span><br><span class="line">//  2. 自动创建队列  @RabbitListener(queuesToDeclare = @Queue(&quot;myQueue&quot;))</span><br><span class="line">//  3.自动创建，Exchange和Queue绑定</span><br><span class="line">    @RabbitListener(bindings = @QueueBinding(</span><br><span class="line">            value = @Queue(&quot;myQueue&quot;),</span><br><span class="line">            exchange =@Exchange(&quot;myExchange&quot;)</span><br><span class="line">    ))</span><br><span class="line">    public void process(String message)&#123;</span><br><span class="line">        log.info(&quot;MqReceiver:&#123;&#125;&quot;,message);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 数码供应商服务接收消息</span><br><span class="line">     * @param message</span><br><span class="line">     */</span><br><span class="line">    @RabbitListener(bindings = @QueueBinding(</span><br><span class="line">            exchange =@Exchange(&quot;myOrder&quot;),</span><br><span class="line">            key = &quot;computer&quot;,</span><br><span class="line">            value = @Queue(&quot;computerOrder&quot;)</span><br><span class="line">    ))</span><br><span class="line">    public void processComputer(String message)&#123;</span><br><span class="line">        log.info(&quot;computer MqReceiver:&#123;&#125;&quot;,message);</span><br><span class="line">    &#125;</span><br><span class="line">    /**</span><br><span class="line">     * 水果供应商服务接收消息</span><br><span class="line">     * @param message</span><br><span class="line">     */</span><br><span class="line">    @RabbitListener(bindings = @QueueBinding(</span><br><span class="line">            exchange =@Exchange(&quot;myOrder&quot;),</span><br><span class="line">            key = &quot;fruit&quot;,</span><br><span class="line">            value = @Queue(&quot;fruitOrder&quot;)</span><br><span class="line">    ))</span><br><span class="line">    public void processFruit(String message)&#123;</span><br><span class="line">        log.info(&quot;fruit MqReceiver:&#123;&#125;&quot;,message);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>创建queue的两种方式 ：  </p>
+<ul>
+<li>@RabbitListener(queues = “myQueue”) 并在RabbitMQ中手动创建一个myQueue的队列</li>
+<li>@RabbitListener(queuesToDeclare = @Queue(“myQueue”)) 可自动创建</li>
+<li>key是分组的意思</li>
+</ul>
+<ol start="4">
+<li>写一个发送方 用到amqpTemplate.convertAndSend()<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 发送mq消息测试</span><br><span class="line"> */</span><br><span class="line">/**</span><br><span class="line"> * 发送mq消息测试</span><br><span class="line"> */</span><br><span class="line">@Component</span><br><span class="line">public class MqSenderTest extends OrderApplicationTests &#123;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    private AmqpTemplate amqpTemplate;</span><br><span class="line">    @Test</span><br><span class="line">    public void send()&#123;</span><br><span class="line">        amqpTemplate.convertAndSend(&quot;myQueue&quot;,&quot;now&quot;+ new Date());</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    //只会发送给 key=computer的监听</span><br><span class="line">    @Test</span><br><span class="line">    public void sendOrder()&#123;</span><br><span class="line">        amqpTemplate.convertAndSend(&quot;myOrder&quot;,&quot;computer&quot;,&quot;now&quot;+ new Date());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<hr>
+<h2 id="Spring-Cloud-Stream"><a href="#Spring-Cloud-Stream" class="headerlink" title="Spring Cloud Stream"></a>Spring Cloud Stream</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>SpringCloud Stream提供更方便的消息处理，达到代码层面对消息中间件的无感知的效果，支持RabbitMQ和ActiveMQ。只需定义Input和Output，无需过多考虑rabbitmq的Exchange和RoutingKey</p>
+<p><img src="/2019/11/13/消息和异步/Stream.jpg" alt></p>
+<h3 id="Spring-Cloud-Stream的基本使用"><a href="#Spring-Cloud-Stream的基本使用" class="headerlink" title="Spring Cloud Stream的基本使用"></a>Spring Cloud Stream的基本使用</h3><ol>
+<li><p>添加Stream的pom.xml的依赖配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-cloud-starter-stream-rabbit&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在yml中配置RabbitMQ的连接地址</p>
+</li>
+<li><p>先定义一个接口  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public interface StreamClient &#123;</span><br><span class="line">    String INPUT = &quot;myMessage&quot;;</span><br><span class="line">    @Input(StreamClient.INPUT)</span><br><span class="line">    SubscribableChannel input();</span><br><span class="line">    @Output(StreamClient.INPUT)</span><br><span class="line">    MessageChannel output();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>定义一个接收端</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@Component</span><br><span class="line">@EnableBinding(StreamClient.class)</span><br><span class="line">@Slf4j</span><br><span class="line">public class StreamReceiver &#123;</span><br><span class="line">    @StreamListener(StreamClient.INPUT)</span><br><span class="line">    public void process(Object message)&#123;</span><br><span class="line">        log.info(&quot;StreamReceiver:&#123;&#125;&quot;,message);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>定义一个发送端</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">@RestController</span><br><span class="line">public class SendMessageController &#123;</span><br><span class="line">    @Autowired</span><br><span class="line">    private StreamClient streamClient;</span><br><span class="line">    @GetMapping(&quot;/sendMessage&quot;)</span><br><span class="line">    public void process()&#123;</span><br><span class="line">        String message = &quot;now&quot;+ new Date();</span><br><span class="line">        streamClient.output().send(MessageBuilder.withPayload(message).build());</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置分组：一个实例发送消息只让一个实例收到消息<br>group 表示分组；content-type表示传送的格式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">stream:</span><br><span class="line">  bindings:</span><br><span class="line">    myMessage:</span><br><span class="line">      group: order</span><br><span class="line">      content-type: application/json</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如何在收到消息后回发消息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">@StreamListener(StreamClient.INPUT)</span><br><span class="line">@SendTo(StreamClient.INPUT2)</span><br><span class="line">public String process(Object message)&#123;</span><br><span class="line">    log.info(&quot;StreamReceiver:&#123;&#125;&quot;,message);</span><br><span class="line">    //使用SendTo 注解 回发mq消息给input2</span><br><span class="line">    return &quot;received.&quot;;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@StreamListener(StreamClient.INPUT2)</span><br><span class="line">public void process2(String message)&#123;</span><br><span class="line">    log.info(&quot;StreamReceiver2:&#123;&#125;&quot;,message);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<hr>
+<h2 id="商品和订单服务中使用MQ"><a href="#商品和订单服务中使用MQ" class="headerlink" title="商品和订单服务中使用MQ"></a>商品和订单服务中使用MQ</h2><h3 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h3><p><img src="/2019/11/13/消息和异步/%E5%95%86%E5%93%81%E5%92%8C%E8%AE%A2%E5%8D%95%E4%BD%BF%E7%94%A8MQ.png" alt></p>
+<ol>
+<li><p>商品服务接入配置中心添加依赖</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">    &lt;dependency&gt;</span><br><span class="line">        &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;spring-cloud-config-client&lt;/artifactId&gt;</span><br><span class="line">    &lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;spring-boot-starter-amqp&lt;/artifactId&gt;</span><br><span class="line">    &lt;/dependency&gt;</span><br><span class="line">&lt;/dependencies&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在yml文件中新增连接RabbitMQ的配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">spring:</span><br><span class="line">  rabbitmq:</span><br><span class="line">    host: </span><br><span class="line">    port: </span><br><span class="line">    username: </span><br><span class="line">    password:</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装redis和RedisDesktopManager ，引入依赖</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-starter-data-redis&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>启动redis</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 6379:6379 redis:4.0.8</span><br></pre></td></tr></table></figure>
+
+<p>在订单服务中配置redis的信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">redis:</span><br><span class="line">   host: 192.168.1.105</span><br><span class="line">   port: 6379</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li><p>在order服务中message包下新建ProductInfoReceiver 从mq中接受商品信息，把商品id和库存 放入redis中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">@Component</span><br><span class="line">@Slf4j</span><br><span class="line">public class ProductInfoReceiver &#123;</span><br><span class="line"></span><br><span class="line">    private static final String PRODUCT_STOCK_TEMPLATE = &quot;product_stock_%s&quot;;</span><br><span class="line">    @Autowired</span><br><span class="line">    private StringRedisTemplate stringRedisTemplate;</span><br><span class="line"></span><br><span class="line">    @RabbitListener(queuesToDeclare = @Queue(&quot;productInfo&quot;))</span><br><span class="line">    public void process(String message)&#123;</span><br><span class="line">        //message =&gt; ProductInfoOutput</span><br><span class="line">        //ProductInfoOutput productInfoOutput = (ProductInfoOutput)JsonUtil.fromJson(message, ProductInfoOutput.class);</span><br><span class="line">        List&lt;ProductInfoOutput&gt; productInfoOutputList = ( List&lt;ProductInfoOutput&gt;)JsonUtil.fromJson(message,</span><br><span class="line">                new TypeReference&lt; List&lt;ProductInfoOutput&gt;&gt;()&#123;&#125;);</span><br><span class="line"></span><br><span class="line">        log.info(&quot;从&#123;&#125;接受到消息:&#123;&#125;&quot;,&quot;productInfo&quot;,productInfoOutputList);</span><br><span class="line">        for(ProductInfoOutput productInfoOutput : productInfoOutputList)&#123;</span><br><span class="line">            //储存到redis中</span><br><span class="line">            stringRedisTemplate.opsForValue().set(String.format(PRODUCT_STOCK_TEMPLATE,productInfoOutput.getProductId()),</span><br><span class="line">                    String.valueOf(productInfoOutput.getProductStock()));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在product服务中改造减库存的方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">   public void decreaseStock(List&lt;DecreaseStockInput&gt; decreaseStockInputList) &#123;</span><br><span class="line">       List&lt;ProductInfo&gt; productInfoList = decreaseStockProcess(decreaseStockInputList);</span><br><span class="line">       //扣完库存发送mq消息</span><br><span class="line">       List&lt;ProductInfoOutput&gt; productInfoOutputList = productInfoList.stream().map(e -&gt;&#123;</span><br><span class="line">           ProductInfoOutput output = new ProductInfoOutput();</span><br><span class="line">           BeanUtils.copyProperties(e,output);</span><br><span class="line">           return output;</span><br><span class="line">       &#125;).collect(Collectors.toList());</span><br><span class="line">       amqpTemplate.convertAndSend(&quot;productInfo&quot;, JsonUtil.toJson(productInfoOutputList));</span><br><span class="line">   &#125;</span><br><span class="line">   @Transactional</span><br><span class="line">   public List&lt;ProductInfo&gt; decreaseStockProcess(List&lt;DecreaseStockInput&gt; decreaseStockInputList) &#123;</span><br><span class="line">       List&lt;ProductInfo&gt; productInfoList = new ArrayList&lt;&gt;();</span><br><span class="line">       for (DecreaseStockInput decreaseStockInput : decreaseStockInputList) &#123;</span><br><span class="line">           Optional&lt;ProductInfo&gt; productInfoOptional = productInfoRepository.findById(decreaseStockInput.getProductId());</span><br><span class="line">           //判断商品是否存在</span><br><span class="line">           if (!productInfoOptional.isPresent()) &#123;</span><br><span class="line">               throw new ProductException(ResultEnum.PRODUCT_NOT_EXIST);</span><br><span class="line">           &#125;</span><br><span class="line">           ProductInfo productInfo = productInfoOptional.get();</span><br><span class="line">           //库存是否足够</span><br><span class="line">           Integer result = productInfo.getProductStock() - decreaseStockInput.getProductQuantity();</span><br><span class="line">           if (result &lt; 0) &#123;</span><br><span class="line">               throw new ProductException(ResultEnum.PRODUCT_STOCK_ERROR);</span><br><span class="line">           &#125;</span><br><span class="line">           productInfo.setProductStock(result);</span><br><span class="line">           productInfoRepository.save(productInfo);</span><br><span class="line">           productInfoList.add(productInfo);</span><br><span class="line">       &#125;</span><br><span class="line">       return productInfoList;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="异步扣库存分析"><a href="#异步扣库存分析" class="headerlink" title="异步扣库存分析"></a>异步扣库存分析</h2><h3 id="原始流程"><a href="#原始流程" class="headerlink" title="原始流程"></a>原始流程</h3><ol>
+<li>查询商品信息（调用商品服务）</li>
+<li>计算总价（生成订单详情）</li>
+<li>商品服务扣库存（调用商品服务）</li>
+<li>订单入库（生成订单）</li>
+</ol>
+<h3 id="改造成基于消息队列的异步事件驱动"><a href="#改造成基于消息队列的异步事件驱动" class="headerlink" title="改造成基于消息队列的异步事件驱动"></a>改造成基于消息队列的异步事件驱动</h3><h4 id="如果把订单入库这一步改造成异步的"><a href="#如果把订单入库这一步改造成异步的" class="headerlink" title="如果把订单入库这一步改造成异步的"></a>如果把订单入库这一步改造成异步的</h4><p>通过消息队列异步创建订单；如果第四步异步下单创失败了，解决办法 可以尝试重试生成订单，不处理成功mq的消息就一直存在</p>
+<h4 id="异步扣库存分析-1"><a href="#异步扣库存分析-1" class="headerlink" title="异步扣库存分析"></a>异步扣库存分析</h4><p> 如果商品服务扣库存也变成异步。如果订单服务生成订单成功，而商品扣库存失败又该如何回滚？</p>
+<h5 id="方案一"><a href="#方案一" class="headerlink" title="方案一"></a>方案一</h5><ul>
+<li>订单创建成功后，订单的状态是排队中，发布一个order_create事件到mq上，由mq负责转发给订阅该消息的服务，如果商品服务收到创建订单消息后执行扣库存操作。</li>
+<li>这里扣库存由于某些原因可能扣失败，商品服务会发送一个扣库存的消息给队列，消息里面的内容是扣库存的结果。订单服务来订阅扣库存的结果，接收到该消息后，如果扣库存成功将订单的状态改为已确认即下单成功，如果扣库存失败则把订单取消<ul>
+<li>以上需要可靠的消息投递。订单服务检测商品服务扣失败的情况，然后进行补偿</li>
+<li>在这种情况下，用户体验的变化。用户是不能立刻马上知道下单的结果。像12306买票会得到排队中的结果。可以承受住很大的并发请求。适合秒杀类的业务场景</li>
+</ul>
+</li>
+</ul>
+<h5 id="方案二"><a href="#方案二" class="headerlink" title="方案二"></a>方案二</h5><ul>
+<li>也可以订单创建后直接返回结果，发送创建订单的消息，让商品服务与订单服务订阅该消息并异步执行自己的操作，而创建订单写入数据库采用异步实现。但前提是若商品服务扣库存或订单服务下订单有一方操作失败要回滚，则异步写入数据库要实现相应错误处理或补偿机制】</li>
+</ul>
+<h4 id="异步扣库存分析汇总"><a href="#异步扣库存分析汇总" class="headerlink" title="异步扣库存分析汇总"></a>异步扣库存分析汇总</h4><ol>
+<li>订单服务实现复制一份库存副本，保存到Redis中</li>
+<li>收到请求，Redis判断是否库存充足，减掉Redis中库存</li>
+<li>订单服务创建订单写入数据库，并发送消息</li>
+</ol>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/微服务实战/">微服务实战</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RabbitMQ/">RabbitMQ</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Spring-Cliud-Stream/">Spring Cliud Stream</a></li></ul>
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-应用通信"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
@@ -585,34 +902,41 @@
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/Java常用类库与技巧/">Java常用类库与技巧</a>
+    <a class="article-category-link" href="/categories/容器/">容器</a>
  
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h4 id="Map的集合"><a href="#Map的集合" class="headerlink" title="Map的集合"></a>Map的集合</h4><p><img src="/2019/11/10/HashMap/%E9%9B%86%E5%90%88%E4%B9%8BMap.jpg" alt></p>
-<h4 id="HashMap-Java8以前-：数组-链表"><a href="#HashMap-Java8以前-：数组-链表" class="headerlink" title="HashMap(Java8以前)：数组+链表"></a>HashMap(Java8以前)：数组+链表</h4><p><img src="/2019/11/10/HashMap/HashMapJava8%E4%BB%A5%E5%89%8D.jpg" alt></p>
+        <h3 id="Map的集合"><a href="#Map的集合" class="headerlink" title="Map的集合"></a>Map的集合</h3><p><img src="/2019/11/10/HashMap/%E9%9B%86%E5%90%88%E4%B9%8BMap.jpg" alt></p>
+<h3 id="HashMap-Java8以前-：数组-链表"><a href="#HashMap-Java8以前-：数组-链表" class="headerlink" title="HashMap(Java8以前)：数组+链表"></a>HashMap(Java8以前)：数组+链表</h3><p><img src="/2019/11/10/HashMap/HashMapJava8%E4%BB%A5%E5%89%8D.jpg" alt></p>
 <ol>
-<li>HashMap的数组长度再没有给他赋任何初始值的时候默认16，一个长度为16的数组中每个元素存储的就是链表的头节点<br>，通过hash(key.hashCOde())%len 函数去取模获得要添加的元素存放的数组的位置</li>
-<li>HashMap的hash算法是通过位运算来进行的相比取模运算效率更高</li>
-<li>存在极端情况，通过hash散列运算总是得到相同的值，即分配到同一个桶中，会使得某个桶的链表很长</li>
+<li><p>HashMap的数组长度再没有给他赋任何初始值的时候默认16，一个长度为16的数组中每个元素存储的就是链表的头节点，通过hash(key.hashCode())%len 函数去取模获得要添加的元素存放的数组的位置</p>
+</li>
+<li><p>HashMap的hash算法是通过位运算来进行的相比取模运算效率更高</p>
+</li>
+<li><p>存在极端情况，通过hash散列运算总是得到相同的值，即分配到同一个桶中，会使得某个桶的链表很长</p>
+</li>
 </ol>
 <h4 id="HashMap-Java8以后-：数组-链表-红黑树"><a href="#HashMap-Java8以后-：数组-链表-红黑树" class="headerlink" title="HashMap(Java8以后)：数组+链表+红黑树"></a>HashMap(Java8以后)：数组+链表+红黑树</h4><p><img src="/2019/11/10/HashMap/HashMapJava8%E4%BB%A5%E5%90%8E.jpg" alt><br>1.红黑树的算法和实现</p>
 <h4 id="HashMap的内部结构解析"><a href="#HashMap的内部结构解析" class="headerlink" title="HashMap的内部结构解析"></a>HashMap的内部结构解析</h4><p>HashMap相关源码</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">transient Node&lt;K,V&gt;[] table;</span><br></pre></td></tr></table></figure>
 
 <p>Node的源码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">static class Node&lt;K,V&gt; implements Map.Entry&lt;K,V&gt; &#123;</span><br><span class="line">    final int hash;</span><br><span class="line">    final K key;</span><br><span class="line">    V value;</span><br><span class="line">    Node&lt;K,V&gt; next;</span><br><span class="line"></span><br><span class="line">    Node(int hash, K key, V value, Node&lt;K,V&gt; next) &#123;</span><br><span class="line">        this.hash = hash;</span><br><span class="line">        this.key = key;</span><br><span class="line">        this.value = value;</span><br><span class="line">        this.next = next;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Node</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt; <span class="keyword">implements</span> <span class="title">Map</span>.<span class="title">Entry</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">int</span> hash;</span><br><span class="line">    <span class="keyword">final</span> K key;</span><br><span class="line">    V value;</span><br><span class="line">    Node&lt;K,V&gt; next;</span><br><span class="line"></span><br><span class="line">    Node(<span class="keyword">int</span> hash, K key, V value, Node&lt;K,V&gt; next) &#123;</span><br><span class="line">        <span class="keyword">this</span>.hash = hash;</span><br><span class="line">        <span class="keyword">this</span>.key = key;</span><br><span class="line">        <span class="keyword">this</span>.value = value;</span><br><span class="line">        <span class="keyword">this</span>.next = next;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 
 <ol>
-<li>HashMap可以看做通过数组Node&lt;K,V&gt;这个table，和链表组成的数据结构。<br>Node是由hash值，键值对，以及指向的下一个节点来组成的；  </li>
-<li>而数组被分为一个个的bucket，通过hash值决定了键值对在这个数据的寻址，hash值相同的键值对则以链表的形式来存储，而如果链表的大小超过了 <em>TREEIFY_THRESHOLD =8</em> 就会被改造成红黑树。当某bucket上面的元素的总数因为删除而变得低于阈值 <em>UNTREEIFY_THRESHOLD =6</em> 了之后，红黑树又被转成链表以保持更高的性能！</li>
+<li><p>HashMap可以看做通过数组Node&lt;K,V&gt;这个table，和链表组成的数据结构。<br>Node是由hash值，键值对，以及指向的下一个节点来组成的；  </p>
+</li>
+<li><p>而数组被分为一个个的bucket，通过hash值决定了键值对在这个数据的寻址，hash值相同的键值对则以链表的形式来存储，而如果链表的大小超过了 <em>TREEIFY_THRESHOLD =8</em> 就会被改造成红黑树。当某bucket上面的元素的总数因为删除而变得低于阈值 <em>UNTREEIFY_THRESHOLD =6</em> 了之后，红黑树又被转成链表以保持更高的性能！</p>
+</li>
 </ol>
 <h5 id="HashMap的构造函数"><a href="#HashMap的构造函数" class="headerlink" title="HashMap的构造函数"></a>HashMap的构造函数</h5><p>源码</p>
-<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">* Constructs an empty &lt;tt&gt;HashMap&lt;/tt&gt; with the default initial capacity</span><br><span class="line">* (16) and the default load factor (0.75).</span><br><span class="line">*/</span><br><span class="line">public HashMap() &#123;</span><br><span class="line">    this.loadFactor = DEFAULT_LOAD_FACTOR; // all other fields defaulted</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></code></pre><p>根据构造函数可以看出HashMap 中的table数组并没有在开始初始化好，而是赋上了初始值，因为可以推断HashMap是按照lazyLoad去加载</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* Constructs an empty &lt;tt&gt;HashMap&lt;/tt&gt; with the default initial capacity</span></span><br><span class="line"><span class="comment">* (16) and the default load factor (0.75).</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">HashMap</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.loadFactor = DEFAULT_LOAD_FACTOR; <span class="comment">// all other fields defaulted</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>根据构造函数可以看出HashMap 中的table数组并没有在开始初始化好，而是赋上了初始值，因为可以推断HashMap是按照lazyLoad去加载</p>
 <h5 id="HashMap的-put-方法"><a href="#HashMap的-put-方法" class="headerlink" title="HashMap的 put()方法"></a>HashMap的 put()方法</h5><p>源码分析加注释：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">public V put(K key, V value) &#123;</span><br><span class="line">    return putVal(hash(key), key, value, false, true);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">final V putVal(int hash, K key, V value, boolean onlyIfAbsent,</span><br><span class="line">               boolean evict) &#123;</span><br><span class="line">    Node&lt;K,V&gt;[] tab; Node&lt;K,V&gt; p; int n, i;</span><br><span class="line">    //根据源码可以看出如果数组为空就调用resize()方法给它初始化数组</span><br><span class="line">    if ((tab = table) == null || (n = tab.length) == 0)</span><br><span class="line">        n = (tab = resize()).length;</span><br><span class="line">    //做hash运算，算出键值对在table里面的具体位置，得到的运算还没有元素存储到里面则会直接new一个该键值对的node,放到该位置当中</span><br><span class="line">    if ((p = tab[i = (n - 1) &amp; hash]) == null)</span><br><span class="line">        tab[i] = newNode(hash, key, value, null);</span><br><span class="line">    else &#123;</span><br><span class="line">        Node&lt;K,V&gt; e; K k;</span><br><span class="line">        //如果发现同样的位置存在同样的已经存在键值对，且键和传入进来的键一致，则直接替换数组里面的元素</span><br><span class="line">        if (p.hash == hash &amp;&amp;</span><br><span class="line">            ((k = p.key) == key || (key != null &amp;&amp; key.equals(k))))</span><br><span class="line">            e = p;</span><br><span class="line">        //当前位置存储的是否是已经树化了之后的节点，如果是树化了的话则按照树的方式尝试存储键值对</span><br><span class="line">        else if (p instanceof TreeNode)</span><br><span class="line">            e = ((TreeNode&lt;K,V&gt;)p).putTreeVal(this, tab, hash, key, value);</span><br><span class="line">        //如果不是树化了，则按照链表的插入方式往链表后面添加元素，同时判断链表元素的总数，一旦超过TREEIFY_THRESHOLD，则将链表进行树化</span><br><span class="line">        else &#123;</span><br><span class="line">            for (int binCount = 0; ; ++binCount) &#123;</span><br><span class="line">                if ((e = p.next) == null) &#123;</span><br><span class="line">                    p.next = newNode(hash, key, value, null);</span><br><span class="line">                    if (binCount &gt;= TREEIFY_THRESHOLD - 1) // -1 for 1st</span><br><span class="line">                        treeifyBin(tab, hash);</span><br><span class="line">                    break;</span><br><span class="line">                &#125;</span><br><span class="line">                if (e.hash == hash &amp;&amp;</span><br><span class="line">                    ((k = e.key) == key || (key != null &amp;&amp; key.equals(k))))</span><br><span class="line">                    break;</span><br><span class="line">                p = e;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        //如果插入的键位存在于hashMap中则对对应的键位进行值的更新操作</span><br><span class="line">        if (e != null) &#123; // existing mapping for key</span><br><span class="line">            V oldValue = e.value;</span><br><span class="line">            if (!onlyIfAbsent || oldValue == null)</span><br><span class="line">                e.value = value;</span><br><span class="line">            afterNodeAccess(e);</span><br><span class="line">            return oldValue;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ++modCount;</span><br><span class="line">    //而当我们的HashMap的size大于阈值的时候也通用会调用resize()对HashMap进行扩容</span><br><span class="line">    if (++size &gt; threshold)</span><br><span class="line">        resize();</span><br><span class="line">    afterNodeInsertion(evict);</span><br><span class="line">    return null;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> V <span class="title">put</span><span class="params">(K key, V value)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> putVal(hash(key), key, value, <span class="keyword">false</span>, <span class="keyword">true</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">final</span> V <span class="title">putVal</span><span class="params">(<span class="keyword">int</span> hash, K key, V value, <span class="keyword">boolean</span> onlyIfAbsent,</span></span></span><br><span class="line"><span class="function"><span class="params">               <span class="keyword">boolean</span> evict)</span> </span>&#123;</span><br><span class="line">    Node&lt;K,V&gt;[] tab; Node&lt;K,V&gt; p; <span class="keyword">int</span> n, i;</span><br><span class="line">    <span class="comment">//根据源码可以看出如果数组为空就调用resize()方法给它初始化数组</span></span><br><span class="line">    <span class="keyword">if</span> ((tab = table) == <span class="keyword">null</span> || (n = tab.length) == <span class="number">0</span>)</span><br><span class="line">        n = (tab = resize()).length;</span><br><span class="line">    <span class="comment">//做hash运算，算出键值对在table里面的具体位置，得到的运算还没有元素存储到里面则会直接new一个该键值对的node,放到该位置当中</span></span><br><span class="line">    <span class="keyword">if</span> ((p = tab[i = (n - <span class="number">1</span>) &amp; hash]) == <span class="keyword">null</span>)</span><br><span class="line">        tab[i] = newNode(hash, key, value, <span class="keyword">null</span>);</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        Node&lt;K,V&gt; e; K k;</span><br><span class="line">        <span class="comment">//如果发现同样的位置存在同样的已经存在键值对，且键和传入进来的键一致，则直接替换数组里面的元素</span></span><br><span class="line">        <span class="keyword">if</span> (p.hash == hash &amp;&amp;</span><br><span class="line">            ((k = p.key) == key || (key != <span class="keyword">null</span> &amp;&amp; key.equals(k))))</span><br><span class="line">            e = p;</span><br><span class="line">        <span class="comment">//当前位置存储的是否是已经树化了之后的节点，如果是树化了的话则按照树的方式尝试存储键值对</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (p <span class="keyword">instanceof</span> TreeNode)</span><br><span class="line">            e = ((TreeNode&lt;K,V&gt;)p).putTreeVal(<span class="keyword">this</span>, tab, hash, key, value);</span><br><span class="line">        <span class="comment">//如果不是树化了，则按照链表的插入方式往链表后面添加元素，同时判断链表元素的总数，一旦超过TREEIFY_THRESHOLD，则将链表进行树化</span></span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> binCount = <span class="number">0</span>; ; ++binCount) &#123;</span><br><span class="line">                <span class="keyword">if</span> ((e = p.next) == <span class="keyword">null</span>) &#123;</span><br><span class="line">                    p.next = newNode(hash, key, value, <span class="keyword">null</span>);</span><br><span class="line">                    <span class="keyword">if</span> (binCount &gt;= TREEIFY_THRESHOLD - <span class="number">1</span>) <span class="comment">// -1 for 1st</span></span><br><span class="line">                        treeifyBin(tab, hash);</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (e.hash == hash &amp;&amp;</span><br><span class="line">                    ((k = e.key) == key || (key != <span class="keyword">null</span> &amp;&amp; key.equals(k))))</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                p = e;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//如果插入的键位存在于hashMap中则对对应的键位进行值的更新操作</span></span><br><span class="line">        <span class="keyword">if</span> (e != <span class="keyword">null</span>) &#123; <span class="comment">// existing mapping for key</span></span><br><span class="line">            V oldValue = e.value;</span><br><span class="line">            <span class="keyword">if</span> (!onlyIfAbsent || oldValue == <span class="keyword">null</span>)</span><br><span class="line">                e.value = value;</span><br><span class="line">            afterNodeAccess(e);</span><br><span class="line">            <span class="keyword">return</span> oldValue;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ++modCount;</span><br><span class="line">    <span class="comment">//而当我们的HashMap的size大于阈值的时候也通用会调用resize()对HashMap进行扩容</span></span><br><span class="line">    <span class="keyword">if</span> (++size &gt; threshold)</span><br><span class="line">        resize();</span><br><span class="line">    afterNodeInsertion(evict);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>个人理解： 根据源码可以看出如果数组为空就给它初始化数组（调用resize()方法），而当我们的HashMap的size大于阈值的时候也通用会调用resize()对HashMap进行扩容,因此resize方法即具备初始化又具备扩容的功能。</p>
 <p><strong>put方法逻辑总结</strong>  </p>
@@ -626,7 +950,7 @@
 <li>若桶满了（默认容量16*扩容因子0.75），就需要resize(扩容2倍后重排)；</li>
 </ol>
 <h5 id="HashMap的-get-方法"><a href="#HashMap的-get-方法" class="headerlink" title="HashMap的 get()方法"></a>HashMap的 get()方法</h5><p>源码分析</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">public V get(Object key) &#123;</span><br><span class="line">    Node&lt;K,V&gt; e;</span><br><span class="line">    return (e = getNode(hash(key), key)) == null ? null : e.value;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">final Node&lt;K,V&gt; getNode(int hash, Object key) &#123;</span><br><span class="line">    Node&lt;K,V&gt;[] tab; Node&lt;K,V&gt; first, e; int n; K k;</span><br><span class="line">    if ((tab = table) != null &amp;&amp; (n = tab.length) &gt; 0 &amp;&amp;</span><br><span class="line">        (first = tab[(n - 1) &amp; hash]) != null) &#123;</span><br><span class="line">        if (first.hash == hash &amp;&amp; // always check first node</span><br><span class="line">            ((k = first.key) == key || (key != null &amp;&amp; key.equals(k))))</span><br><span class="line">            return first;</span><br><span class="line">        if ((e = first.next) != null) &#123;</span><br><span class="line">            if (first instanceof TreeNode)</span><br><span class="line">                return ((TreeNode&lt;K,V&gt;)first).getTreeNode(hash, key);</span><br><span class="line">            do &#123;</span><br><span class="line">                if (e.hash == hash &amp;&amp;</span><br><span class="line">                    ((k = e.key) == key || (key != null &amp;&amp; key.equals(k))))</span><br><span class="line">                    return e;</span><br><span class="line">            &#125; while ((e = e.next) != null);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return null;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> V <span class="title">get</span><span class="params">(Object key)</span> </span>&#123;</span><br><span class="line">    Node&lt;K,V&gt; e;</span><br><span class="line">    <span class="keyword">return</span> (e = getNode(hash(key), key)) == <span class="keyword">null</span> ? <span class="keyword">null</span> : e.value;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">final</span> Node&lt;K,V&gt; <span class="title">getNode</span><span class="params">(<span class="keyword">int</span> hash, Object key)</span> </span>&#123;</span><br><span class="line">    Node&lt;K,V&gt;[] tab; Node&lt;K,V&gt; first, e; <span class="keyword">int</span> n; K k;</span><br><span class="line">    <span class="keyword">if</span> ((tab = table) != <span class="keyword">null</span> &amp;&amp; (n = tab.length) &gt; <span class="number">0</span> &amp;&amp;</span><br><span class="line">        (first = tab[(n - <span class="number">1</span>) &amp; hash]) != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (first.hash == hash &amp;&amp; <span class="comment">// always check first node</span></span><br><span class="line">            ((k = first.key) == key || (key != <span class="keyword">null</span> &amp;&amp; key.equals(k))))</span><br><span class="line">            <span class="keyword">return</span> first;</span><br><span class="line">        <span class="keyword">if</span> ((e = first.next) != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (first <span class="keyword">instanceof</span> TreeNode)</span><br><span class="line">                <span class="keyword">return</span> ((TreeNode&lt;K,V&gt;)first).getTreeNode(hash, key);</span><br><span class="line">            <span class="keyword">do</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (e.hash == hash &amp;&amp;</span><br><span class="line">                    ((k = e.key) == key || (key != <span class="keyword">null</span> &amp;&amp; key.equals(k))))</span><br><span class="line">                    <span class="keyword">return</span> e;</span><br><span class="line">            &#125; <span class="keyword">while</span> ((e = e.next) != <span class="keyword">null</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p><strong>get方法逻辑总结</strong>  </p>
 <ol>
@@ -638,7 +962,7 @@
 <li>使用final对象，并采用合适的equals和hashCode()方法:final类建议作为key是利用了其不可变性，如果一个key可以随便修改，那么修改后在hashmap就找不到了；适合String,Integer这样的键</li>
 </ul>
 <h4 id="HashMap的-hash-方法"><a href="#HashMap的-hash-方法" class="headerlink" title="HashMap的 hash()方法"></a>HashMap的 hash()方法</h4><p>源码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">static final int hash(Object key) &#123;</span><br><span class="line">    int h;</span><br><span class="line">    return (key == null) ? 0 : (h = key.hashCode()) ^ (h &gt;&gt;&gt; 16);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">hash</span><span class="params">(Object key)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> h;</span><br><span class="line">    <span class="keyword">return</span> (key == <span class="keyword">null</span>) ? <span class="number">0</span> : (h = key.hashCode()) ^ (h &gt;&gt;&gt; <span class="number">16</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <ol>
 <li>先获取key的hashCode,再将高位数移动16位，再与原先的数据异或运算<br><img src="/2019/11/10/HashMap/%E4%BB%8E%E8%8E%B7%E5%8F%96hash%E5%88%B0%E6%95%A3%E5%88%97%E7%9A%84%E8%BF%87%E7%A8%8B.jpg" alt="从获取hash到散列的过程"><br>如上图：key的hashCode是返回int散列值，如果直接拿这个散列值作为下标去访问hashMap数组的话，考虑到二进制的三十二位int范围</li>
@@ -655,7 +979,7 @@
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/Java常用类库与技巧/">Java常用类库与技巧</a>
+    <a class="article-category-link" href="/categories/容器/">容器</a>
 
       
   <span class="ico-tags"></span>
@@ -693,7 +1017,7 @@
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/Java常用类库与技巧/">Java常用类库与技巧</a>
+    <a class="article-category-link" href="/categories/容器/">容器</a>
  
       
     </div>
@@ -816,7 +1140,7 @@
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/Java常用类库与技巧/">Java常用类库与技巧</a>
+    <a class="article-category-link" href="/categories/容器/">容器</a>
 
       
   <span class="ico-tags"></span>
@@ -1043,188 +1367,6 @@
 <!-- Table of Contents -->
 
   
-    <article id="post-微服务介绍"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/11/08/微服务介绍/">微服务介绍</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/11/08/微服务介绍/" class="article-date">
-	  <time datetime="2019-11-08T02:50:52.000Z" itemprop="datePublished">November 8, 2019</time>
-	</a>
-
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/微服务实战/">微服务实战</a>
- 
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="什么是微服务"><a href="#什么是微服务" class="headerlink" title="什么是微服务?"></a>什么是微服务?</h4><p>微服务是一种架构风格，不是组件不是框架。</p>
-<ol>
-<li>一系列微小的服务共同组成</li>
-<li>跑在自己的进程</li>
-<li>每个服务为独立的业务开发</li>
-<li>独立部署</li>
-<li>分布式的管理</li>
-</ol>
-<h4 id="什么是分布式？"><a href="#什么是分布式？" class="headerlink" title="什么是分布式？"></a>什么是分布式？</h4><p>旨在支持应用程序和服务的开发，可以利用物理架构由多个自治的处理元素，不共享内存，但通过网络发送消息合作。<br><img src="/2019/11/08/微服务介绍/%E6%9E%B6%E6%9E%84%E6%BC%94%E8%BF%9B.jpg" alt></p>
-<h4 id="单体架构的优点："><a href="#单体架构的优点：" class="headerlink" title="单体架构的优点："></a>单体架构的优点：</h4><p>容易测试（本地启动完整的测试，不需要外部依赖）<br>容易部署（直接打成war包，放在tomcat下面就可以了）</p>
-<h4 id="单体架构的缺点："><a href="#单体架构的缺点：" class="headerlink" title="单体架构的缺点："></a>单体架构的缺点：</h4><p>开发效率低（容易提交代码的时候造成冲突）<br>代码维护难（尤其是新人来的时候业务代码写在一块，不知从何下手）<br>部署不够灵活（任何小修改都要重新构建，构建时间特别长）<br>稳定性不够 （任何一个小问题容易让整个系统挂掉）<br>扩展性不够（无法满足高并发下的业务需求）   </p>
-<h4 id="微服务架构的基础框架或组件："><a href="#微服务架构的基础框架或组件：" class="headerlink" title="微服务架构的基础框架或组件："></a>微服务架构的基础框架或组件：</h4><ol>
-<li>服务注册发现</li>
-<li>服务网关（路由、监控、容器、日志、授权、反爬虫）</li>
-<li>后端通用服务（请求时将地址信息放在服务注册表中）</li>
-<li>前端服务（通过查询注册表发现并调用后端服务，主要是聚合后端服务和暴露外部接口）</li>
-</ol>
-<p><img src="/2019/11/08/微服务介绍/%E7%AE%80%E5%8D%95%E7%9A%84%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84.jpg" alt></p>
-<h4 id="Spring-Cloud-是什么？"><a href="#Spring-Cloud-是什么？" class="headerlink" title="Spring Cloud 是什么？"></a>Spring Cloud 是什么？</h4><ul>
-<li>Spring Cloud 是一个开发工具集，包含多个子项目<br>主要是基于对 Netflix 开源组件的进一步封装</li>
-<li>继承了了Spring Boot 的开发便利，简化了分布式开发</li>
-<li>不仅需要掌握如何使用，更要理解分布式架构的特点</li>
-</ul>
-
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/微服务实战/">微服务实战</a>
-
-      
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-Java异常"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/11/07/Java异常/">Java异常</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/11/07/Java异常/" class="article-date">
-	  <time datetime="2019-11-07T13:33:15.000Z" itemprop="datePublished">November 7, 2019</time>
-	</a>
-
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/Java常用类库与技巧/">Java常用类库与技巧</a>
- 
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="异常机制主要回答了三个问题"><a href="#异常机制主要回答了三个问题" class="headerlink" title="异常机制主要回答了三个问题"></a>异常机制主要回答了三个问题</h4><ul>
-<li>what：异常类型回答了什么被抛出</li>
-<li>where：异常堆栈跟踪回答了在哪抛出</li>
-<li>why：异常信息回答了为什么被抛出</li>
-</ul>
-<h4 id="Java的异常体系"><a href="#Java的异常体系" class="headerlink" title="Java的异常体系"></a>Java的异常体系</h4><p><img src="/2019/11/07/Java异常/Java%E7%9A%84%E5%BC%82%E5%B8%B8%E4%BD%93%E7%B3%BB.jpg" alt></p>
-<ul>
-<li>RuntimeException：不可预知的，程序应当自行避免（NullPointerException，IndexOutOfBoundsException ….. ）</li>
-<li>非RuntimeExceptin：可预知的，从编译器校验的异常（IOException，SqlException…）<br>任</li>
-</ul>
-<h4 id="error和exceptin的区别"><a href="#error和exceptin的区别" class="headerlink" title="error和exceptin的区别"></a>error和exceptin的区别</h4><p><strong>从概念角度解析Java的异常处理机制</strong></p>
-<ul>
-<li>error：程序无法处理的系统错误，编译器不做检查（StackOverFlowError,OutOfMemoryError）</li>
-<li>exception：程序可以处理的异常，捕获后可能恢复<br>总结：前者是程序无法处理的错误，后者是可以处理的异常</li>
-</ul>
-<p><strong>从责任角度看</strong>  </p>
-<ol>
-<li>Error属于jvm需要承担的责任</li>
-<li>RuntimeException是程序应该承当的责任</li>
-<li>Checked Exception可检查异常是Java编译器应该负担的责</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public class ErrorAndException&#123;</span><br><span class="line">    private void throwError()&#123;</span><br><span class="line">        throw new StackOverflowError();</span><br><span class="line">    &#125;</span><br><span class="line">    private void throwRuntimeException()&#123;</span><br><span class="line">        throw new RuntimeExeption</span><br><span class="line">    &#125;</span><br><span class="line">    private void throwCheckedException () throws FileNotFoundExcpetion&#123;</span><br><span class="line">        //此处编译器会报错，checkedException是必须要追踪处理的异常，要么此处加try()catch&#123;&#125;在catch中增加处理逻辑，理解这种Exception的成因结合实际业务去处理</span><br><span class="line">        //最好通过throw方式把异常抛出去，让调用模块去处理</span><br><span class="line">        throw new FileNotFoundExcpetion();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="常见Error以及Exception"><a href="#常见Error以及Exception" class="headerlink" title="常见Error以及Exception"></a>常见Error以及Exception</h4><h5 id="RuntimeException"><a href="#RuntimeException" class="headerlink" title="RuntimeException"></a>RuntimeException</h5><ol>
-<li>NullPointerException-空指针异常</li>
-<li>ClassCastException-类型强制转换异常</li>
-<li>IllegalArguementException-传递非法参数异常</li>
-<li>IndexOutOfBoundsException-下标越界异常</li>
-<li>NumberFormatException-数字格式异常<h5 id="非RuntimeException"><a href="#非RuntimeException" class="headerlink" title="非RuntimeException"></a>非RuntimeException</h5></li>
-<li>ClassNotFoundException -找不到指定class的异常</li>
-<li>IOExceptin-IO操作异常</li>
-</ol>
-<h4 id="Error"><a href="#Error" class="headerlink" title="Error"></a>Error</h4><ol>
-<li>NotClassDefFoundError-找不到class定义的异常：<br> NotClassDefFondError的成因：<ul>
-<li>类依赖的class或者jar不存在</li>
-<li>类文件存在，但是存在不同域中：对应的class在Java的classpath中不可用，又或者有多个不同的类加载器重复加载了同一个class</li>
-<li>大小写问题，javac编译的时候无视大小写，很肯能编译出来的class文件就与想要的不一样</li>
-</ul>
-</li>
-<li>StackOverflowError-深递归导致栈被耗尽而抛出的异常</li>
-<li>OutOfMemeryError-内存溢出异常</li>
-</ol>
-<h4 id="Java的异常处理机制"><a href="#Java的异常处理机制" class="headerlink" title="Java的异常处理机制"></a>Java的异常处理机制</h4><ul>
-<li>抛出异常：创建异常对象，交由运行时系统处理</li>
-<li>捕获异常：寻找合适的异常处理器处理异常，否则终止运行</li>
-</ul>
-<h4 id="Java异常的处理原则"><a href="#Java异常的处理原则" class="headerlink" title="Java异常的处理原则"></a>Java异常的处理原则</h4><ul>
-<li>具体明确：抛出的异常应该能通过异常类名和message准确说明异常的类型和产出异常的愿意；</li>
-<li>提早抛出：应尽可能早的发现并抛出异常，便于精确定位问题；</li>
-<li>延迟捕获异常的捕获和处理应可能延迟，让掌握更多信息的作用域来处理</li>
-</ul>
-<h4 id="高效主流的异常处理框架"><a href="#高效主流的异常处理框架" class="headerlink" title="高效主流的异常处理框架"></a>高效主流的异常处理框架</h4><ul>
-<li>设计一个通用的继承自RuntimeExceptin的异常来统一处理</li>
-<li>其余异常都统一转译为上述异常AppException</li>
-<li>在catch之后，抛出上述异常的子类，并提供足以定位的信息</li>
-<li>由前端接受AppExcception做统一处理</li>
-</ul>
-<p><img src="/2019/11/07/Java异常/%E9%AB%98%E6%95%88%E4%B8%BB%E6%B5%81%E7%9A%84%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E6%A1%86%E6%9E%B6.jpg" alt="高效主流的异常处理框架"></p>
-<h4 id="try-catch的性能"><a href="#try-catch的性能" class="headerlink" title="try-catch的性能"></a>try-catch的性能</h4><h5 id="Java异常处理消耗性能的地方"><a href="#Java异常处理消耗性能的地方" class="headerlink" title="Java异常处理消耗性能的地方"></a>Java异常处理消耗性能的地方</h5><ul>
-<li>try-catch块影响JVM的优化</li>
-<li>异常对象实例需要保存栈快照等信息，开销较大</li>
-</ul>
-
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/Java常用类库与技巧/">Java常用类库与技巧</a>
-
-      
-  <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/异常/">异常</a></li></ul>
-
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
 
 
   <nav id="page-nav">
@@ -1323,6 +1465,30 @@
               <div class="widget-entry-summary" style="margin: 0;">
             
 
+              <h6 style="margin: 0;"><a href="/2020/01/04/Java基础总结/">Java基础总结</a></h6>
+              <span>January 4, 2020</span>
+            </div>
+
+          </li>
+        
+          <li class="clearfix">
+
+            
+              <div class="widget-entry-summary" style="margin: 0;">
+            
+
+              <h6 style="margin: 0;"><a href="/2020/01/03/ArrayList的底层实现原理/">ArrayList的底层实现原理</a></h6>
+              <span>January 3, 2020</span>
+            </div>
+
+          </li>
+        
+          <li class="clearfix">
+
+            
+              <div class="widget-entry-summary" style="margin: 0;">
+            
+
               <h6 style="margin: 0;"><a href="/2020/01/02/AQS原理以及AQS同步组件/">AQS原理以及AQS同步组件</a></h6>
               <span>January 2, 2020</span>
             </div>
@@ -1365,30 +1531,6 @@
 
           </li>
         
-          <li class="clearfix">
-
-            
-              <div class="widget-entry-summary" style="margin: 0;">
-            
-
-              <h6 style="margin: 0;"><a href="/2019/11/18/链路监控/">链路监控</a></h6>
-              <span>November 18, 2019</span>
-            </div>
-
-          </li>
-        
-          <li class="clearfix">
-
-            
-              <div class="widget-entry-summary" style="margin: 0;">
-            
-
-              <h6 style="margin: 0;"><a href="/2019/11/18/服务容错Hystrix/">服务容错Hystrix</a></h6>
-              <span>November 18, 2019</span>
-            </div>
-
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -1398,7 +1540,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/GC相关/">GC相关</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java多线程与并发/">Java多线程与并发</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java常用类库与技巧/">Java常用类库与技巧</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Redis/">Redis</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot-实战/">Spring Boot 实战</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务实战/">微服务实战</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/设计模式/">设计模式</a><span class="category-list-count">1</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/GC相关/">GC相关</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java多线程与并发/">Java多线程与并发</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java常用类库与技巧/">Java常用类库与技巧</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Redis/">Redis</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot-实战/">Spring Boot 实战</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/容器/">容器</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务实战/">微服务实战</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/设计模式/">设计模式</a><span class="category-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -1408,7 +1550,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ACID/">ACID</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AOF/">AOF</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AOP/">AOP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ClassLoader/">ClassLoader</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ConcurrentHashMap/">ConcurrentHashMap</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Config-Clent/">Config Clent</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Config-Server/">Config Server</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cookie和动态路由/">Cookie和动态路由</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Eureka/">Eureka</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Executor/">Executor</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/">HTTP</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HashMap/">HashMap</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hashtable/">Hashtable</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hystrix/">Hystrix</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IOC/">IOC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO机制/">IO机制</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/InnoDB/">InnoDB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JUC包的梳理/">JUC包的梳理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM内存结构模型/">JVM内存结构模型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java特性/">Java特性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/List/">List</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyISAM/">MyISAM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OSI七层模型/">OSI七层模型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RDB/">RDB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTO/">RTO</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTT/">RTT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RabbitMQ/">RabbitMQ</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Set/">Set</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cliud-Stream/">Spring Cliud Stream</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cloud-Bus/">Spring Cloud Bus</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cloud-Sleuth/">Spring Cloud Sleuth</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP的三次握手/">TCP的三次握手</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP的四次挥手/">TCP的四次挥手</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Thread和Runnable/">Thread和Runnable</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UDP/">UDP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Zipkin/">Zipkin</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Zuul/">Zuul</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interrupt/">interrupt</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lombok/">lombok</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/notify/">notify</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql调优/">sql调优</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/start和run/">start和run</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/yield/">yield</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/代理模式/">代理模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式锁/">分布式锁</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/单例模式/">单例模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/反射/">反射</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/回收算法/">回收算法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多路I-O复用模型/">多路I/O复用模型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密集索引/">密集索引</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工厂模式/">工厂模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/平台无关性/">平台无关性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/并发容器/">并发容器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异常/">异常</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异步队列/">异步队列</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/当前读/">当前读</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/快照读/">快照读</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库事务/">数据库事务</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库架构/">数据库架构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/新生代垃圾收集器/">新生代垃圾收集器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/日志框架/">日志框架</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/服务容错/">服务容错</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/服务网关/">服务网关</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/标记算法/">标记算法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/滑动窗口/">滑动窗口</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/稀疏索引/">稀疏索引</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/类的装载/">类的装载</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/索引/">索引</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/索引数据结构/">索引数据结构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线程共享/">线程共享</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线程独占/">线程独占</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/老年代垃圾收集器/">老年代垃圾收集器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/语法/">语法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/跨域/">跨域</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/进程和线程/">进程和线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/鉴权/">鉴权</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/链路监控/">链路监控</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/锁模块/">锁模块</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/限流/">限流</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ACID/">ACID</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AOF/">AOF</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AOP/">AOP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ArrayList/">ArrayList</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ClassLoader/">ClassLoader</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ConcurrentHashMap/">ConcurrentHashMap</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Config-Clent/">Config Clent</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Config-Server/">Config Server</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cookie和动态路由/">Cookie和动态路由</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Eureka/">Eureka</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Executor/">Executor</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/">HTTP</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HashMap/">HashMap</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hashtable/">Hashtable</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hystrix/">Hystrix</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IOC/">IOC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO机制/">IO机制</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/InnoDB/">InnoDB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JUC包的梳理/">JUC包的梳理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM内存结构模型/">JVM内存结构模型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java特性/">Java特性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/List/">List</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyISAM/">MyISAM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OSI七层模型/">OSI七层模型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RDB/">RDB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTO/">RTO</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTT/">RTT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RabbitMQ/">RabbitMQ</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Set/">Set</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cliud-Stream/">Spring Cliud Stream</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cloud-Bus/">Spring Cloud Bus</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cloud-Sleuth/">Spring Cloud Sleuth</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP的三次握手/">TCP的三次握手</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP的四次挥手/">TCP的四次挥手</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Thread和Runnable/">Thread和Runnable</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UDP/">UDP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Zipkin/">Zipkin</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Zuul/">Zuul</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interrupt/">interrupt</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lombok/">lombok</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/notify/">notify</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql调优/">sql调优</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/start和run/">start和run</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/yield/">yield</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/代理模式/">代理模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式锁/">分布式锁</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/单例模式/">单例模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/反射/">反射</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/回收算法/">回收算法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多路I-O复用模型/">多路I/O复用模型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密集索引/">密集索引</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工厂模式/">工厂模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/平台无关性/">平台无关性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/并发容器/">并发容器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异常/">异常</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异步队列/">异步队列</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/当前读/">当前读</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/快照读/">快照读</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库事务/">数据库事务</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库架构/">数据库架构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/新生代垃圾收集器/">新生代垃圾收集器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/日志框架/">日志框架</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/服务容错/">服务容错</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/服务网关/">服务网关</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/标记算法/">标记算法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/滑动窗口/">滑动窗口</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/稀疏索引/">稀疏索引</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/类的装载/">类的装载</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/索引/">索引</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/索引数据结构/">索引数据结构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线程共享/">线程共享</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线程独占/">线程独占</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/老年代垃圾收集器/">老年代垃圾收集器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/语法/">语法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/跨域/">跨域</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/进程和线程/">进程和线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/鉴权/">鉴权</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/链路监控/">链路监控</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/锁模块/">锁模块</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/限流/">限流</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -1418,7 +1560,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/ACID/" style="font-size: 10px;">ACID</a> <a href="/tags/AOF/" style="font-size: 10px;">AOF</a> <a href="/tags/AOP/" style="font-size: 10px;">AOP</a> <a href="/tags/ClassLoader/" style="font-size: 10px;">ClassLoader</a> <a href="/tags/ConcurrentHashMap/" style="font-size: 10px;">ConcurrentHashMap</a> <a href="/tags/Config-Clent/" style="font-size: 10px;">Config Clent</a> <a href="/tags/Config-Server/" style="font-size: 10px;">Config Server</a> <a href="/tags/Cookie和动态路由/" style="font-size: 10px;">Cookie和动态路由</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Eureka/" style="font-size: 10px;">Eureka</a> <a href="/tags/Executor/" style="font-size: 10px;">Executor</a> <a href="/tags/HTTP/" style="font-size: 15px;">HTTP</a> <a href="/tags/HashMap/" style="font-size: 10px;">HashMap</a> <a href="/tags/Hashtable/" style="font-size: 10px;">Hashtable</a> <a href="/tags/Hystrix/" style="font-size: 10px;">Hystrix</a> <a href="/tags/IOC/" style="font-size: 10px;">IOC</a> <a href="/tags/IO机制/" style="font-size: 10px;">IO机制</a> <a href="/tags/InnoDB/" style="font-size: 10px;">InnoDB</a> <a href="/tags/JUC包的梳理/" style="font-size: 10px;">JUC包的梳理</a> <a href="/tags/JVM内存结构模型/" style="font-size: 10px;">JVM内存结构模型</a> <a href="/tags/Java特性/" style="font-size: 10px;">Java特性</a> <a href="/tags/List/" style="font-size: 10px;">List</a> <a href="/tags/MyISAM/" style="font-size: 10px;">MyISAM</a> <a href="/tags/OSI七层模型/" style="font-size: 10px;">OSI七层模型</a> <a href="/tags/RDB/" style="font-size: 10px;">RDB</a> <a href="/tags/RTO/" style="font-size: 10px;">RTO</a> <a href="/tags/RTT/" style="font-size: 10px;">RTT</a> <a href="/tags/RabbitMQ/" style="font-size: 10px;">RabbitMQ</a> <a href="/tags/Set/" style="font-size: 10px;">Set</a> <a href="/tags/Spring-Cliud-Stream/" style="font-size: 10px;">Spring Cliud Stream</a> <a href="/tags/Spring-Cloud-Bus/" style="font-size: 10px;">Spring Cloud Bus</a> <a href="/tags/Spring-Cloud-Sleuth/" style="font-size: 10px;">Spring Cloud Sleuth</a> <a href="/tags/TCP的三次握手/" style="font-size: 10px;">TCP的三次握手</a> <a href="/tags/TCP的四次挥手/" style="font-size: 10px;">TCP的四次挥手</a> <a href="/tags/Thread和Runnable/" style="font-size: 10px;">Thread和Runnable</a> <a href="/tags/UDP/" style="font-size: 10px;">UDP</a> <a href="/tags/Zipkin/" style="font-size: 10px;">Zipkin</a> <a href="/tags/Zuul/" style="font-size: 10px;">Zuul</a> <a href="/tags/interrupt/" style="font-size: 10px;">interrupt</a> <a href="/tags/lombok/" style="font-size: 10px;">lombok</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/notify/" style="font-size: 10px;">notify</a> <a href="/tags/sql调优/" style="font-size: 10px;">sql调优</a> <a href="/tags/start和run/" style="font-size: 10px;">start和run</a> <a href="/tags/yield/" style="font-size: 10px;">yield</a> <a href="/tags/代理模式/" style="font-size: 10px;">代理模式</a> <a href="/tags/分布式锁/" style="font-size: 10px;">分布式锁</a> <a href="/tags/单例模式/" style="font-size: 10px;">单例模式</a> <a href="/tags/反射/" style="font-size: 10px;">反射</a> <a href="/tags/回收算法/" style="font-size: 10px;">回收算法</a> <a href="/tags/多路I-O复用模型/" style="font-size: 10px;">多路I/O复用模型</a> <a href="/tags/密集索引/" style="font-size: 10px;">密集索引</a> <a href="/tags/工厂模式/" style="font-size: 10px;">工厂模式</a> <a href="/tags/平台无关性/" style="font-size: 10px;">平台无关性</a> <a href="/tags/并发容器/" style="font-size: 10px;">并发容器</a> <a href="/tags/异常/" style="font-size: 10px;">异常</a> <a href="/tags/异步队列/" style="font-size: 10px;">异步队列</a> <a href="/tags/当前读/" style="font-size: 10px;">当前读</a> <a href="/tags/快照读/" style="font-size: 10px;">快照读</a> <a href="/tags/数据库事务/" style="font-size: 10px;">数据库事务</a> <a href="/tags/数据库架构/" style="font-size: 10px;">数据库架构</a> <a href="/tags/新生代垃圾收集器/" style="font-size: 10px;">新生代垃圾收集器</a> <a href="/tags/日志框架/" style="font-size: 10px;">日志框架</a> <a href="/tags/服务容错/" style="font-size: 10px;">服务容错</a> <a href="/tags/服务网关/" style="font-size: 10px;">服务网关</a> <a href="/tags/标记算法/" style="font-size: 10px;">标记算法</a> <a href="/tags/滑动窗口/" style="font-size: 10px;">滑动窗口</a> <a href="/tags/稀疏索引/" style="font-size: 10px;">稀疏索引</a> <a href="/tags/类的装载/" style="font-size: 10px;">类的装载</a> <a href="/tags/索引/" style="font-size: 15px;">索引</a> <a href="/tags/索引数据结构/" style="font-size: 10px;">索引数据结构</a> <a href="/tags/线程共享/" style="font-size: 10px;">线程共享</a> <a href="/tags/线程独占/" style="font-size: 10px;">线程独占</a> <a href="/tags/老年代垃圾收集器/" style="font-size: 10px;">老年代垃圾收集器</a> <a href="/tags/语法/" style="font-size: 10px;">语法</a> <a href="/tags/跨域/" style="font-size: 10px;">跨域</a> <a href="/tags/进程和线程/" style="font-size: 10px;">进程和线程</a> <a href="/tags/鉴权/" style="font-size: 10px;">鉴权</a> <a href="/tags/链路监控/" style="font-size: 10px;">链路监控</a> <a href="/tags/锁模块/" style="font-size: 20px;">锁模块</a> <a href="/tags/限流/" style="font-size: 10px;">限流</a>
+      <a href="/tags/ACID/" style="font-size: 10px;">ACID</a> <a href="/tags/AOF/" style="font-size: 10px;">AOF</a> <a href="/tags/AOP/" style="font-size: 10px;">AOP</a> <a href="/tags/ArrayList/" style="font-size: 10px;">ArrayList</a> <a href="/tags/ClassLoader/" style="font-size: 10px;">ClassLoader</a> <a href="/tags/ConcurrentHashMap/" style="font-size: 10px;">ConcurrentHashMap</a> <a href="/tags/Config-Clent/" style="font-size: 10px;">Config Clent</a> <a href="/tags/Config-Server/" style="font-size: 10px;">Config Server</a> <a href="/tags/Cookie和动态路由/" style="font-size: 10px;">Cookie和动态路由</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Eureka/" style="font-size: 10px;">Eureka</a> <a href="/tags/Executor/" style="font-size: 10px;">Executor</a> <a href="/tags/HTTP/" style="font-size: 15px;">HTTP</a> <a href="/tags/HashMap/" style="font-size: 10px;">HashMap</a> <a href="/tags/Hashtable/" style="font-size: 10px;">Hashtable</a> <a href="/tags/Hystrix/" style="font-size: 10px;">Hystrix</a> <a href="/tags/IOC/" style="font-size: 10px;">IOC</a> <a href="/tags/IO机制/" style="font-size: 10px;">IO机制</a> <a href="/tags/InnoDB/" style="font-size: 10px;">InnoDB</a> <a href="/tags/JUC包的梳理/" style="font-size: 10px;">JUC包的梳理</a> <a href="/tags/JVM内存结构模型/" style="font-size: 10px;">JVM内存结构模型</a> <a href="/tags/Java特性/" style="font-size: 10px;">Java特性</a> <a href="/tags/List/" style="font-size: 10px;">List</a> <a href="/tags/MyISAM/" style="font-size: 10px;">MyISAM</a> <a href="/tags/OSI七层模型/" style="font-size: 10px;">OSI七层模型</a> <a href="/tags/RDB/" style="font-size: 10px;">RDB</a> <a href="/tags/RTO/" style="font-size: 10px;">RTO</a> <a href="/tags/RTT/" style="font-size: 10px;">RTT</a> <a href="/tags/RabbitMQ/" style="font-size: 10px;">RabbitMQ</a> <a href="/tags/Set/" style="font-size: 10px;">Set</a> <a href="/tags/Spring-Cliud-Stream/" style="font-size: 10px;">Spring Cliud Stream</a> <a href="/tags/Spring-Cloud-Bus/" style="font-size: 10px;">Spring Cloud Bus</a> <a href="/tags/Spring-Cloud-Sleuth/" style="font-size: 10px;">Spring Cloud Sleuth</a> <a href="/tags/TCP的三次握手/" style="font-size: 10px;">TCP的三次握手</a> <a href="/tags/TCP的四次挥手/" style="font-size: 10px;">TCP的四次挥手</a> <a href="/tags/Thread和Runnable/" style="font-size: 10px;">Thread和Runnable</a> <a href="/tags/UDP/" style="font-size: 10px;">UDP</a> <a href="/tags/Zipkin/" style="font-size: 10px;">Zipkin</a> <a href="/tags/Zuul/" style="font-size: 10px;">Zuul</a> <a href="/tags/interrupt/" style="font-size: 10px;">interrupt</a> <a href="/tags/lombok/" style="font-size: 10px;">lombok</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/notify/" style="font-size: 10px;">notify</a> <a href="/tags/sql调优/" style="font-size: 10px;">sql调优</a> <a href="/tags/start和run/" style="font-size: 10px;">start和run</a> <a href="/tags/yield/" style="font-size: 10px;">yield</a> <a href="/tags/代理模式/" style="font-size: 10px;">代理模式</a> <a href="/tags/分布式锁/" style="font-size: 10px;">分布式锁</a> <a href="/tags/单例模式/" style="font-size: 10px;">单例模式</a> <a href="/tags/反射/" style="font-size: 10px;">反射</a> <a href="/tags/回收算法/" style="font-size: 10px;">回收算法</a> <a href="/tags/多路I-O复用模型/" style="font-size: 10px;">多路I/O复用模型</a> <a href="/tags/密集索引/" style="font-size: 10px;">密集索引</a> <a href="/tags/工厂模式/" style="font-size: 10px;">工厂模式</a> <a href="/tags/平台无关性/" style="font-size: 10px;">平台无关性</a> <a href="/tags/并发容器/" style="font-size: 10px;">并发容器</a> <a href="/tags/异常/" style="font-size: 10px;">异常</a> <a href="/tags/异步队列/" style="font-size: 10px;">异步队列</a> <a href="/tags/当前读/" style="font-size: 10px;">当前读</a> <a href="/tags/快照读/" style="font-size: 10px;">快照读</a> <a href="/tags/数据库事务/" style="font-size: 10px;">数据库事务</a> <a href="/tags/数据库架构/" style="font-size: 10px;">数据库架构</a> <a href="/tags/新生代垃圾收集器/" style="font-size: 10px;">新生代垃圾收集器</a> <a href="/tags/日志框架/" style="font-size: 10px;">日志框架</a> <a href="/tags/服务容错/" style="font-size: 10px;">服务容错</a> <a href="/tags/服务网关/" style="font-size: 10px;">服务网关</a> <a href="/tags/标记算法/" style="font-size: 10px;">标记算法</a> <a href="/tags/滑动窗口/" style="font-size: 10px;">滑动窗口</a> <a href="/tags/稀疏索引/" style="font-size: 10px;">稀疏索引</a> <a href="/tags/类的装载/" style="font-size: 10px;">类的装载</a> <a href="/tags/索引/" style="font-size: 15px;">索引</a> <a href="/tags/索引数据结构/" style="font-size: 10px;">索引数据结构</a> <a href="/tags/线程共享/" style="font-size: 10px;">线程共享</a> <a href="/tags/线程独占/" style="font-size: 10px;">线程独占</a> <a href="/tags/老年代垃圾收集器/" style="font-size: 10px;">老年代垃圾收集器</a> <a href="/tags/语法/" style="font-size: 10px;">语法</a> <a href="/tags/跨域/" style="font-size: 10px;">跨域</a> <a href="/tags/进程和线程/" style="font-size: 10px;">进程和线程</a> <a href="/tags/鉴权/" style="font-size: 10px;">鉴权</a> <a href="/tags/链路监控/" style="font-size: 10px;">链路监控</a> <a href="/tags/锁模块/" style="font-size: 20px;">锁模块</a> <a href="/tags/限流/" style="font-size: 10px;">限流</a>
     </div>
   </div>
 
@@ -1428,7 +1570,7 @@
     <h3 class="widget-title">Archives</h3>
 
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">23</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">25</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">23</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">25</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">1</span></li></ul>
     </div>
 
     <div>

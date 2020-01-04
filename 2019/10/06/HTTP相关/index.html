@@ -20,7 +20,7 @@
 <meta property="og:description" content="超文本传输协议HTTP主要特点 支持客户/服务器模式 简单快速 灵活 无连接 无状态  请求/响应的步骤 客户端连接到web服务器 发送HTTP请求 服务器接受请求并返回HTTP响应 释放连接TCP连接 客户端浏览器解析HTML内容  在浏览器地址键入URL，按下回车之后经历的流程 DNS解析  浏览器依据URL逐层查询DNS服务器缓存，解析URL中的域名所对应的的IP TCP连接  找到IP地址">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/2019/10/06/HTTP相关/Session%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F.jpg">
-<meta property="og:updated_time" content="2019-10-08T01:44:06.285Z">
+<meta property="og:updated_time" content="2020-01-04T06:38:43.012Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HTTP相关">
 <meta name="twitter:description" content="超文本传输协议HTTP主要特点 支持客户/服务器模式 简单快速 灵活 无连接 无状态  请求/响应的步骤 客户端连接到web服务器 发送HTTP请求 服务器接受请求并返回HTTP响应 释放连接TCP连接 客户端浏览器解析HTML内容  在浏览器地址键入URL，按下回车之后经历的流程 DNS解析  浏览器依据URL逐层查询DNS服务器缓存，解析URL中的域名所对应的的IP TCP连接  找到IP地址">
@@ -183,7 +183,9 @@
 <li>浏览器发送HTTP请求</li>
 <li>服务器处理请求并返回HTTP响应报文</li>
 <li>浏览器解析渲染页面</li>
-<li>连接结束 结合四次挥手<h4 id="HTTP状态码"><a href="#HTTP状态码" class="headerlink" title="HTTP状态码"></a>HTTP状态码</h4><h5 id="五种可能的取值"><a href="#五种可能的取值" class="headerlink" title="五种可能的取值"></a>五种可能的取值</h5></li>
+<li>连接结束 结合四次挥手</li>
+</ul>
+<h4 id="HTTP状态码"><a href="#HTTP状态码" class="headerlink" title="HTTP状态码"></a>HTTP状态码</h4><h5 id="五种可能的取值"><a href="#五种可能的取值" class="headerlink" title="五种可能的取值"></a>五种可能的取值</h5><ul>
 <li>1XX : 指示信息 – 表示请求已接收，继续处理</li>
 <li>2XX : 成功–表示请求已被成功接收、理解、接受</li>
 <li>3XX : 重定向 – 要完成请求必须进行更进一步的操作</li>
@@ -195,10 +197,21 @@
 <li>403 Forbidden : 服务器收到请求，但是拒绝提供服务</li>
 <li>404 Not Found : 请求资源不存在,eg,输入错误的URL</li>
 <li>500 Internal Server Error : 服务器发生了不可预期的错误</li>
-<li>503 Server Unavailable : 服务器当前不能处理客户端的请求，一段时间后可能恢复正常<h4 id="GET请求和POST请求的区别"><a href="#GET请求和POST请求的区别" class="headerlink" title="GET请求和POST请求的区别"></a>GET请求和POST请求的区别</h4></li>
-<li>Http报文层面：GET将信息放在URL，POST放在报文体中</li>
-<li>数据库层面：GET符合幂等性和安全性，POST不符合 （幂等性：对数据库多次操作获得结果是一样的。安全性：没有改变数据库中的数据）</li>
-<li>其他层面：GET可以被缓存、被储存，而POST不行</li>
+<li>503 Server Unavailable : 服务器当前不能处理客户端的请求，一段时间后可能恢复正常</li>
+</ul>
+<h4 id="GET请求和POST请求的区别"><a href="#GET请求和POST请求的区别" class="headerlink" title="GET请求和POST请求的区别"></a>GET请求和POST请求的区别</h4><ul>
+<li><p>Http报文层面：GET将信息放在URL，POST放在报文体中 ；get将表单中数据按照name=value的形式，添加到action 所指向的URL 后面，并且两者使用”?”连接，而各个变量之间使用”&amp;”连接；post是将表单中的数据放在HTTP协议的请求头或消息体中</p>
+</li>
+<li><p>get传输的数据要受到URL长度限制（最大长度是 2048 个字符）；而post可以传输大量的数据，上传文件通常要使用post方式；</p>
+</li>
+<li><p>数据库层面：GET符合幂等性和安全性，POST不符合 （幂等性：对数据库多次操作获得结果是一样的。安全性：没有改变数据库中的数据）</p>
+</li>
+<li><p>其他层面：GET可以被缓存、被储存，而POST不行</p>
+</li>
+<li><p>GET和POST本质上就是TCP链接，并无差别。但是由于HTTP的规定和浏览器/服务器的限制，导致他们在应用过程中体现出一些不同。 HTTP是基于TCP/IP的关于数据如何在万维网中如何通信的协议。所以HTTP的底层是TCP/IP。所以GET和POST的底层也是TCP/IP，也就是说，GET/POST都是TCP链接。</p>
+</li>
+<li><p>对于GET方式的请求，浏览器会把http header和data一并发送出去，服务器响应200（返回数据）；<br>而对于POST，浏览器先发送header，服务器响应100 continue，浏览器再发送data，服务器响应200 ok（返回数据）。</p>
+</li>
 </ul>
 <h4 id="Cookie和Session的区别"><a href="#Cookie和Session的区别" class="headerlink" title="Cookie和Session的区别"></a>Cookie和Session的区别</h4><h5 id="Cookie简介"><a href="#Cookie简介" class="headerlink" title="Cookie简介"></a>Cookie简介</h5><ul>
 <li>由服务器发给客户端的特殊信息，以文本的形式存放在客户端</li>
@@ -212,10 +225,10 @@
 <li>服务器发送HTTP Response</li>
 </ul>
 <h5 id="Session-简介"><a href="#Session-简介" class="headerlink" title="Session 简介"></a>Session 简介</h5><ul>
-<li><p>服务器端的机制，在服务器上保存的信息</p>
-</li>
-<li><p>解析客户端请求并操作session id,按需保存状态信息</p>
-<h5 id="Session的实现方式方式"><a href="#Session的实现方式方式" class="headerlink" title="Session的实现方式方式"></a>Session的实现方式方式</h5></li>
+<li>服务器端的机制，在服务器上保存的信息</li>
+<li>解析客户端请求并操作session id,按需保存状态信息</li>
+</ul>
+<h5 id="Session的实现方式方式"><a href="#Session的实现方式方式" class="headerlink" title="Session的实现方式方式"></a>Session的实现方式方式</h5><ul>
 <li><p>使用Cookie来实现<br><img src="/2019/10/06/HTTP相关/Session%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F.jpg" alt></p>
 <p>服务器给每个session分配一个JSESSIONID,并通过Cookie发送给客户端，当客户端发起新的请求的时候，将在Cookie头中携带这个JSESSIONID，这样服务器能够找到客户端对应的session</p>
 </li>
@@ -274,19 +287,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2019/10/06/TCP的滑动窗口/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2019/10/08/HTTP与HTTPS的区别/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          TCP的滑动窗口
+          HTTP与HTTPS的区别
         
       </div>
     </a>
   
   
-    <a href="/2019/10/06/TCP和UDP的区别/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2019/10/06/TCP的滑动窗口/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">TCP和UDP的区别</div>
+      <div class="article-nav-title">TCP的滑动窗口</div>
     </a>
   
 </nav>

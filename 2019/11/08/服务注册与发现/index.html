@@ -21,7 +21,7 @@
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/2019/11/08/服务注册与发现/%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E4%B8%8E%E5%8F%91%E7%8E%B0%5CEurekaServer%E9%AB%98%E5%8F%AF%E7%94%A8.jpg">
 <meta property="og:image" content="http://yoursite.com/2019/11/08/服务注册与发现/%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E4%B8%8E%E5%8F%91%E7%8E%B0%5C%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E5%8F%91%E7%8E%B0.jpg">
-<meta property="og:updated_time" content="2019-11-08T08:59:52.152Z">
+<meta property="og:updated_time" content="2020-01-26T07:20:04.365Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="服务注册与发现">
 <meta name="twitter:description" content="微服务的注册与发现 （Spring Cloud Eureka）： 基于Netflix Eureka做了二次封装 两个组件：   Eureka Server(注册中心） Eureka Client(服务注册)    Eureka Server作为服务注册功能的服务器，它是服务注册中心，而系统中其他微服务使用Eureka Client客户端，连接到Eureka Server并维持心跳连接，这样就能监控">
@@ -178,18 +178,18 @@
 </li>
 <li><p>修改pom文件中spring boot 2.0.0.M3 和 spring cloud Finchley.M2的版本</p>
 </li>
-<li><p>启动主类EurekaApplication  添加注解 @EnableEurekaServer，表明这个有注册中心的功能</p>
+<li><p>启动主类EurekaApplication  添加注解 @EnableEurekaServer，表明这个项目有注册中心的功能</p>
 </li>
 <li><p>配置文件</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">eureka:</span><br><span class="line">  client:</span><br><span class="line">    service-url:</span><br><span class="line">    # 配置的注册地址</span><br><span class="line">      defaultZone: http://localhost:8761/eureka/</span><br><span class="line">    # 本身就是注册中心，取消注册</span><br><span class="line">    register-with-eureka: false</span><br><span class="line">  server:</span><br><span class="line">  #Server端配置，关闭自我保护，开发环境</span><br><span class="line">    enable-self-preservation: false</span><br><span class="line"># 配置应用的名字</span><br><span class="line">spring:</span><br><span class="line">  application:</span><br><span class="line">    name: eureka</span><br><span class="line">server:</span><br><span class="line">  port: 8761</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>mvn打包,后台启动 </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mvn clean package  </span><br><span class="line">nohup java -jar target/eureka-0.0.1-SNAPSHOT.jar &gt; /dev/null 2&gt;&amp;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mvn clean package  </span><br><span class="line"></span><br><span class="line">使用nohup让程序在后台运行</span><br><span class="line">nohup java -jar target/eureka-0.0.1-SNAPSHOT.jar &gt; /dev/null 2&gt;&amp;1 &amp;</span><br></pre></td></tr></table></figure>
 
 </li>
 </ol>
 <h5 id="Eureka-Client的配置"><a href="#Eureka-Client的配置" class="headerlink" title="Eureka Client的配置"></a>Eureka Client的配置</h5><ol>
-<li>新建项目 Cloud Discovery -&gt; Eureka Client</li>
+<li>新建项目 Cloud Discovery -&gt; Eureka Discovery Client</li>
 <li>修改pom文件中spring boot 2.0.0.M3 和 spring cloud Finchley.M2的版本</li>
 <li>启动主类 ClientApplication  添加注解 @EnableDiscoveryClient，表明这个有注册中心的功能</li>
 <li>配置文件<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">eureka:</span><br><span class="line">  client:</span><br><span class="line">    service-url:</span><br><span class="line">    # 配置的注册地址</span><br><span class="line">      defaultZone: http://localhost:8761/eureka/</span><br><span class="line">    # 自定义连接跳转地址</span><br><span class="line">#   instance:</span><br><span class="line">#    hostname: clientName</span><br><span class="line"># 配置应用的名字</span><br><span class="line">spring:</span><br><span class="line">  application:</span><br><span class="line">    name: client</span><br></pre></td></tr></table></figure>
@@ -202,10 +202,12 @@
 <li>配置上注册中心的地址</li>
 <li>在启动的主类上加@EnableDiscoveryClient</li>
 </ol>
-<h5 id="Eureka-的高可用"><a href="#Eureka-的高可用" class="headerlink" title="Eureka 的高可用"></a>Eureka 的高可用</h5><p>eureka server实现高可用，可以将他集群，然后互相注册。client端注册所有集群eureka<br><img src="/2019/11/08/服务注册与发现/%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E4%B8%8E%E5%8F%91%E7%8E%B0%5CEurekaServer%E9%AB%98%E5%8F%AF%E7%94%A8.jpg" alt><br>单个server且没有client的时候，自己注册自己，会显示自己，加一个参数register-with-eureka: false会取消显示； 3个server相互注册instances栏也不显示注册的另外的server（client）实例和自己本身，registered-replicas栏里倒是可以看另外的server；<br>改动register-with-eureka: true后，另外两个server实例和自己本身将都会显示。</p>
+<h5 id="Eureka-的高可用"><a href="#Eureka-的高可用" class="headerlink" title="Eureka 的高可用"></a>Eureka 的高可用</h5><p>eureka server实现高可用，可以将他集群，然后互相注册。client端注册所有集群eureka</p>
+<p><img src="/2019/11/08/服务注册与发现/%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E4%B8%8E%E5%8F%91%E7%8E%B0%5CEurekaServer%E9%AB%98%E5%8F%AF%E7%94%A8.jpg" alt></p>
+<p>单个server且没有client的时候，自己注册自己，会显示自己，加一个参数register-with-eureka: false会取消显示； 3个server相互注册instances栏也不显示注册的另外的server（client）实例和自己本身，registered-replicas栏里倒是可以看另外的server；<br>改动register-with-eureka: true后，另外两个server实例和自己本身将都会显示。</p>
 <h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>Eureka Server的高可用，通过多个Eureka相互注册实现。   </p>
 <ul>
-<li>@EnableEurekaServer @EnableEurekaClient</li>
+<li>@EnableEurekaServer @EnableEurekaClient </li>
 <li>心跳检测，健康检查，负载均衡等功能</li>
 <li>Eureka的高可用，生产上建议至少两台以上</li>
 <li>分布式系统中，服务注册中心是最重要的部分</li>

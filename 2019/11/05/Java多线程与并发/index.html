@@ -21,7 +21,7 @@
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/2019/11/05/Java多线程与并发/%E7%BA%BF%E7%A8%8B%E4%BB%A5%E5%8F%8A%E7%BA%BF%E7%A8%8B%E4%B9%8B%E9%97%B4%E7%9A%84%E8%BD%AC%E6%8D%A2.jpg">
 <meta property="og:image" content="http://yoursite.com/2019/11/05/Java多线程与并发/%E6%AD%BB%E9%94%81.png">
-<meta property="og:updated_time" content="2020-01-28T07:59:51.867Z">
+<meta property="og:updated_time" content="2020-01-28T13:32:57.097Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java多线程与并发">
 <meta name="twitter:description" content="什么是线程和进程? 何为进程?进程是程序的一次执行过程，是系统运行程序的基本单位，因此进程是动态的。系统运行一个程序即是一个进程从创建，运行到消亡的过程。在 Java 中，当我们启动 main 函数时其实就是启动了一个 JVM 的进程，而 main 函数所在的线程就是这个进程中的一个线程，也称主线程。 何为线程?线程是一个比进程更小的执行单位。一个进程在其执行的过程中可以产生多个线程。与进程不同的">
@@ -174,7 +174,7 @@
 <ol>
 <li><p>新建（New）：创建后尚未启动的线程的状态</p>
 </li>
-<li><p>运行（Runnable）：包含Running和Ready，处于Running状态的线程位于可运行线程中，等待被线程调度选中，获取CPU的使用权；处于Ready状态的线程位于线程池中，等待被线程调度选中，获取CPU的使用权，Ready状态的线程在获取CPU时间后，就会变成Running状态的线程</p>
+<li><p>运行（Runnable）：包含系统的Ready和Running，处于Ready状态的线程位于线程池中，等待被线程调度选中，获取CPU的使用权，Ready状态的线程在获取CPU时间后，就会变成Running状态的线程</p>
 </li>
 <li><p>无限期等待（Waiting）：不会被分配CPU执行时间，需要显示被唤醒，即：<br> 1）没有设置Timeout参数的Object.wait方法。<br> 2）没有设置Timeout参数的Thread.join方法。<br> 3）LockSupport方法。  </p>
 </li>
@@ -203,8 +203,8 @@
 <ol>
 <li>互斥条件：该资源任意一个时刻只由一个线程占用。</li>
 <li>请求与保持条件：一个进程因请求资源而阻塞时，对已获得的资源保持不放。</li>
-<li>不剥夺条件:线程已获得的资源在末使用完之前不能被其他线程强行剥夺，只有自己使用完毕后才释放资源。</li>
-<li>循环等待条件:若干进程之间形成一种头尾相接的循环等待资源关系。</li>
+<li>不剥夺条件：线程已获得的资源在末使用完之前不能被其他线程强行剥夺，只有自己使用完毕后才释放资源。</li>
+<li>循环等待条件：若干进程之间形成一种头尾相接的循环等待资源关系。</li>
 </ol>
 <h3 id="如何避免线程死锁"><a href="#如何避免线程死锁" class="headerlink" title="如何避免线程死锁?"></a>如何避免线程死锁?</h3><p><strong>破坏请求与保持条件</strong></p>
 <p>一次性申请所有的资源。</p>
@@ -259,9 +259,10 @@
 <h3 id="如何实现处理线程的返回值-1"><a href="#如何实现处理线程的返回值-1" class="headerlink" title="如何实现处理线程的返回值"></a>如何实现处理线程的返回值</h3><ul>
 <li>主线程等待法：让主线程循环等待，直到目标子线程返回值</li>
 <li>使用Thread类的join()阻塞当前线程以等待子线程处理完毕</li>
-<li>通过Callable接口实现：通过FutureTask Or 线程池获取;</li>
+<li><strong>通过Callable接口实现：通过FutureTask Or 线程池获取</strong></li>
 </ul>
-<p>代码实现：FutureTask获取返回值</p>
+<p><strong>实现Callable接口和Future创建线程</strong></p>
+<p>首先创建Callable接口的实现类CallableThread，实现call()方法，并且有返回值。Callable接口是一个带泛型的接口，泛型的类型就是线程返回值的类型。实现Callable接口中的call()方法，方法的返回类型与泛型的类型相同。<br>Callable不能直接获取返回值，需要用FutureTask<v>在外部封装一下再获取返回值<br>代码实现：FutureTask获取返回值</v></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyCallable</span> <span class="keyword">implements</span> <span class="title">Callable</span>&lt;<span class="title">String</span>&gt; </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">call</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">        String value=<span class="string">"test"</span>;</span><br><span class="line">        System.out.println(<span class="string">"Ready to work"</span>);</span><br><span class="line">        Thread.currentThread().sleep(<span class="number">5000</span>);</span><br><span class="line">        System.out.println(<span class="string">"task done"</span>);</span><br><span class="line">        <span class="keyword">return</span>  value;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FutureTaskDemo</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> ExecutionException, InterruptedException </span>&#123;</span><br><span class="line">        FutureTask&lt;String&gt; task = <span class="keyword">new</span> FutureTask&lt;String&gt;(<span class="keyword">new</span> MyCallable());</span><br><span class="line">        <span class="keyword">new</span> Thread(task).start();</span><br><span class="line">        <span class="keyword">if</span>(!task.isDone())&#123;</span><br><span class="line">            System.out.println(<span class="string">"task has not finished, please wait!"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">"task return: "</span> + task.get());</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>代码实现：通过线程池获取返回值</p>

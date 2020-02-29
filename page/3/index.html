@@ -127,6 +127,116 @@
         
           <section id="main">
   
+    <article id="post-服务注册与发现"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/11/08/服务注册与发现/">服务注册与发现</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/11/08/服务注册与发现/" class="article-date">
+	  <time datetime="2019-11-08T03:15:32.000Z" itemprop="datePublished">November 8, 2019</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/微服务实战/">微服务实战</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="微服务的注册与发现-（Spring-Cloud-Eureka）："><a href="#微服务的注册与发现-（Spring-Cloud-Eureka）：" class="headerlink" title="微服务的注册与发现 （Spring Cloud Eureka）："></a>微服务的注册与发现 （Spring Cloud Eureka）：</h4><ol>
+<li>基于Netflix Eureka做了二次封装</li>
+<li>两个组件：</li>
+</ol>
+<ul>
+<li>Eureka Server(注册中心）</li>
+<li>Eureka Client(服务注册)  </li>
+</ul>
+<p>Eureka Server作为服务注册功能的服务器，它是服务注册中心，而系统中其他微服务使用Eureka Client客户端，连接到Eureka Server并维持心跳连接，这样就能监控系统中各个微服务是否正常运行</p>
+<h4 id="Eureka-Server-注册中心"><a href="#Eureka-Server-注册中心" class="headerlink" title="Eureka Server 注册中心"></a>Eureka Server 注册中心</h4><h5 id="Eureka-Server的配置"><a href="#Eureka-Server的配置" class="headerlink" title="Eureka Server的配置"></a>Eureka Server的配置</h5><ol>
+<li><p>新建项目 Cloud Discovery -&gt; Eureka Server</p>
+</li>
+<li><p>修改pom文件中spring boot 2.0.0.M3 和 spring cloud Finchley.M2的版本</p>
+</li>
+<li><p>启动主类EurekaApplication  添加注解 @EnableEurekaServer，表明这个项目有注册中心的功能</p>
+</li>
+<li><p>配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">eureka:</span><br><span class="line">  client:</span><br><span class="line">    service-url:</span><br><span class="line">    # 配置的注册地址</span><br><span class="line">      defaultZone: http://localhost:8761/eureka/</span><br><span class="line">    # 本身就是注册中心，取消注册</span><br><span class="line">    register-with-eureka: false</span><br><span class="line">  server:</span><br><span class="line">  #Server端配置，关闭自我保护，开发环境</span><br><span class="line">    enable-self-preservation: false</span><br><span class="line"># 配置应用的名字</span><br><span class="line">spring:</span><br><span class="line">  application:</span><br><span class="line">    name: eureka</span><br><span class="line">server:</span><br><span class="line">  port: 8761</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>mvn打包,后台启动 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mvn clean package  </span><br><span class="line"></span><br><span class="line">使用nohup让程序在后台运行</span><br><span class="line">nohup java -jar target/eureka-0.0.1-SNAPSHOT.jar &gt; /dev/null 2&gt;&amp;1 &amp;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h5 id="Eureka-Client的配置"><a href="#Eureka-Client的配置" class="headerlink" title="Eureka Client的配置"></a>Eureka Client的配置</h5><ol>
+<li>新建项目 Cloud Discovery -&gt; Eureka Discovery Client</li>
+<li>修改pom文件中spring boot 2.0.0.M3 和 spring cloud Finchley.M2的版本</li>
+<li>启动主类 ClientApplication  添加注解 @EnableDiscoveryClient，表明这个有注册中心的功能</li>
+<li>配置文件<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">eureka:</span><br><span class="line">  client:</span><br><span class="line">    service-url:</span><br><span class="line">    # 配置的注册地址</span><br><span class="line">      defaultZone: http://localhost:8761/eureka/</span><br><span class="line">    # 自定义连接跳转地址</span><br><span class="line">#   instance:</span><br><span class="line">#    hostname: clientName</span><br><span class="line"># 配置应用的名字</span><br><span class="line">spring:</span><br><span class="line">  application:</span><br><span class="line">    name: client</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>EurekaClient的使用  </p>
+<ol>
+<li>引入依赖</li>
+<li>配置上注册中心的地址</li>
+<li>在启动的主类上加@EnableDiscoveryClient</li>
+</ol>
+<h5 id="Eureka-的高可用"><a href="#Eureka-的高可用" class="headerlink" title="Eureka 的高可用"></a>Eureka 的高可用</h5><p>eureka server实现高可用，可以将他集群，然后互相注册。client端注册所有集群eureka</p>
+<p><img src="/2019/11/08/服务注册与发现/%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E4%B8%8E%E5%8F%91%E7%8E%B0%5CEurekaServer%E9%AB%98%E5%8F%AF%E7%94%A8.jpg" alt></p>
+<p>单个server且没有client的时候，自己注册自己，会显示自己，加一个参数register-with-eureka: false会取消显示； 3个server相互注册instances栏也不显示注册的另外的server（client）实例和自己本身，registered-replicas栏里倒是可以看另外的server；<br>改动register-with-eureka: true后，另外两个server实例和自己本身将都会显示。</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>Eureka Server的高可用，通过多个Eureka相互注册实现。   </p>
+<ul>
+<li>@EnableEurekaServer @EnableEurekaClient </li>
+<li>心跳检测，健康检查，负载均衡等功能</li>
+<li>Eureka的高可用，生产上建议至少两台以上</li>
+<li>分布式系统中，服务注册中心是最重要的部分</li>
+</ul>
+<h4 id="分布式下服务注册的地位和原理"><a href="#分布式下服务注册的地位和原理" class="headerlink" title="分布式下服务注册的地位和原理"></a>分布式下服务注册的地位和原理</h4><p><img src="/2019/11/08/服务注册与发现/%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E4%B8%8E%E5%8F%91%E7%8E%B0%5C%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E5%8F%91%E7%8E%B0.jpg" alt></p>
+<p>服务端发现两种方式：  </p>
+<ol>
+<li>客户端发现：Eureka</li>
+<li>服务端发现：Nginx,Zookeeper,Kubernetes  </li>
+</ol>
+<p>微服务的特点：异构  </p>
+<ol>
+<li>不同语言</li>
+<li>不同类型的数据库</li>
+</ol>
+<p>SpringCloud的调用方式：REST，其他语言可实现Eureka的客户端</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/微服务实战/">微服务实战</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Eureka/">Eureka</a></li></ul>
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-微服务介绍"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
@@ -1548,152 +1658,6 @@
 <!-- Table of Contents -->
 
   
-    <article id="post-JVM内存模型"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/10/30/JVM内存模型/">JVM内存模型</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/10/30/JVM内存模型/" class="article-date">
-	  <time datetime="2019-10-30T06:01:08.000Z" itemprop="datePublished">October 30, 2019</time>
-	</a>
-
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/JVM/">JVM</a>
- 
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Java-内存区域详解"><a href="#Java-内存区域详解" class="headerlink" title="Java 内存区域详解"></a>Java 内存区域详解</h1><hr>
-<p>如果没有特殊说明，都是针对的是 HotSpot 虚拟机。</p>
-<h2 id="常见面试题"><a href="#常见面试题" class="headerlink" title="常见面试题"></a>常见面试题</h2><h3 id="基本问题"><a href="#基本问题" class="headerlink" title="基本问题"></a>基本问题</h3><ul>
-<li><strong>介绍下 Java 内存区域（运行时数据区）</strong></li>
-<li><strong>Java 对象的创建过程（五步，建议能默写出来并且要知道每一步虚拟机做了什么）</strong></li>
-<li><strong>对象的访问定位的两种方式（句柄和直接指针两种方式）</strong></li>
-</ul>
-<h2 id="一-运行时数据区域-JVM内存模型"><a href="#一-运行时数据区域-JVM内存模型" class="headerlink" title="一 运行时数据区域(JVM内存模型)"></a>一 运行时数据区域(JVM内存模型)</h2><hr>
-<p>Java 虚拟机在执行 Java 程序的过程中会把它管理的内存划分成若干个不同的数据区域。JDK. 1.8 和之前的版本略有不同，</p>
-<h3 id="内存简介"><a href="#内存简介" class="headerlink" title="内存简介"></a>内存简介</h3><p>计算机所有程序都是内存中运行的。在程序执行过程中，需要不断的将内存的逻辑地址和物理地址相互映射，找到相关的指令以及数据去执行。作为操作系统进程，java运行时受限于操作系统架构提供的可寻址空间。操作系统架构的可寻址空间由系统位数决定。</p>
-<ul>
-<li>32位处理器：2^32的可寻址范围</li>
-<li>64位处理器：2^64的可寻址范围</li>
-</ul>
-<p><strong>地址空间的划分</strong> </p>
-<ul>
-<li>内核空间</li>
-<li>用户空间</li>
-</ul>
-<p><img src="/2019/10/30/JVM内存模型/JVM%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B.jpg" alt></p>
-<ul>
-<li>线程私有：程序计数器、虚拟机栈、本地方法栈</li>
-<li>线程共享：MetaSpace、Java堆、直接内存 (非运行时数据区的一部分)</li>
-</ul>
-<h3 id="程序计数器（Program-Counter-Register）"><a href="#程序计数器（Program-Counter-Register）" class="headerlink" title="程序计数器（Program Counter Register）"></a>程序计数器（Program Counter Register）</h3><p>程序计数器是一块较小的内存空间，可以看作是当前线程所执行的字节码的行号指示器。字节码解释器工作时通过改变这个计数器的值来选取下一条需要执行的字节码指令，分支、循环、跳转、异常处理、线程恢复等功能都需要依赖这个计数器来完成。</p>
-<p>另外，<strong>为了线程切换后能恢复到正确的执行位置，每条线程都需要有一个独立的程序计数器，各线程之间计数器互不影响，独立存储，我们称这类内存区域为“线程私有”的内存。</strong></p>
-<p><strong>从上面的介绍中我们知道程序计数器主要有两个作用：</strong></p>
-<ol>
-<li>字节码解释器通过改变程序计数器来依次读取指令，从而实现代码的流程控制，如：顺序执行、选择、循环、异常处理。</li>
-<li>在多线程的情况下，程序计数器用于记录当前线程执行的位置，从而当线程被切换回来的时候能够知道该线程上次运行到哪儿了。</li>
-</ol>
-<p><strong>注意：程序计数器是唯一一个不会出现 OutOfMemoryError 的内存区域，它的生命周期随着线程的创建而创建，随着线程的结束而死亡。</strong></p>
-<h3 id="Java虚拟机栈（Stack）"><a href="#Java虚拟机栈（Stack）" class="headerlink" title="Java虚拟机栈（Stack）"></a>Java虚拟机栈（Stack）</h3><p><strong>与程序计数器一样，Java 虚拟机栈也是线程私有的，它的生命周期和线程相同，描述的是 Java 方法执行的内存模型，每次方法调用的数据都是通过栈传递的</strong></p>
-<p>每个方法执行时都会创建一个栈，包含多个栈帧。Java 虚拟机栈用来存储栈帧，栈帧持有:局部变量表、操作数栈、动态链接、方法出口信息，方法调用结束时栈帧才会被销毁</p>
-<p> <img src="/2019/10/30/JVM内存模型/Stack.jpg" alt></p>
-<p>局部变量表：包含方法执行过程中的所有变量  </p>
-<p>操作数栈：入栈、出栈、复制、交换、产生消费变量</p>
-<p> <img src="/2019/10/30/JVM内存模型/%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F%E8%A1%A8%E5%92%8C%E6%93%8D%E4%BD%9C%E6%A0%91%E6%A0%88%E7%9A%84%E4%BA%A4%E4%BA%92%E8%BF%87%E7%A8%8B.jpg" alt="局部变量表和操作树栈的交互过程"></p>
-<p><strong>Java 虚拟机栈会出现两种错误：StackOverFlowError 和 OutOfMemoryError。</strong></p>
-<ul>
-<li><p><strong>StackOverflowError:</strong> 由于我们每个线程虚拟机栈深度是固定的 ;由于递归层数过多，当线程执行一个方法时就随之创建一个对应的栈帧，那么当线程请求栈的深度超过当前 Java 虚拟机栈的最大深度的时候，就抛出 StackOverFlowError 错误。</p>
-</li>
-<li><p><strong>OutOfMemoryError：</strong>  若 Java 虚拟机栈的内存大小允许动态扩展，且当线程请求栈时内存用完了，无法再动态扩展了，此时抛出 OutOfMemoryError 错误。</p>
-</li>
-</ul>
-<p>例如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public void stackLeakByThread()&#123;</span><br><span class="line">  while(true)&#123;</span><br><span class="line">    new Thread()&#123;</span><br><span class="line">      public void run()&#123;</span><br><span class="line">        while(true)&#123;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;.start()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>扩展：那么方法/函数如何调用？</strong></p>
-<p>Java 栈可用类比数据结构中栈，Java 栈中保存的主要内容是栈帧，每一次函数调用都会有一个对应的栈帧被压入 Java 栈，每一个函数调用结束后，都会有一个栈帧被弹出。</p>
-<h3 id="本地方法栈"><a href="#本地方法栈" class="headerlink" title="本地方法栈"></a>本地方法栈</h3><p>和虚拟机栈所发挥的作用非常相似，区别是： <strong>虚拟机栈为虚拟机执行 Java 方法 （也就是字节码）服务，而本地方法栈则为虚拟机使用到的 Native 方法服务。</strong></p>
-<p>本地方法被执行的时候，在本地方法栈也会创建一个栈帧，用于存放该本地方法的局部变量表、操作数栈、动态链接、出口信息。</p>
-<p>方法执行完毕后相应的栈帧也会出栈并释放内存空间，也会出现 StackOverFlowError 和 OutOfMemoryError 两种错误。</p>
-<h3 id="方法区"><a href="#方法区" class="headerlink" title="方法区"></a>方法区</h3><p>元空间（MetaSpace）和永久代都是用来存储class的相关信息包括class对象的method和field等 ; </p>
-<p>JDK 1.8 的时候 使用元空间（使用本地内存）替代永久代（使用JVM内存）,原先位于方法区的字符串常量池被移到堆中;元空间和永久代均是方法区的实现，方法区只是JVM的规范</p>
-<p><strong>元空间（MetaSpace）与永久代（PermGen）的区别</strong> </p>
-<ul>
-<li>元空间使用本地内存，而永久代使用的是JVM的内存</li>
-</ul>
-<p><strong>MetaSpace相比PermGen的优势</strong>  </p>
-<ol>
-<li>字符串常量池存在永久代中，容易出现性能问题和内存溢出</li>
-<li>类和方法的信息大小难以确定，给永久代的大小指定带来困难</li>
-<li>永久代会为GC带来不必要的复杂性</li>
-<li>方便HotSpot与其它JVM如Jrockit的集成,永久代是HotSpot VM特有的，别的VM没有永久代</li>
-</ol>
-<h3 id="Java堆（Heap）"><a href="#Java堆（Heap）" class="headerlink" title="Java堆（Heap）"></a>Java堆（Heap）</h3><p>Java 虚拟机所管理的内存中最大的一块，Java 堆是所有线程共享的一块内存区域，在虚拟机启动时创建。<strong>此内存区域的唯一目的就是存放对象实例，几乎所有的对象实例以及数组都在这里分配内存。</strong></p>
-<p>Java 堆是垃圾收集器管理的主要区域，因此也被称作GC 堆（Garbage Collected Heap）.从垃圾回收的角度，由于现在收集器基本都采用分代垃圾收集算法，所以 Java 堆还可以细分为：新生代和老年代：再细致一点有：Eden 空间、From Survivor、To Survivor 空间等。<strong>进一步划分的目的是更好地回收内存，或者更快地分配内存。</strong></p>
-<p>在 JDK 7 版本及JDK 7 版本之前，堆内存被通常被分为下面三部分：</p>
-<ul>
-<li>新生代内存(Young Generation)</li>
-<li>老生代(Old Generation)</li>
-<li>永久代(Permanent Generation)</li>
-</ul>
-<p><img src="/2019/10/30/JVM内存模型/%E5%B9%B4%E8%BD%BB%E4%BB%A3%E5%92%8C%E8%80%81%E5%B9%B4%E4%BB%A3%E7%9A%84%E5%88%86%E5%8C%BA.jpg" alt></p>
-<p><strong>上图所示的 Eden 区、两个 Survivor 区都属于新生代（为了区分，这两个 Survivor 区域按照顺序被命名为 from 和 to），中间一层属于老年代。</strong></p>
-<p>大部分情况，对象都会首先在 Eden 区域分配，在一次新生代垃圾回收后，如果对象还存活，则会进入 s0 或者 s1，并且对象的年龄还会加 1(Eden 区-&gt;Survivor 区后对象的初始年龄变为 1)，当它的年龄增加到一定程度（默认为 15 岁），就会被晋升到老年代中。对象晋升到老年代的年龄阈值，可以通过参数 -XX:MaxTenuringThreshold 来设置。</p>
-<p>堆这里最容易出现的就是 OutOfMemoryError 错误，并且出现这种错误之后的表现形式还会有几种，比如：</p>
-<ol>
-<li><code>OutOfMemoryError: GC Overhead Limit Exceeded</code> ： 当JVM花太多时间执行垃圾回收并且只能回收很少的堆空间时，就会发生此错误。</li>
-<li><code>OutOfMemoryError: Java heap space</code> :假如在创建新的对象时, 堆内存中的空间不足以存放新创建的对象, 就会引发java.lang.OutOfMemoryError: Java heap space 错误。(和本机物理内存无关，和你配置的对内存大小有关！)</li>
-</ol>
-<h2 id="HotSpot-虚拟机对象探秘"><a href="#HotSpot-虚拟机对象探秘" class="headerlink" title="HotSpot 虚拟机对象探秘"></a>HotSpot 虚拟机对象探秘</h2><hr>
-<p>HotSpot 虚拟机在 Java 堆中对象分配、布局和访问的全过程。</p>
-<h3 id="对象的创建"><a href="#对象的创建" class="headerlink" title="对象的创建"></a>对象的创建</h3><h4 id="Step1-类加载检查"><a href="#Step1-类加载检查" class="headerlink" title="Step1:类加载检查"></a>Step1:类加载检查</h4><p>虚拟机遇到一条 new 指令时，首先将去检查这个指令的参数是否能在常量池中定位到这个类的符号引用，并且检查这个符号引用代表的类是否已被加载过、解析和初始化过。如果没有，那必须先执行相应的类加载过程。</p>
-<h4 id="Step2-分配内存"><a href="#Step2-分配内存" class="headerlink" title="Step2:分配内存"></a>Step2:分配内存</h4><p>在类加载检查通过后，接下来虚拟机将为新生对象分配内存。对象所需的内存大小在类加载完成后便可确定，为对象分配空间的任务等同于把一块确定大小的内存从 Java 堆中划分出来。分配方式有 “指针碰撞” 和 “空闲列表” 两种，选择那种分配方式由 Java 堆是否规整决定，而 Java 堆是否规整又由所采用的垃圾收集器是否带有压缩整理功能决定。</p>
-<h4 id="Step3-初始化零值"><a href="#Step3-初始化零值" class="headerlink" title="Step3:初始化零值"></a>Step3:初始化零值</h4><p>内存分配完成后，虚拟机需要将分配到的内存空间都初始化为零值（不包括对象头），这一步操作保证了对象的实例字段在 Java 代码中可以不赋初始值就直接使用，程序能访问到这些字段的数据类型所对应的零值。</p>
-<h4 id="Step4-执行-init-方法"><a href="#Step4-执行-init-方法" class="headerlink" title="Step4:执行 init 方法"></a>Step4:执行 init 方法</h4><p>在上面工作都完成之后，从虚拟机的视角来看，一个新的对象已经产生了，但从 Java 程序的视角来看，对象创建才刚开始，&lt; init &gt; 方法还没有执行，所有的字段都还为零。所以一般来说，执行 new 指令之后会接着执行 &lt; init &gt; 方法，把对象按照程序员的意愿进行初始化，这样一个真正可用的对象才算完全产生出来。</p>
-<h3 id="对象的内存布局"><a href="#对象的内存布局" class="headerlink" title="对象的内存布局"></a>对象的内存布局</h3><p>在 Hotspot 虚拟机中，对象在内存中的布局可以分为 3 块区域：<strong>对象头、实例数据和对齐填充。</strong></p>
-<p><strong>Hotspot 虚拟机的对象头包括两部分信息:</strong>  </p>
-<ol>
-<li><strong>用于存储对象自身的自身运行时数据</strong>（Mark Work：默认存储对象的hashCode,分代年龄，锁类型，锁标志位等信息 非固定的数据结构，以便效率），</li>
-<li><strong>另一部分是类型指针</strong>，Class Metadata Address：类型指针指向对象的类元数据，JVM通过这个指针确定该对象是哪个类的数据 </li>
-</ol>
-<p><strong>实例数据部分是对象真正存储的有效信息</strong>，也是在程序中所定义的各种类型的字段内容。</p>
-<p><strong>对齐填充部分不是必然存在的，也没有什么特别的含义，仅仅起占位作用。</strong> 因为 Hotspot 虚拟机的自动内存管理系统要求对象起始地址必须是 8 字节的整数倍，换句话说就是对象的大小必须是 8 字节的整数倍。而对象头部分正好是 8 字节的倍数（1 倍或 2 倍），因此，当对象实例数据部分没有对齐时，就需要通过对齐填充来补全。</p>
-
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/JVM/">JVM</a>
-
-      
-  <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/线程共享/">线程共享</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/线程独占/">线程独占</a></li></ul>
-
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
 
 
   <nav id="page-nav">
@@ -1792,6 +1756,18 @@
               <div class="widget-entry-summary" style="margin: 0;">
             
 
+              <h6 style="margin: 0;"><a href="/2020/02/29/SpringMVC/">SpringMVC</a></h6>
+              <span>February 29, 2020</span>
+            </div>
+
+          </li>
+        
+          <li class="clearfix">
+
+            
+              <div class="widget-entry-summary" style="margin: 0;">
+            
+
               <h6 style="margin: 0;"><a href="/2020/01/04/Java基础总结/">Java基础总结</a></h6>
               <span>January 4, 2020</span>
             </div>
@@ -1846,18 +1822,6 @@
 
           </li>
         
-          <li class="clearfix">
-
-            
-              <div class="widget-entry-summary" style="margin: 0;">
-            
-
-              <h6 style="margin: 0;"><a href="/2019/11/19/容器部署/">容器部署</a></h6>
-              <span>November 19, 2019</span>
-            </div>
-
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -1867,7 +1831,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/GC相关/">GC相关</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java多线程与并发/">Java多线程与并发</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java常用类库与技巧/">Java常用类库与技巧</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Redis/">Redis</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot-实战/">Spring Boot 实战</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/容器/">容器</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/开发工具/">开发工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务实战/">微服务实战</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/设计模式/">设计模式</a><span class="category-list-count">1</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/GC相关/">GC相关</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java多线程与并发/">Java多线程与并发</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java常用类库与技巧/">Java常用类库与技巧</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Redis/">Redis</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot-实战/">Spring Boot 实战</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/容器/">容器</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/开发工具/">开发工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务实战/">微服务实战</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/设计模式/">设计模式</a><span class="category-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -1877,7 +1841,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ACID/">ACID</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AOF/">AOF</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AOP/">AOP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ArrayList/">ArrayList</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ClassLoader/">ClassLoader</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ConcurrentHashMap/">ConcurrentHashMap</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Config-Clent/">Config Clent</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Config-Server/">Config Server</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cookie和动态路由/">Cookie和动态路由</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Eureka/">Eureka</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Executor/">Executor</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/">HTTP</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HashMap/">HashMap</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hashtable/">Hashtable</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hystrix/">Hystrix</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IOC/">IOC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO机制/">IO机制</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/InnoDB/">InnoDB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JUC包的梳理/">JUC包的梳理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM内存结构模型/">JVM内存结构模型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java特性/">Java特性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/List/">List</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyISAM/">MyISAM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OSI七层模型/">OSI七层模型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RDB/">RDB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTO/">RTO</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTT/">RTT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RabbitMQ/">RabbitMQ</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Set/">Set</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cliud-Stream/">Spring Cliud Stream</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cloud-Bus/">Spring Cloud Bus</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cloud-Sleuth/">Spring Cloud Sleuth</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP的三次握手/">TCP的三次握手</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP的四次挥手/">TCP的四次挥手</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Thread和Runnable/">Thread和Runnable</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UDP/">UDP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Zipkin/">Zipkin</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Zuul/">Zuul</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interrupt/">interrupt</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lombok/">lombok</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/notify/">notify</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql调优/">sql调优</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/start和run/">start和run</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/yield/">yield</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/代理模式/">代理模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式锁/">分布式锁</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/单例模式/">单例模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/反射/">反射</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/回收算法/">回收算法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多路I-O复用模型/">多路I/O复用模型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密集索引/">密集索引</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工厂模式/">工厂模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/平台无关性/">平台无关性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/并发容器/">并发容器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异常/">异常</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异步队列/">异步队列</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/当前读/">当前读</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/快照读/">快照读</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库事务/">数据库事务</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库架构/">数据库架构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/新生代垃圾收集器/">新生代垃圾收集器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/日志框架/">日志框架</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/服务容错/">服务容错</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/服务网关/">服务网关</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/标记算法/">标记算法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/滑动窗口/">滑动窗口</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/稀疏索引/">稀疏索引</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/类的装载/">类的装载</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/索引/">索引</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/索引数据结构/">索引数据结构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线程共享/">线程共享</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线程独占/">线程独占</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/老年代垃圾收集器/">老年代垃圾收集器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/语法/">语法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/跨域/">跨域</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/进程和线程/">进程和线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/鉴权/">鉴权</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/链路监控/">链路监控</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/锁模块/">锁模块</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/限流/">限流</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ACID/">ACID</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AOF/">AOF</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AOP/">AOP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ArrayList/">ArrayList</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ClassLoader/">ClassLoader</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ConcurrentHashMap/">ConcurrentHashMap</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Config-Clent/">Config Clent</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Config-Server/">Config Server</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cookie和动态路由/">Cookie和动态路由</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/">Docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Eureka/">Eureka</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Executor/">Executor</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTTP/">HTTP</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HashMap/">HashMap</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hashtable/">Hashtable</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hystrix/">Hystrix</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IOC/">IOC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IO机制/">IO机制</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/InnoDB/">InnoDB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JUC包的梳理/">JUC包的梳理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JVM内存结构模型/">JVM内存结构模型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java特性/">Java特性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/List/">List</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MVC/">MVC</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MyISAM/">MyISAM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OSI七层模型/">OSI七层模型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RDB/">RDB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTO/">RTO</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RTT/">RTT</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RabbitMQ/">RabbitMQ</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Set/">Set</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cliud-Stream/">Spring Cliud Stream</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cloud-Bus/">Spring Cloud Bus</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Cloud-Sleuth/">Spring Cloud Sleuth</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP的三次握手/">TCP的三次握手</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP的四次挥手/">TCP的四次挥手</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Thread和Runnable/">Thread和Runnable</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UDP/">UDP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Zipkin/">Zipkin</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Zuul/">Zuul</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interrupt/">interrupt</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lombok/">lombok</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/notify/">notify</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql调优/">sql调优</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/start和run/">start和run</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/yield/">yield</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/代理模式/">代理模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式锁/">分布式锁</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/单例模式/">单例模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/反射/">反射</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/回收算法/">回收算法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多路I-O复用模型/">多路I/O复用模型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密集索引/">密集索引</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/工厂模式/">工厂模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/平台无关性/">平台无关性</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/并发容器/">并发容器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异常/">异常</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/异步队列/">异步队列</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/当前读/">当前读</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/快照读/">快照读</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库事务/">数据库事务</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库架构/">数据库架构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/新生代垃圾收集器/">新生代垃圾收集器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/日志框架/">日志框架</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/服务容错/">服务容错</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/服务网关/">服务网关</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/标记算法/">标记算法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/滑动窗口/">滑动窗口</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/稀疏索引/">稀疏索引</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/类的装载/">类的装载</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/索引/">索引</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/索引数据结构/">索引数据结构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线程共享/">线程共享</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线程独占/">线程独占</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/老年代垃圾收集器/">老年代垃圾收集器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/语法/">语法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/跨域/">跨域</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/进程和线程/">进程和线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/鉴权/">鉴权</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/链路监控/">链路监控</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/锁模块/">锁模块</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/限流/">限流</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -1887,7 +1851,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/ACID/" style="font-size: 10px;">ACID</a> <a href="/tags/AOF/" style="font-size: 10px;">AOF</a> <a href="/tags/AOP/" style="font-size: 10px;">AOP</a> <a href="/tags/ArrayList/" style="font-size: 10px;">ArrayList</a> <a href="/tags/ClassLoader/" style="font-size: 10px;">ClassLoader</a> <a href="/tags/ConcurrentHashMap/" style="font-size: 10px;">ConcurrentHashMap</a> <a href="/tags/Config-Clent/" style="font-size: 10px;">Config Clent</a> <a href="/tags/Config-Server/" style="font-size: 10px;">Config Server</a> <a href="/tags/Cookie和动态路由/" style="font-size: 10px;">Cookie和动态路由</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Eureka/" style="font-size: 10px;">Eureka</a> <a href="/tags/Executor/" style="font-size: 10px;">Executor</a> <a href="/tags/HTTP/" style="font-size: 15px;">HTTP</a> <a href="/tags/HashMap/" style="font-size: 10px;">HashMap</a> <a href="/tags/Hashtable/" style="font-size: 10px;">Hashtable</a> <a href="/tags/Hystrix/" style="font-size: 10px;">Hystrix</a> <a href="/tags/IOC/" style="font-size: 10px;">IOC</a> <a href="/tags/IO机制/" style="font-size: 10px;">IO机制</a> <a href="/tags/InnoDB/" style="font-size: 10px;">InnoDB</a> <a href="/tags/JUC包的梳理/" style="font-size: 10px;">JUC包的梳理</a> <a href="/tags/JVM内存结构模型/" style="font-size: 10px;">JVM内存结构模型</a> <a href="/tags/Java特性/" style="font-size: 10px;">Java特性</a> <a href="/tags/List/" style="font-size: 10px;">List</a> <a href="/tags/MyISAM/" style="font-size: 10px;">MyISAM</a> <a href="/tags/OSI七层模型/" style="font-size: 10px;">OSI七层模型</a> <a href="/tags/RDB/" style="font-size: 10px;">RDB</a> <a href="/tags/RTO/" style="font-size: 10px;">RTO</a> <a href="/tags/RTT/" style="font-size: 10px;">RTT</a> <a href="/tags/RabbitMQ/" style="font-size: 10px;">RabbitMQ</a> <a href="/tags/Set/" style="font-size: 10px;">Set</a> <a href="/tags/Spring-Cliud-Stream/" style="font-size: 10px;">Spring Cliud Stream</a> <a href="/tags/Spring-Cloud-Bus/" style="font-size: 10px;">Spring Cloud Bus</a> <a href="/tags/Spring-Cloud-Sleuth/" style="font-size: 10px;">Spring Cloud Sleuth</a> <a href="/tags/TCP的三次握手/" style="font-size: 10px;">TCP的三次握手</a> <a href="/tags/TCP的四次挥手/" style="font-size: 10px;">TCP的四次挥手</a> <a href="/tags/Thread和Runnable/" style="font-size: 10px;">Thread和Runnable</a> <a href="/tags/UDP/" style="font-size: 10px;">UDP</a> <a href="/tags/Zipkin/" style="font-size: 10px;">Zipkin</a> <a href="/tags/Zuul/" style="font-size: 10px;">Zuul</a> <a href="/tags/interrupt/" style="font-size: 10px;">interrupt</a> <a href="/tags/lombok/" style="font-size: 10px;">lombok</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/notify/" style="font-size: 10px;">notify</a> <a href="/tags/sql调优/" style="font-size: 10px;">sql调优</a> <a href="/tags/start和run/" style="font-size: 10px;">start和run</a> <a href="/tags/yield/" style="font-size: 10px;">yield</a> <a href="/tags/代理模式/" style="font-size: 10px;">代理模式</a> <a href="/tags/分布式锁/" style="font-size: 10px;">分布式锁</a> <a href="/tags/单例模式/" style="font-size: 10px;">单例模式</a> <a href="/tags/反射/" style="font-size: 10px;">反射</a> <a href="/tags/回收算法/" style="font-size: 10px;">回收算法</a> <a href="/tags/多路I-O复用模型/" style="font-size: 10px;">多路I/O复用模型</a> <a href="/tags/密集索引/" style="font-size: 10px;">密集索引</a> <a href="/tags/工厂模式/" style="font-size: 10px;">工厂模式</a> <a href="/tags/平台无关性/" style="font-size: 10px;">平台无关性</a> <a href="/tags/并发容器/" style="font-size: 10px;">并发容器</a> <a href="/tags/异常/" style="font-size: 10px;">异常</a> <a href="/tags/异步队列/" style="font-size: 10px;">异步队列</a> <a href="/tags/当前读/" style="font-size: 10px;">当前读</a> <a href="/tags/快照读/" style="font-size: 10px;">快照读</a> <a href="/tags/数据库事务/" style="font-size: 10px;">数据库事务</a> <a href="/tags/数据库架构/" style="font-size: 10px;">数据库架构</a> <a href="/tags/新生代垃圾收集器/" style="font-size: 10px;">新生代垃圾收集器</a> <a href="/tags/日志框架/" style="font-size: 10px;">日志框架</a> <a href="/tags/服务容错/" style="font-size: 10px;">服务容错</a> <a href="/tags/服务网关/" style="font-size: 10px;">服务网关</a> <a href="/tags/标记算法/" style="font-size: 10px;">标记算法</a> <a href="/tags/滑动窗口/" style="font-size: 10px;">滑动窗口</a> <a href="/tags/稀疏索引/" style="font-size: 10px;">稀疏索引</a> <a href="/tags/类的装载/" style="font-size: 10px;">类的装载</a> <a href="/tags/索引/" style="font-size: 15px;">索引</a> <a href="/tags/索引数据结构/" style="font-size: 10px;">索引数据结构</a> <a href="/tags/线程共享/" style="font-size: 10px;">线程共享</a> <a href="/tags/线程独占/" style="font-size: 10px;">线程独占</a> <a href="/tags/老年代垃圾收集器/" style="font-size: 10px;">老年代垃圾收集器</a> <a href="/tags/语法/" style="font-size: 10px;">语法</a> <a href="/tags/跨域/" style="font-size: 10px;">跨域</a> <a href="/tags/进程和线程/" style="font-size: 10px;">进程和线程</a> <a href="/tags/鉴权/" style="font-size: 10px;">鉴权</a> <a href="/tags/链路监控/" style="font-size: 10px;">链路监控</a> <a href="/tags/锁模块/" style="font-size: 20px;">锁模块</a> <a href="/tags/限流/" style="font-size: 10px;">限流</a>
+      <a href="/tags/ACID/" style="font-size: 10px;">ACID</a> <a href="/tags/AOF/" style="font-size: 10px;">AOF</a> <a href="/tags/AOP/" style="font-size: 10px;">AOP</a> <a href="/tags/ArrayList/" style="font-size: 10px;">ArrayList</a> <a href="/tags/ClassLoader/" style="font-size: 10px;">ClassLoader</a> <a href="/tags/ConcurrentHashMap/" style="font-size: 10px;">ConcurrentHashMap</a> <a href="/tags/Config-Clent/" style="font-size: 10px;">Config Clent</a> <a href="/tags/Config-Server/" style="font-size: 10px;">Config Server</a> <a href="/tags/Cookie和动态路由/" style="font-size: 10px;">Cookie和动态路由</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Eureka/" style="font-size: 10px;">Eureka</a> <a href="/tags/Executor/" style="font-size: 10px;">Executor</a> <a href="/tags/HTTP/" style="font-size: 15px;">HTTP</a> <a href="/tags/HashMap/" style="font-size: 10px;">HashMap</a> <a href="/tags/Hashtable/" style="font-size: 10px;">Hashtable</a> <a href="/tags/Hystrix/" style="font-size: 10px;">Hystrix</a> <a href="/tags/IOC/" style="font-size: 10px;">IOC</a> <a href="/tags/IO机制/" style="font-size: 10px;">IO机制</a> <a href="/tags/InnoDB/" style="font-size: 10px;">InnoDB</a> <a href="/tags/JUC包的梳理/" style="font-size: 10px;">JUC包的梳理</a> <a href="/tags/JVM内存结构模型/" style="font-size: 10px;">JVM内存结构模型</a> <a href="/tags/Java特性/" style="font-size: 10px;">Java特性</a> <a href="/tags/List/" style="font-size: 10px;">List</a> <a href="/tags/MVC/" style="font-size: 10px;">MVC</a> <a href="/tags/MyISAM/" style="font-size: 10px;">MyISAM</a> <a href="/tags/OSI七层模型/" style="font-size: 10px;">OSI七层模型</a> <a href="/tags/RDB/" style="font-size: 10px;">RDB</a> <a href="/tags/RTO/" style="font-size: 10px;">RTO</a> <a href="/tags/RTT/" style="font-size: 10px;">RTT</a> <a href="/tags/RabbitMQ/" style="font-size: 10px;">RabbitMQ</a> <a href="/tags/Set/" style="font-size: 10px;">Set</a> <a href="/tags/Spring-Cliud-Stream/" style="font-size: 10px;">Spring Cliud Stream</a> <a href="/tags/Spring-Cloud-Bus/" style="font-size: 10px;">Spring Cloud Bus</a> <a href="/tags/Spring-Cloud-Sleuth/" style="font-size: 10px;">Spring Cloud Sleuth</a> <a href="/tags/TCP的三次握手/" style="font-size: 10px;">TCP的三次握手</a> <a href="/tags/TCP的四次挥手/" style="font-size: 10px;">TCP的四次挥手</a> <a href="/tags/Thread和Runnable/" style="font-size: 10px;">Thread和Runnable</a> <a href="/tags/UDP/" style="font-size: 10px;">UDP</a> <a href="/tags/Zipkin/" style="font-size: 10px;">Zipkin</a> <a href="/tags/Zuul/" style="font-size: 10px;">Zuul</a> <a href="/tags/interrupt/" style="font-size: 10px;">interrupt</a> <a href="/tags/lombok/" style="font-size: 10px;">lombok</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/notify/" style="font-size: 10px;">notify</a> <a href="/tags/sql调优/" style="font-size: 10px;">sql调优</a> <a href="/tags/start和run/" style="font-size: 10px;">start和run</a> <a href="/tags/yield/" style="font-size: 10px;">yield</a> <a href="/tags/代理模式/" style="font-size: 10px;">代理模式</a> <a href="/tags/分布式锁/" style="font-size: 10px;">分布式锁</a> <a href="/tags/单例模式/" style="font-size: 10px;">单例模式</a> <a href="/tags/反射/" style="font-size: 10px;">反射</a> <a href="/tags/回收算法/" style="font-size: 10px;">回收算法</a> <a href="/tags/多路I-O复用模型/" style="font-size: 10px;">多路I/O复用模型</a> <a href="/tags/密集索引/" style="font-size: 10px;">密集索引</a> <a href="/tags/工厂模式/" style="font-size: 10px;">工厂模式</a> <a href="/tags/平台无关性/" style="font-size: 10px;">平台无关性</a> <a href="/tags/并发容器/" style="font-size: 10px;">并发容器</a> <a href="/tags/异常/" style="font-size: 10px;">异常</a> <a href="/tags/异步队列/" style="font-size: 10px;">异步队列</a> <a href="/tags/当前读/" style="font-size: 10px;">当前读</a> <a href="/tags/快照读/" style="font-size: 10px;">快照读</a> <a href="/tags/数据库事务/" style="font-size: 10px;">数据库事务</a> <a href="/tags/数据库架构/" style="font-size: 10px;">数据库架构</a> <a href="/tags/新生代垃圾收集器/" style="font-size: 10px;">新生代垃圾收集器</a> <a href="/tags/日志框架/" style="font-size: 10px;">日志框架</a> <a href="/tags/服务容错/" style="font-size: 10px;">服务容错</a> <a href="/tags/服务网关/" style="font-size: 10px;">服务网关</a> <a href="/tags/标记算法/" style="font-size: 10px;">标记算法</a> <a href="/tags/滑动窗口/" style="font-size: 10px;">滑动窗口</a> <a href="/tags/稀疏索引/" style="font-size: 10px;">稀疏索引</a> <a href="/tags/类的装载/" style="font-size: 10px;">类的装载</a> <a href="/tags/索引/" style="font-size: 15px;">索引</a> <a href="/tags/索引数据结构/" style="font-size: 10px;">索引数据结构</a> <a href="/tags/线程共享/" style="font-size: 10px;">线程共享</a> <a href="/tags/线程独占/" style="font-size: 10px;">线程独占</a> <a href="/tags/老年代垃圾收集器/" style="font-size: 10px;">老年代垃圾收集器</a> <a href="/tags/语法/" style="font-size: 10px;">语法</a> <a href="/tags/跨域/" style="font-size: 10px;">跨域</a> <a href="/tags/进程和线程/" style="font-size: 10px;">进程和线程</a> <a href="/tags/鉴权/" style="font-size: 10px;">鉴权</a> <a href="/tags/链路监控/" style="font-size: 10px;">链路监控</a> <a href="/tags/锁模块/" style="font-size: 20px;">锁模块</a> <a href="/tags/限流/" style="font-size: 10px;">限流</a>
     </div>
   </div>
 
@@ -1897,7 +1861,7 @@
     <h3 class="widget-title">Archives</h3>
 
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">23</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">25</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">23</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">25</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">1</span></li></ul>
     </div>
 
     <div>

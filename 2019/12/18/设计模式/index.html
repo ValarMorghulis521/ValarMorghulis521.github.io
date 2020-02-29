@@ -19,7 +19,7 @@
 <meta property="og:site_name" content="Contunued Story">
 <meta property="og:description" content="总结一下之前的项目中出现的设计模式  单例模式单例模式是Java最简单的模式之一；这种类型的设计模式属于创建型模式，它提供一种创建对象的最佳方式。 注意：    单例类只能有一个实例 单例类必须自己创建自己的唯一实例 单例类给所有其他对象提供这一实例  主要解决：一个全局使用的类频繁的创建与销毁。所以需要控制实例数目，节省系统资源 ；    如何实现：系统判断是否已经有这个单例，如果有则返回，如果">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-12-23T12:22:55.656Z">
+<meta property="og:updated_time" content="2020-02-29T03:24:44.071Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="设计模式">
 <meta name="twitter:description" content="总结一下之前的项目中出现的设计模式  单例模式单例模式是Java最简单的模式之一；这种类型的设计模式属于创建型模式，它提供一种创建对象的最佳方式。 注意：    单例类只能有一个实例 单例类必须自己创建自己的唯一实例 单例类给所有其他对象提供这一实例  主要解决：一个全局使用的类频繁的创建与销毁。所以需要控制实例数目，节省系统资源 ；    如何实现：系统判断是否已经有这个单例，如果有则返回，如果">
@@ -189,19 +189,14 @@
 <hr>
 <p>主要解决：解决接口选择的问题 ，明确地计划不同条件下创建不同实例时</p>
 <p>如何实现：让其子类实现工厂接口，返回的也是一个抽象的产品，创建过程在其子类执行。</p>
-<p>使用场景：  </p>
-<ol>
-<li>要求生产唯一序列号。</li>
-<li>WEB 中的计数器，不用每次刷新都在数据库里加一次，用单例先缓存起来。</li>
-<li>创建的一个对象需要消耗的资源过多，比如 I/O 与数据库的连接等。  </li>
-</ol>
-<p>优点： 1、一个调用者想创建一个对象，只要知道其名称就可以了。<br>2、扩展性高，如果想增加一个产品，只要扩展一个工厂类就可以。 3、屏蔽产品的具体实现，调用者只关心产品的接口。  </p>
-<p>缺点：每次增加一个产品时，都需要增加一个具体类和对象实现工厂，使得系统中类的个数成倍增加，在一定程度上增加了系统的复杂度，同时也增加了系统具体类的依赖。这并不是什么好事。</p>
 <p>使用场景：   </p>
 <ol>
 <li>日志记录器：记录可能记录到本地硬盘、系统事件、远程服务器等，用户可以选择记录日志到什么地方。 </li>
-<li>数据库访问，当用户不知道最后系统采用哪一类数据库，以及数据库可能有变化时。 3、设计一个连接服务器的框架，需要三个协议，”POP3”、”IMAP”、”HTTP”，可以把这三个作为产品类，共同实现一个接口。 </li>
+<li>数据库访问，当用户不知道最后系统采用哪一类数据库，以及数据库可能有变化时。 </li>
+<li>计一个连接服务器的框架，需要三个协议，”POP3”、”IMAP”、”HTTP”，可以把这三个作为产品类，共同实现一个接口。</li>
 </ol>
+<p>优点： 1、一个调用者想创建一个对象，只要知道其名称就可以了。<br>2、扩展性高，如果想增加一个产品，只要扩展一个工厂类就可以。 3、屏蔽产品的具体实现，调用者只关心产品的接口。  </p>
+<p>缺点：每次增加一个产品时，都需要增加一个具体类和对象实现工厂，使得系统中类的个数成倍增加，在一定程度上增加了系统的复杂度，同时也增加了系统具体类的依赖。这并不是什么好事。</p>
 <h3 id="代码实现-1"><a href="#代码实现-1" class="headerlink" title="代码实现"></a>代码实现</h3><ol>
 <li><p>创建建一个接口<br>ID2NameDAO.java</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public interface ID2NameDAO &#123;</span><br><span class="line">    /**</span><br><span class="line">     * id转name</span><br><span class="line">     * @param id 一般为表中的主键</span><br><span class="line">     * @return 返回主键对应的name(自定义)</span><br><span class="line">     */</span><br><span class="line">    public String id2Name(String id);  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -235,11 +230,7 @@
 <hr>
 <p>主要解决：系统的产品有多于一个的产品族，而系统只消费其中某一族的产品，主要解决接口选择的问题。</p>
 <p>如何实现：在一个产品族里面，定义多个产品。</p>
-<p>使用场景：  </p>
-<ol>
-<li>QQ 换皮肤，一整套一起换。 </li>
-<li>生成不同操作系统的程序。   </li>
-</ol>
+<p>使用场景：<br>一个继承体系中，如果存在着多个等级结构（即存在着多个抽象类），并且分属各个等级结构中的实现类之间存在着一定的关联或者约束，就可以使用抽象工厂模式。假如各个等级结构中的实现类之间不存在关联或约束，则使用多个独立的工厂来对产品进行创建，则更合适一点。  </p>
 <p>抽象工厂模式也就是不仅生产鼠标，同时生产键盘。</p>
 <p>也就是 PC 厂商是个父类，有生产鼠标，生产键盘两个接口。</p>
 <p>戴尔工厂，惠普工厂继承它，可以分别生产戴尔鼠标+戴尔键盘，和惠普鼠标+惠普键盘。</p>
@@ -263,7 +254,31 @@
 
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Payment proxy = new AliPay(new RealPayment);</span><br><span class="line">proxy.pay();</span><br></pre></td></tr></table></figure>
 
+<h2 id="模板模式"><a href="#模板模式" class="headerlink" title="模板模式"></a>模板模式</h2><p>在模板模式（Template Pattern）中，一个抽象类公开定义了执行它的方法的方式/模板。它的子类可以按需要重写方法实现，但调用将以抽象类中定义的方式进行。这种类型的设计模式属于行为型模式。<strong>模板模式也称钩子模式（hook），就是动态加载，是多态的一种应用。</strong></p>
+<hr>
+<p>主要解决：一些方法通用，却在每一个子类都重新写了这一方法。</p>
+<p>如何实现：有一些通用的方法在抽象类实现，其他步骤在子类实现。</p>
+<p>简单例子代码实现：</p>
+<ol>
+<li>新建一个接口实现pay方法</li>
+<li>真实实现类和代理类都要实现该方法</li>
+<li>在代理类中注入真实实现类，在代理类的实现方法pay()中调用真实实现类的pay()方法，然后增加做自己的业务逻辑</li>
+</ol>
+<p>代码实现：  </p>
+<ol>
+<li>创建一个抽象类，它的模板方法被设置为 final。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Game</span> </span>&#123;</span><br><span class="line">   <span class="function"><span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">initialize</span><span class="params">()</span></span>;</span><br><span class="line">   <span class="function"><span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">startPlay</span><span class="params">()</span></span>;</span><br><span class="line">   <span class="function"><span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">endPlay</span><span class="params">()</span></span>;</span><br><span class="line"> </span><br><span class="line">   <span class="comment">//模板</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">play</span><span class="params">()</span></span>&#123;</span><br><span class="line"> </span><br><span class="line">      <span class="comment">//初始化游戏</span></span><br><span class="line">      initialize();</span><br><span class="line"> </span><br><span class="line">      <span class="comment">//开始游戏</span></span><br><span class="line">      startPlay();</span><br><span class="line"> </span><br><span class="line">      <span class="comment">//结束游戏</span></span><br><span class="line">      endPlay();</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<ol start="2">
+<li>创建扩展了上述类的实体类</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Cricket</span> <span class="keyword">extends</span> <span class="title">Game</span> </span>&#123;</span><br><span class="line"> </span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="function"><span class="keyword">void</span> <span class="title">endPlay</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      System.out.println(<span class="string">"Cricket Game Finished!"</span>);</span><br><span class="line">   &#125;</span><br><span class="line"> </span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="function"><span class="keyword">void</span> <span class="title">initialize</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      System.out.println(<span class="string">"Cricket Game Initialized! Start playing."</span>);</span><br><span class="line">   &#125;</span><br><span class="line"> </span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="function"><span class="keyword">void</span> <span class="title">startPlay</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      System.out.println(<span class="string">"Cricket Game Started. Enjoy the game!"</span>);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>使用 Game 的模板方法 play() 来演示游戏的定义方式。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TemplatePatternDemo</span> </span>&#123;</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"> </span><br><span class="line">      Game game = <span class="keyword">new</span> Cricket();</span><br><span class="line">      game.play();</span><br><span class="line">      System.out.println();</span><br><span class="line">      game = <span class="keyword">new</span> Football();</span><br><span class="line">      game.play();      </span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer class="entry-meta entry-footer">
@@ -334,7 +349,7 @@
     <div id="toc" class="toc-article">
     <strong class="toc-title">Contents</strong>
     
-      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#单例模式"><span class="nav-number">1.</span> <span class="nav-text">单例模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#代码实现"><span class="nav-number">1.1.</span> <span class="nav-text">代码实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#工厂模式"><span class="nav-number">2.</span> <span class="nav-text">工厂模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#代码实现-1"><span class="nav-number">2.1.</span> <span class="nav-text">代码实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#抽象工厂模式"><span class="nav-number">3.</span> <span class="nav-text">抽象工厂模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代理模式"><span class="nav-number">4.</span> <span class="nav-text">代理模式</span></a></li></ol>
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#单例模式"><span class="nav-number">1.</span> <span class="nav-text">单例模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#代码实现"><span class="nav-number">1.1.</span> <span class="nav-text">代码实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#工厂模式"><span class="nav-number">2.</span> <span class="nav-text">工厂模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#代码实现-1"><span class="nav-number">2.1.</span> <span class="nav-text">代码实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#抽象工厂模式"><span class="nav-number">3.</span> <span class="nav-text">抽象工厂模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代理模式"><span class="nav-number">4.</span> <span class="nav-text">代理模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模板模式"><span class="nav-number">5.</span> <span class="nav-text">模板模式</span></a></li></ol>
     
     </div>
   </aside>

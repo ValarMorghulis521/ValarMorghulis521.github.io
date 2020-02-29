@@ -20,7 +20,7 @@
 <meta property="og:description" content="Hashtable 早期Java类提供的哈希表的实现 线程安全：涉及到修改Hashtable的方法，使用synchronized修饰 串行化的方式运行，性能较差  如何优化Hashtable? 通过锁细粒度化，将整锁拆解成多个锁进行优化  早期的ConcurrentHashMap：通过分段锁Segment来实现  当前的ConcurrentHashMap:CAS+synchronized使锁更细化">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/2019/11/10/ConcurrentHashMap/ConcurrentHashMap.jpg">
-<meta property="og:updated_time" content="2020-01-04T15:31:02.631Z">
+<meta property="og:updated_time" content="2020-02-28T13:03:30.388Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ConcurrentHashMap">
 <meta name="twitter:description" content="Hashtable 早期Java类提供的哈希表的实现 线程安全：涉及到修改Hashtable的方法，使用synchronized修饰 串行化的方式运行，性能较差  如何优化Hashtable? 通过锁细粒度化，将整锁拆解成多个锁进行优化  早期的ConcurrentHashMap：通过分段锁Segment来实现  当前的ConcurrentHashMap:CAS+synchronized使锁更细化">
@@ -212,7 +212,7 @@
 <li>HashMap线程不安全，数组+链表+红黑树</li>
 <li>Hashtable线程安全，锁住整个对象，效率低，数组+链表</li>
 <li>ConcurrentHashMap线程安全，CAS+同步锁，数组+链表+红黑树</li>
-<li>Hashap的key、value均可为null,而其他的两个类均不支持</li>
+<li>HashMap的key、value均可为null,而其他的两个类均不支持</li>
 </ul>
 
       

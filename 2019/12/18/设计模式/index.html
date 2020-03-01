@@ -20,7 +20,7 @@
 <meta property="og:description" content="总结一下之前的项目中出现的设计模式  单例模式单例模式是Java最简单的模式之一；这种类型的设计模式属于创建型模式，它提供一种创建对象的最佳方式。 注意：    单例类只能有一个实例 单例类必须自己创建自己的唯一实例 单例类给所有其他对象提供这一实例  主要解决：一个全局使用的类频繁的创建与销毁。所以需要控制实例数目，节省系统资源 ；    如何实现：系统判断是否已经有这个单例，如果有则返回，如果">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/2019/12/18/设计模式/MVC%E6%A8%A1%E5%BC%8F.png">
-<meta property="og:updated_time" content="2020-02-29T03:33:57.371Z">
+<meta property="og:updated_time" content="2020-03-01T14:21:26.220Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="设计模式">
 <meta name="twitter:description" content="总结一下之前的项目中出现的设计模式  单例模式单例模式是Java最简单的模式之一；这种类型的设计模式属于创建型模式，它提供一种创建对象的最佳方式。 注意：    单例类只能有一个实例 单例类必须自己创建自己的唯一实例 单例类给所有其他对象提供这一实例  主要解决：一个全局使用的类频繁的创建与销毁。所以需要控制实例数目，节省系统资源 ；    如何实现：系统判断是否已经有这个单例，如果有则返回，如果">
@@ -61,32 +61,10 @@
 
 
   
-  
-  <div class="site-header-image">
-    <img id="originBg" width="100%" alt="Hike News" src="">
-  </div>
-
-  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
-    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
-  </div>
-
-  <script>
-        var imgUrls = "css/images/pose01.jpg,https://source.unsplash.com/collection/954550/1920x1080,https://source.unsplash.com/collection/954550/1920x1081".split(",");
-        var random = Math.floor((Math.random() * imgUrls.length ));
-        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
-          document.getElementById("originBg").src=imgUrls[random];
-          document.getElementById("blurBg").src=imgUrls[random];
-        } else {
-          document.getElementById("originBg").src='/' + imgUrls[random];
-          document.getElementById("blurBg").src='/' + imgUrls[random];
-        }
-    </script>
-
-
 
 
 <header id="allheader" class="site-header" role="banner" 
-   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
+   >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -260,12 +238,6 @@
 <hr>
 <p>主要解决：一些方法通用，却在每一个子类都重新写了这一方法。</p>
 <p>如何实现：有一些通用的方法在抽象类实现，其他步骤在子类实现。</p>
-<p>简单例子代码实现：</p>
-<ol>
-<li>新建一个接口实现pay方法</li>
-<li>真实实现类和代理类都要实现该方法</li>
-<li>在代理类中注入真实实现类，在代理类的实现方法pay()中调用真实实现类的pay()方法，然后增加做自己的业务逻辑</li>
-</ol>
 <p>代码实现：  </p>
 <ol>
 <li>创建一个抽象类，它的模板方法被设置为 final。</li>
@@ -282,7 +254,9 @@
 </ol>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TemplatePatternDemo</span> </span>&#123;</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"> </span><br><span class="line">      Game game = <span class="keyword">new</span> Cricket();</span><br><span class="line">      game.play();</span><br><span class="line">      System.out.println();</span><br><span class="line">      game = <span class="keyword">new</span> Football();</span><br><span class="line">      game.play();      </span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="MVC模式"><a href="#MVC模式" class="headerlink" title="MVC模式"></a>MVC模式</h2><h2 id="MVC-模式代表-Model-View-Controller（模型-视图-控制器）-模式。这种模式用于应用程序的分层开发。"><a href="#MVC-模式代表-Model-View-Controller（模型-视图-控制器）-模式。这种模式用于应用程序的分层开发。" class="headerlink" title="MVC 模式代表 Model-View-Controller（模型-视图-控制器） 模式。这种模式用于应用程序的分层开发。"></a>MVC 模式代表 Model-View-Controller（模型-视图-控制器） 模式。这种模式用于应用程序的分层开发。</h2><ul>
+<h2 id="MVC模式"><a href="#MVC模式" class="headerlink" title="MVC模式"></a>MVC模式</h2><p>MVC 模式代表 Model-View-Controller（模型-视图-控制器） 模式。这种模式用于应用程序的分层开发。</p>
+<hr>
+<ul>
 <li><p><strong>M-Model 模型</strong>（完成业务逻辑：有javaBean构成，service+dao+entity）</p>
 </li>
 <li><p><strong>V-View 视图</strong>（做界面的展示  jsp，html……）</p>
@@ -363,7 +337,7 @@
     <div id="toc" class="toc-article">
     <strong class="toc-title">Contents</strong>
     
-      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#单例模式"><span class="nav-number">1.</span> <span class="nav-text">单例模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#代码实现"><span class="nav-number">1.1.</span> <span class="nav-text">代码实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#工厂模式"><span class="nav-number">2.</span> <span class="nav-text">工厂模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#代码实现-1"><span class="nav-number">2.1.</span> <span class="nav-text">代码实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#抽象工厂模式"><span class="nav-number">3.</span> <span class="nav-text">抽象工厂模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代理模式"><span class="nav-number">4.</span> <span class="nav-text">代理模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模板模式"><span class="nav-number">5.</span> <span class="nav-text">模板模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MVC模式"><span class="nav-number">6.</span> <span class="nav-text">MVC模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MVC-模式代表-Model-View-Controller（模型-视图-控制器）-模式。这种模式用于应用程序的分层开发。"><span class="nav-number">7.</span> <span class="nav-text">MVC 模式代表 Model-View-Controller（模型-视图-控制器） 模式。这种模式用于应用程序的分层开发。</span></a></li></ol>
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#单例模式"><span class="nav-number">1.</span> <span class="nav-text">单例模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#代码实现"><span class="nav-number">1.1.</span> <span class="nav-text">代码实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#工厂模式"><span class="nav-number">2.</span> <span class="nav-text">工厂模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#代码实现-1"><span class="nav-number">2.1.</span> <span class="nav-text">代码实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#抽象工厂模式"><span class="nav-number">3.</span> <span class="nav-text">抽象工厂模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代理模式"><span class="nav-number">4.</span> <span class="nav-text">代理模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模板模式"><span class="nav-number">5.</span> <span class="nav-text">模板模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MVC模式"><span class="nav-number">6.</span> <span class="nav-text">MVC模式</span></a></li></ol>
     
     </div>
   </aside>
@@ -416,9 +390,6 @@
 
 
     <!-- headerblur min height -->
-    
-      var headerblur = document.getElementById("header-blur");
-      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

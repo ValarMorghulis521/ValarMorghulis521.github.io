@@ -55,32 +55,10 @@
 
 
   
-  
-  <div class="site-header-image">
-    <img id="originBg" width="100%" alt="Hike News" src="">
-  </div>
-
-  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
-    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
-  </div>
-
-  <script>
-        var imgUrls = "css/images/pose01.jpg,https://source.unsplash.com/collection/954550/1920x1080,https://source.unsplash.com/collection/954550/1920x1081".split(",");
-        var random = Math.floor((Math.random() * imgUrls.length ));
-        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
-          document.getElementById("originBg").src=imgUrls[random];
-          document.getElementById("blurBg").src=imgUrls[random];
-        } else {
-          document.getElementById("originBg").src='/' + imgUrls[random];
-          document.getElementById("blurBg").src='/' + imgUrls[random];
-        }
-    </script>
-
-
 
 
 <header id="allheader" class="site-header" role="banner" 
-   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
+   >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -156,7 +134,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <ol>
-<li>spring MVC属于SpringFrameWork的后续产品，已经融合在Spring Web Flow里面。 </li>
+<li>Spring MVC属于SpringFrameWork的后续产品，已经融合在Spring Web Flow里面。 </li>
 <li>Spring的MVC框架主要由前端控制器、处理器映射、处理器(控制器)、视图解析器、视图组成。</li>
 </ol>
 <h2 id="原理图"><a href="#原理图" class="headerlink" title="原理图"></a>原理图</h2><p><img src="/2020/02/29/SpringMVC/SpringMVC%E5%8E%9F%E7%90%86.png" alt></p>
@@ -182,7 +160,7 @@
 <p>通过扩展视图解析器，支持更多类型的视图解析，例如：jsp、freemarker、pdf、excel等。</p>
 </blockquote>
 </li>
-<li><p>HandlAdapter 处理器适配器：</p>
+<li><p>HandlerAdapter 处理器适配器：</p>
 <blockquote>
 <p>按照特定规则（HandlerAdapter要求的规则）去执行Handler<br>通过HandlerAdapter对处理器进行执行，这是适配器模式的应用，通过扩展适配器可以对更多类型的处理器进行执行。</p>
 </blockquote>
@@ -361,7 +339,7 @@
 <ol>
 <li><p><strong>修饰成员变量和成员方法:</strong> 被 static 修饰的成员属于类，不属于单个这个类的某个对象，被类中所有对象共享，可以并且建议通过类名调用。被static 声明的成员变量属于静态成员变量，静态变量 存放在 Java 内存区域的方法区。调用格式：类名.静态变量名 <code>类名.静态方法名()</code></p>
 </li>
-<li><p><strong>静态代码块:</strong> 静态代码块定义在类中方法外, 静态代码块在非静态代码块之前执行(静态代码块—&gt;非静态代码块—&gt;构造方法)。 该类不管创建多少对象，静态代码块只执行一次.<br>如果父类A和子类B都有静态代码块，非静态代码块和构造方法，如果实例化一个子类那么他们的执行顺序：A的静态代码块-&gt;B的静态代码块-&gt;父类的非静态代码块—&gt;父类的构造方法-&gt;子类的非静态代码块—&gt;父类的构造方法</p>
+<li><p><strong>静态代码块:</strong> 静态代码块定义在类中方法外, 静态代码块在非静态代码块之前执行(静态代码块—&gt;非静态代码块—&gt;构造方法)。 该类不管创建多少对象，静态代码块只执行一次.<br>如果父类A和子类B都有静态代码块，非静态代码块和构造方法，如果实例化一个子类那么他们的执行顺序：A的静态代码块-&gt;B的静态代码块-&gt;父类的非静态代码块—&gt;父类的构造方法-&gt;子类的非静态代码块—&gt;子类的构造方法</p>
 </li>
 <li><p><strong>静态内部类（static修饰类的话只能修饰内部类）：</strong> 静态内部类与非静态内部类之间存在一个最大的区别: 非静态内部类在编译完成之后会隐含地保存着一个引用，该引用是指向创建它的外围类，但是静态内部类却没有。没有这个引用就意味着：1. 它的创建是不需要依赖外围类的创建。2. 它不能使用任何外围类的非static成员变量和方法。</p>
 </li>
@@ -795,12 +773,6 @@
 <hr>
 <p>主要解决：一些方法通用，却在每一个子类都重新写了这一方法。</p>
 <p>如何实现：有一些通用的方法在抽象类实现，其他步骤在子类实现。</p>
-<p>简单例子代码实现：</p>
-<ol>
-<li>新建一个接口实现pay方法</li>
-<li>真实实现类和代理类都要实现该方法</li>
-<li>在代理类中注入真实实现类，在代理类的实现方法pay()中调用真实实现类的pay()方法，然后增加做自己的业务逻辑</li>
-</ol>
 <p>代码实现：  </p>
 <ol>
 <li>创建一个抽象类，它的模板方法被设置为 final。</li>
@@ -817,7 +789,9 @@
 </ol>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TemplatePatternDemo</span> </span>&#123;</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"> </span><br><span class="line">      Game game = <span class="keyword">new</span> Cricket();</span><br><span class="line">      game.play();</span><br><span class="line">      System.out.println();</span><br><span class="line">      game = <span class="keyword">new</span> Football();</span><br><span class="line">      game.play();      </span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="MVC模式"><a href="#MVC模式" class="headerlink" title="MVC模式"></a>MVC模式</h2><h2 id="MVC-模式代表-Model-View-Controller（模型-视图-控制器）-模式。这种模式用于应用程序的分层开发。"><a href="#MVC-模式代表-Model-View-Controller（模型-视图-控制器）-模式。这种模式用于应用程序的分层开发。" class="headerlink" title="MVC 模式代表 Model-View-Controller（模型-视图-控制器） 模式。这种模式用于应用程序的分层开发。"></a>MVC 模式代表 Model-View-Controller（模型-视图-控制器） 模式。这种模式用于应用程序的分层开发。</h2><ul>
+<h2 id="MVC模式"><a href="#MVC模式" class="headerlink" title="MVC模式"></a>MVC模式</h2><p>MVC 模式代表 Model-View-Controller（模型-视图-控制器） 模式。这种模式用于应用程序的分层开发。</p>
+<hr>
+<ul>
 <li><p><strong>M-Model 模型</strong>（完成业务逻辑：有javaBean构成，service+dao+entity）</p>
 </li>
 <li><p><strong>V-View 视图</strong>（做界面的展示  jsp，html……）</p>
@@ -1545,9 +1519,6 @@
 
 
     <!-- headerblur min height -->
-    
-      var headerblur = document.getElementById("header-blur");
-      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

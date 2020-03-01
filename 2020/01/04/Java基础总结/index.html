@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="Contunued Story">
 <meta property="og:description" content="面向对象和面向过程的区别  面向对象和面向过程最本质的区别在于考虑问题的出发点不同：面向过程是以事件流程为考虑问题的出发点，而面向对象则是以参与事件对象为考虑问题的出发点，所以面向对象在处理问题时更加灵活。目前，面向过程的语言更多被用于处理底层业务，而面向对象编程则更多用于实现一些业务逻辑复杂的大型系统。 面向过程性能比面向对象高。 因为类调用时需要实例化，开销比较大，比较消耗资源，所以当性能是最">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-01-05T03:44:34.666Z">
+<meta property="og:updated_time" content="2020-02-29T12:02:58.117Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java基础总结">
 <meta name="twitter:description" content="面向对象和面向过程的区别  面向对象和面向过程最本质的区别在于考虑问题的出发点不同：面向过程是以事件流程为考虑问题的出发点，而面向对象则是以参与事件对象为考虑问题的出发点，所以面向对象在处理问题时更加灵活。目前，面向过程的语言更多被用于处理底层业务，而面向对象编程则更多用于实现一些业务逻辑复杂的大型系统。 面向过程性能比面向对象高。 因为类调用时需要实例化，开销比较大，比较消耗资源，所以当性能是最">
@@ -56,32 +56,10 @@
 
 
   
-  
-  <div class="site-header-image">
-    <img id="originBg" width="100%" alt="Hike News" src="">
-  </div>
-
-  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
-    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
-  </div>
-
-  <script>
-        var imgUrls = "css/images/pose01.jpg,https://source.unsplash.com/collection/954550/1920x1080,https://source.unsplash.com/collection/954550/1920x1081".split(",");
-        var random = Math.floor((Math.random() * imgUrls.length ));
-        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
-          document.getElementById("originBg").src=imgUrls[random];
-          document.getElementById("blurBg").src=imgUrls[random];
-        } else {
-          document.getElementById("originBg").src='/' + imgUrls[random];
-          document.getElementById("blurBg").src='/' + imgUrls[random];
-        }
-    </script>
-
-
 
 
 <header id="allheader" class="site-header" role="banner" 
-   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
+   >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -257,7 +235,7 @@
 <ol>
 <li><p><strong>修饰成员变量和成员方法:</strong> 被 static 修饰的成员属于类，不属于单个这个类的某个对象，被类中所有对象共享，可以并且建议通过类名调用。被static 声明的成员变量属于静态成员变量，静态变量 存放在 Java 内存区域的方法区。调用格式：类名.静态变量名 <code>类名.静态方法名()</code></p>
 </li>
-<li><p><strong>静态代码块:</strong> 静态代码块定义在类中方法外, 静态代码块在非静态代码块之前执行(静态代码块—&gt;非静态代码块—&gt;构造方法)。 该类不管创建多少对象，静态代码块只执行一次.<br>如果父类A和子类B都有静态代码块，非静态代码块和构造方法，如果实例化一个子类那么他们的执行顺序：A的静态代码块-&gt;B的静态代码块-&gt;父类的非静态代码块—&gt;父类的构造方法-&gt;子类的非静态代码块—&gt;父类的构造方法</p>
+<li><p><strong>静态代码块:</strong> 静态代码块定义在类中方法外, 静态代码块在非静态代码块之前执行(静态代码块—&gt;非静态代码块—&gt;构造方法)。 该类不管创建多少对象，静态代码块只执行一次.<br>如果父类A和子类B都有静态代码块，非静态代码块和构造方法，如果实例化一个子类那么他们的执行顺序：A的静态代码块-&gt;B的静态代码块-&gt;父类的非静态代码块—&gt;父类的构造方法-&gt;子类的非静态代码块—&gt;子类的构造方法</p>
 </li>
 <li><p><strong>静态内部类（static修饰类的话只能修饰内部类）：</strong> 静态内部类与非静态内部类之间存在一个最大的区别: 非静态内部类在编译完成之后会隐含地保存着一个引用，该引用是指向创建它的外围类，但是静态内部类却没有。没有这个引用就意味着：1. 它的创建是不需要依赖外围类的创建。2. 它不能使用任何外围类的非static成员变量和方法。</p>
 </li>
@@ -384,9 +362,6 @@
 
 
     <!-- headerblur min height -->
-    
-      var headerblur = document.getElementById("header-blur");
-      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

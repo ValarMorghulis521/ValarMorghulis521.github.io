@@ -9,20 +9,21 @@
   
   
   
-  <meta name="description" content="微服务拆分的起点和重点微服务如何拆分： 先明白起点和终点 起点：既有的架构形态（老项目、新项目） 终点：好的架构不是设计出来的，而是进化而来的。进化一直在演进   需要考虑的因素与坚持的原则  不适合用微服务的业务场景 系统中包含很多很多强事务场景的 业务相对稳定，迭代周期长 访问压力不大，可用性要求不高  康威定律：沟通的问题会影响系统的设计 点餐业务服务拆分服务拆分的方法论：&amp;lt;可扩展的艺">
+  <meta name="description" content="微服务拆分的起点和重点微服务如何拆分： 先明白起点和终点 起点：既有的架构形态（老项目、新项目） 终点：好的架构不是设计出来的，而是进化而来的。进化一直在演进   需要考虑的因素与坚持的原则  不适合用微服务的业务场景 系统中包含很多很多强事务场景的 业务相对稳定，迭代周期长 访问压力不大，可用性要求不高  除了业务上的不匹配，还涉及到团队的运作和管理。传统人员架构是项目模式，项目启动时从资源池抽">
 <meta property="og:type" content="article">
 <meta property="og:title" content="服务拆分">
 <meta property="og:url" content="http://yoursite.com/2019/11/08/服务拆分/index.html">
 <meta property="og:site_name" content="Contunued Story">
-<meta property="og:description" content="微服务拆分的起点和重点微服务如何拆分： 先明白起点和终点 起点：既有的架构形态（老项目、新项目） 终点：好的架构不是设计出来的，而是进化而来的。进化一直在演进   需要考虑的因素与坚持的原则  不适合用微服务的业务场景 系统中包含很多很多强事务场景的 业务相对稳定，迭代周期长 访问压力不大，可用性要求不高  康威定律：沟通的问题会影响系统的设计 点餐业务服务拆分服务拆分的方法论：&amp;lt;可扩展的艺">
+<meta property="og:description" content="微服务拆分的起点和重点微服务如何拆分： 先明白起点和终点 起点：既有的架构形态（老项目、新项目） 终点：好的架构不是设计出来的，而是进化而来的。进化一直在演进   需要考虑的因素与坚持的原则  不适合用微服务的业务场景 系统中包含很多很多强事务场景的 业务相对稳定，迭代周期长 访问压力不大，可用性要求不高  除了业务上的不匹配，还涉及到团队的运作和管理。传统人员架构是项目模式，项目启动时从资源池抽">
 <meta property="og:locale" content="en">
+<meta property="og:image" content="http://yoursite.com/2019/11/08/服务拆分/%E5%9B%A2%E9%98%9F%E7%BB%93%E6%9E%84.jpg">
 <meta property="og:image" content="http://yoursite.com/2019/11/08/服务拆分/%E4%B8%8D%E7%94%A8%E8%80%83%E8%99%91%E7%BC%93%E5%AD%98%E5%90%8C%E6%AD%A5.jpg">
 <meta property="og:image" content="http://yoursite.com/2019/11/08/服务拆分/%E7%82%B9%E9%A4%90%E4%B8%9A%E5%8A%A1%E6%8B%86%E5%88%86%E5%88%86%E6%9E%90.jpg">
-<meta property="og:updated_time" content="2020-01-26T07:19:55.657Z">
+<meta property="og:updated_time" content="2020-03-07T05:45:53.845Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="服务拆分">
-<meta name="twitter:description" content="微服务拆分的起点和重点微服务如何拆分： 先明白起点和终点 起点：既有的架构形态（老项目、新项目） 终点：好的架构不是设计出来的，而是进化而来的。进化一直在演进   需要考虑的因素与坚持的原则  不适合用微服务的业务场景 系统中包含很多很多强事务场景的 业务相对稳定，迭代周期长 访问压力不大，可用性要求不高  康威定律：沟通的问题会影响系统的设计 点餐业务服务拆分服务拆分的方法论：&amp;lt;可扩展的艺">
-<meta name="twitter:image" content="http://yoursite.com/2019/11/08/服务拆分/%E4%B8%8D%E7%94%A8%E8%80%83%E8%99%91%E7%BC%93%E5%AD%98%E5%90%8C%E6%AD%A5.jpg">
+<meta name="twitter:description" content="微服务拆分的起点和重点微服务如何拆分： 先明白起点和终点 起点：既有的架构形态（老项目、新项目） 终点：好的架构不是设计出来的，而是进化而来的。进化一直在演进   需要考虑的因素与坚持的原则  不适合用微服务的业务场景 系统中包含很多很多强事务场景的 业务相对稳定，迭代周期长 访问压力不大，可用性要求不高  除了业务上的不匹配，还涉及到团队的运作和管理。传统人员架构是项目模式，项目启动时从资源池抽">
+<meta name="twitter:image" content="http://yoursite.com/2019/11/08/服务拆分/%E5%9B%A2%E9%98%9F%E7%BB%93%E6%9E%84.jpg">
   
     <link rel="alternate" href="/atom.xml" title="Contunued Story" type="application/atom+xml">
   
@@ -59,10 +60,32 @@
 
 
   
+  
+  <div class="site-header-image">
+    <img id="originBg" width="100%" alt="Hike News" src="">
+  </div>
+
+  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
+    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
+  </div>
+
+  <script>
+        var imgUrls = "css/images/pose01.jpg,https://source.unsplash.com/collection/954550/1920x1080,https://source.unsplash.com/collection/954550/1920x1081".split(",");
+        var random = Math.floor((Math.random() * imgUrls.length ));
+        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+          document.getElementById("originBg").src=imgUrls[random];
+          document.getElementById("blurBg").src=imgUrls[random];
+        } else {
+          document.getElementById("originBg").src='/' + imgUrls[random];
+          document.getElementById("blurBg").src='/' + imgUrls[random];
+        }
+    </script>
+
+
 
 
 <header id="allheader" class="site-header" role="banner" 
-   >
+   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -139,61 +162,60 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h4 id="微服务拆分的起点和重点"><a href="#微服务拆分的起点和重点" class="headerlink" title="微服务拆分的起点和重点"></a>微服务拆分的起点和重点</h4><h5 id="微服务如何拆分："><a href="#微服务如何拆分：" class="headerlink" title="微服务如何拆分："></a>微服务如何拆分：</h5><ol>
+        <h2 id="微服务拆分的起点和重点"><a href="#微服务拆分的起点和重点" class="headerlink" title="微服务拆分的起点和重点"></a>微服务拆分的起点和重点</h2><h3 id="微服务如何拆分："><a href="#微服务如何拆分：" class="headerlink" title="微服务如何拆分："></a>微服务如何拆分：</h3><ol>
 <li>先明白起点和终点<br> 起点：既有的架构形态（老项目、新项目）<br> 终点：好的架构不是设计出来的，而是进化而来的。进化一直在演进  </li>
 <li>需要考虑的因素与坚持的原则</li>
 </ol>
-<h5 id="不适合用微服务的业务场景"><a href="#不适合用微服务的业务场景" class="headerlink" title="不适合用微服务的业务场景"></a>不适合用微服务的业务场景</h5><ol>
+<h3 id="不适合用微服务的业务场景"><a href="#不适合用微服务的业务场景" class="headerlink" title="不适合用微服务的业务场景"></a>不适合用微服务的业务场景</h3><ol>
 <li>系统中包含很多很多强事务场景的</li>
 <li>业务相对稳定，迭代周期长</li>
 <li>访问压力不大，可用性要求不高</li>
 </ol>
-<p>康威定律：沟通的问题会影响系统的设计</p>
-<h4 id="点餐业务服务拆分"><a href="#点餐业务服务拆分" class="headerlink" title="点餐业务服务拆分"></a>点餐业务服务拆分</h4><p>服务拆分的方法论：&lt;可扩展的艺术&gt;</p>
-<h5 id="扩展立方模型"><a href="#扩展立方模型" class="headerlink" title="扩展立方模型"></a>扩展立方模型</h5><ul>
+<p>除了业务上的不匹配，还涉及到团队的运作和管理。传统人员架构是项目模式，项目启动时从资源池抽取不能技能的人员组成团队，项目结束资源被释放掉。 而微服务架构下人员组织是产品模式，让团队负责整个服务的生命周期。</p>
+<p><img src="/2019/11/08/服务拆分/%E5%9B%A2%E9%98%9F%E7%BB%93%E6%9E%84.jpg" alt>  </p>
+<p>康威定律：沟通的问题会影响系统的设计，</p>
+<h2 id="点餐业务服务拆分"><a href="#点餐业务服务拆分" class="headerlink" title="点餐业务服务拆分"></a>点餐业务服务拆分</h2><h3 id="扩展立方模型"><a href="#扩展立方模型" class="headerlink" title="扩展立方模型"></a>扩展立方模型</h3><ul>
 <li>x轴：水平复制，通过副本扩展，将应用程序水平复制，通过负载均衡运行程序的多个完全一样的副本方式，来实现应用程序的伸缩性，提高应用程序的容量和可用度。</li>
 <li>Z轴：数据分区，每个服务器负责一个数据子集。每个服务器运行的代码是一样的。</li>
-<li>Y轴：功能解耦，将不同职责的模块，分成不同的服务<h5 id="如何拆分功能"><a href="#如何拆分功能" class="headerlink" title="如何拆分功能"></a>如何拆分功能</h5><ul>
-<li>单一职责，松耦合、高内聚 ：<br>（每个服务只负责业务功能的一个单独部分。服务之间耦合度低，修改一个服务不用导致另外一个服务跟着修改，高内聚指的是服务内部相关的行为聚集在一个服务内，而不是分散在不同的服务中，需要修改一个行为时，只需要修改一个服务就行）</li>
-<li>关注点分离</li>
+<li>Y轴：功能解耦，将不同职责的模块，分成不同的服务<h3 id="如何拆分功能"><a href="#如何拆分功能" class="headerlink" title="如何拆分功能"></a>如何拆分功能</h3><ul>
+<li><strong>单一职责，松耦合、高内聚</strong> ：<br>每个服务只负责业务功能的一个单独部分。服务之间耦合度低，修改一个服务不用导致另外一个服务跟着修改，高内聚指的是服务内部相关的行为聚集在一个服务内，而不是分散在不同的服务中，需要修改一个行为时，只需要修改一个服务就行）</li>
+<li><strong>关注点分离</strong></li>
 </ul>
 <ol>
-<li>按职责（给我们的服务进行分类，明显按照业务领域可以划分出来的服务，职责比较单一</li>
-<li>按通用性（一些基础组件，与具体的业务无关的可以划分成单独的服务 消息 用户</li>
-<li>按粒度级别<h5 id="服务和数据的关系"><a href="#服务和数据的关系" class="headerlink" title="服务和数据的关系"></a>服务和数据的关系</h5></li>
-</ol>
-<ul>
-<li>先考虑拆分业务功能，在考虑拆分业务功能对应的数据</li>
-<li>无状态服务</li>
-</ul>
-<ol>
-<li>一个数据需要被多个服务共享才能完成一个请求，这个数据就是有状态</li>
-<li>把数据迁移到分布式缓存中存储，让业务服务变成无状态计算结点，后端服务能做到按需动态伸缩，在运行时动态增删结点不用考虑缓存同步问题</li>
+<li>按职责（给我们的服务进行分类，明显按照业务领域可以划分出来的服务，职责比较单一：订单，商品，前端服务</li>
+<li>按通用性（一些基础组件，与具体的业务无关的可以划分成单独的服务：消息、用户</li>
+<li>按粒度级别：并不是越小越好</li>
 </ol>
 </li>
 </ul>
+<h3 id="服务和数据的关系"><a href="#服务和数据的关系" class="headerlink" title="服务和数据的关系"></a>服务和数据的关系</h3><ol>
+<li><p>先考虑拆分业务功能，在考虑拆分业务功能对应的数据</p>
+</li>
+<li><p>无状态服务</p>
+<ul>
+<li>一个数据需要被多个服务共享才能完成一个请求，这个数据就是<strong>有状态</strong></li>
+<li>把数据迁移到分布式缓存中存储，让业务服务变成无状态计算结点，后端服务能做到按需动态伸缩，在运行时动态增删结点不用考虑缓存同步问题</li>
+</ul>
 <p><img src="/2019/11/08/服务拆分/%E4%B8%8D%E7%94%A8%E8%80%83%E8%99%91%E7%BC%93%E5%AD%98%E5%90%8C%E6%AD%A5.jpg" alt>     </p>
-<h5 id="点餐业务拆分分析"><a href="#点餐业务拆分分析" class="headerlink" title="点餐业务拆分分析"></a>点餐业务拆分分析</h5><p><img src="/2019/11/08/服务拆分/%E7%82%B9%E9%A4%90%E4%B8%9A%E5%8A%A1%E6%8B%86%E5%88%86%E5%88%86%E6%9E%90.jpg" alt>  </p>
-<h5 id="服务拆分的方法论：-lt-可扩展的艺术-gt"><a href="#服务拆分的方法论：-lt-可扩展的艺术-gt" class="headerlink" title="服务拆分的方法论：&lt;可扩展的艺术&gt;"></a>服务拆分的方法论：&lt;可扩展的艺术&gt;</h5><p>  扩展立方模型：  </p>
+</li>
+</ol>
+<h3 id="点餐业务拆分分析"><a href="#点餐业务拆分分析" class="headerlink" title="点餐业务拆分分析"></a>点餐业务拆分分析</h3><p><img src="/2019/11/08/服务拆分/%E7%82%B9%E9%A4%90%E4%B8%9A%E5%8A%A1%E6%8B%86%E5%88%86%E5%88%86%E6%9E%90.jpg" alt>  </p>
+<h3 id="服务拆分的方法论：-lt-可扩展的艺术-gt"><a href="#服务拆分的方法论：-lt-可扩展的艺术-gt" class="headerlink" title="服务拆分的方法论：&lt;可扩展的艺术&gt;"></a>服务拆分的方法论：&lt;可扩展的艺术&gt;</h3><p>  扩展立方模型：  </p>
 <ul>
 <li>x轴：水平复制，通过副本扩展，将应用程序水平复制，通过负载均衡运行程序的多个完全一样的副本方式，来实现应用程序的伸缩性，提高应用程序的容量和可用度。</li>
 <li>Z轴：数据分区，每个服务器负责一个数据子集。每个服务器运行的代码是一样的。</li>
 <li>Y轴：功能解耦，将不同职责的模块，分成不同的服务</li>
 </ul>
-<h4 id="业务流程"><a href="#业务流程" class="headerlink" title="业务流程"></a>业务流程</h4><ol>
-<li><p>开发商品服务和订单服务作为服务注册到 注册中心Eureka Server</p>
-</li>
-<li><p>每个服务的开发流程大致 连接数据库-&gt;创建所需对象-&gt;dao层-&gt;分析controller中方法的业务流程-&gt;写出需要的service方法-&gt;写controller ,注意每个方法写完后都及时单元测试</p>
-</li>
-<li><p>返回给前端的数据自定义VO对象</p>
-</li>
-<li><p>前端请求过来的数据使用form对象封装，controller传给service的数据使用DTO封装</p>
-<h4 id="如何拆数据"><a href="#如何拆数据" class="headerlink" title="如何拆数据"></a>如何拆数据</h4><ol>
-<li>每个微服务都有单独的数据存储，达到松耦合，其它服务避免访问别的服务的数据库。一个服务的数据，只能通过这个服务提供的api来访问，服务之间都是有隔离的。</li>
+<h2 id="业务流程"><a href="#业务流程" class="headerlink" title="业务流程"></a>业务流程</h2><ol>
+<li>开发商品服务和订单服务作为服务注册到 注册中心Eureka Server</li>
+<li>每个服务的开发流程大致 连接数据库-&gt;创建所需对象-&gt;dao层-&gt;分析Controller中方法的业务流程-&gt;写出需要的Service方法-&gt;写Controller ,注意每个方法写完后都及时单元测试</li>
+<li>返回给前端的数据自定义VO对象</li>
+<li>前端请求过来的数据使用Form对象封装，Controller传给Service的数据使用DTO封装</li>
+</ol>
+<h2 id="如何拆数据"><a href="#如何拆数据" class="headerlink" title="如何拆数据"></a>如何拆数据</h2><ol>
+<li>每个微服务都有单独的数据存储，达到松耦合，其它服务避免访问别的服务的数据库。一个服务的数据，只能通过这个服务提供的API来访问，服务之间都是有隔离的。</li>
 <li>依据服务特点选择不同结构的数据库类型。依据功能特点选择合适的数据库。mongodb（前端服务，对事物要求低）、Elasticsearch(ES搜索)、mysql</li>
 <li>难点在确定边界</li>
-</ol>
-</li>
 </ol>
 
       
@@ -263,7 +285,7 @@
     <div id="toc" class="toc-article">
     <strong class="toc-title">Contents</strong>
     
-      <ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#微服务拆分的起点和重点"><span class="nav-number">1.</span> <span class="nav-text">微服务拆分的起点和重点</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#微服务如何拆分："><span class="nav-number">1.1.</span> <span class="nav-text">微服务如何拆分：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#不适合用微服务的业务场景"><span class="nav-number">1.2.</span> <span class="nav-text">不适合用微服务的业务场景</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#点餐业务服务拆分"><span class="nav-number">2.</span> <span class="nav-text">点餐业务服务拆分</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#扩展立方模型"><span class="nav-number">2.1.</span> <span class="nav-text">扩展立方模型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#如何拆分功能"><span class="nav-number">2.2.</span> <span class="nav-text">如何拆分功能</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#服务和数据的关系"><span class="nav-number">2.3.</span> <span class="nav-text">服务和数据的关系</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#点餐业务拆分分析"><span class="nav-number">2.4.</span> <span class="nav-text">点餐业务拆分分析</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#服务拆分的方法论：-lt-可扩展的艺术-gt"><span class="nav-number">2.5.</span> <span class="nav-text">服务拆分的方法论：&lt;可扩展的艺术&gt;</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#业务流程"><span class="nav-number">3.</span> <span class="nav-text">业务流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何拆数据"><span class="nav-number">4.</span> <span class="nav-text">如何拆数据</span></a></li></ol>
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#微服务拆分的起点和重点"><span class="nav-number">1.</span> <span class="nav-text">微服务拆分的起点和重点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#微服务如何拆分："><span class="nav-number">1.1.</span> <span class="nav-text">微服务如何拆分：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不适合用微服务的业务场景"><span class="nav-number">1.2.</span> <span class="nav-text">不适合用微服务的业务场景</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#点餐业务服务拆分"><span class="nav-number">2.</span> <span class="nav-text">点餐业务服务拆分</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#扩展立方模型"><span class="nav-number">2.1.</span> <span class="nav-text">扩展立方模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何拆分功能"><span class="nav-number">2.2.</span> <span class="nav-text">如何拆分功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#服务和数据的关系"><span class="nav-number">2.3.</span> <span class="nav-text">服务和数据的关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#点餐业务拆分分析"><span class="nav-number">2.4.</span> <span class="nav-text">点餐业务拆分分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#服务拆分的方法论：-lt-可扩展的艺术-gt"><span class="nav-number">2.5.</span> <span class="nav-text">服务拆分的方法论：&lt;可扩展的艺术&gt;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#业务流程"><span class="nav-number">3.</span> <span class="nav-text">业务流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何拆数据"><span class="nav-number">4.</span> <span class="nav-text">如何拆数据</span></a></li></ol>
     
     </div>
   </aside>
@@ -316,6 +338,9 @@
 
 
     <!-- headerblur min height -->
+    
+      var headerblur = document.getElementById("header-blur");
+      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

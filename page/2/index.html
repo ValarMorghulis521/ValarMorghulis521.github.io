@@ -55,10 +55,32 @@
 
 
   
+  
+  <div class="site-header-image">
+    <img id="originBg" width="100%" alt="Hike News" src="">
+  </div>
+
+  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
+    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
+  </div>
+
+  <script>
+        var imgUrls = "css/images/pose01.jpg,https://source.unsplash.com/collection/954550/1920x1080,https://source.unsplash.com/collection/954550/1920x1081".split(",");
+        var random = Math.floor((Math.random() * imgUrls.length ));
+        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+          document.getElementById("originBg").src=imgUrls[random];
+          document.getElementById("blurBg").src=imgUrls[random];
+        } else {
+          document.getElementById("originBg").src='/' + imgUrls[random];
+          document.getElementById("blurBg").src='/' + imgUrls[random];
+        }
+    </script>
+
+
 
 
 <header id="allheader" class="site-header" role="banner" 
-   >
+   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -1121,7 +1143,7 @@
 <h4 id="HashMap的构造函数"><a href="#HashMap的构造函数" class="headerlink" title="HashMap的构造函数"></a>HashMap的构造函数</h4><p>源码</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* Constructs an empty &lt;tt&gt;HashMap&lt;/tt&gt; with the default initial capacity</span></span><br><span class="line"><span class="comment">* (16) and the default load factor (0.75).</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">HashMap</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.loadFactor = DEFAULT_LOAD_FACTOR; <span class="comment">// all other fields defaulted</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>根据构造函数可以看出HashMap 中的table数组并没有在开始初始化好，而是赋上了初始值，因为可以推断HashMap是按照lazyLoad去加载</p>
+<p>根据构造函数可以看出HashMap 中的table数组并没有在开始初始化好，只是给负载因子初始化默认值0.75 ，因为可以推断HashMap是按照lazyLoad去加载</p>
 <h4 id="HashMap的-put-方法"><a href="#HashMap的-put-方法" class="headerlink" title="HashMap的 put()方法"></a>HashMap的 put()方法</h4><p>源码分析加注释：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> V <span class="title">put</span><span class="params">(K key, V value)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> putVal(hash(key), key, value, <span class="keyword">false</span>, <span class="keyword">true</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">final</span> V <span class="title">putVal</span><span class="params">(<span class="keyword">int</span> hash, K key, V value, <span class="keyword">boolean</span> onlyIfAbsent,</span></span></span><br><span class="line"><span class="function"><span class="params">               <span class="keyword">boolean</span> evict)</span> </span>&#123;</span><br><span class="line">    Node&lt;K,V&gt;[] tab; Node&lt;K,V&gt; p; <span class="keyword">int</span> n, i;</span><br><span class="line">    <span class="comment">//根据源码可以看出如果数组为空就调用resize()方法给它初始化数组</span></span><br><span class="line">    <span class="keyword">if</span> ((tab = table) == <span class="keyword">null</span> || (n = tab.length) == <span class="number">0</span>)</span><br><span class="line">        n = (tab = resize()).length;</span><br><span class="line">    <span class="comment">//做hash运算，算出键值对在table里面的具体位置，得到的运算还没有元素存储到里面则会直接new一个该键值对的node,放到该位置当中</span></span><br><span class="line">    <span class="keyword">if</span> ((p = tab[i = (n - <span class="number">1</span>) &amp; hash]) == <span class="keyword">null</span>)</span><br><span class="line">        tab[i] = newNode(hash, key, value, <span class="keyword">null</span>);</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        Node&lt;K,V&gt; e; K k;</span><br><span class="line">        <span class="comment">//如果发现同样的位置存在同样的已经存在键值对，且键和传入进来的键一致，则直接替换数组里面的元素</span></span><br><span class="line">        <span class="keyword">if</span> (p.hash == hash &amp;&amp;</span><br><span class="line">            ((k = p.key) == key || (key != <span class="keyword">null</span> &amp;&amp; key.equals(k))))</span><br><span class="line">            e = p;</span><br><span class="line">        <span class="comment">//当前位置存储的是否是已经树化了之后的节点，如果是树化了的话则按照树的方式尝试存储键值对</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (p <span class="keyword">instanceof</span> TreeNode)</span><br><span class="line">            e = ((TreeNode&lt;K,V&gt;)p).putTreeVal(<span class="keyword">this</span>, tab, hash, key, value);</span><br><span class="line">        <span class="comment">//如果不是树化了，则按照链表的插入方式往链表后面添加元素，同时判断链表元素的总数，一旦超过TREEIFY_THRESHOLD，则将链表进行树化</span></span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> binCount = <span class="number">0</span>; ; ++binCount) &#123;</span><br><span class="line">                <span class="keyword">if</span> ((e = p.next) == <span class="keyword">null</span>) &#123;</span><br><span class="line">                    p.next = newNode(hash, key, value, <span class="keyword">null</span>);</span><br><span class="line">                    <span class="keyword">if</span> (binCount &gt;= TREEIFY_THRESHOLD - <span class="number">1</span>) <span class="comment">// -1 for 1st</span></span><br><span class="line">                        treeifyBin(tab, hash);</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (e.hash == hash &amp;&amp;</span><br><span class="line">                    ((k = e.key) == key || (key != <span class="keyword">null</span> &amp;&amp; key.equals(k))))</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                p = e;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//如果插入的键位存在于HashMap中则对对应的键位进行值的更新操作</span></span><br><span class="line">        <span class="keyword">if</span> (e != <span class="keyword">null</span>) &#123; <span class="comment">// existing mapping for key</span></span><br><span class="line">            V oldValue = e.value;</span><br><span class="line">            <span class="keyword">if</span> (!onlyIfAbsent || oldValue == <span class="keyword">null</span>)</span><br><span class="line">                e.value = value;</span><br><span class="line">            afterNodeAccess(e);</span><br><span class="line">            <span class="keyword">return</span> oldValue;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ++modCount;</span><br><span class="line">    <span class="comment">//而当我们的HashMap的size大于阈值的时候也通用会调用resize()对HashMap进行扩容</span></span><br><span class="line">    <span class="keyword">if</span> (++size &gt; threshold)</span><br><span class="line">        resize();</span><br><span class="line">    afterNodeInsertion(evict);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -1391,61 +1413,60 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h4 id="微服务拆分的起点和重点"><a href="#微服务拆分的起点和重点" class="headerlink" title="微服务拆分的起点和重点"></a>微服务拆分的起点和重点</h4><h5 id="微服务如何拆分："><a href="#微服务如何拆分：" class="headerlink" title="微服务如何拆分："></a>微服务如何拆分：</h5><ol>
+        <h2 id="微服务拆分的起点和重点"><a href="#微服务拆分的起点和重点" class="headerlink" title="微服务拆分的起点和重点"></a>微服务拆分的起点和重点</h2><h3 id="微服务如何拆分："><a href="#微服务如何拆分：" class="headerlink" title="微服务如何拆分："></a>微服务如何拆分：</h3><ol>
 <li>先明白起点和终点<br> 起点：既有的架构形态（老项目、新项目）<br> 终点：好的架构不是设计出来的，而是进化而来的。进化一直在演进  </li>
 <li>需要考虑的因素与坚持的原则</li>
 </ol>
-<h5 id="不适合用微服务的业务场景"><a href="#不适合用微服务的业务场景" class="headerlink" title="不适合用微服务的业务场景"></a>不适合用微服务的业务场景</h5><ol>
+<h3 id="不适合用微服务的业务场景"><a href="#不适合用微服务的业务场景" class="headerlink" title="不适合用微服务的业务场景"></a>不适合用微服务的业务场景</h3><ol>
 <li>系统中包含很多很多强事务场景的</li>
 <li>业务相对稳定，迭代周期长</li>
 <li>访问压力不大，可用性要求不高</li>
 </ol>
-<p>康威定律：沟通的问题会影响系统的设计</p>
-<h4 id="点餐业务服务拆分"><a href="#点餐业务服务拆分" class="headerlink" title="点餐业务服务拆分"></a>点餐业务服务拆分</h4><p>服务拆分的方法论：&lt;可扩展的艺术&gt;</p>
-<h5 id="扩展立方模型"><a href="#扩展立方模型" class="headerlink" title="扩展立方模型"></a>扩展立方模型</h5><ul>
+<p>除了业务上的不匹配，还涉及到团队的运作和管理。传统人员架构是项目模式，项目启动时从资源池抽取不能技能的人员组成团队，项目结束资源被释放掉。 而微服务架构下人员组织是产品模式，让团队负责整个服务的生命周期。</p>
+<p><img src="/2019/11/08/服务拆分/%E5%9B%A2%E9%98%9F%E7%BB%93%E6%9E%84.jpg" alt>  </p>
+<p>康威定律：沟通的问题会影响系统的设计，</p>
+<h2 id="点餐业务服务拆分"><a href="#点餐业务服务拆分" class="headerlink" title="点餐业务服务拆分"></a>点餐业务服务拆分</h2><h3 id="扩展立方模型"><a href="#扩展立方模型" class="headerlink" title="扩展立方模型"></a>扩展立方模型</h3><ul>
 <li>x轴：水平复制，通过副本扩展，将应用程序水平复制，通过负载均衡运行程序的多个完全一样的副本方式，来实现应用程序的伸缩性，提高应用程序的容量和可用度。</li>
 <li>Z轴：数据分区，每个服务器负责一个数据子集。每个服务器运行的代码是一样的。</li>
-<li>Y轴：功能解耦，将不同职责的模块，分成不同的服务<h5 id="如何拆分功能"><a href="#如何拆分功能" class="headerlink" title="如何拆分功能"></a>如何拆分功能</h5><ul>
-<li>单一职责，松耦合、高内聚 ：<br>（每个服务只负责业务功能的一个单独部分。服务之间耦合度低，修改一个服务不用导致另外一个服务跟着修改，高内聚指的是服务内部相关的行为聚集在一个服务内，而不是分散在不同的服务中，需要修改一个行为时，只需要修改一个服务就行）</li>
-<li>关注点分离</li>
+<li>Y轴：功能解耦，将不同职责的模块，分成不同的服务<h3 id="如何拆分功能"><a href="#如何拆分功能" class="headerlink" title="如何拆分功能"></a>如何拆分功能</h3><ul>
+<li><strong>单一职责，松耦合、高内聚</strong> ：<br>每个服务只负责业务功能的一个单独部分。服务之间耦合度低，修改一个服务不用导致另外一个服务跟着修改，高内聚指的是服务内部相关的行为聚集在一个服务内，而不是分散在不同的服务中，需要修改一个行为时，只需要修改一个服务就行）</li>
+<li><strong>关注点分离</strong></li>
 </ul>
 <ol>
-<li>按职责（给我们的服务进行分类，明显按照业务领域可以划分出来的服务，职责比较单一</li>
-<li>按通用性（一些基础组件，与具体的业务无关的可以划分成单独的服务 消息 用户</li>
-<li>按粒度级别<h5 id="服务和数据的关系"><a href="#服务和数据的关系" class="headerlink" title="服务和数据的关系"></a>服务和数据的关系</h5></li>
-</ol>
-<ul>
-<li>先考虑拆分业务功能，在考虑拆分业务功能对应的数据</li>
-<li>无状态服务</li>
-</ul>
-<ol>
-<li>一个数据需要被多个服务共享才能完成一个请求，这个数据就是有状态</li>
-<li>把数据迁移到分布式缓存中存储，让业务服务变成无状态计算结点，后端服务能做到按需动态伸缩，在运行时动态增删结点不用考虑缓存同步问题</li>
+<li>按职责（给我们的服务进行分类，明显按照业务领域可以划分出来的服务，职责比较单一：订单，商品，前端服务</li>
+<li>按通用性（一些基础组件，与具体的业务无关的可以划分成单独的服务：消息、用户</li>
+<li>按粒度级别：并不是越小越好</li>
 </ol>
 </li>
 </ul>
+<h3 id="服务和数据的关系"><a href="#服务和数据的关系" class="headerlink" title="服务和数据的关系"></a>服务和数据的关系</h3><ol>
+<li><p>先考虑拆分业务功能，在考虑拆分业务功能对应的数据</p>
+</li>
+<li><p>无状态服务</p>
+<ul>
+<li>一个数据需要被多个服务共享才能完成一个请求，这个数据就是<strong>有状态</strong></li>
+<li>把数据迁移到分布式缓存中存储，让业务服务变成无状态计算结点，后端服务能做到按需动态伸缩，在运行时动态增删结点不用考虑缓存同步问题</li>
+</ul>
 <p><img src="/2019/11/08/服务拆分/%E4%B8%8D%E7%94%A8%E8%80%83%E8%99%91%E7%BC%93%E5%AD%98%E5%90%8C%E6%AD%A5.jpg" alt>     </p>
-<h5 id="点餐业务拆分分析"><a href="#点餐业务拆分分析" class="headerlink" title="点餐业务拆分分析"></a>点餐业务拆分分析</h5><p><img src="/2019/11/08/服务拆分/%E7%82%B9%E9%A4%90%E4%B8%9A%E5%8A%A1%E6%8B%86%E5%88%86%E5%88%86%E6%9E%90.jpg" alt>  </p>
-<h5 id="服务拆分的方法论：-lt-可扩展的艺术-gt"><a href="#服务拆分的方法论：-lt-可扩展的艺术-gt" class="headerlink" title="服务拆分的方法论：&lt;可扩展的艺术&gt;"></a>服务拆分的方法论：&lt;可扩展的艺术&gt;</h5><p>  扩展立方模型：  </p>
+</li>
+</ol>
+<h3 id="点餐业务拆分分析"><a href="#点餐业务拆分分析" class="headerlink" title="点餐业务拆分分析"></a>点餐业务拆分分析</h3><p><img src="/2019/11/08/服务拆分/%E7%82%B9%E9%A4%90%E4%B8%9A%E5%8A%A1%E6%8B%86%E5%88%86%E5%88%86%E6%9E%90.jpg" alt>  </p>
+<h3 id="服务拆分的方法论：-lt-可扩展的艺术-gt"><a href="#服务拆分的方法论：-lt-可扩展的艺术-gt" class="headerlink" title="服务拆分的方法论：&lt;可扩展的艺术&gt;"></a>服务拆分的方法论：&lt;可扩展的艺术&gt;</h3><p>  扩展立方模型：  </p>
 <ul>
 <li>x轴：水平复制，通过副本扩展，将应用程序水平复制，通过负载均衡运行程序的多个完全一样的副本方式，来实现应用程序的伸缩性，提高应用程序的容量和可用度。</li>
 <li>Z轴：数据分区，每个服务器负责一个数据子集。每个服务器运行的代码是一样的。</li>
 <li>Y轴：功能解耦，将不同职责的模块，分成不同的服务</li>
 </ul>
-<h4 id="业务流程"><a href="#业务流程" class="headerlink" title="业务流程"></a>业务流程</h4><ol>
-<li><p>开发商品服务和订单服务作为服务注册到 注册中心Eureka Server</p>
-</li>
-<li><p>每个服务的开发流程大致 连接数据库-&gt;创建所需对象-&gt;dao层-&gt;分析controller中方法的业务流程-&gt;写出需要的service方法-&gt;写controller ,注意每个方法写完后都及时单元测试</p>
-</li>
-<li><p>返回给前端的数据自定义VO对象</p>
-</li>
-<li><p>前端请求过来的数据使用form对象封装，controller传给service的数据使用DTO封装</p>
-<h4 id="如何拆数据"><a href="#如何拆数据" class="headerlink" title="如何拆数据"></a>如何拆数据</h4><ol>
-<li>每个微服务都有单独的数据存储，达到松耦合，其它服务避免访问别的服务的数据库。一个服务的数据，只能通过这个服务提供的api来访问，服务之间都是有隔离的。</li>
+<h2 id="业务流程"><a href="#业务流程" class="headerlink" title="业务流程"></a>业务流程</h2><ol>
+<li>开发商品服务和订单服务作为服务注册到 注册中心Eureka Server</li>
+<li>每个服务的开发流程大致 连接数据库-&gt;创建所需对象-&gt;dao层-&gt;分析Controller中方法的业务流程-&gt;写出需要的Service方法-&gt;写Controller ,注意每个方法写完后都及时单元测试</li>
+<li>返回给前端的数据自定义VO对象</li>
+<li>前端请求过来的数据使用Form对象封装，Controller传给Service的数据使用DTO封装</li>
+</ol>
+<h2 id="如何拆数据"><a href="#如何拆数据" class="headerlink" title="如何拆数据"></a>如何拆数据</h2><ol>
+<li>每个微服务都有单独的数据存储，达到松耦合，其它服务避免访问别的服务的数据库。一个服务的数据，只能通过这个服务提供的API来访问，服务之间都是有隔离的。</li>
 <li>依据服务特点选择不同结构的数据库类型。依据功能特点选择合适的数据库。mongodb（前端服务，对事物要求低）、Elasticsearch(ES搜索)、mysql</li>
 <li>难点在确定边界</li>
-</ol>
-</li>
 </ol>
 
       
@@ -1726,6 +1747,9 @@
 
 
     <!-- headerblur min height -->
+    
+      var headerblur = document.getElementById("header-blur");
+      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

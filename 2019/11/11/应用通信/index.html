@@ -17,7 +17,7 @@
 <meta property="og:description" content="HTTP VS RPC Dubbo是一个RPC框架，服务治理集成非常完善，不仅提供了服务注册发现，负载均衡，路由等面向分布式集群，面向开发测试，服务治理和监控的可视化平台。  Spring Cloud，微服务架构下的一站式解决方案，HttpRestful:本身轻量易用，适用性强，可以很容易跨语言跨平台，或者与已有的系统交互。微服务之间使用Http Restful调用方式：RestTemplate">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/2019/11/11/应用通信/%E5%BA%94%E7%94%A8%E9%80%9A%E4%BF%A1%5C%E6%B6%88%E6%81%AF%E5%BC%82%E6%AD%A5.jpg">
-<meta property="og:updated_time" content="2020-03-11T12:56:39.134Z">
+<meta property="og:updated_time" content="2020-03-14T03:21:43.993Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="应用通信">
 <meta name="twitter:description" content="HTTP VS RPC Dubbo是一个RPC框架，服务治理集成非常完善，不仅提供了服务注册发现，负载均衡，路由等面向分布式集群，面向开发测试，服务治理和监控的可视化平台。  Spring Cloud，微服务架构下的一站式解决方案，HttpRestful:本身轻量易用，适用性强，可以很容易跨语言跨平台，或者与已有的系统交互。微服务之间使用Http Restful调用方式：RestTemplate">
@@ -58,10 +58,32 @@
 
 
   
+  
+  <div class="site-header-image">
+    <img id="originBg" width="100%" alt="Hike News" src="">
+  </div>
+
+  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
+    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
+  </div>
+
+  <script>
+        var imgUrls = "css/images/pose01.jpg,https://source.unsplash.com/collection/954550/1920x1080,https://source.unsplash.com/collection/954550/1920x1081".split(",");
+        var random = Math.floor((Math.random() * imgUrls.length ));
+        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+          document.getElementById("originBg").src=imgUrls[random];
+          document.getElementById("blurBg").src=imgUrls[random];
+        } else {
+          document.getElementById("originBg").src='/' + imgUrls[random];
+          document.getElementById("blurBg").src='/' + imgUrls[random];
+        }
+    </script>
+
+
 
 
 <header id="allheader" class="site-header" role="banner" 
-   >
+   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -227,13 +249,14 @@
 <li>启动商品服务</li>
 <li>启动订单服务<br>postman访问接口即可。</li>
 </ol>
-<h3 id="同步or异步"><a href="#同步or异步" class="headerlink" title="同步or异步"></a>同步or异步</h3><ol>
-<li>通过消息中间件，解耦,服务间的交互变得更加灵活</li>
-<li>如果都使用同步服务，开销太大</li>
-<li>可以通过消息队列解决同步的问题，使之变成异步</li>
-<li>看一下，这个图中的消息中间件的作用。</li>
-</ol>
+<h3 id="同步or异步"><a href="#同步or异步" class="headerlink" title="同步or异步"></a>同步or异步</h3><p>在多模块中订单服务和商品服务之间的通讯机制目前是同步，订单会调用商品服务的查询商品信息、扣库存的接口；</p>
+<p>微服务中除了同步，有很多时候会在异步的场景下：<strong>通过队列和订阅主题实现消息的发布和订阅</strong>；一个微服务可以是消息的发布者，把消息通过异步的方式发送到队列或者订阅主题下。作为消费者的微服务可以从队列或者主题中获取消息，通过消息中间件把服务之间的直接调用解耦，</p>
+<p><strong>哪个场景下需要使用异步？</strong>  </p>
+<p>比如用户服务在用户登录的时候 要给用户发短信 -&gt;调用短信服务 ,加积分-&gt;积分服务…如果都采用同步的通讯机制，服务间耦合过大，用户登录成功需要向多个服务同步响应后才能成功，会造成不好的用户体验。这个时候我们可以通过消息队列就能够很好的解决这个问题</p>
+<p>再比如订单服务和商品服务，订单服务在扣库存前会先调用商品服务的查询商品信息的接口，再调用扣库存的接口。<br>如果我们对其改造：商品服务在更改库存的时候发布库存变化的消息，订单服务来订阅这个消息可以获取到商品的部分信息：可购买的商品个数，商品ID .在下单的时候订单服务不需要再同步的查询商品服务获取商品的库存信息，而是直接查询自己服务中的数据。 再扣库存的时候订单服务发布一个扣库存的消息，商品服务要订阅这个消息，拿到消息后减库存。</p>
 <p><img src="/2019/11/11/应用通信/%E5%BA%94%E7%94%A8%E9%80%9A%E4%BF%A1%5C%E6%B6%88%E6%81%AF%E5%BC%82%E6%AD%A5.jpg" alt></p>
+<p>如果订单支付成功或失败会有什么影响？比如可以设置30分钟后未支付，由支付服务发布消息，商品和订单服务同时订阅这个消息 来保证数据的最终一致性。 这样有什么好处？ 如果用户购买成功后还需要加积分，发短信，这个时候订单服务就不需要修改了，短信服务和积分服务只要也订阅了对应的消息就可以搞定。</p>
+<p><strong>通过消息中间件，解耦,服务间的交互变得更加灵活，如果都使用同步服务，开销太大， 可以通过消息队列解决同步的问题，使之变成异步</strong></p>
 
       
     </div>
@@ -355,6 +378,9 @@
 
 
     <!-- headerblur min height -->
+    
+      var headerblur = document.getElementById("header-blur");
+      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

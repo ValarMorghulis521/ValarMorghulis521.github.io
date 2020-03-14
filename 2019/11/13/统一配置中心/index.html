@@ -11,21 +11,22 @@
   
   
   
-  <meta name="description" content="什么是统一配置中心？ 多人改一个配置不方便维护 配置中涉及到内容安全与权限，比如说数据库密码;这里可以把配置文件进行隔离不放进项目代码 每改一次配置都需要项目重启  Config的配置配置Config Server端 新建项目 选中Eureka Discovery Client和 Config Server  引入依赖 1234&amp;lt;dependency&amp;gt;			&amp;lt;groupId&amp;gt">
+  <meta name="description" content="什么是统一配置中心？ 多人改一个配置不方便维护 配置中涉及到内容安全与权限，比如说数据库密码;这里可以把配置文件进行隔离不放进项目代码 重点（更新配置项目需重启）：统一配置中心可实现动态配置，不需重启项目（包括线上配置更新）  统一配置中心怎么实现的？ 一开始把配置放置在远端的git上面。config-server把它拉下来放在本地git，如果远端git出问题了，从本地git把配置拉出来。然后其它">
 <meta name="keywords" content="Config Server,Config Clent,Spring Cloud Bus">
 <meta property="og:type" content="article">
 <meta property="og:title" content="统一配置中心">
 <meta property="og:url" content="http://yoursite.com/2019/11/13/统一配置中心/index.html">
 <meta property="og:site_name" content="Contunued Story">
-<meta property="og:description" content="什么是统一配置中心？ 多人改一个配置不方便维护 配置中涉及到内容安全与权限，比如说数据库密码;这里可以把配置文件进行隔离不放进项目代码 每改一次配置都需要项目重启  Config的配置配置Config Server端 新建项目 选中Eureka Discovery Client和 Config Server  引入依赖 1234&amp;lt;dependency&amp;gt;			&amp;lt;groupId&amp;gt">
+<meta property="og:description" content="什么是统一配置中心？ 多人改一个配置不方便维护 配置中涉及到内容安全与权限，比如说数据库密码;这里可以把配置文件进行隔离不放进项目代码 重点（更新配置项目需重启）：统一配置中心可实现动态配置，不需重启项目（包括线上配置更新）  统一配置中心怎么实现的？ 一开始把配置放置在远端的git上面。config-server把它拉下来放在本地git，如果远端git出问题了，从本地git把配置拉出来。然后其它">
 <meta property="og:locale" content="en">
+<meta property="og:image" content="http://yoursite.com/2019/11/13/统一配置中心/Config.jpg">
 <meta property="og:image" content="http://yoursite.com/2019/11/13/统一配置中心/Bus.jpg">
 <meta property="og:image" content="http://yoursite.com/2019/11/13/统一配置中心/Webhook%E9%85%8D%E7%BD%AE.png">
-<meta property="og:updated_time" content="2019-11-15T05:03:27.268Z">
+<meta property="og:updated_time" content="2020-03-14T15:03:08.630Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="统一配置中心">
-<meta name="twitter:description" content="什么是统一配置中心？ 多人改一个配置不方便维护 配置中涉及到内容安全与权限，比如说数据库密码;这里可以把配置文件进行隔离不放进项目代码 每改一次配置都需要项目重启  Config的配置配置Config Server端 新建项目 选中Eureka Discovery Client和 Config Server  引入依赖 1234&amp;lt;dependency&amp;gt;			&amp;lt;groupId&amp;gt">
-<meta name="twitter:image" content="http://yoursite.com/2019/11/13/统一配置中心/Bus.jpg">
+<meta name="twitter:description" content="什么是统一配置中心？ 多人改一个配置不方便维护 配置中涉及到内容安全与权限，比如说数据库密码;这里可以把配置文件进行隔离不放进项目代码 重点（更新配置项目需重启）：统一配置中心可实现动态配置，不需重启项目（包括线上配置更新）  统一配置中心怎么实现的？ 一开始把配置放置在远端的git上面。config-server把它拉下来放在本地git，如果远端git出问题了，从本地git把配置拉出来。然后其它">
+<meta name="twitter:image" content="http://yoursite.com/2019/11/13/统一配置中心/Config.jpg">
   
     <link rel="alternate" href="/atom.xml" title="Contunued Story" type="application/atom+xml">
   
@@ -62,10 +63,32 @@
 
 
   
+  
+  <div class="site-header-image">
+    <img id="originBg" width="100%" alt="Hike News" src="">
+  </div>
+
+  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
+    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
+  </div>
+
+  <script>
+        var imgUrls = "css/images/pose01.jpg,https://source.unsplash.com/collection/954550/1920x1080,https://source.unsplash.com/collection/954550/1920x1081".split(",");
+        var random = Math.floor((Math.random() * imgUrls.length ));
+        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+          document.getElementById("originBg").src=imgUrls[random];
+          document.getElementById("blurBg").src=imgUrls[random];
+        } else {
+          document.getElementById("originBg").src='/' + imgUrls[random];
+          document.getElementById("blurBg").src='/' + imgUrls[random];
+        }
+    </script>
+
+
 
 
 <header id="allheader" class="site-header" role="banner" 
-   >
+   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -145,21 +168,23 @@
         <h2 id="什么是统一配置中心？"><a href="#什么是统一配置中心？" class="headerlink" title="什么是统一配置中心？"></a>什么是统一配置中心？</h2><ol>
 <li>多人改一个配置不方便维护</li>
 <li>配置中涉及到内容安全与权限，比如说数据库密码;这里可以把配置文件进行隔离不放进项目代码</li>
-<li>每改一次配置都需要项目重启</li>
+<li>重点（更新配置项目需重启）：统一配置中心可实现动态配置，不需重启项目（包括线上配置更新）</li>
 </ol>
+<h2 id="统一配置中心怎么实现的？"><a href="#统一配置中心怎么实现的？" class="headerlink" title="统一配置中心怎么实现的？"></a>统一配置中心怎么实现的？</h2><p><img src="/2019/11/13/统一配置中心/Config.jpg" alt></p>
+<p>一开始把配置放置在远端的git上面。config-server把它拉下来放在本地git，如果远端git出问题了，从本地git把配置拉出来。然后其它服务集成了 Config Client，从Config Server拿到自己的配置</p>
 <h2 id="Config的配置"><a href="#Config的配置" class="headerlink" title="Config的配置"></a>Config的配置</h2><h3 id="配置Config-Server端"><a href="#配置Config-Server端" class="headerlink" title="配置Config Server端"></a>配置Config Server端</h3><ol>
 <li><p>新建项目 选中Eureka Discovery Client和 Config Server</p>
 </li>
 <li><p>引入依赖</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">			&lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;</span><br><span class="line">			&lt;artifactId&gt;spring-cloud-config-server&lt;/artifactId&gt;</span><br><span class="line">		&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-config-server<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>启动类加注解</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@SpringBootApplication</span><br><span class="line">@EnableDiscoveryClient</span><br><span class="line">@EnableConfigServer</span><br><span class="line">public class ConfigApplication &#123;</span><br><span class="line"></span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		SpringApplication.run(ConfigApplication.class, args);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@EnableDiscoveryClient</span></span><br><span class="line"><span class="meta">@EnableConfigServer</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConfigApplication</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		SpringApplication.run(ConfigApplication.class, args);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>github上创建config-repo的仓库，在仓库中新增一个 order.yml</p>
 </li>
 <li><p>在config服务的application.yml增加github的配置信息如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">cloud:</span><br><span class="line">  config:</span><br><span class="line">    server:</span><br><span class="line">      git:</span><br><span class="line">        uri: https://github.com/ValarMorghulis521/config-repo.git</span><br><span class="line">        username: ValarMorghulis521</span><br><span class="line">        password: ********</span><br><span class="line">        basedir: github的本地仓库地址</span><br></pre></td></tr></table></figure>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">cloud:</span></span><br><span class="line"><span class="attr">  config:</span></span><br><span class="line"><span class="attr">    server:</span></span><br><span class="line"><span class="attr">      git:</span></span><br><span class="line"><span class="attr">        uri:</span> <span class="attr">https://github.com/ValarMorghulis521/config-repo.git</span></span><br><span class="line"><span class="attr">        username:</span> <span class="string">ValarMorghulis521</span></span><br><span class="line"><span class="attr">        password:</span> <span class="string">********</span></span><br><span class="line"><span class="attr">        basedir:</span> <span class="string">github的本地仓库地址</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>本地访问github上的yml配置信息 <a href="http://localhost:8080/release/order-dev.yml" target="_blank" rel="noopener">http://localhost:8080/release/order-dev.yml</a></p>
 </li>
@@ -174,38 +199,48 @@
 </ol>
 <h3 id="配置Config-Client端"><a href="#配置Config-Client端" class="headerlink" title="配置Config Client端"></a>配置Config Client端</h3><ol>
 <li><p>在需要用到Config Client的服务上新增config-client依赖</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">          &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;</span><br><span class="line">          &lt;artifactId&gt;spring-cloud-config-client&lt;/artifactId&gt;</span><br><span class="line">      &lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-config-client<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>application.yml文件中新增config的配置,删除数据库其他配置信息</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">spring:</span><br><span class="line">  application:</span><br><span class="line">    name: order</span><br><span class="line">  cloud:</span><br><span class="line">    config:</span><br><span class="line">      discovery:</span><br><span class="line">        enabled: true</span><br><span class="line">        service-id: CONFIG</span><br><span class="line">      profile: dev</span><br></pre></td></tr></table></figure>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line"><span class="attr">  application:</span></span><br><span class="line"><span class="attr">    name:</span> <span class="string">order</span></span><br><span class="line"><span class="attr">  cloud:</span></span><br><span class="line"><span class="attr">    config:</span></span><br><span class="line"><span class="attr">      discovery:</span></span><br><span class="line"><span class="attr">        enabled:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">        service-id:</span> <span class="string">CONFIG</span></span><br><span class="line"><span class="attr">      profile:</span> <span class="string">dev</span></span><br></pre></td></tr></table></figure>
 
 </li>
 </ol>
 <p>tips：当我们访问<a href="http://localhost:8080/dev/order-dev.yml" target="_blank" rel="noopener">http://localhost:8080/dev/order-dev.yml</a> 时是如何找到对应的配置？<br> appliction.name+profile.yml对应到github的配置</p>
 <ol start="3">
-<li><p>application.yml更名为bootstrap.yml，作为引导先启动；config-client会先去eureka上找配置的service-id,这里配置的是CONFIG，所以会去找名为“CONFIG”的服务，如果找不到会把127.0.0.01：8888当成config-server ;然后再从configServ上获取 order-deb.yml相关配置信息</p>
+<li><p><strong>application.yml更名为bootstrap.yml，作为引导先启动</strong>；config-client会先去eureka上找配置的service-id,这里配置的是CONFIG，所以会去找名为“CONFIG”的服务，如果找不到会把127.0.0.01：8888当成config-server ;然后再从configServ上获取 order-dev.yml相关配置信息</p>
 </li>
 <li><p>只需要创建多个Config Server实例即可实现高可用，不需要相互注册</p>
 </li>
-<li><p>order.yml (不管选择哪个环境，这个是一定会加载访问的，所以可以把公共配置放这，用不上则注释掉吧)</p>
+<li><p>如果git上有多个配置文件order.yml，order-dev.yml (不管选择哪个环境，order.yml这个是一定会加载访问的，config会把order.yml 和 order-dev.yml里的配置合并，所以可以把公共配置放这order.yml，用不上则注释掉吧)</p>
 </li>
 </ol>
-<h2 id="Spring-Cloud-Bus"><a href="#Spring-Cloud-Bus" class="headerlink" title="Spring Cloud Bus"></a>Spring Cloud Bus</h2><h3 id="如何实现配置自动刷新"><a href="#如何实现配置自动刷新" class="headerlink" title="如何实现配置自动刷新"></a>如何实现配置自动刷新</h3><ol>
-<li>config-server用了Bus之后会提供一个/bus-refresh接口，访问这个接口，config-server便会将更新配置信息发送到消息队列里面（RabbitMA）</li>
-<li>把bus-refresh接口地址配置到git上，通过webhook访问 每次git上配置文件有了变更，便通知config-server<br><img src="/2019/11/13/统一配置中心/Bus.jpg" alt></li>
+<h2 id="Spring-Cloud-Bus"><a href="#Spring-Cloud-Bus" class="headerlink" title="Spring Cloud Bus"></a>Spring Cloud Bus</h2><hr>
+<p>bus:想上就上的公共汽车。这里是总线的意思</p>
+<h3 id="如何实现配置自动刷新"><a href="#如何实现配置自动刷新" class="headerlink" title="如何实现配置自动刷新"></a>如何实现配置自动刷新</h3><ol>
+<li>config-server用了Bus之后会提供一个/bus-refresh接口，访问这个接口，config-server便会将更新配置信息发送到消息队列里面（RabbitMQ）</li>
+<li>把bus-refresh接口地址配置到git上，通过webhook访问 每次git上配置文件有了变更，便通知config-server</li>
 </ol>
+<p><img src="/2019/11/13/统一配置中心/Bus.jpg" alt></p>
 <h3 id="Spring-Cloud-Bus实操"><a href="#Spring-Cloud-Bus实操" class="headerlink" title="Spring Cloud Bus实操"></a>Spring Cloud Bus实操</h3><ol>
-<li>修改Spring Cloud 和Spring Boot的版本</li>
-<li>配置rabbitmq连接地址：<br>为什么没有配置rabbitmq却可以连上  ,没用配置则使用默认<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public class RabbitProperties &#123;</span><br><span class="line">    private String host = &quot;localhost&quot;;</span><br><span class="line">    private int port = 5672;</span><br><span class="line">    private String username = &quot;guest&quot;;</span><br><span class="line">    private String password = &quot;guest&quot;;</span><br></pre></td></tr></table></figure>
-
+<li><p>修改Spring Cloud 和Spring Boot的版本</p>
+</li>
+<li><p>添加Spring Cloud Bus的pom依赖</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-bus-amqp<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置rabbitmq连接地址：<br>为什么没有配置rabbitmq却可以连上  ,没用配置则使用默认</p>
 </li>
 </ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RabbitProperties</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String host = <span class="string">"localhost"</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> port = <span class="number">5672</span>;</span><br><span class="line">    <span class="keyword">private</span> String username = <span class="string">"guest"</span>;</span><br><span class="line">    <span class="keyword">private</span> String password = <span class="string">"guest"</span>;</span><br></pre></td></tr></table></figure>
+
 <p>如果你的mq不是搭建在本地，配置</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">spring:</span><br><span class="line">  rabbitmq:</span><br><span class="line">    host: </span><br><span class="line">    port: </span><br><span class="line">    username: </span><br><span class="line">    password:</span><br></pre></td></tr></table></figure>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line"><span class="attr">  rabbitmq:</span></span><br><span class="line"><span class="attr">    host:</span> </span><br><span class="line"><span class="attr">    port:</span> </span><br><span class="line"><span class="attr">    username:</span> </span><br><span class="line"><span class="attr">    password:</span></span><br></pre></td></tr></table></figure>
 
 <ol start="3">
-<li>feign组件升级为openfeign</li>
-<li>配置Bus接口暴露出来：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">management:</span><br><span class="line">  endpoins:</span><br><span class="line">    web:</span><br><span class="line">      expose: &quot;*&quot;</span><br></pre></td></tr></table></figure>
+<li><p>feign组件升级为openfeign</p>
+</li>
+<li><p>配置Bus接口暴露出来：</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">management:</span></span><br><span class="line"><span class="attr">  endpoins:</span></span><br><span class="line"><span class="attr">    web:</span></span><br><span class="line"><span class="attr">      expose:</span> <span class="string">"*"</span></span><br></pre></td></tr></table></figure>
 
 </li>
 </ol>
@@ -214,15 +249,17 @@
 <li><p>远程git修改之后对bus-refresh发送post请求刷新内容</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -v -X POST “http://~~/actuator/bus-refresh”</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>配置git 的webhook<br>URL:http:***/monitor<br>Content type 选择application/json<br><img src="/2019/11/13/统一配置中心/Webhook%E9%85%8D%E7%BD%AE.png" alt="Webhook配置"><br>url需要外网地址，使用netapp.cn工具映射外网地址  </p>
+<li><p>配置git 的webhook<br>URL:http:***/monitor  (后面不是bus-refresh 而是monitor,因为config这个组件给我提供一个专门用户webhook的路由 monitor)<br>Content type 选择application/json</p>
 </li>
 </ol>
+<p><img src="/2019/11/13/统一配置中心/Webhook%E9%85%8D%E7%BD%AE.png" alt="Webhook配置"></p>
+<p>url需要外网地址，使用netapp.cn工具映射外网地址  </p>
 <h4 id="使用配置的前缀来映射一个配置类："><a href="#使用配置的前缀来映射一个配置类：" class="headerlink" title="使用配置的前缀来映射一个配置类："></a>使用配置的前缀来映射一个配置类：</h4><ol>
 <li><p>配置文件：  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">girl:</span><br><span class="line">  name: lili</span><br><span class="line">  age: 18</span><br></pre></td></tr></table></figure>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">girl:</span></span><br><span class="line"><span class="attr">  name:</span> <span class="string">lili</span></span><br><span class="line"><span class="attr">  age:</span> <span class="number">18</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>创建一个对应的类</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@Data</span><br><span class="line">@Component</span><br><span class="line">@ConfigurationProperties(&quot;girl&quot;)</span><br><span class="line">@RefreshScope</span><br><span class="line">public class GirlConfig&#123;</span><br><span class="line">  private String name;</span><br><span class="line">  private Integer age;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@ConfigurationProperties</span>(<span class="string">"girl"</span>)</span><br><span class="line"><span class="meta">@RefreshScope</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GirlConfig</span></span>&#123;</span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line">  <span class="keyword">private</span> Integer age;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 </li>
 </ol>
@@ -297,7 +334,7 @@
     <div id="toc" class="toc-article">
     <strong class="toc-title">Contents</strong>
     
-      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是统一配置中心？"><span class="nav-number">1.</span> <span class="nav-text">什么是统一配置中心？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Config的配置"><span class="nav-number">2.</span> <span class="nav-text">Config的配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置Config-Server端"><span class="nav-number">2.1.</span> <span class="nav-text">配置Config Server端</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#配置命名的约定规则："><span class="nav-number">2.1.1.</span> <span class="nav-text">配置命名的约定规则：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置Config-Client端"><span class="nav-number">2.2.</span> <span class="nav-text">配置Config Client端</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-Cloud-Bus"><span class="nav-number">3.</span> <span class="nav-text">Spring Cloud Bus</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#如何实现配置自动刷新"><span class="nav-number">3.1.</span> <span class="nav-text">如何实现配置自动刷新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-Cloud-Bus实操"><span class="nav-number">3.2.</span> <span class="nav-text">Spring Cloud Bus实操</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用配置的前缀来映射一个配置类："><span class="nav-number">3.2.1.</span> <span class="nav-text">使用配置的前缀来映射一个配置类：</span></a></li></ol></li></ol></li></ol>
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是统一配置中心？"><span class="nav-number">1.</span> <span class="nav-text">什么是统一配置中心？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#统一配置中心怎么实现的？"><span class="nav-number">2.</span> <span class="nav-text">统一配置中心怎么实现的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Config的配置"><span class="nav-number">3.</span> <span class="nav-text">Config的配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置Config-Server端"><span class="nav-number">3.1.</span> <span class="nav-text">配置Config Server端</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#配置命名的约定规则："><span class="nav-number">3.1.1.</span> <span class="nav-text">配置命名的约定规则：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置Config-Client端"><span class="nav-number">3.2.</span> <span class="nav-text">配置Config Client端</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-Cloud-Bus"><span class="nav-number">4.</span> <span class="nav-text">Spring Cloud Bus</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#如何实现配置自动刷新"><span class="nav-number">4.1.</span> <span class="nav-text">如何实现配置自动刷新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-Cloud-Bus实操"><span class="nav-number">4.2.</span> <span class="nav-text">Spring Cloud Bus实操</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用配置的前缀来映射一个配置类："><span class="nav-number">4.2.1.</span> <span class="nav-text">使用配置的前缀来映射一个配置类：</span></a></li></ol></li></ol></li></ol>
     
     </div>
   </aside>
@@ -350,6 +387,9 @@
 
 
     <!-- headerblur min height -->
+    
+      var headerblur = document.getElementById("header-blur");
+      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

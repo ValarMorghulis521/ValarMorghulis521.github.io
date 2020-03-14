@@ -11,18 +11,18 @@
   
   
   
-  <meta name="description" content="什么是docker? 从系统环境开始，自底至上打包应用 轻量级，对资源的有效该和管理 使用image  Docker思想 集装箱 标准化： 运输方式 存储方式 API接口   隔离:类似于虚拟机，更加轻量  Docker解决了什么问题：让快速扩展，弹性伸缩变得简单 Docker核心技术 Docker镜像，实质上就是一系列文件（包括应用程序的文件、应用的运行环境的文件），使用了基于分层的联合文件系统">
+  <meta name="description" content="什么是docker? 从系统环境开始，自底至上打包应用 轻量级，对资源的有效进程隔离和资源管理 使用image，可复用版本化  Docker思想 集装箱 标准化： 运输方式 存储方式 API接口   隔离:类似于虚拟机，更加轻量  Docker解决了什么问题：让快速扩展，弹性伸缩变得简单 Docker核心技术 Docker镜像，实质上就是一系列文件（包括应用程序的文件、应用的运行环境的文件），使用">
 <meta name="keywords" content="Docker">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Docker的使用">
 <meta property="og:url" content="http://yoursite.com/2019/11/13/docker的使用/index.html">
 <meta property="og:site_name" content="Contunued Story">
-<meta property="og:description" content="什么是docker? 从系统环境开始，自底至上打包应用 轻量级，对资源的有效该和管理 使用image  Docker思想 集装箱 标准化： 运输方式 存储方式 API接口   隔离:类似于虚拟机，更加轻量  Docker解决了什么问题：让快速扩展，弹性伸缩变得简单 Docker核心技术 Docker镜像，实质上就是一系列文件（包括应用程序的文件、应用的运行环境的文件），使用了基于分层的联合文件系统">
+<meta property="og:description" content="什么是docker? 从系统环境开始，自底至上打包应用 轻量级，对资源的有效进程隔离和资源管理 使用image，可复用版本化  Docker思想 集装箱 标准化： 运输方式 存储方式 API接口   隔离:类似于虚拟机，更加轻量  Docker解决了什么问题：让快速扩展，弹性伸缩变得简单 Docker核心技术 Docker镜像，实质上就是一系列文件（包括应用程序的文件、应用的运行环境的文件），使用">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-02-29T02:10:55.208Z">
+<meta property="og:updated_time" content="2020-03-14T04:19:12.255Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker的使用">
-<meta name="twitter:description" content="什么是docker? 从系统环境开始，自底至上打包应用 轻量级，对资源的有效该和管理 使用image  Docker思想 集装箱 标准化： 运输方式 存储方式 API接口   隔离:类似于虚拟机，更加轻量  Docker解决了什么问题：让快速扩展，弹性伸缩变得简单 Docker核心技术 Docker镜像，实质上就是一系列文件（包括应用程序的文件、应用的运行环境的文件），使用了基于分层的联合文件系统">
+<meta name="twitter:description" content="什么是docker? 从系统环境开始，自底至上打包应用 轻量级，对资源的有效进程隔离和资源管理 使用image，可复用版本化  Docker思想 集装箱 标准化： 运输方式 存储方式 API接口   隔离:类似于虚拟机，更加轻量  Docker解决了什么问题：让快速扩展，弹性伸缩变得简单 Docker核心技术 Docker镜像，实质上就是一系列文件（包括应用程序的文件、应用的运行环境的文件），使用">
   
     <link rel="alternate" href="/atom.xml" title="Contunued Story" type="application/atom+xml">
   
@@ -59,10 +59,32 @@
 
 
   
+  
+  <div class="site-header-image">
+    <img id="originBg" width="100%" alt="Hike News" src="">
+  </div>
+
+  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
+    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
+  </div>
+
+  <script>
+        var imgUrls = "css/images/pose01.jpg,https://source.unsplash.com/collection/954550/1920x1080,https://source.unsplash.com/collection/954550/1920x1081".split(",");
+        var random = Math.floor((Math.random() * imgUrls.length ));
+        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+          document.getElementById("originBg").src=imgUrls[random];
+          document.getElementById("blurBg").src=imgUrls[random];
+        } else {
+          document.getElementById("originBg").src='/' + imgUrls[random];
+          document.getElementById("blurBg").src='/' + imgUrls[random];
+        }
+    </script>
+
+
 
 
 <header id="allheader" class="site-header" role="banner" 
-   >
+   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -141,8 +163,8 @@
       
         <h4 id="什么是docker"><a href="#什么是docker" class="headerlink" title="什么是docker?"></a>什么是docker?</h4><ul>
 <li>从系统环境开始，自底至上打包应用</li>
-<li>轻量级，对资源的有效该和管理</li>
-<li>使用image</li>
+<li>轻量级，对资源的有效进程隔离和资源管理</li>
+<li>使用image，可复用版本化</li>
 </ul>
 <h4 id="Docker思想"><a href="#Docker思想" class="headerlink" title="Docker思想"></a>Docker思想</h4><ol>
 <li>集装箱</li>
@@ -343,6 +365,9 @@
 
 
     <!-- headerblur min height -->
+    
+      var headerblur = document.getElementById("header-blur");
+      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

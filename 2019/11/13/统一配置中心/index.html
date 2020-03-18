@@ -22,7 +22,7 @@
 <meta property="og:image" content="http://yoursite.com/2019/11/13/统一配置中心/Config.jpg">
 <meta property="og:image" content="http://yoursite.com/2019/11/13/统一配置中心/Bus.jpg">
 <meta property="og:image" content="http://yoursite.com/2019/11/13/统一配置中心/Webhook%E9%85%8D%E7%BD%AE.png">
-<meta property="og:updated_time" content="2020-03-14T15:03:08.630Z">
+<meta property="og:updated_time" content="2020-03-18T14:22:28.390Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="统一配置中心">
 <meta name="twitter:description" content="什么是统一配置中心？ 多人改一个配置不方便维护 配置中涉及到内容安全与权限，比如说数据库密码;这里可以把配置文件进行隔离不放进项目代码 重点（更新配置项目需重启）：统一配置中心可实现动态配置，不需重启项目（包括线上配置更新）  统一配置中心怎么实现的？ 一开始把配置放置在远端的git上面。config-server把它拉下来放在本地git，如果远端git出问题了，从本地git把配置拉出来。然后其它">
@@ -206,7 +206,7 @@
 
 </li>
 </ol>
-<p>tips：当我们访问<a href="http://localhost:8080/dev/order-dev.yml" target="_blank" rel="noopener">http://localhost:8080/dev/order-dev.yml</a> 时是如何找到对应的配置？<br> appliction.name+profile.yml对应到github的配置</p>
+<p>tips：当我们访问<a href="http://localhost:8080/dev/order-dev.yml" target="_blank" rel="noopener">http://localhost:8080/dev/order-dev.yml</a> 时是如何找到对应的配置？<br> appliction.name+profile.yml对应到github的配置，<strong>所以如果要加载dev后缀的yml order-dev.yml profile一定是dev,因为不小心给写错了导致找不到</strong></p>
 <ol start="3">
 <li><p><strong>application.yml更名为bootstrap.yml，作为引导先启动</strong>；config-client会先去eureka上找配置的service-id,这里配置的是CONFIG，所以会去找名为“CONFIG”的服务，如果找不到会把127.0.0.01：8888当成config-server ;然后再从configServ上获取 order-dev.yml相关配置信息</p>
 </li>

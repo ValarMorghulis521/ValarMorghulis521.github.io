@@ -9,16 +9,16 @@
   
   
   
-  <meta name="description" content="Like a bird in the sky">
+  <meta name="description" content="Stay Hungry Stay Foolish">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Contunued Story">
 <meta property="og:url" content="http://yoursite.com/index.html">
 <meta property="og:site_name" content="Contunued Story">
-<meta property="og:description" content="Like a bird in the sky">
+<meta property="og:description" content="Stay Hungry Stay Foolish">
 <meta property="og:locale" content="en">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Contunued Story">
-<meta name="twitter:description" content="Like a bird in the sky">
+<meta name="twitter:description" content="Stay Hungry Stay Foolish">
   
     <link rel="alternate" href="/atom.xml" title="Contunued Story" type="application/atom+xml">
   
@@ -91,7 +91,7 @@
           </h1>
           
           
-            <div class="site-description">Like a bird in the sky</div>
+            <div class="site-description">Stay Hungry Stay Foolish</div>
           
             
           <nav id="main-navigation" class="main-navigation" role="navigation">
@@ -126,6 +126,53 @@
       <div id="content" class="outer">
         
           <section id="main">
+  
+    <article id="post-消息队列总结"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2020/03/17/消息队列总结/">消息队列总结</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2020/03/17/消息队列总结/" class="article-date">
+	  <time datetime="2020-03-17T07:37:01.000Z" itemprop="datePublished">March 17, 2020</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/数据通信/">数据通信</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/数据通信/">数据通信</a>
+
+      
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
   
     <article id="post-SpringMVC"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
@@ -1149,138 +1196,6 @@
 <!-- Table of Contents -->
 
   
-    <article id="post-Zuul"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/11/16/Zuul/">Zuul</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/11/16/Zuul/" class="article-date">
-	  <time datetime="2019-11-16T09:10:26.000Z" itemprop="datePublished">November 16, 2019</time>
-	</a>
-
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/微服务实战/">微服务实战</a>
- 
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="服务网关和Zuul"><a href="#服务网关和Zuul" class="headerlink" title="服务网关和Zuul"></a>服务网关和Zuul</h2><h3 id="常用的网关方案："><a href="#常用的网关方案：" class="headerlink" title="常用的网关方案："></a>常用的网关方案：</h3><ol>
-<li>Nginx+Lua</li>
-<li>Kong(配置比Nginx简单，很多要付费的插件)</li>
-<li>Tyk（各种支持、Go语言开发的）</li>
-<li>Spring Cloud Zuul(路由+过滤器，过滤：安全、监控、限流、路由…..)</li>
-</ol>
-<p>服务网关作为请求入口，不能挂掉。需要保证稳定性、高可用、并发性、安全性、扩展性。<br>网关适合处理非业务功能的绝佳场所：协议转发、日志监控、流量管控、api权限等等。</p>
-<h3 id="服务网管的要素"><a href="#服务网管的要素" class="headerlink" title="服务网管的要素"></a>服务网管的要素</h3><ol>
-<li>稳定性，高可用</li>
-<li>性能、并发性</li>
-<li>安全性</li>
-<li>扩展性</li>
-</ol>
-<h3 id="Zuul组件内一次请求的生命周期"><a href="#Zuul组件内一次请求的生命周期" class="headerlink" title="Zuul组件内一次请求的生命周期"></a>Zuul组件内一次请求的生命周期</h3><p><img src="/2019/11/16/Zuul/Zuul%E7%9A%84%E8%AF%B7%E6%B1%82%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.jpg" alt></p>
-<h3 id="Zuul组件架构图"><a href="#Zuul组件架构图" class="headerlink" title="Zuul组件架构图"></a>Zuul组件架构图</h3><p><img src="/2019/11/16/Zuul/Zuul%E7%BB%84%E4%BB%B6%E6%9E%B6%E6%9E%84%E5%9B%BE.jpg" alt></p>
-<h2 id="Zuul-路由转发，排除和自定义"><a href="#Zuul-路由转发，排除和自定义" class="headerlink" title="Zuul:路由转发，排除和自定义"></a>Zuul:路由转发，排除和自定义</h2><h3 id="如何实现路由转发"><a href="#如何实现路由转发" class="headerlink" title="如何实现路由转发"></a>如何实现路由转发</h3><ol>
-<li>新建项目api-getway 选择Cloud Routing -&gt;Zuul、Config Client、Eureka Client</li>
-<li>配置config和eureka</li>
-<li>Application启动类添加 @EnableZuulProxy注解</li>
-<li>直接访问 路由地址/服务名/接口地址 如 localhost:8080/product/product/list (8080为路由的端口)</li>
-</ol>
-<h3 id="如何自定义和排除"><a href="#如何自定义和排除" class="headerlink" title="如何自定义和排除"></a>如何自定义和排除</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">zuul:</span><br><span class="line">  routes:</span><br><span class="line">  # /myProduct/product/list -&gt; /product/product/list</span><br><span class="line">    myProduct:</span><br><span class="line">      path: /myProduct/**</span><br><span class="line">      serviceId: product</span><br><span class="line">  # 以上简洁写法</span><br><span class="line">    product: /myProduct/**</span><br><span class="line">  # 排除某些路由，可写多个，- 表示空格</span><br><span class="line">  ignored-patterns:</span><br><span class="line">    - /**/product/listForOrder</span><br></pre></td></tr></table></figure>
-
-<h3 id="查看所有路由-localhost-9090-application-routes"><a href="#查看所有路由-localhost-9090-application-routes" class="headerlink" title="查看所有路由 localhost: 9090/application/routes"></a>查看所有路由 localhost: 9090/application/routes</h3><h2 id="Zuul-Cookie和动态路由"><a href="#Zuul-Cookie和动态路由" class="headerlink" title="Zuul:Cookie和动态路由"></a>Zuul:Cookie和动态路由</h2><h3 id="不过滤cookie的办法-sensitiveHeaders不填"><a href="#不过滤cookie的办法-sensitiveHeaders不填" class="headerlink" title="不过滤cookie的办法 sensitiveHeaders不填"></a>不过滤cookie的办法 sensitiveHeaders不填</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">management:</span><br><span class="line">  security:</span><br><span class="line">    enabled: false</span><br><span class="line">zuul:</span><br><span class="line">  ignored-patterns:</span><br><span class="line">  - /**/product/listForOrder</span><br><span class="line">  routes:</span><br><span class="line">    myProduct:</span><br><span class="line">      path: /myProduct/**</span><br><span class="line">      sensitiveHeaders: &apos;&apos;</span><br><span class="line">      serviceId: product</span><br></pre></td></tr></table></figure>
-
-<h4 id="动态路由"><a href="#动态路由" class="headerlink" title="动态路由"></a>动态路由</h4><ol>
-<li>使用spring Cloud Bus实现动态修改路由配置</li>
-<li>如何在代码里修改配置不需要更新？<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public class ZuuConfig &#123;</span><br><span class="line">    @ConfigurationProperties(&quot;zuul&quot;)</span><br><span class="line">    @RefreshScope</span><br><span class="line">    public ZuulProperties zuulProperties()&#123;</span><br><span class="line">        return new ZuulProperties()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-</li>
-</ol>
-<h2 id="Zuul-高可用"><a href="#Zuul-高可用" class="headerlink" title="Zuul:高可用"></a>Zuul:高可用</h2><ul>
-<li>Pre前置过滤器，限流。鉴权，把鉴权逻辑放在Pre。参数过滤，请求转发</li>
-<li>Post后置过滤器，统计，日志</li>
-<li>多台zuul，需要多台高可用，多个节点都注册到Eureka上面。</li>
-<li>可用Nginx和Zuul进行混搭，使用Nginx暴露Url，把请求转发到多个Zuul服务上。Nginx继续做负载均衡</li>
-</ul>
-<h2 id="Zuul-Pre和Post过滤器"><a href="#Zuul-Pre和Post过滤器" class="headerlink" title="Zuul:Pre和Post过滤器"></a>Zuul:Pre和Post过滤器</h2><p><img src="/2019/11/16/Zuul/Zuul%5C%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%E5%9B%BE.jpg" alt></p>
-<ol>
-<li><p>Pre过滤器的实现,继承ZuulFilter 实现四个方法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">@Component</span><br><span class="line">public class TokenFilter extends ZuulFilter&#123;</span><br><span class="line">    @Override</span><br><span class="line">    public String filterType() &#123;</span><br><span class="line">        return PRE_TYPE;</span><br><span class="line">    &#125;</span><br><span class="line">    /**</span><br><span class="line">     * filterOrder 是过滤器的顺序，越小的优先级越高</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    @Override</span><br><span class="line">    public int filterOrder() &#123;</span><br><span class="line">        return PRE_DECORATION_FILTER_ORDER-1;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public boolean shouldFilter() &#123;</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 实现逻辑</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    @Override</span><br><span class="line">    public Object run() &#123;</span><br><span class="line">        RequestContext requestContext = RequestContext.getCurrentContext();</span><br><span class="line">        HttpServletRequest request = requestContext.getRequest();</span><br><span class="line">        //从url参数获取，也可以从cookie,header里获取</span><br><span class="line">        String tocken = request.getParameter(&quot;token&quot;);</span><br><span class="line">        //token为空返回401</span><br><span class="line">        if(StringUtils.isEmpty(tocken))&#123;</span><br><span class="line">            requestContext.setSendZuulResponse(false);</span><br><span class="line">            requestContext.setResponseStatusCode(HttpStatus.UNAUTHORIZED.value());</span><br><span class="line">        &#125;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>Post过滤器的实现</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">@Component</span><br><span class="line">public class AddResponseHeaderFilter  extends ZuulFilter&#123;</span><br><span class="line">    @Override</span><br><span class="line">    public String filterType() &#123;</span><br><span class="line">        return POST_TYPE;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public int filterOrder() &#123;</span><br><span class="line">        return SEND_RESPONSE_FILTER_ORDER-1;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public boolean shouldFilter() &#123;</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line">    @Override</span><br><span class="line">    public Object run() &#123;</span><br><span class="line">        RequestContext requestContext = RequestContext.getCurrentContext();</span><br><span class="line">        HttpServletResponse response = requestContext.getResponse();</span><br><span class="line">        //增加一个响应头</span><br><span class="line">        response.setHeader(&quot;X-Foo&quot;, UUID.randomUUID().toString());</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-</li>
-</ol>
-<h2 id="Zuul-限流"><a href="#Zuul-限流" class="headerlink" title="Zuul:限流"></a>Zuul:限流</h2><p>令牌桶式限流<br><img src="/2019/11/16/Zuul/%E4%BB%A4%E7%89%8C%E6%A1%B6%E5%BC%8F%E9%99%90%E6%B5%81.jpg" alt="令牌桶式限流"><br>时机：请求被转发之前调用</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 限流</span><br><span class="line"> */</span><br><span class="line">@Component</span><br><span class="line">public class RateLimitFilter extends ZuulFilter &#123;</span><br><span class="line">    //guava组件对令牌桶的实现</span><br><span class="line">    private static final RateLimiter  RATE_LIMITER =RateLimiter.create(100);</span><br><span class="line">    @Override</span><br><span class="line">    public String filterType() &#123;</span><br><span class="line">        return PRE_TYPE;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public int filterOrder() &#123;</span><br><span class="line">        return SERVLET_DETECTION_FILTER_ORDER-1;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public boolean shouldFilter() &#123;</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public Object run() &#123;</span><br><span class="line">        //尝试去取一个令牌</span><br><span class="line">        if(!RATE_LIMITER.tryAcquire())&#123;</span><br><span class="line">            throw new RateLimitException();</span><br><span class="line">        &#125;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ol>
-<li>继承ZuulFilter,实现4个方法，修改返回值</li>
-<li>filterType()返回值为PRE_TYPE</li>
-<li>RateLimiter.create 限制100个</li>
-<li>在run方法写限流抛异常</li>
-</ol>
-<h2 id="Zuul-鉴权"><a href="#Zuul-鉴权" class="headerlink" title="Zuul:鉴权"></a>Zuul:鉴权</h2><p>要实现的业务：  </p>
-<ul>
-<li>/order/create 只能买家访问</li>
-<li>/order/finish 只能卖家访问</li>
-<li>/product/list 都可以访问  </li>
-</ul>
-<ol>
-<li><p>/order/create 如何权限校验,先根据访问路径判断是否拦截，再根据买家和卖家各有的特点去判断</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 权限拦截（区分买家和卖家）</span><br><span class="line"> */</span><br><span class="line">@Component</span><br><span class="line">public class AuthBuyerFilter extends ZuulFilter&#123;</span><br><span class="line">    @Autowired</span><br><span class="line">    private StringRedisTemplate stringRedisTemplate;</span><br><span class="line">    @Override</span><br><span class="line">    public String filterType() &#123;</span><br><span class="line">        return PRE_TYPE;</span><br><span class="line">    &#125;</span><br><span class="line">    /**</span><br><span class="line">     * filterOrder 是过滤器的顺序，越小的优先级越高</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    @Override</span><br><span class="line">    public int filterOrder() &#123;</span><br><span class="line">        return PRE_DECORATION_FILTER_ORDER-1;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public boolean shouldFilter() &#123;</span><br><span class="line">        RequestContext requestContext = RequestContext.getCurrentContext();</span><br><span class="line">        HttpServletRequest request = requestContext.getRequest();</span><br><span class="line">        if(&quot;/order/order/create&quot;.equals(request.getRequestURI()))&#123;</span><br><span class="line">            return true;</span><br><span class="line">        &#125;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line">    /**</span><br><span class="line">     * 实现逻辑</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    @Override</span><br><span class="line">    public Object run() &#123;</span><br><span class="line">        RequestContext requestContext = RequestContext.getCurrentContext();</span><br><span class="line">        HttpServletRequest request = requestContext.getRequest();</span><br><span class="line">        /**</span><br><span class="line">         * /order/create 创建订单只能买家访问</span><br><span class="line">         */</span><br><span class="line">            Cookie cookie = CookieUtil.get(request,&quot;openid&quot;);</span><br><span class="line">            if(cookie == null || StringUtils.isEmpty(cookie.getValue()))&#123;</span><br><span class="line">                requestContext.setSendZuulResponse(false);</span><br><span class="line">                requestContext.setResponseStatusCode(HttpStatus.UNAUTHORIZED.value());</span><br><span class="line">            &#125;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>/order/finish 只能卖家访问</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 权限拦截（区分买家和卖家）</span><br><span class="line"> */</span><br><span class="line">@Component</span><br><span class="line">public class AuthSellerFilter extends ZuulFilter&#123;</span><br><span class="line">    @Autowired</span><br><span class="line">    private StringRedisTemplate stringRedisTemplate;</span><br><span class="line">    @Override</span><br><span class="line">    public String filterType() &#123;</span><br><span class="line">        return PRE_TYPE;</span><br><span class="line">    &#125;</span><br><span class="line">    /**</span><br><span class="line">     * filterOrder 是过滤器的顺序，越小的优先级越高</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    @Override</span><br><span class="line">    public int filterOrder() &#123;</span><br><span class="line">        return PRE_DECORATION_FILTER_ORDER-1;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public boolean shouldFilter() &#123;</span><br><span class="line">        RequestContext requestContext = RequestContext.getCurrentContext();</span><br><span class="line">        HttpServletRequest request = requestContext.getRequest();</span><br><span class="line">        if(&quot;/order/order/finish&quot;.equals(request.getRequestURI()))&#123;</span><br><span class="line">            return true;</span><br><span class="line">        &#125;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 实现逻辑</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    @Override</span><br><span class="line">    public Object run() &#123;</span><br><span class="line">        RequestContext requestContext = RequestContext.getCurrentContext();</span><br><span class="line">        HttpServletRequest request = requestContext.getRequest();</span><br><span class="line">        /**</span><br><span class="line">         * /order/finish 只能卖家访问</span><br><span class="line">         */</span><br><span class="line">            Cookie cookie = CookieUtil.get(request,&quot;token&quot;);</span><br><span class="line">            if(cookie == null || StringUtils.isEmpty(cookie.getValue())</span><br><span class="line">                    || StringUtils.isEmpty(stringRedisTemplate.opsForValue().get(String.format(RedisConstant.TOKEN_TEMPLATE,cookie.getValue()))) )&#123;</span><br><span class="line">                requestContext.setSendZuulResponse(false);</span><br><span class="line">                requestContext.setResponseStatusCode(HttpStatus.UNAUTHORIZED.value());</span><br><span class="line">            &#125;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-</li>
-</ol>
-<h2 id="Zuul-跨域"><a href="#Zuul-跨域" class="headerlink" title="Zuul:跨域"></a>Zuul:跨域</h2><h3 id="什么是跨域问题？"><a href="#什么是跨域问题？" class="headerlink" title="什么是跨域问题？"></a>什么是跨域问题？</h3><blockquote>
-<p>同源策略，它是由Netscape提出的一个著名的安全策略。现在所有支持JavaScript 的浏览器都会使用这个策略。所谓同源是指，域名，协议，端口相同。</p>
-</blockquote>
-<p>同源 域名、协议、端口相同，也就是在同一个域里。</p>
-<p>如果非同源，那么在请求数据时，浏览器会在控制台中报一个异常，提示拒绝访问。</p>
-<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><ol>
-<li><p>在被调用的类或方法上增加@CrossOrigin注解</p>
-</li>
-<li><p>在Zuul里增加CorsFilter过滤器</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 跨域配置</span><br><span class="line"> * C-Cross O-Origin R-Resource S-Sharing</span><br><span class="line"> */</span><br><span class="line">@Configuration</span><br><span class="line">public class CorsConfig &#123;</span><br><span class="line">    @Bean</span><br><span class="line">    public CorsFilter corsFilter()&#123;</span><br><span class="line">        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();</span><br><span class="line">        final CorsConfiguration config = new CorsConfiguration();</span><br><span class="line">        //是否支持cookie跨域</span><br><span class="line">        config.setAllowCredentials(true);</span><br><span class="line">        //原始域 http:a.com</span><br><span class="line">        config.setAllowedOrigins(Arrays.asList(&quot;*&quot;));</span><br><span class="line">        config.setAllowedHeaders(Arrays.asList(&quot;*&quot;));</span><br><span class="line">        config.setAllowedMethods(Arrays.asList(&quot;*&quot;));</span><br><span class="line">        config.setMaxAge(300l);</span><br><span class="line">        //把跨域的配置注册到source上</span><br><span class="line">        source.registerCorsConfiguration(&quot;*&quot;,config);</span><br><span class="line">        return new CorsFilter(source);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ol>
-
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/微服务实战/">微服务实战</a>
-
-      
-  <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Cookie和动态路由/">Cookie和动态路由</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Zuul/">Zuul</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/服务网关/">服务网关</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/跨域/">跨域</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/鉴权/">鉴权</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/限流/">限流</a></li></ul>
-
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
 
 
   <nav id="page-nav">
@@ -1379,6 +1294,18 @@
               <div class="widget-entry-summary" style="margin: 0;">
             
 
+              <h6 style="margin: 0;"><a href="/2020/03/17/消息队列总结/">消息队列总结</a></h6>
+              <span>March 17, 2020</span>
+            </div>
+
+          </li>
+        
+          <li class="clearfix">
+
+            
+              <div class="widget-entry-summary" style="margin: 0;">
+            
+
               <h6 style="margin: 0;"><a href="/2020/02/29/SpringMVC/">SpringMVC</a></h6>
               <span>February 29, 2020</span>
             </div>
@@ -1433,18 +1360,6 @@
 
           </li>
         
-          <li class="clearfix">
-
-            
-              <div class="widget-entry-summary" style="margin: 0;">
-            
-
-              <h6 style="margin: 0;"><a href="/2019/12/18/设计模式/">设计模式</a></h6>
-              <span>December 18, 2019</span>
-            </div>
-
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -1454,7 +1369,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/GC相关/">GC相关</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java多线程与并发/">Java多线程与并发</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java常用类库与技巧/">Java常用类库与技巧</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Redis/">Redis</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot-实战/">Spring Boot 实战</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/容器/">容器</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/开发工具/">开发工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务实战/">微服务实战</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/设计模式/">设计模式</a><span class="category-list-count">1</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/GC相关/">GC相关</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java多线程与并发/">Java多线程与并发</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java常用类库与技巧/">Java常用类库与技巧</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Redis/">Redis</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot-实战/">Spring Boot 实战</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/容器/">容器</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/开发工具/">开发工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务实战/">微服务实战</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据通信/">数据通信</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/设计模式/">设计模式</a><span class="category-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -1484,7 +1399,7 @@
     <h3 class="widget-title">Archives</h3>
 
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">23</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">25</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">23</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">25</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">1</span></li></ul>
     </div>
 
     <div>

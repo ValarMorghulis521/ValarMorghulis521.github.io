@@ -9,16 +9,16 @@
   
   
   
-  <meta name="description" content="Like a bird in the sky">
+  <meta name="description" content="Stay Hungry Stay Foolish">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Contunued Story">
 <meta property="og:url" content="http://yoursite.com/page/4/index.html">
 <meta property="og:site_name" content="Contunued Story">
-<meta property="og:description" content="Like a bird in the sky">
+<meta property="og:description" content="Stay Hungry Stay Foolish">
 <meta property="og:locale" content="en">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Contunued Story">
-<meta name="twitter:description" content="Like a bird in the sky">
+<meta name="twitter:description" content="Stay Hungry Stay Foolish">
   
     <link rel="alternate" href="/atom.xml" title="Contunued Story" type="application/atom+xml">
   
@@ -91,7 +91,7 @@
           </h1>
           
           
-            <div class="site-description">Like a bird in the sky</div>
+            <div class="site-description">Stay Hungry Stay Foolish</div>
           
             
           <nav id="main-navigation" class="main-navigation" role="navigation">
@@ -126,6 +126,64 @@
       <div id="content" class="outer">
         
           <section id="main">
+  
+    <article id="post-Java的内存模型常见问题"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/10/30/Java的内存模型常见问题/">Java的内存模型常见问题</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/10/30/Java的内存模型常见问题/" class="article-date">
+	  <time datetime="2019-10-30T14:57:48.000Z" itemprop="datePublished">October 30, 2019</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/JVM/">JVM</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="JVM三大性能调优参数-Xms-Xmx-Xss的含义"><a href="#JVM三大性能调优参数-Xms-Xmx-Xss的含义" class="headerlink" title="JVM三大性能调优参数-Xms -Xmx -Xss的含义"></a>JVM三大性能调优参数-Xms -Xmx -Xss的含义</h4><ol>
+<li>-Xss：规定的每个虚拟机栈（堆栈）的大小。一般情况下，256K足够。此配置将会影响此进程中并发线程数的大小</li>
+<li>-Xms：初始java堆的大小，即该进程刚创建出来的时候java堆的大小。</li>
+<li>-Xmx：一旦对象容量超过-Xms大小，则将java堆大小扩容至改参数。为防止heap扩容导致内存抖动，影响程序运行稳定性，一般设置成与Xms一样大小</li>
+</ol>
+<h4 id="Java内存模型中堆和栈的区别"><a href="#Java内存模型中堆和栈的区别" class="headerlink" title="Java内存模型中堆和栈的区别"></a>Java内存模型中堆和栈的区别</h4><h5 id="内存分配策略"><a href="#内存分配策略" class="headerlink" title="内存分配策略"></a>内存分配策略</h5><p>静态存储：编译时确定每个数据目标在运行时的存储空间需求<br>栈式存储：数据区需求在编译时未知，运行时模块入口前确定<br>堆时存储：编译时或运行时模块入口都无法确定，动态分配</p>
+<h4 id="Java内存模型中堆和栈的区别-1"><a href="#Java内存模型中堆和栈的区别-1" class="headerlink" title="Java内存模型中堆和栈的区别"></a>Java内存模型中堆和栈的区别</h4><p>联系：引用对象、数组时，栈里定义变量保存堆中目标的首地址<br>管理方式：栈自动释放，堆需要GC<br>空间大小：栈比堆小<br>碎片相关：栈产生的碎片远小于堆<br>分配方式：栈支持静态和动态分配，而堆仅支持动态分配<br>效率：栈的效率比堆高</p>
+<h4 id="元空间、堆、线程独占部分间的联系-内存角度"><a href="#元空间、堆、线程独占部分间的联系-内存角度" class="headerlink" title="元空间、堆、线程独占部分间的联系-内存角度"></a>元空间、堆、线程独占部分间的联系-内存角度</h4><p><img src="/2019/10/30/Java的内存模型常见问题/%E5%85%83%E7%A9%BA%E9%97%B4%E5%A0%86%E7%BA%BF%E7%A8%8B%E7%8B%AC%E5%8D%A0%E9%83%A8%E5%88%86%E9%97%B4%E7%9A%84%E8%81%94%E7%B3%BB.jpg" alt></p>
+<h4 id="不同JDK版本之间的intern-方法的区别——JDK6-VS-JDK6"><a href="#不同JDK版本之间的intern-方法的区别——JDK6-VS-JDK6" class="headerlink" title="不同JDK版本之间的intern()方法的区别——JDK6 VS JDK6+"></a>不同JDK版本之间的intern()方法的区别——JDK6 VS JDK6+</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Stirng s = new String (&quot;a&quot;);</span><br><span class="line">s.intern();</span><br></pre></td></tr></table></figure>
+
+<p><strong>JDK6:</strong> 当调用intern 方法时，如果字符串常量池先前已创建出该字符串对象，则返回池中的该字符串的引用。否则，将此字符串对象添加到字符串常量池中，并且返回该字符串对象的引用<br><strong>JDK6+:</strong> 当调用intern 方法时，如果字符串常量池先前已创建出该字符串对象，则返回池中的该字符串的引用。否则，如果该字符串对象已经存在于java堆中，则将堆中对此对象的引用添加到字符串常量池中，并且返回该引用；如果堆中不存在，则在池中创建该字符串并返回其引用 </p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/JVM/">JVM</a>
+
+      
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
   
     <article id="post-JVM内存模型"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
@@ -789,79 +847,6 @@
 <!-- Table of Contents -->
 
   
-    <article id="post-如何实现分布式锁"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/10/18/如何实现分布式锁/">如何通过Redis实现分布式锁</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/10/18/如何实现分布式锁/" class="article-date">
-	  <time datetime="2019-10-18T05:47:11.000Z" itemprop="datePublished">October 18, 2019</time>
-	</a>
-
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/Redis/">Redis</a>
- 
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="什么是分布式锁"><a href="#什么是分布式锁" class="headerlink" title="什么是分布式锁"></a>什么是分布式锁</h4><p><strong>分布式锁是控制分布式系统或不同系统之间共同访问共享资源的一种锁的实现</strong></p>
-<h4 id="分布式锁需要解决的问题"><a href="#分布式锁需要解决的问题" class="headerlink" title="分布式锁需要解决的问题"></a>分布式锁需要解决的问题</h4><ul>
-<li>互斥性：任意时刻只能有一个客户端获取到锁</li>
-<li>安全性：锁只能被持有该锁的客户端删除</li>
-<li>死锁：获取锁的客户端因为某些原因宕机而未能释放锁，其他客户端再也无法获取到该锁而导致的死锁</li>
-<li>容错：当部分Redis节点宕机了之后客户端仍然能够获取锁和释放锁<h4 id="SENTNX-key-value-如果key不存在，则创建并赋值"><a href="#SENTNX-key-value-如果key不存在，则创建并赋值" class="headerlink" title="SENTNX key value:如果key不存在，则创建并赋值"></a>SENTNX key value:如果key不存在，则创建并赋值</h4></li>
-<li>时间复杂度 O(1)</li>
-<li>返回值：设置成功，返回1；设置失败，返回0</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">get locknx</span><br><span class="line">(nil)</span><br><span class="line">setnx locknx test</span><br><span class="line">(integer)1</span><br></pre></td></tr></table></figure>
-
-<p>setnx 操作是原子性的，初期被用来实现分布式锁；在执行某段代码逻辑的时候先尝试使用setnx对某个key设值，如果设置成功则证明此时没有别的线程在执行该段代码（占用该独占资源），这个时候线程就可以顺利的执行该段代码逻辑，如果设置失败则证明有别的程序或线程占用该资源。当前线程需要等待直至setnx成功</p>
-<h5 id="如何解决SETNX长期有效的问题"><a href="#如何解决SETNX长期有效的问题" class="headerlink" title="如何解决SETNX长期有效的问题"></a>如何解决SETNX长期有效的问题</h5><p><strong>EXPIRE key seconds</strong><br> 设置key的生存时间，当key过期时（生存时间为0），会被自动删除<br> 缺点：原子性得不到满足</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//设置过期时间2秒钟</span><br><span class="line">expire locknx 2</span><br></pre></td></tr></table></figure>
-
-<p>伪代码示例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">RedisService redisService = SpringUtils.getBean(RedisService.class)</span><br><span class="line">long status = redisService.setnx(key,&quot;1&quot;)</span><br><span class="line"></span><br><span class="line">if(status == 1)&#123;</span><br><span class="line">    redisService.expire(key,expire);</span><br><span class="line">    //执行独占资源逻辑</span><br><span class="line">    doOcuppiedWord()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>潜在问题，在setnx后线程挂掉，key将会被一直占用</p>
-<h4 id="SET-key-value-EX-seconds-PX-milliseconds-NX-XX"><a href="#SET-key-value-EX-seconds-PX-milliseconds-NX-XX" class="headerlink" title="SET key value [EX seconds][PX milliseconds][NX|XX]"></a>SET key value [EX seconds][PX milliseconds][NX|XX]</h4><p>ex:设置键的过期时间为单位妙<br>px:设置键的过期时间为单位毫秒<br>NX:只在键不存在时，才对键进行设置操作<br>XX:只在键已经存在时，才对键进行设置操作<br>设置成功返回ok,否则返回nil</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set locktarget 12345 ex 10 nx</span><br></pre></td></tr></table></figure>
-
-<h4 id="大量的key同时过期的注意事项"><a href="#大量的key同时过期的注意事项" class="headerlink" title="大量的key同时过期的注意事项"></a>大量的key同时过期的注意事项</h4><p><strong>集中过期，由于清除大量的key很耗时，会出现短暂的卡顿现象</strong><br>解决方案：在设置key的过期时间的时候，给每个key加上随机值</p>
-
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/Redis/">Redis</a>
-
-      
-  <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/分布式锁/">分布式锁</a></li></ul>
-
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
 
 
   <nav id="page-nav">
@@ -960,6 +945,18 @@
               <div class="widget-entry-summary" style="margin: 0;">
             
 
+              <h6 style="margin: 0;"><a href="/2020/03/17/消息队列总结/">消息队列总结</a></h6>
+              <span>March 17, 2020</span>
+            </div>
+
+          </li>
+        
+          <li class="clearfix">
+
+            
+              <div class="widget-entry-summary" style="margin: 0;">
+            
+
               <h6 style="margin: 0;"><a href="/2020/02/29/SpringMVC/">SpringMVC</a></h6>
               <span>February 29, 2020</span>
             </div>
@@ -1014,18 +1011,6 @@
 
           </li>
         
-          <li class="clearfix">
-
-            
-              <div class="widget-entry-summary" style="margin: 0;">
-            
-
-              <h6 style="margin: 0;"><a href="/2019/12/18/设计模式/">设计模式</a></h6>
-              <span>December 18, 2019</span>
-            </div>
-
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -1035,7 +1020,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/GC相关/">GC相关</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java多线程与并发/">Java多线程与并发</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java常用类库与技巧/">Java常用类库与技巧</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Redis/">Redis</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot-实战/">Spring Boot 实战</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/容器/">容器</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/开发工具/">开发工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务实战/">微服务实战</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/设计模式/">设计模式</a><span class="category-list-count">1</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/GC相关/">GC相关</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java多线程与并发/">Java多线程与并发</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java常用类库与技巧/">Java常用类库与技巧</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Redis/">Redis</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot-实战/">Spring Boot 实战</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/容器/">容器</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/开发工具/">开发工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务实战/">微服务实战</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据通信/">数据通信</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/设计模式/">设计模式</a><span class="category-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -1065,7 +1050,7 @@
     <h3 class="widget-title">Archives</h3>
 
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">23</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">25</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">23</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">25</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">1</span></li></ul>
     </div>
 
     <div>

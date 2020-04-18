@@ -56,32 +56,10 @@
 
 
   
-  
-  <div class="site-header-image">
-    <img id="originBg" width="100%" alt="Hike News" src="">
-  </div>
-
-  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
-    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
-  </div>
-
-  <script>
-        var imgUrls = "css/images/pose01.jpg,https://source.unsplash.com/collection/954550/1920x1080,https://source.unsplash.com/collection/954550/1920x1081".split(",");
-        var random = Math.floor((Math.random() * imgUrls.length ));
-        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
-          document.getElementById("originBg").src=imgUrls[random];
-          document.getElementById("blurBg").src=imgUrls[random];
-        } else {
-          document.getElementById("originBg").src='/' + imgUrls[random];
-          document.getElementById("blurBg").src='/' + imgUrls[random];
-        }
-    </script>
-
-
 
 
 <header id="allheader" class="site-header" role="banner" 
-   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
+   >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -167,9 +145,13 @@
             
                 <a href="#多路I/O复用模型" title="多路I/O复用模型" rel="1">多路I/O复用模型</a>
             
+                <a href="#MVC" title="MVC" rel="1">MVC</a>
+            
                 <a href="#UDP" title="UDP" rel="1">UDP</a>
             
-                <a href="#MVC" title="MVC" rel="1">MVC</a>
+                <a href="#TCP的三次握手" title="TCP的三次握手" rel="1">TCP的三次握手</a>
+            
+                <a href="#TCP的四次挥手" title="TCP的四次挥手" rel="1">TCP的四次挥手</a>
             
                 <a href="#滑动窗口" title="滑动窗口" rel="1">滑动窗口</a>
             
@@ -177,15 +159,13 @@
             
                 <a href="#RTO" title="RTO" rel="1">RTO</a>
             
-                <a href="#TCP的三次握手" title="TCP的三次握手" rel="1">TCP的三次握手</a>
-            
-                <a href="#TCP的四次挥手" title="TCP的四次挥手" rel="1">TCP的四次挥手</a>
-            
-                <a href="#分布式锁" title="分布式锁" rel="1">分布式锁</a>
+                <a href="#Docker" title="Docker" rel="1">Docker</a>
             
                 <a href="#索引" title="索引" rel="2">索引</a>
             
                 <a href="#索引数据结构" title="索引数据结构" rel="1">索引数据结构</a>
+            
+                <a href="#分布式锁" title="分布式锁" rel="1">分布式锁</a>
             
                 <a href="#异步队列" title="异步队列" rel="1">异步队列</a>
             
@@ -203,13 +183,13 @@
             
                 <a href="#日志框架" title="日志框架" rel="1">日志框架</a>
             
+                <a href="#语法" title="语法" rel="1">语法</a>
+            
                 <a href="#数据库架构" title="数据库架构" rel="1">数据库架构</a>
             
                 <a href="#服务容错" title="服务容错" rel="1">服务容错</a>
             
                 <a href="#Hystrix" title="Hystrix" rel="1">Hystrix</a>
-            
-                <a href="#语法" title="语法" rel="1">语法</a>
             
                 <a href="#Eureka" title="Eureka" rel="1">Eureka</a>
             
@@ -222,6 +202,30 @@
                 <a href="#Spring Cloud Bus" title="Spring Cloud Bus" rel="1">Spring Cloud Bus</a>
             
                 <a href="#OSI七层模型" title="OSI七层模型" rel="1">OSI七层模型</a>
+            
+                <a href="#ClassLoader" title="ClassLoader" rel="1">ClassLoader</a>
+            
+                <a href="#类的装载" title="类的装载" rel="1">类的装载</a>
+            
+                <a href="#Java特性" title="Java特性" rel="1">Java特性</a>
+            
+                <a href="#平台无关性" title="平台无关性" rel="1">平台无关性</a>
+            
+                <a href="#链路监控" title="链路监控" rel="1">链路监控</a>
+            
+                <a href="#Spring Cloud Sleuth" title="Spring Cloud Sleuth" rel="1">Spring Cloud Sleuth</a>
+            
+                <a href="#Zipkin" title="Zipkin" rel="1">Zipkin</a>
+            
+                <a href="#锁模块" title="锁模块" rel="3">锁模块</a>
+            
+                <a href="#当前读" title="当前读" rel="1">当前读</a>
+            
+                <a href="#快照读" title="快照读" rel="1">快照读</a>
+            
+                <a href="#数据库事务" title="数据库事务" rel="1">数据库事务</a>
+            
+                <a href="#ACID" title="ACID" rel="1">ACID</a>
             
                 <a href="#HashMap" title="HashMap" rel="1">HashMap</a>
             
@@ -257,31 +261,11 @@
             
                 <a href="#Spring Cliud Stream" title="Spring Cliud Stream" rel="1">Spring Cliud Stream</a>
             
-                <a href="#Docker" title="Docker" rel="1">Docker</a>
+                <a href="#单例模式" title="单例模式" rel="1">单例模式</a>
             
-                <a href="#ClassLoader" title="ClassLoader" rel="1">ClassLoader</a>
+                <a href="#工厂模式" title="工厂模式" rel="1">工厂模式</a>
             
-                <a href="#类的装载" title="类的装载" rel="1">类的装载</a>
-            
-                <a href="#链路监控" title="链路监控" rel="1">链路监控</a>
-            
-                <a href="#Spring Cloud Sleuth" title="Spring Cloud Sleuth" rel="1">Spring Cloud Sleuth</a>
-            
-                <a href="#Zipkin" title="Zipkin" rel="1">Zipkin</a>
-            
-                <a href="#Java特性" title="Java特性" rel="1">Java特性</a>
-            
-                <a href="#平台无关性" title="平台无关性" rel="1">平台无关性</a>
-            
-                <a href="#锁模块" title="锁模块" rel="3">锁模块</a>
-            
-                <a href="#当前读" title="当前读" rel="1">当前读</a>
-            
-                <a href="#快照读" title="快照读" rel="1">快照读</a>
-            
-                <a href="#数据库事务" title="数据库事务" rel="1">数据库事务</a>
-            
-                <a href="#ACID" title="ACID" rel="1">ACID</a>
+                <a href="#代理模式" title="代理模式" rel="1">代理模式</a>
             
                 <a href="#进程和线程" title="进程和线程" rel="1">进程和线程</a>
             
@@ -298,12 +282,6 @@
                 <a href="#IOC" title="IOC" rel="1">IOC</a>
             
                 <a href="#AOP" title="AOP" rel="1">AOP</a>
-            
-                <a href="#单例模式" title="单例模式" rel="1">单例模式</a>
-            
-                <a href="#工厂模式" title="工厂模式" rel="1">工厂模式</a>
-            
-                <a href="#代理模式" title="代理模式" rel="1">代理模式</a>
             
                 <a href="#ArrayList" title="ArrayList" rel="1">ArrayList</a>
             
@@ -2807,6 +2785,18 @@
               <div class="widget-entry-summary" style="margin: 0;">
             
 
+              <h6 style="margin: 0;"><a href="/2020/04/18/数据结构和算法概述/">数据结构和算法概述</a></h6>
+              <span>April 18, 2020</span>
+            </div>
+
+          </li>
+        
+          <li class="clearfix">
+
+            
+              <div class="widget-entry-summary" style="margin: 0;">
+            
+
               <h6 style="margin: 0;"><a href="/2020/03/17/消息队列总结/">消息队列总结</a></h6>
               <span>March 17, 2020</span>
             </div>
@@ -2861,18 +2851,6 @@
 
           </li>
         
-          <li class="clearfix">
-
-            
-              <div class="widget-entry-summary" style="margin: 0;">
-            
-
-              <h6 style="margin: 0;"><a href="/2020/01/02/乐观锁和悲观锁/">乐观锁和悲观锁</a></h6>
-              <span>January 2, 2020</span>
-            </div>
-
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -2882,7 +2860,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/GC相关/">GC相关</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java多线程与并发/">Java多线程与并发</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java常用类库与技巧/">Java常用类库与技巧</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Redis/">Redis</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot-实战/">Spring Boot 实战</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/容器/">容器</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/开发工具/">开发工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务实战/">微服务实战</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据通信/">数据通信</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/设计模式/">设计模式</a><span class="category-list-count">1</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/GC相关/">GC相关</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JVM/">JVM</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java多线程与并发/">Java多线程与并发</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java常用类库与技巧/">Java常用类库与技巧</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Redis/">Redis</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring/">Spring</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Spring-Boot-实战/">Spring Boot 实战</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/容器/">容器</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/开发工具/">开发工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/微服务实战/">微服务实战</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构和算法/">数据结构和算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据通信/">数据通信</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/设计模式/">设计模式</a><span class="category-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -2912,7 +2890,7 @@
     <h3 class="widget-title">Archives</h3>
 
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">23</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">25</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">23</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">25</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">1</span></li></ul>
     </div>
 
     <div>
@@ -2969,9 +2947,6 @@
 
 
     <!-- headerblur min height -->
-    
-      var headerblur = document.getElementById("header-blur");
-      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

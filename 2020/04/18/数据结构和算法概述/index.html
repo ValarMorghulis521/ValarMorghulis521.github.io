@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>数据结构和算法概述 | Contunued Story</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  
+  
+  
+  <meta name="description" content="从今天开始正式学习数据结构和算法，数据结构和算法有什么重要性？为什么要学习他们？他们之间的关系？哪些场景会用到？  经典面试题 字符串匹配问题： 1) 判断 str1 是否含有 str2, 如果存在，就返回第一次出现的位置, 如果没有，则返回-1 2) 要求用最快的速度来完成匹配 4) 你的思路是什么？     暴力匹配 [简单，但是效率低]  KMP 算法《部分匹配表》   汉诺塔游戏：请完成汉">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构和算法概述">
+<meta property="og:url" content="http://yoursite.com/2020/04/18/数据结构和算法概述/index.html">
+<meta property="og:site_name" content="Contunued Story">
+<meta property="og:description" content="从今天开始正式学习数据结构和算法，数据结构和算法有什么重要性？为什么要学习他们？他们之间的关系？哪些场景会用到？  经典面试题 字符串匹配问题： 1) 判断 str1 是否含有 str2, 如果存在，就返回第一次出现的位置, 如果没有，则返回-1 2) 要求用最快的速度来完成匹配 4) 你的思路是什么？     暴力匹配 [简单，但是效率低]  KMP 算法《部分匹配表》   汉诺塔游戏：请完成汉">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2020-04-18T08:21:16.687Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="数据结构和算法概述">
+<meta name="twitter:description" content="从今天开始正式学习数据结构和算法，数据结构和算法有什么重要性？为什么要学习他们？他们之间的关系？哪些场景会用到？  经典面试题 字符串匹配问题： 1) 判断 str1 是否含有 str2, 如果存在，就返回第一次出现的位置, 如果没有，则返回-1 2) 要求用最快的速度来完成匹配 4) 你的思路是什么？     暴力匹配 [简单，但是效率低]  KMP 算法《部分匹配表》   汉诺塔游戏：请完成汉">
+  
+    <link rel="alternate" href="/atom.xml" title="Contunued Story" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+  <link rel="stylesheet" href="/css/fashion.css">
+  <link rel="stylesheet" href="/css/glyphs.css">
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="Contunued Story" rel="home"> Contunued Story </a>
+            
+          </h1>
+          
+          
+            <div class="site-description">Stay Hungry Stay Foolish</div>
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">Home</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">Archives</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">Categories</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">Tags</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">About</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-数据结构和算法概述" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      数据结构和算法概述
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2020/04/18/数据结构和算法概述/" class="article-date">
+	  <time datetime="2020-04-18T07:50:43.000Z" itemprop="datePublished">April 18, 2020</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/数据结构和算法/">数据结构和算法</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>从今天开始正式学习数据结构和算法，数据结构和算法有什么重要性？为什么要学习他们？他们之间的关系？哪些场景会用到？</p>
+<hr>
+<h2 id="经典面试题"><a href="#经典面试题" class="headerlink" title="经典面试题"></a>经典面试题</h2><ol>
+<li>字符串匹配问题：<br> 1) 判断 str1 是否含有 str2, 如果存在，就返回第一次出现的位置, 如果没有，则返回-1<br> 2) 要求用最快的速度来完成匹配<br> 4) 你的思路是什么？  </li>
+</ol>
+<ul>
+<li>暴力匹配 [简单，但是效率低] </li>
+<li>KMP 算法《部分匹配表》</li>
+</ul>
+<ol start="2">
+<li><p>汉诺塔游戏：<br>请完成汉诺塔游戏的代码: 要求：1) 将 A 塔的所有圆盘移动到 C 塔。并且规定，在 2) 小圆盘上不能放大圆盘， 3)在三根柱子之间一次只能移动一个圆</p>
+</li>
+<li><p>八皇后问题：<br>八皇后问题，是一个古老而著名的问题，是回溯算法的典型案例。该问题是国际西洋棋棋手马克斯·贝瑟尔于 1848 年提出：在 8×8 格的国际象棋上摆放八个皇后，使其不能互相攻击，即：任意两个皇后都不能处于同一行、 同一列或同一斜线上，问有多少种摆法。【92】=&gt; 分治算法</p>
+</li>
+</ol>
+<h2 id="数据结构和算法的重要性"><a href="#数据结构和算法的重要性" class="headerlink" title="数据结构和算法的重要性"></a>数据结构和算法的重要性</h2><hr>
+<ol>
+<li>算法是程序的灵魂，优秀的程序可以在海量数据计算时，依然保持高速计算 </li>
+<li>一般来讲 程序会使用了内存计算框架(比如 Spark)和缓存技术(比如 Redis 等)来优化程序,再深入的思考一下，这 些计算框架和缓存技术， 它的核心功能是哪个部分呢？ </li>
+<li>拿实际工作经历来说, 在 Unix 下开发服务器程序，功能是要支持上千万人同时在线，在上线前，做内测，一切 OK,可上线后，服务器就支撑不住了, 公司的 CTO 对代码进行优化，再次上线，坚如磐石。你就能感受到程序 是有灵魂的，就是算法。 </li>
+<li>目前程序员面试的门槛越来越高，很多一线 IT 公司(大厂)，都会有数据结构和算法面试题</li>
+<li>如果你不想永远都是代码工人,那就花时间来研究下数据结构和算法</li>
+</ol>
+<h2 id="数据结构和算法的关系"><a href="#数据结构和算法的关系" class="headerlink" title="数据结构和算法的关系"></a>数据结构和算法的关系</h2><hr>
+<p>1) 数据 data 结构(structure)是一门研究组织数据方式的学科，有了编程语言也就有了数据结构.学好数据结构可以 编写出更加漂亮,更加有效率的代码。<br>2) 要学习好数据结构就要多多考虑如何将生活中遇到的问题,用程序去实现解决.<br>3) <strong>程序 = 数据结构 + 算法</strong><br>4) 数据结构是算法的基础, 换言之，想要学好算法，需要把数据结构学到位。</p>
+<h2 id="线性结构和非线性结构"><a href="#线性结构和非线性结构" class="headerlink" title="线性结构和非线性结构"></a>线性结构和非线性结构</h2><p>数据结构包括：线性结构和非线性结构。</p>
+<hr>
+<h3 id="线性结构"><a href="#线性结构" class="headerlink" title="线性结构"></a>线性结构</h3><ol>
+<li>线性结构作为最常用的数据结构，其特点是<strong>数据元素之间存在一对一的线性关系</strong> </li>
+<li>线性结构有两种不同的存储结构，即<strong>顺序存储结构(数组)</strong>和<strong>链式存储结构(链表)</strong>。顺序存储的线性表称为顺序表，顺序表中的<strong>存储元素是连续</strong>的 </li>
+<li>链式存储的线性表称为链表，<strong>链表中的存储元素不一定是连续</strong>的，元素节点中存放数据元素以及相邻元素的地 址信息 </li>
+<li>线性结构常见的有：<strong>数组、队列、链表和栈</strong></li>
+</ol>
+<h3 id="非线性结构"><a href="#非线性结构" class="headerlink" title="非线性结构"></a>非线性结构</h3><p>非线性结构包括：二维数组，多维数组，广义表，树结构，图结构</p>
+<hr>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/数据结构和算法/">数据结构和算法</a>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2020/03/17/消息队列总结/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">消息队列总结</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#经典面试题"><span class="nav-number">1.</span> <span class="nav-text">经典面试题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据结构和算法的重要性"><span class="nav-number">2.</span> <span class="nav-text">数据结构和算法的重要性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据结构和算法的关系"><span class="nav-number">3.</span> <span class="nav-text">数据结构和算法的关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线性结构和非线性结构"><span class="nav-number">4.</span> <span class="nav-text">线性结构和非线性结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#线性结构"><span class="nav-number">4.1.</span> <span class="nav-text">线性结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非线性结构"><span class="nav-number">4.2.</span> <span class="nav-text">非线性结构</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+
+<!-- Donate -->
+
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2020 Contunued Story All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/miku.model.json"},"display":{"position":"right","width":200,"height":400},"mobile":{"show":true,"scale":0.5},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

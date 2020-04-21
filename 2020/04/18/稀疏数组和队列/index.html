@@ -11,22 +11,22 @@
   
   
   
-  <meta name="description" content="稀疏数组 基本介绍当一个数组中大部分元素为０，或者为同一个值的数组时，可以使用稀疏数组来保存该数组。 稀疏数组的处理方法是:   记录数组一共有几行几列，有多少个不同的值  把具有不同值的元素的行列及值记录在一个小规模的数组中，从而缩小程序的规模   应用实例 编写的五子棋程序中，有存盘退出和续上盘的功能。    分析问题:   因为该二维数组的很多值是默认值 0, 因此记录了很多没有意义的数据.">
+  <meta name="description" content="稀疏数组 基本介绍当一个数组中大部分元素为0，或者为同一个值的数组时，可以使用稀疏数组来保存该数组。 稀疏数组的处理方法是:   记录数组一共有几行几列，有多少个不同的值  把具有不同值的元素的行列及值记录在一个小规模的数组中，从而缩小程序的规模   应用实例 编写的五子棋程序中，有存盘退出和续上盘的功能。    分析问题:   因为该二维数组的很多值是默认值 0, 因此记录了很多没有意义的数据.">
 <meta name="keywords" content="数组,队列">
 <meta property="og:type" content="article">
 <meta property="og:title" content="稀疏数组和队列">
 <meta property="og:url" content="http://yoursite.com/2020/04/18/稀疏数组和队列/index.html">
 <meta property="og:site_name" content="Contunued Story">
-<meta property="og:description" content="稀疏数组 基本介绍当一个数组中大部分元素为０，或者为同一个值的数组时，可以使用稀疏数组来保存该数组。 稀疏数组的处理方法是:   记录数组一共有几行几列，有多少个不同的值  把具有不同值的元素的行列及值记录在一个小规模的数组中，从而缩小程序的规模   应用实例 编写的五子棋程序中，有存盘退出和续上盘的功能。    分析问题:   因为该二维数组的很多值是默认值 0, 因此记录了很多没有意义的数据.">
+<meta property="og:description" content="稀疏数组 基本介绍当一个数组中大部分元素为0，或者为同一个值的数组时，可以使用稀疏数组来保存该数组。 稀疏数组的处理方法是:   记录数组一共有几行几列，有多少个不同的值  把具有不同值的元素的行列及值记录在一个小规模的数组中，从而缩小程序的规模   应用实例 编写的五子棋程序中，有存盘退出和续上盘的功能。    分析问题:   因为该二维数组的很多值是默认值 0, 因此记录了很多没有意义的数据.">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/2020/04/18/稀疏数组和队列/%E7%A8%80%E7%96%8F%E6%95%B0%E7%BB%84.png">
 <meta property="og:image" content="http://yoursite.com/2020/04/18/稀疏数组和队列/%E4%BA%94%E5%AD%90%E6%A3%8B.png">
 <meta property="og:image" content="http://yoursite.com/2020/04/18/稀疏数组和队列/%E4%BA%94%E5%AD%90%E6%A3%8B%E6%80%9D%E8%B7%AF.png">
 <meta property="og:image" content="http://yoursite.com/2020/04/18/稀疏数组和队列/%E9%98%9F%E5%88%97%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
-<meta property="og:updated_time" content="2020-04-19T08:17:16.855Z">
+<meta property="og:updated_time" content="2020-04-20T04:51:26.875Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="稀疏数组和队列">
-<meta name="twitter:description" content="稀疏数组 基本介绍当一个数组中大部分元素为０，或者为同一个值的数组时，可以使用稀疏数组来保存该数组。 稀疏数组的处理方法是:   记录数组一共有几行几列，有多少个不同的值  把具有不同值的元素的行列及值记录在一个小规模的数组中，从而缩小程序的规模   应用实例 编写的五子棋程序中，有存盘退出和续上盘的功能。    分析问题:   因为该二维数组的很多值是默认值 0, 因此记录了很多没有意义的数据.">
+<meta name="twitter:description" content="稀疏数组 基本介绍当一个数组中大部分元素为0，或者为同一个值的数组时，可以使用稀疏数组来保存该数组。 稀疏数组的处理方法是:   记录数组一共有几行几列，有多少个不同的值  把具有不同值的元素的行列及值记录在一个小规模的数组中，从而缩小程序的规模   应用实例 编写的五子棋程序中，有存盘退出和续上盘的功能。    分析问题:   因为该二维数组的很多值是默认值 0, 因此记录了很多没有意义的数据.">
 <meta name="twitter:image" content="http://yoursite.com/2020/04/18/稀疏数组和队列/%E7%A8%80%E7%96%8F%E6%95%B0%E7%BB%84.png">
   
     <link rel="alternate" href="/atom.xml" title="Contunued Story" type="application/atom+xml">
@@ -167,7 +167,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h2 id="稀疏数组"><a href="#稀疏数组" class="headerlink" title="稀疏数组"></a>稀疏数组</h2><hr>
-<h3 id="基本介绍"><a href="#基本介绍" class="headerlink" title="基本介绍"></a>基本介绍</h3><p>当一个数组中大部分元素为０，或者为同一个值的数组时，可以使用稀疏数组来保存该数组。</p>
+<h3 id="基本介绍"><a href="#基本介绍" class="headerlink" title="基本介绍"></a>基本介绍</h3><p>当一个数组中大部分元素为0，或者为同一个值的数组时，可以使用稀疏数组来保存该数组。</p>
 <p>稀疏数组的处理方法是: </p>
 <ol>
 <li>记录数组一共有几行几列，有多少个不同的值 </li>
@@ -279,6 +279,15 @@
   
     
 <nav id="article-nav">
+  
+    <a href="/2020/04/20/链表/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          链表
+        
+      </div>
+    </a>
   
   
     <a href="/2020/04/18/数据结构和算法概述/" id="article-nav-older" class="article-nav-link-wrap">
